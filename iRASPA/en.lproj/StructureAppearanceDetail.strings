@@ -53,8 +53,8 @@
 /* Class = "NSTextFieldCell"; title = "Bond Scale Factor"; ObjectID = "5tk-gG-FdV"; */
 "5tk-gG-FdV.title" = "Bond Scale Factor";
 
-/* Class = "NSTextFieldCell"; title = "Adsorption Surface"; ObjectID = "5xK-C0-rPU"; */
-"5xK-C0-rPU.title" = "Adsorption Surface";
+/* Class = "NSTextFieldCell"; title = "Energy Isosurface"; ObjectID = "5xK-C0-rPU"; */
+"5xK-C0-rPU.title" = "Energy Isosurface";
 
 /* Class = "NSBox"; title = "Bond Lighting"; ObjectID = "6Aw-j2-ekx"; */
 "6Aw-j2-ekx.title" = "Bond Lighting";
@@ -479,8 +479,8 @@
 /* Class = "NSTextFieldCell"; title = "Bonds"; ObjectID = "nGx-4p-hvc"; */
 "nGx-4p-hvc.title" = "Bonds";
 
-/* Class = "NSButtonCell"; title = "Show Adsorption Surface"; ObjectID = "nOa-3D-Seb"; */
-"nOa-3D-Seb.title" = "Show Adsorption Surface";
+/* Class = "NSButtonCell"; title = "Show Grid Data"; ObjectID = "nOa-3D-Seb"; */
+"nOa-3D-Seb.title" = "Show Grid Data";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "nTL-aw-5vW"; */
 "nTL-aw-5vW.title" = "Ambient Light Intensity";

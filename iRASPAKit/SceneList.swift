@@ -103,11 +103,6 @@ public final class SceneList:  ObjectViewer, BinaryDecodable, BinaryEncodable
     return self.scenes.flatMap{$0.allObjects}
   }
   
-  public var renderCanDrawAdsorptionSurface: Bool
-  {
-    return self.scenes.reduce(into: false, {$0 = $0 || $1.renderCanDrawAdsorptionSurface})
-  }
-  
   public var allAdsorptionSurfaceStructures: [SKRenderAdsorptionSurfaceStructure]
   {
     // FIX

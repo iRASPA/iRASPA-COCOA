@@ -43,7 +43,6 @@ extension String {
 
 public final class SKXYZParser: SKParser, ProgressReporting
 {
-  weak var windowController: NSWindowController? = nil
   var cellFormulaUnitsZ: Int = 0
   var scanner: Scanner
   let letterSet: CharacterSet
@@ -70,11 +69,10 @@ public final class SKXYZParser: SKParser, ProgressReporting
   var currentProgressCount: Double = 0.0
   let percentageFinishedStep: Double
   
-  public init(displayName: String, data: Data, windowController: NSWindowController?) throws
+  public init(displayName: String, data: Data) throws
   {
     //self.ProjectTreeNode = ProjectTreeNode
     self.displayName = displayName
-    self.windowController = windowController
     
     guard let string: String = String(data: data, encoding: String.Encoding.utf8) ?? String(data: data, encoding: String.Encoding.ascii) else
     {

@@ -228,17 +228,37 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
         case .structure:
           iRASPAstructure = iRASPAObject(structure: Structure(name: displayName))
         case .RASPADensityVolume:
-          let RASPADensityVolume: RASPADensityVolume = RASPADensityVolume(name: displayName, dimensions: frame.dimensions, spacing: frame.spacing, cell: cell, data: frame.gridData, dataType: frame.dataType)
+          let RASPADensityVolume: RASPAVolumetricData = RASPAVolumetricData(name: displayName, dimensions: frame.dimensions, spacing: frame.spacing, cell: cell, data: frame.gridData, dataType: frame.dataType)
           iRASPAstructure = iRASPAObject(RASPADensityVolume: RASPADensityVolume)
         case .VTKDensityVolume:
-          let VTKDensityVolume: VTKDensityVolume = VTKDensityVolume(name: displayName, dimensions: frame.dimensions, spacing: frame.spacing, cell: cell, data: frame.gridData, dataType: frame.dataType)
+          let VTKDensityVolume: VTKVolumetricData = VTKVolumetricData(name: displayName, dimensions: frame.dimensions, spacing: frame.spacing, cell: cell, data: frame.gridData, dataType: frame.dataType)
           iRASPAstructure = iRASPAObject(VTKDensityVolume: VTKDensityVolume)
         case .VASPDensityVolume:
-          let VASPDensityVolume: VASPDensityVolume = VASPDensityVolume(name: displayName)
+          let VASPDensityVolume: VASPVolumetricData = VASPVolumetricData(name: displayName, dimensions: frame.dimensions, spacing: frame.spacing, cell: cell, data: frame.gridData, range: frame.range, average: frame.average, variance: frame.variance, VASPType: frame.VASPType)
           iRASPAstructure = iRASPAObject(VASPDensityVolume: VASPDensityVolume)
+          VASPDensityVolume.drawUnitCell = true
+          for i in 0..<atoms.count
+          {
+            if !atoms[i].fractional
+            {
+              atoms[i].fractional = true
+              let newposition = cell.inverseFullCell * atoms[i].position
+              atoms[i].position = newposition
+            }
+          }
         case .GaussianCubeVolume:
-          let GaussianCubeVolume: GaussianCubeVolume = GaussianCubeVolume(name: displayName)
+          let GaussianCubeVolume: GaussianCubeVolumetricData = GaussianCubeVolumetricData(name: displayName, dimensions: frame.dimensions, spacing: frame.spacing, cell: cell, data: frame.gridData, range: frame.range, average: frame.average, variance: frame.variance)
           iRASPAstructure = iRASPAObject(GaussianCubeVolume: GaussianCubeVolume)
+          GaussianCubeVolume.drawUnitCell = true
+          for i in 0..<atoms.count
+          {
+            if !atoms[i].fractional
+            {
+              atoms[i].fractional = true
+              let newposition = cell.inverseFullCell * atoms[i].position
+              atoms[i].position = newposition
+            }
+          }
         default:
           fatalError()
         }
@@ -324,7 +344,7 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           //setToDDECStyle(structure: iRASPAstructure.structure)
           structureViewer.structureMaterialType = "MOF"
           structureViewer.setRepresentationStyle(style: .default)
-          
+                    
           structureViewer.setRepresentationForceField(forceField: "Default", forceFieldSet: defaultForceField)
           structureViewer.setRepresentationColorScheme(colorSet: defaultColorSet)
           
@@ -342,7 +362,7 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           atomViewer.atomTreeController.tag()
         }
         
-        if let bondViewer = iRASPAstructure.object as? BondViewer
+        if let bondViewer = iRASPAstructure.object as? BondEditor
         {
           bondViewer.bondSetController.tag()
           bondViewer.reComputeBonds()
@@ -519,11 +539,6 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
     structure.citationDOI = "978-0-444-53064-6"
     structure.citationPublicationDate = date2
     structure.citationDatebaseCodes = ""
-  }
-  
-  public var renderCanDrawAdsorptionSurface: Bool
-  {
-    return self.movies.reduce(into: false, {$0 = $0 || $1.renderCanDrawAdsorptionSurface})
   }
   
   public override var description: String

@@ -30,20 +30,21 @@
  *************************************************************************************************************/
 
 import Foundation
-import simd
-import RenderKit
 import SymmetryKit
 import SimulationKit
 
-public protocol AnnotationViewer: AnyObject
-{ 
-  var atomTextType: RKTextType {get set}
-  var atomTextFont: String {get set}
-  var atomTextAlignment: RKTextAlignment {get set}
-  var atomTextStyle: RKTextStyle {get set}
-  var atomTextColor: NSColor {get set}
-  var atomTextScaling: Double {get set}
-  var atomTextOffset: SIMD3<Double> {get set}
-  var atomTextGlowColor: NSColor {get set}
-  var atomTextEffect: RKTextEffect {get set}
+public protocol BondViewer: AtomViewer
+{
+  var bondSetController: SKBondSetController {get}
+}
+
+public protocol BondEditor: AtomEditor
+{
+  var bondSetController: SKBondSetController {get set}
+  func reComputeBonds()
+  func computeBonds(cancelHandler: (()-> Bool), updateHandler: (() -> ())) -> [SKBondNode]
+  func bonds(subset: [SKAsymmetricAtom]) -> [SKBondNode]
+  func computeChangedBondLength(asymmetricBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
+  func computeChangedBondLength(bond: SKBondNode, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
+  func typeBonds()
 }

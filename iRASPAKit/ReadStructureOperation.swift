@@ -61,23 +61,37 @@ class ReadStructureOperation: FKOperation
     switch(url.pathExtension.uppercased())
     {
     case "CIF":
-      parser = try SKCIFParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
+      parser = try SKCIFParser(displayName: displayName, data: data, onlyAsymmetricUnit: onlyAsymmetricUnit)
     case "PDB":
-      parser = try SKPDBParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, onlyAsymmetricUnitProtein: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule)
+      parser = try SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, onlyAsymmetricUnitProtein: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule)
     case "XYZ":
-      parser = try SKXYZParser(displayName: displayName, data: data, windowController: nil)
+      parser = try SKXYZParser(displayName: displayName, data: data)
     case "POSCAR", "CONTCAR":
-      parser = try SKPOSCARParser(displayName: displayName, data: data, windowController: nil)
+      parser = try SKVASPPOSCARParser(displayName: displayName, data: data)
     case "VTK":
-      parser = try SKVTKParser(displayName: displayName, data: data, windowController: nil)
+      parser = try SKVTKParser(displayName: displayName, data: data)
+    case "CUBE":
+      parser = try SKGaussianCubeParser(displayName: displayName, data: data)
     case "":
       if fileName == "POSCAR" || fileName == "CONTCAR"
       {
-        parser = try SKPOSCARParser(displayName: displayName, data: data, windowController: nil)
+        parser = try SKVASPPOSCARParser(displayName: displayName, data: data)
+      }
+      else if fileName == "CHGCAR"
+      {
+        parser = try SKVASPCHGCARParser(displayName: displayName, data: data)
+      }
+      else if fileName == "LOCPOT"
+      {
+        parser = try SKVASPLOCPOTParser(displayName: displayName, data: data)
+      }
+      else if fileName == "ELFCAR"
+      {
+        parser = try SKVASPELFCARParser(displayName: displayName, data: data)
       }
       else if fileName == "XDATCAR"
       {
-        parser = try SKXDATCARParser(displayName: displayName, data: data, windowController: nil)
+        parser = try SKVASPXDATCARParser(displayName: displayName, data: data)
       }
     default:
       throw BinaryCodableError.unsupportedFileType

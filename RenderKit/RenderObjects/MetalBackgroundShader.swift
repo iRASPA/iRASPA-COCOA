@@ -317,7 +317,7 @@ public class MetalBackgroundShader
     
     NSGraphicsContext.current = graphicsContext
     
-    graphicsContext.cgContext.setFillColor(NSColor(white: 1.0, alpha: 0.0).cgColor)
+    graphicsContext.cgContext.setFillColor(NSColor(white: 1.0, alpha: 0.99).cgColor)
     graphicsContext.cgContext.fill(NSMakeRect(0, 0, 1024, 1024))
     
     let image: CGImage = context.makeImage()!

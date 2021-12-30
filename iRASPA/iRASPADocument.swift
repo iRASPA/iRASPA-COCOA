@@ -382,16 +382,15 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
     }
   }
   
-  func readCIFFileFormat(url: URL) throws
+  func readCIFFileFormat(url: URL)
   {
     if let data: Data = try? Data.init(contentsOf: url)
     {
       let displayName: String = url.deletingPathExtension().lastPathComponent
       
-      let cifParser: SKCIFParser = try SKCIFParser(displayName: displayName, data: data, windowController: self.windowControllers.first)
-      
       do
       {
+        let cifParser: SKCIFParser = try SKCIFParser(displayName: displayName, data: data)
         try cifParser.startParsing()
         let scene: Scene = Scene(parser: cifParser.scene)
         let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -430,7 +429,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
       
       do
       {
-        let pdbParser: SKPDBParser = try SKPDBParser(displayName: displayName, data: data, windowController: self.windowControllers.first, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
+        let pdbParser: SKPDBParser = try SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
         try pdbParser.startParsing()
         let scene: Scene = Scene(parser: pdbParser.scene)
         let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -469,7 +468,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
       
       do
       {
-        let xyzParser: SKXYZParser = try SKXYZParser(displayName: displayName, data: data, windowController: self.windowControllers.first)
+        let xyzParser: SKXYZParser = try SKXYZParser(displayName: displayName, data: data)
         try xyzParser.startParsing()
         let scene: Scene = Scene(parser: xyzParser.scene)
         let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -508,9 +507,126 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
       
       do
       {
-        let VASPParser: SKPOSCARParser = try SKPOSCARParser(displayName: displayName, data: data, windowController: self.windowControllers.first)
+        let VASPParser: SKVASPPOSCARParser = try SKVASPPOSCARParser(displayName: displayName, data: data)
         try VASPParser.startParsing()
         let scene: Scene = Scene(parser: VASPParser.scene)
+        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
+        
+        DispatchQueue.main.async {
+          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          
+          if #available(OSX 11.0, *)
+          {
+            self.fileType = UTType.irspdoc.identifier
+          }
+          else
+          {
+            self.fileType = typeirspdoc as String
+          }
+          self.fileURL = nil                   // disassociate document from file; makes document "untitled"
+          self.displayName = displayName
+          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
+        }
+      }
+      catch
+      {
+        LogQueue.shared.error(destination: self.windowControllers.first, message: "Accesing PDB-file failed with error, " + error.localizedDescription)
+        return
+      }
+    }
+  }
+  
+  func readCHGCARFileFormat(url: URL) throws
+  {
+    if let data: Data = try? Data.init(contentsOf: url)
+    {
+      let displayName: String = url.deletingPathExtension().lastPathComponent
+      
+      do
+      {
+        let VASPCHGCARParser: SKVASPCHGCARParser = try SKVASPCHGCARParser(displayName: displayName, data: data)
+        try VASPCHGCARParser.startParsing()
+        let scene: Scene = Scene(parser: VASPCHGCARParser.scene)
+        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
+        
+        DispatchQueue.main.async {
+          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          
+          if #available(OSX 11.0, *)
+          {
+            self.fileType = UTType.irspdoc.identifier
+          }
+          else
+          {
+            self.fileType = typeirspdoc as String
+          }
+          self.fileURL = nil                   // disassociate document from file; makes document "untitled"
+          self.displayName = displayName
+          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
+        }
+      }
+      catch
+      {
+        LogQueue.shared.error(destination: self.windowControllers.first, message: "Accesing PDB-file failed with error, " + error.localizedDescription)
+        return
+      }
+    }
+  }
+  
+  func readLOCPOTFileFormat(url: URL) throws
+  {
+    if let data: Data = try? Data.init(contentsOf: url)
+    {
+      let displayName: String = url.deletingPathExtension().lastPathComponent
+      
+      do
+      {
+        let VASPLOCPOTParser: SKVASPLOCPOTParser = try SKVASPLOCPOTParser(displayName: displayName, data: data)
+        try VASPLOCPOTParser.startParsing()
+        let scene: Scene = Scene(parser: VASPLOCPOTParser.scene)
+        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
+        
+        DispatchQueue.main.async {
+          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          
+          if #available(OSX 11.0, *)
+          {
+            self.fileType = UTType.irspdoc.identifier
+          }
+          else
+          {
+            self.fileType = typeirspdoc as String
+          }
+          self.fileURL = nil                   // disassociate document from file; makes document "untitled"
+          self.displayName = displayName
+          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
+        }
+      }
+      catch
+      {
+        LogQueue.shared.error(destination: self.windowControllers.first, message: "Accesing PDB-file failed with error, " + error.localizedDescription)
+        return
+      }
+    }
+  }
+  
+  func readELFCARFileFormat(url: URL) throws
+  {
+    if let data: Data = try? Data.init(contentsOf: url)
+    {
+      let displayName: String = url.deletingPathExtension().lastPathComponent
+      
+      do
+      {
+        let VASPELFCARParser: SKVASPELFCARParser = try SKVASPELFCARParser(displayName: displayName, data: data)
+        try VASPELFCARParser.startParsing()
+        let scene: Scene = Scene(parser: VASPELFCARParser.scene)
         let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
         let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
@@ -547,7 +663,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
       
       do
       {
-        let VASPParser: SKXDATCARParser = try SKXDATCARParser(displayName: displayName, data: data, windowController: self.windowControllers.first)
+        let VASPParser: SKVASPXDATCARParser = try SKVASPXDATCARParser(displayName: displayName, data: data)
         try VASPParser.startParsing()
         let scene: Scene = Scene(parser: VASPParser.scene)
         let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -589,7 +705,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
       case UTType.iraspa.identifier:
         try readModernProjectFileFormat(url: url)
       case UTType.cif.identifier:
-        try readCIFFileFormat(url: url)
+        readCIFFileFormat(url: url)
       case UTType.pdb.identifier:
         try readPDBFileFormat(url: url)
       case UTType.xyz.identifier:
@@ -601,6 +717,18 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
               url.lastPathComponent.uppercased() == "CONTCAR")
           {
             try readPOSCARFileFormat(url: url)
+          }
+          else if (url.lastPathComponent.uppercased() == "CHGCAR")
+          {
+            try readCHGCARFileFormat(url: url)
+          }
+          else if (url.lastPathComponent.uppercased() == "LOCPOT")
+          {
+            try readLOCPOTFileFormat(url: url)
+          }
+          else if (url.lastPathComponent.uppercased() == "ELFCAR")
+          {
+            try readELFCARFileFormat(url: url)
           }
           else if (url.lastPathComponent.uppercased() == "XDATCAR")
           {
@@ -630,6 +758,10 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
               url.lastPathComponent.uppercased() == "CONTCAR")
           {
             try readPOSCARFileFormat(url: url)
+          }
+          else if (url.lastPathComponent.uppercased() == "CHGCAR")
+          {
+            try readCHGCARFileFormat(url: url)
           }
           else if (url.lastPathComponent.uppercased() == "XDATCAR")
           {

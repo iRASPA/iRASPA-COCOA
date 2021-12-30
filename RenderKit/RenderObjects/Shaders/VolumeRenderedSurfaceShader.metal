@@ -34,7 +34,7 @@
 using namespace metal;
 
 
-struct VolumeRenderedVertexShaderOut
+struct VolumeRenderedSurfaceVertexShaderOut
 {
   float4 position [[position]];
   float4 pos;
@@ -45,14 +45,14 @@ struct VolumeRenderedVertexShaderOut
 };
 
 
-vertex VolumeRenderedVertexShaderOut VolumeRenderedSurfaceVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+vertex VolumeRenderedSurfaceVertexShaderOut VolumeRenderedSurfaceVertexShader(const device InPerVertex *vertices [[buffer(0)]],
                                                 constant FrameUniforms& frameUniforms [[buffer(1)]],
                                                 constant StructureUniforms& structureUniforms [[buffer(2)]],
                                                 constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(3)]],
                                                 constant LightUniforms& lightUniforms [[buffer(4)]],
                                                 uint vid [[vertex_id]])
 {
-  VolumeRenderedVertexShaderOut vert;
+  VolumeRenderedSurfaceVertexShaderOut vert;
   
   float4 pos = structureUniforms.modelMatrix * structureUniforms.boxMatrix * vertices[vid].position;
   vert.pos = pos;
@@ -74,27 +74,13 @@ vertex VolumeRenderedVertexShaderOut VolumeRenderedSurfaceVertexShader(const dev
 }
 
 
-
-
-
-// A very simple colour transfer function
-float4 colour_transfer(float intensity)
-{
-  float3 high = float3(1.0, 1.0, 1.0);
-  float3 low = float3(0.0, 0.0, 0.0);
-  float alpha = (exp(intensity) - 1.0) / (exp(1.0) - 1.0);
-  return float4(intensity * high + (1.0 - intensity) * low, alpha);
-}
-
-
-
-fragment FragOutput VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShaderOut vert [[stage_in]],
+fragment FragOutput VolumeRenderedSurfaceFragmentShader(VolumeRenderedSurfaceVertexShaderOut vert [[stage_in]],
                                            constant FrameUniforms& frameUniforms [[buffer(0)]],
                                            constant StructureUniforms& structureUniforms [[buffer(1)]],
                                            constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
                                            texture3d<float> texture3D [[ texture(0) ]],
-                                           texture1d<float> transferFunction [[ texture(1) ]],
-                                           depth2d<float> depthTexture [[ texture(2) ]],
+                                           depth2d<float> depthTexture [[ texture(1) ]],
+                                           texture1d_array<float,  access::sample> transferFunction [[ texture(2) ]],
                                            sampler textureSampler [[ sampler(0) ]],
                                            sampler transferFunctionSampler [[ sampler(1) ]] ,
                                            uint sampleId [[sample_id]])
@@ -107,13 +93,13 @@ fragment FragOutput VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShad
     
   // Normalize the incoming N, L and V vectors
   float3 direction = normalize(vert.pos.xyz - frameUniforms.cameraPosition.xyz);
-  float4 dir = float4(direction.x,direction.y,direction.z,0.0);
+  float4 dir = float4(direction.x,direction.y,direction.z,0.0f);
   float3 ray_direction = (structureUniforms.inverseBoxMatrix * structureUniforms.inverseModelMatrix * dir).xyz;
   
   float3 ray_origin = vert.UV;
 
   Ray casting_ray{ray_origin, ray_direction};
-  AABB bounding_box{float3(1.0,1.0,1.0), float3(0.0,0.0,0.0)};
+  AABB bounding_box{float3(1.0f,1.0f,1.0f), float3(0.0f,0.0f,0.0f)};
   float2 t = rayBoxIntersection(casting_ray, bounding_box);
 
   float3 ray_start = ray_origin + ray_direction * t.x;
@@ -123,61 +109,68 @@ fragment FragOutput VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShad
   float ray_length = length(ray);
   float3 step_vector = step_length * ray / ray_length;
 
-  float4 colour = float4(0.0,0.0,0.0,0.0);
+  float4 colour = float4(0.0f,0.0f,0.0f,0.0f);
   float3 position = ray_start;
   
   float depth = depthTexture.read(uint2(vert.position.xy));
-  float newDepth = 1.0;
+  float newDepth = 1.0f;
   float4x4 m = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * structureUniforms.boxMatrix;
   
-  for (int i=0; i < numSamples && ray_length > 0 && colour.a < 1.0; i++)
+  float4 scaleToEncompassing = isosurfaceUniforms.encompassingScaleFactor;
+    
+  for (int i=0; i < numSamples && ray_length > 0 && colour.a < 1.0f; i++)
   {
-    float4 values = texture3D.sample(textureSampler, numberOfReplicas * position);
-    float3 normal = normalize((structureUniforms.modelMatrix * transpose(structureUniforms.inverseBoxMatrix) * float4(values.gba,0.0)).rgb);
+    float4 values = texture3D.sample(textureSampler, numberOfReplicas * scaleToEncompassing.xyz * position);
+    float3 normal = normalize((structureUniforms.modelMatrix * transpose(structureUniforms.inverseBoxMatrix) * float4(values.gba,0.0f)).rgb);
 
-    float4 c = transferFunction.sample(transferFunctionSampler,values.r);
+    float4 c = transferFunction.sample(transferFunctionSampler,values.r,isosurfaceUniforms.transferFunctionIndex);
+
+    // allow to "zoom in" using the transparency
+    c.a = isosurfaceUniforms.diffuseFrontSide.w * smoothstep(isosurfaceUniforms.transparencyThreshold, 1.0, c.a);
 
     float3 R = reflect(-direction, normal);
-    ambient = float3(0.1,0.1,0.1);
+    ambient = float3(0.1f,0.1f,0.1f);
     float dotProduct = dot(normal, direction);
 
-    if(dotProduct < 0)
+    if(dotProduct < 0.0f)
     {
       ambient = isosurfaceUniforms.ambientBackSide.rgb;
-      diffuse = float3(max(abs(dotProduct),0.0)) * isosurfaceUniforms.diffuseBackSide.rgb;
-      specular = float3(pow(max(dot(R, direction), 0.0), isosurfaceUniforms.shininessBackSide)) * isosurfaceUniforms.specularBackSide.rgb;
+      diffuse = float3(max(abs(dotProduct),0.0f)) * isosurfaceUniforms.diffuseBackSide.rgb;
+      specular = float3(pow(max(dot(R, direction), 0.0f), isosurfaceUniforms.shininessBackSide)) * isosurfaceUniforms.specularBackSide.rgb;
       float3 totalColor = (ambient+diffuse+specular).rgb;
 
       if (isosurfaceUniforms.backHDR)
       {
-        totalColor = 1.0 - exp2(-totalColor * isosurfaceUniforms.backHDRExposure);
+        totalColor = 1.0f - exp2(-totalColor * isosurfaceUniforms.backHDRExposure);
       }
 
       // Alpha-blending
-      colour.rgb = c.a * totalColor * c.rgb + (1 - c.a) * colour.a * colour.rgb;
-      colour.a = c.a + (1 - c.a) * colour.a;
+      c.a = 1.0 - pow(1.0f - c.a, step_length*2000.0f);
+      colour.rgb += (1.0f - colour.a) * c.a * c.rgb * totalColor.rgb;
+      colour.a += (1.0f - colour.a) * c.a;
     }
     else
     {
       ambient = isosurfaceUniforms.ambientFrontSide.rgb;
-      diffuse = float3(max(abs(dotProduct),0.0)) * isosurfaceUniforms.diffuseFrontSide.rgb;
-      specular = float3(pow(max(dot(R, direction), 0.0), isosurfaceUniforms.shininessFrontSide)) * isosurfaceUniforms.specularFrontSide.rgb;
+      diffuse = float3(max(abs(dotProduct),0.0f)) * isosurfaceUniforms.diffuseFrontSide.rgb;
+      specular = float3(pow(max(dot(R, direction), 0.0f), isosurfaceUniforms.shininessFrontSide)) * isosurfaceUniforms.specularFrontSide.rgb;
       float3 totalColor = (ambient+diffuse+specular).rgb;
 
       if (isosurfaceUniforms.frontHDR)
       {
-        totalColor = 1.0 - exp2(-totalColor * isosurfaceUniforms.frontHDRExposure);
+        totalColor = 1.0f - exp2(-totalColor * isosurfaceUniforms.frontHDRExposure);
       }
 
       // Alpha-blending
-      colour.rgb = c.a * totalColor * c.rgb + (1 - c.a) * colour.a * colour.rgb;
-      colour.a = c.a + (1 - c.a) * colour.a;
+      c.a = 1.0 - pow(1.0f - c.a, step_length*2000.0f);
+      colour.rgb += (1.0f - colour.a) * c.a * c.rgb * totalColor.rgb;
+      colour.a += (1.0f - colour.a) * c.a;
     }
 
     position = position + step_vector;
     ray_length -= step_length;
     
-    float4 clipPosition = m * float4(position,1.0);
+    float4 clipPosition = m * float4(position,1.0f);
     newDepth = (clipPosition.z / clipPosition.w);
     if(newDepth>depth)
     {
@@ -185,10 +178,9 @@ fragment FragOutput VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShad
     }
   }
   
-  if(colour.a<0.9)
+  if(colour.a<0.5)
   {
     newDepth = depth;
-    discard_fragment();
   }
   
   float3 hsv = rgb2hsv(colour.xyz);
@@ -197,7 +189,7 @@ fragment FragOutput VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShad
   hsv.z = hsv.z * isosurfaceUniforms.value;
   
   output.depth = newDepth;
-  output.albedo = float4(hsv2rgb(hsv),1.0);
+  output.albedo = float4(hsv2rgb(hsv) * colour.a, colour.a);
   
   return output;
 }

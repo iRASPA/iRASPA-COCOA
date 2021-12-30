@@ -35,7 +35,7 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class CrystalPolygonalPrismPrimitive: Primitive, UnitCellViewer, RKRenderCrystalPolygonalPrismObjectsSource, RKRenderUnitCellSource, Cloning
+public final class CrystalPolygonalPrismPrimitive: Primitive, UnitCellEditor, RKRenderCrystalPolygonalPrismObjectsSource, RKRenderUnitCellSource, Cloning
 {
   private static var classVersionNumber: Int = 2
   

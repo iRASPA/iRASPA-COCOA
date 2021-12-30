@@ -35,7 +35,7 @@ import RenderKit
 import SymmetryKit
 import SimulationKit
 
-public protocol AtomStructureViewer: AnyObject
+public protocol AtomStructureEditor: AnyObject
 {
   func recheckRepresentationStyle()
   

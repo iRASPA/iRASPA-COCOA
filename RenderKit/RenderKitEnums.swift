@@ -43,7 +43,29 @@ public enum RKEnergySurfaceType: Int
 
 public enum RKPredefinedVolumeRenderingTransferFunction: Int
 {
-  case `default` = 0
+  case RASPA_PES = 0
+  case CoolWarmDiverging = 1
+  case Xray = 2
+  case Gray = 3
+  case Rainbow = 4
+  case Turbo = 5
+  case Gnuplot = 6
+  case Spectral = 7
+  case Cool = 8
+  case Viridis = 9
+  case Plasma = 10
+  case Inferno = 11
+  case Magma = 12
+  case Cividis = 13
+  case Spring = 14
+  case Summer = 15
+  case Autumn = 16
+  case Winter = 17
+  case Reds = 18
+  case Blues = 19
+  case Greens = 20
+  case Purples = 21
+  case Oranges = 22
 }
 
 public enum RKBackgroundType: Int

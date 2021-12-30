@@ -125,7 +125,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   func numberOfRows(in tableView: NSTableView) -> Int
   {
-    if let bondViewer: BondViewer =  (self.representedObject as? iRASPAObject)?.object as? BondViewer
+    if let bondViewer: BondEditor =  (self.representedObject as? iRASPAObject)?.object as? BondEditor
     {
       return bondViewer.bondSetController.arrangedObjects.count
     }
@@ -138,7 +138,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     
     if let proxyProject: ProjectTreeNode = self.proxyProject,
        let tableColumn = tableColumn,
-       let bondViewer: BondViewer = (self.representedObject as? iRASPAObject)?.object as? BondViewer
+       let bondViewer: BondEditor = (self.representedObject as? iRASPAObject)?.object as? BondEditor
     {
       let asymmetricBond: SKAsymmetricBond = bondViewer.bondSetController.arrangedObjects[row]
       
@@ -270,7 +270,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer,
+       let bondViewer: BondEditor = object as? BondEditor,
        let superView = sender.superview,
        let row: Int = self.bondTableView?.row(for: superView), row >= 0
     {
@@ -296,7 +296,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer,
+       let bondViewer: BondEditor = object as? BondEditor,
        let superView = sender.superview,
        let row: Int = self.bondTableView?.row(for: superView), row >= 0
     {
@@ -322,7 +322,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer,
+       let bondViewer: BondEditor = object as? BondEditor,
        let superView = sender.superview,
        let row: Int = self.bondTableView?.row(for: superView), row >= 0,
        let bondType = SKAsymmetricBond .SKBondType(rawValue: sender.indexOfSelectedItem)
@@ -339,7 +339,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let atomViewer: AtomViewer = object as? AtomViewer
+       let atomViewer: AtomEditor = object as? AtomEditor
     {
       project.undoManager.registerUndo(withTarget: self, handler: {
         $0.updatePositions(object: object, atoms: atoms, newpositions: oldpositions, oldpositions: newpositions, newbonds: oldbonds, newBondSelection: oldBondSelection, oldbonds: newbonds, oldBondSelection: newBondSelection)
@@ -354,7 +354,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       }
       atomViewer.atomTreeController.tag()
       
-      if let bondViewer: BondViewer = object as? BondViewer
+      if let bondViewer: BondEditor = object as? BondEditor
       {
         bondViewer.bondSetController.replaceBonds(atoms: atoms, bonds: newbonds)
         bondViewer.bondSetController.selectedObjects = newBondSelection
@@ -376,7 +376,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   func setBondAtomPositions(atom1: SKAsymmetricAtom, pos1: SIMD3<Double>, atom2: SKAsymmetricAtom, pos2: SIMD3<Double>)
   {
     if let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer
+       let bondViewer: BondEditor = object as? BondEditor
     {
       let oldPos1: SIMD3<Double> = atom1.position
       let oldPos2: SIMD3<Double> = atom2.position
@@ -404,7 +404,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer,
+       let bondViewer: BondEditor = object as? BondEditor,
        let superView = sender.superview,
        let row: Int = self.bondTableView?.row(for: superView), row >= 0,
        let nf: NumberFormatter = sender.formatter as?  NumberFormatter,
@@ -440,7 +440,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer,
+       let bondViewer: BondEditor = object as? BondEditor,
        let superView = sender.superview,
        let row: Int = self.bondTableView?.row(for: superView), row >= 0
     {
@@ -512,7 +512,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
        let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
        let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer
+       let bondViewer: BondEditor = object as? BondEditor
     {
       proxyProject.representedObject.isEdited = true
       document.updateChangeCount(.changeDone)
@@ -536,7 +536,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func RecomputeBonds(_ sender: NSMenuItem)
   {
     if let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer
+       let bondViewer: BondEditor = object as? BondEditor
     {
       let oldBonds: SKBondSetController = bondViewer.bondSetController
       
@@ -549,7 +549,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func TypeBonds(_ sender: NSMenuItem)
   {
     if let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer
+       let bondViewer: BondEditor = object as? BondEditor
     {
       bondViewer.typeBonds()
     }
@@ -559,7 +559,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer,
+       let bondViewer: BondEditor = object as? BondEditor,
        let row: Int = self.bondTableView?.row(for: sender)
     {
       let toggledState: Bool = sender.state == NSControl.StateValue.on
@@ -606,7 +606,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer
+       let bondViewer: BondEditor = object as? BondEditor
     {
       let indexSet: IndexSet = bondViewer.bondSetController.selectedObjects
       let selectedBonds: [SKAsymmetricBond] = bondViewer.bondSetController.arrangedObjects[indexSet]
@@ -618,7 +618,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   func deleteSelectedBondsFor(object: Object, bonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>], from indexSet: IndexSet)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let bondViewer: BondViewer = object as? BondViewer
+       let bondViewer: BondEditor = object as? BondEditor
     {
       project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedBondsIn(object: object, bonds: bonds, at: indexSet)})
       
@@ -652,7 +652,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   func insertSelectedBondsIn(object: Object, bonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>], at indexSet: IndexSet)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let bondViewer: BondViewer = object as? BondViewer
+       let bondViewer: BondEditor = object as? BondEditor
     {
       project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedBondsFor(object: object, bonds: bonds, from: indexSet)})
       
@@ -688,7 +688,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   func programmaticallySetSelection()
   {
-    if let bondViewer: BondViewer = (self.representedObject as? iRASPAObject)?.object as? BondViewer
+    if let bondViewer: BondEditor = (self.representedObject as? iRASPAObject)?.object as? BondEditor
     {
       // avoid sending notification due to selection change
       let observeNotificationsStored: Bool = self.observeNotifications
@@ -705,7 +705,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     var selectedBonds: IndexSet = proposedSelectionIndexes
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let bondViewer: BondViewer = (self.representedObject as? iRASPAObject)?.object as? BondViewer
+       let bondViewer: BondEditor = (self.representedObject as? iRASPAObject)?.object as? BondEditor
     {
       // add the bonds due the atom selection
       let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(bondViewer.atomTreeController.selectedTreeNodes.map{$0.representedObject})
@@ -726,7 +726,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   func setCurrentSelection(object: Object, atomSelection: Set<SKAtomTreeNode>, previousAtomSelection: Set<SKAtomTreeNode>, bondSelection: IndexSet, previousBondSelection: IndexSet)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-      let bondViewer: BondViewer = object as? BondViewer
+      let bondViewer: BondEditor = object as? BondEditor
     {
       project.undoManager.setActionName(NSLocalizedString("Change Bond Selection", comment: ""))
       
@@ -751,7 +751,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
        let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let bondViewer: BondViewer = object as? BondViewer,
+       let bondViewer: BondEditor = object as? BondEditor,
        let selectedBonds: IndexSet = self.bondTableView?.selectedRowIndexes
     {
       if (self.observeNotifications && !(project.undoManager.isUndoing || project.undoManager.isRedoing))

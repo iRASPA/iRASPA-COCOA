@@ -34,21 +34,25 @@ import simd
 import RenderKit
 
 
-public protocol AdsorptionSurfaceViewer: AnyObject
+public protocol IsosurfaceViewer: AnyObject
 {
-  var renderCanDrawAdsorptionSurface: Bool {get}
   var drawAdsorptionSurface: Bool {get set}
-  var adsorptionSurfaceSize: Int {get set}
+  var encompassingPowerOfTwoCubicGridSize: Int {get}
+  var range: (Double, Double) {get}
+  var dimensions: SIMD3<Int32>  {get}
+  var spacing: SIMD3<Double> {get}
+  var data: Data {get}
+  var average: Double {get}
+  var variance: Double {get}
 
   var adsorptionSurfaceOpacity: Double {get set}
+  var adsorptionTransparencyThreshold: Double {get set}
   var adsorptionSurfaceIsoValue: Double {get set}
   var adsorptionSurfaceProbeMolecule: Structure.ProbeMolecule {get set}
   
   var adsorptionSurfaceRenderingMethod: RKEnergySurfaceType {get set}
   var adsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction {get set}
   var adsorptionVolumeStepLength: Double {get set}
-  
-  var minimumGridEnergyValue: Float? {get set}
   
   var adsorptionSurfaceHue: Double {get set}
   var adsorptionSurfaceSaturation: Double {get set}
@@ -73,4 +77,9 @@ public protocol AdsorptionSurfaceViewer: AnyObject
   var adsorptionSurfaceBackSideAmbientColor: NSColor {get set}
   var adsorptionSurfaceBackSideDiffuseColor: NSColor {get set}
   var adsorptionSurfaceBackSideSpecularColor: NSColor {get set}
+}
+
+public protocol IsosurfaceEditor: IsosurfaceViewer
+{
+  var encompassingPowerOfTwoCubicGridSize: Int {get set}
 }

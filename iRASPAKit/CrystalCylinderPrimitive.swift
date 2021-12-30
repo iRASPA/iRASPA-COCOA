@@ -35,7 +35,7 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class CrystalCylinderPrimitive: Primitive, UnitCellViewer, RKRenderCrystalCylinderObjectsSource, RKRenderUnitCellSource, Cloning
+public final class CrystalCylinderPrimitive: Primitive, UnitCellEditor, RKRenderCrystalCylinderObjectsSource, RKRenderUnitCellSource, Cloning
 {
   private static var classVersionNumber: Int = 2
   

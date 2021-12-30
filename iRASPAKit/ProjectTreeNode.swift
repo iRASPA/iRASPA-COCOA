@@ -276,7 +276,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, pdb data: Data, preview: Bool)
   {
-    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true, preview: preview) else {return nil}
+    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true, preview: preview) else {return nil}
     try? pdbParser.startParsing()
     let scene: Scene = Scene(parser: pdbParser.scene)
     let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
@@ -287,7 +287,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, cif data: Data, preview: Bool)
   {
-    guard let cifParser: SKCIFParser = try? SKCIFParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let cifParser: SKCIFParser = try? SKCIFParser(displayName: displayName, data: data) else {return nil}
     try? cifParser.startParsing()
     let scene: Scene = Scene(parser: cifParser.scene)
     let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
@@ -298,7 +298,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, xyz data: Data, preview: Bool)
   {
-    guard let xyzParser: SKXYZParser = try? SKXYZParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let xyzParser: SKXYZParser = try? SKXYZParser(displayName: displayName, data: data) else {return nil}
     try? xyzParser.startParsing()
     let scene: Scene = Scene(parser: xyzParser.scene)
     let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -309,7 +309,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, poscar data: Data, preview: Bool)
   {
-    guard let poscarParser: SKXDATCARParser = try? SKXDATCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let poscarParser: SKVASPXDATCARParser = try? SKVASPXDATCARParser(displayName: displayName, data: data) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -320,7 +320,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, xdatcar data: Data, preview: Bool)
   {
-    guard let poscarParser: SKXDATCARParser = try? SKXDATCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let poscarParser: SKVASPXDATCARParser = try? SKVASPXDATCARParser(displayName: displayName, data: data) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])

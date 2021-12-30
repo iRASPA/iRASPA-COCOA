@@ -75,8 +75,8 @@ vertex IsosurfaceVertexShaderOut IsosurfaceVertexShader(const device InPerVertex
 
 
 fragment float4 IsosurfaceFragmentShader(IsosurfaceVertexShaderOut vert [[stage_in]],
-                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                         constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                         constant StructureUniforms& structureUniforms [[buffer(1)]],
                                          constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
                                          bool frontfacing [[ front_facing ]])
 {

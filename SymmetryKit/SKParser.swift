@@ -32,19 +32,6 @@
 import Foundation
 import simd
 
-public struct SKParserError
-{
-  public static var domain = "nl.darkwing.iRASPA"
-  
-  public enum code: Int
-  {
-    case failedDecoding
-  }
-  
-  public static let failedDecoding: NSError = NSError.init(domain: SKParserError.domain, code: SKParserError.code.failedDecoding.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Failed UTF-8 and ASCII decoding", bundle: Bundle(for: SKParser.self), comment: "")])
-  
-}
-
 
 public class SKParser: NSObject
 {
@@ -57,45 +44,5 @@ public class SKParser: NSObject
     
   }
   
-  /*
-  var firstFrame: [(fractionalPosition: double3, type: Int)]
-  {
-    if let frame: Dictionary<String, Any> = scene.first?.first
-    {
-      let spaceGroupHallNumber: Int = (frame["spaceGroupHallNumber"] as? Int) ?? 1
-      let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: spaceGroupHallNumber)
-      
-      var value: [(fractionalPosition: double3, type: Int)] = []
-      if let atoms: [Dictionary<String,Any>] = frame["atoms"] as? [Dictionary<String,Any>]
-      {
-        for atom in atoms
-        {
-          if let position: double3 = atom["position"] as? double3,
-             let atomicNumber: Int = atom["atomicNumber"] as? Int
-          {
-            let images: [double3] = spaceGroup.listOfSymmetricPositions(position)
-            
-            for image in images
-            {
-              value.append((fractionalPosition: image, type: atomicNumber))
-            }
-            
-          }
-        }
-      }
-      
-      return value
-    }
-    return []
-  }
-  
-  var firstFrameUnitCell: double3x3
-  {
-    if let frame: Dictionary<String, Any> = scene.first?.first,
-       let cell = frame["cell"] as? (a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double)
-    {
-       return SKSymmetryCell(a: cell.a, b: cell.b, c: cell.c, alpha: cell.alpha*180.0/Double.pi, beta: cell.beta*180.0/Double.pi, gamma: cell.gamma*180.0/Double.pi).unitCell
-    }
-    return double3x3()
-  }*/
+  let BohrToAngstrom: Double = 0.529177249
 }

@@ -458,6 +458,10 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         {
           return true
         }
+        if type.conforms(to: .cube)
+        {
+          return true
+        }
       }
     }
     else
@@ -481,12 +485,19 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         {
           return true
         }
+        if UTTypeConformsTo(type as CFString, typeGAUSSIANCUBE)
+        {
+          return true
+        }
       }
     }
     
     if url.pathExtension.isEmpty &&
       (url.lastPathComponent.uppercased() == "POSCAR" ||
        url.lastPathComponent.uppercased() == "CONTCAR" ||
+       url.lastPathComponent.uppercased() == "CHGCAR" ||
+       url.lastPathComponent.uppercased() == "LOCPOT" ||
+       url.lastPathComponent.uppercased() == "ELFCAR" ||
        url.lastPathComponent.uppercased() == "XDATCAR")
     {
       return true
@@ -1826,7 +1837,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
                     
           do
           {
-            let cifParser: SKCIFParser = try SKCIFParser(displayName: displayName, data: data, windowController: nil)
+            let cifParser: SKCIFParser = try SKCIFParser(displayName: displayName, data: data)
             try cifParser.startParsing()
             let scene: Scene = Scene(parser: cifParser.scene)
             let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -1875,7 +1886,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
               }
             }
             
-            node.representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? BondViewer}).forEach{$0.reComputeBonds()}
+            node.representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? BondEditor}).forEach{$0.reComputeBonds()}
           }
         }
       }
@@ -1901,7 +1912,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       for node in selectedObjects
       {
           if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode,
-             let structure: StructuralPropertyViewer = projectStructure.allIRASPAStructures.first as? StructuralPropertyViewer
+             let structure: StructuralPropertyEditor = projectStructure.allIRASPAStructures.first as? StructuralPropertyEditor
           {
             let VSA: NSNumber = NSNumber(value: structure.structureVolumetricNitrogenSurfaceArea)
             let GSA: NSNumber = NSNumber(value: structure.structureGravimetricNitrogenSurfaceArea)
@@ -2968,10 +2979,12 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
          let camera: RKCamera = projectStructureNode.renderCamera,
          proxyProject.thumbnail == nil
       {
-        let thumbnailSize: NSSize = NSSize(width: 96, height: 84)
+        //try? proxyProject.thumbnail?.write(to: URL(fileURLWithPath: "/Users/dubbelda/Downloads/12345.png"))
+        //let thumbnailSize: NSSize = NSSize(width: 96, height: 84)
+        let thumbnailSize: NSSize = NSSize(width: 160, height: 140)
         let camera: RKCamera = RKCamera(camera: camera)
         camera.initialized = true
-        camera.resetPercentage = 0.7
+        camera.resetPercentage = 0.85
         camera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
         camera.resetCameraDistance()
         camera.updateCameraForWindowResize(width: Double(thumbnailSize.width), height: Double(thumbnailSize.height))

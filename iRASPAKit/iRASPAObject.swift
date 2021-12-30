@@ -146,28 +146,28 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
     super.init()
   }
   
-  public init(RASPADensityVolume: RASPADensityVolume)
+  public init(RASPADensityVolume: RASPAVolumetricData)
   {
     self.type = .RASPADensityVolume
     self.object = RASPADensityVolume
     super.init()
   }
   
-  public init(VTKDensityVolume: VTKDensityVolume)
+  public init(VTKDensityVolume: VTKVolumetricData)
   {
     self.type = .VTKDensityVolume
     self.object = VTKDensityVolume
     super.init()
   }
   
-  public init(VASPDensityVolume: VASPDensityVolume)
+  public init(VASPDensityVolume: VASPVolumetricData)
   {
     self.type = .VASPDensityVolume
     self.object = VASPDensityVolume
     super.init()
   }
   
-  public init(GaussianCubeVolume: GaussianCubeVolume)
+  public init(GaussianCubeVolume: GaussianCubeVolumetricData)
   {
     self.type = .GaussianCubeVolume
     self.object = GaussianCubeVolume
@@ -250,7 +250,7 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
   
   private convenience init?(displayName: String, poscar data: Data)
   {
-    guard let poscarParser: SKPOSCARParser = try? SKPOSCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let poscarParser: SKVASPPOSCARParser = try? SKVASPPOSCARParser(displayName: displayName, data: data) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}
@@ -259,7 +259,7 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
   
   private convenience init?(displayName: String, xdatcar data: Data)
   {
-    guard let poscarParser: SKXDATCARParser = try? SKXDATCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let poscarParser: SKVASPXDATCARParser = try? SKVASPXDATCARParser(displayName: displayName, data: data) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}
@@ -268,7 +268,7 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
   
   private convenience init?(displayName: String, cif data: Data)
   {
-    guard let cifParser: SKCIFParser = try? SKCIFParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let cifParser: SKCIFParser = try? SKCIFParser(displayName: displayName, data: data) else {return nil}
     try? cifParser.startParsing()
     let scene: Scene = Scene(parser: cifParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}
@@ -277,7 +277,7 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
   
   private convenience init?(displayName: String, pdb data: Data)
   {
-    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true) else {return nil}
+    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true) else {return nil}
     try? pdbParser.startParsing()
     let scene: Scene = Scene(parser: pdbParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}
@@ -286,7 +286,7 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
   
   private convenience init?(displayName: String, xyz data: Data)
   {
-    guard let xyzParser: SKXYZParser = try? SKXYZParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let xyzParser: SKXYZParser = try? SKXYZParser(displayName: displayName, data: data) else {return nil}
     try? xyzParser.startParsing()
     let scene: Scene = Scene(parser: xyzParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}
@@ -395,13 +395,13 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
     case .polygonalPrismPrimitive:
       self.object = try decoder.decode(CylinderPrimitive.self)
     case .RASPADensityVolume:
-      self.object = try decoder.decode(RASPADensityVolume.self)
+      self.object = try decoder.decode(RASPAVolumetricData.self)
     case .VTKDensityVolume:
-      self.object = try decoder.decode(VTKDensityVolume.self)
+      self.object = try decoder.decode(VTKVolumetricData.self)
     case .VASPDensityVolume:
-      self.object = try decoder.decode(VASPDensityVolume.self)
+      self.object = try decoder.decode(VASPVolumetricData.self)
     case .GaussianCubeVolume:
-      self.object = try decoder.decode(GaussianCubeVolume.self)
+      self.object = try decoder.decode(GaussianCubeVolumetricData.self)
     default:
       throw BinaryDecodableError.invalidArchiveVersion
     }
@@ -423,13 +423,6 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
   {
     return false;
     //return structure.hasSelectedObjects
-  }
-  
-  public var renderCanDrawAdsorptionSurface: Bool
-  {
-    // FIX
-    return true;
-    //return structure.renderCanDrawAdsorptionSurface
   }
   
   // MARK: -

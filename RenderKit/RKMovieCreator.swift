@@ -101,28 +101,12 @@ public class RKMovieCreator: NSObject
   
   public func beginEncoding()
   {
-    let fileCoordinator: NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
-    var error: NSError?
-    fileCoordinator.coordinate(writingItemAt: self.url, options: NSFileCoordinator.WritingOptions.forMerging, error: &error, byAccessor:
-      {
-        writeUrl in
-        
-        // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
-        do
-        {
-          try FileManager.default.removeItem(at: writeUrl)
-        }
-        catch _ as NSError
-        {
-        }
-        
-        self.assetWriter?.startWriting()
-        self.assetWriter?.startSession(atSourceTime: CMTime.zero)
-        return
-    })
+    // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
+    try? FileManager.default.removeItem(at: self.url)
+   
+    self.assetWriter?.startWriting()
+    self.assetWriter?.startSession(atSourceTime: CMTime.zero)
 
-    
-    
     pixelBufferPool = assetInputAdaptor.pixelBufferPool
     
     let cvReturn: CVReturn = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, pixelBufferPool!, &pixelBuffer)
@@ -137,32 +121,26 @@ public class RKMovieCreator: NSObject
   
   public func addFrameToVideo()
   {
-
-    let cvReturn: CVReturn = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, pixelBufferPool!, &pixelBuffer)
-    guard(cvReturn == kCVReturnSuccess) else
-    {
-      LogQueue.shared.error(destination: provider?.view.window?.windowController, message: "Movie failed (could not create a pixelBuffer)")
-      return
-    }
-
-    renderer?.makeCVPicture(pixelBuffer!)
-    
-    // Wait until write is ready
-    if (!assetInput.isReadyForMoreMediaData)
-    {
-      isWaitingForInputReady = true
-      _ = writeSemaphore.wait(timeout: DispatchTime.distantFuture)
-    }
-    let fileCoordinator: NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
-    var error: NSError?
-    fileCoordinator.coordinate(writingItemAt: self.url, options: NSFileCoordinator.WritingOptions.forMerging, error: &error, byAccessor:
+    autoreleasepool {
+      let cvReturn: CVReturn = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, pixelBufferPool!, &pixelBuffer)
+      guard(cvReturn == kCVReturnSuccess) else
       {
-        writeUrl in
-        self.assetInputAdaptor.append(self.pixelBuffer!, withPresentationTime: CMTimeMake(value: self.frameNumber, timescale: self.framesPerSecond))
-        self.frameNumber = self.frameNumber + 1
+        LogQueue.shared.error(destination: provider?.view.window?.windowController, message: "Movie failed (could not create a pixelBuffer)")
         return
-    })
-
+      }
+  
+      renderer?.makeCVPicture(pixelBuffer!)
+      
+      // Wait until write is ready
+      if (!assetInput.isReadyForMoreMediaData)
+      {
+        isWaitingForInputReady = true
+        _ = writeSemaphore.wait(timeout: DispatchTime.distantFuture)
+      }
+     
+      self.assetInputAdaptor.append(self.pixelBuffer!, withPresentationTime: CMTimeMake(value: self.frameNumber, timescale: self.framesPerSecond))
+      self.frameNumber = self.frameNumber + 1
+    }
   }
   
   public func endEncoding()

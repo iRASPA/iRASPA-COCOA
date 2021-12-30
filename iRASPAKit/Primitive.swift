@@ -35,7 +35,7 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public class Primitive: Object, AtomViewer, PrimitiveViewer
+public class Primitive: Object, AtomEditor, PrimitiveEditor
 {
   private static var classVersionNumber: Int = 2
   

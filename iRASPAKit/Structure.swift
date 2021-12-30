@@ -47,9 +47,9 @@ fileprivate func ==~ (left: Double, right: Double) -> Bool
 
 public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
-public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, AtomStructureViewer, BondStructureViewer, AnnotationViewer, InfoViewer, StructuralPropertyViewer
+public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, AtomStructureEditor, BondStructureEditor, AnnotationEditor, InfoEditor, StructuralPropertyEditor
 {
-  private static var classVersionNumber: Int = 9
+  private static var classVersionNumber: Int = 10
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   public var bondSetController: SKBondSetController = SKBondSetController()
@@ -226,12 +226,13 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var drawAdsorptionSurface: Bool = false
   
   public var adsorptionSurfaceRenderingMethod: RKEnergySurfaceType = RKEnergySurfaceType.isoSurface // NEW
-  public var adsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction = RKPredefinedVolumeRenderingTransferFunction.default
+  public var adsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction = RKPredefinedVolumeRenderingTransferFunction.RASPA_PES
   public var adsorptionVolumeStepLength: Double = 0.0005
   
   public var adsorptionSurfaceOpacity: Double = 1.0
+  public var adsorptionTransparencyThreshold: Double = 0.0
   public var adsorptionSurfaceIsoValue: Double = 0.0
-  public var adsorptionSurfaceSize: Int = 128
+  public var encompassingPowerOfTwoCubicGridSize: Int = 7
   public var adsorptionSurfaceProbeParameters: SIMD2<Double>
   {
     switch(adsorptionSurfaceProbeMolecule)
@@ -287,6 +288,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   
   public var atomUnitCellPositions: [SIMD3<Double>] {return []}
   public var minimumGridEnergyValue: Float? = nil
+  public var maximumGridEnergyValue: Float? = nil
   
   public var frameworkProbeParameters: SIMD2<Double>
   {
@@ -320,7 +322,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   {
     didSet
     {
-      self.structureGravimetricNitrogenSurfaceArea = structureNitrogenSurfaceArea * SKConstants.AvogadroConstantPerAngstromSquared / self.structureMass
+      self.structureGravimetricNitrogenSurfaceArea = structureNitrogenSurfaceArea * SKConstant.AvogadroConstantPerAngstromSquared / self.structureMass
       self.structureVolumetricNitrogenSurfaceArea = structureNitrogenSurfaceArea * 1e4 / self.cell.volume
     }
   }
@@ -507,14 +509,9 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   
   public var frameworkProbeMolecule: ProbeMolecule = .nitrogen
 
-  
-  
   public var canRemoveSymmetry: Bool
   {
-    get
-    {
-      return false
-    }
+    return false
   }
   
   // StructureViewer protocol
@@ -787,9 +784,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
 
     self.drawAdsorptionSurface = copy.drawAdsorptionSurface
     self.adsorptionSurfaceOpacity = copy.adsorptionSurfaceOpacity
+    self.adsorptionTransparencyThreshold = copy.adsorptionTransparencyThreshold
     self.adsorptionSurfaceIsoValue = copy.adsorptionSurfaceIsoValue
     
-    self.adsorptionSurfaceSize = copy.adsorptionSurfaceSize
+    self.encompassingPowerOfTwoCubicGridSize = copy.encompassingPowerOfTwoCubicGridSize
     self.adsorptionSurfaceNumberOfTriangles = copy.adsorptionSurfaceNumberOfTriangles
     
     self.adsorptionSurfaceProbeMolecule = copy.adsorptionSurfaceProbeMolecule
@@ -869,7 +867,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   }
   
   public required init(from object: Object)
-  
   {
     super.init(from: object)
   
@@ -890,7 +887,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       }
     }
     
-    if let atomAppearanceViewer: AtomStructureViewer = object as? AtomStructureViewer
+    if let atomAppearanceViewer: AtomStructureEditor = object as? AtomStructureEditor
     {
       self.atomHue = atomAppearanceViewer.atomHue
       self.atomSaturation = atomAppearanceViewer.atomSaturation
@@ -917,7 +914,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.atomSelectionScaling = atomAppearanceViewer.atomSelectionScaling
     }
     
-    if let bondAppearanceViewer: BondStructureViewer = object as? BondStructureViewer
+    if let bondAppearanceViewer: BondStructureEditor = object as? BondStructureEditor
     {
       self.drawBonds = bondAppearanceViewer.drawBonds
       self.bondScaleFactor = bondAppearanceViewer.bondScaleFactor
@@ -945,12 +942,13 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.bondSelectionScaling = bondAppearanceViewer.bondSelectionScaling
     }
     
-    if let adsorptionViewer: AdsorptionSurfaceViewer = object as? AdsorptionSurfaceViewer
+    if let adsorptionViewer: IsosurfaceViewer = object as? IsosurfaceViewer
     {
       self.drawAdsorptionSurface = adsorptionViewer.drawAdsorptionSurface
-      self.adsorptionSurfaceSize = adsorptionViewer.adsorptionSurfaceSize
+      self.encompassingPowerOfTwoCubicGridSize = adsorptionViewer.encompassingPowerOfTwoCubicGridSize
 
       self.adsorptionSurfaceOpacity = adsorptionViewer.adsorptionSurfaceOpacity
+      self.adsorptionTransparencyThreshold = adsorptionViewer.adsorptionTransparencyThreshold
       self.adsorptionSurfaceIsoValue = adsorptionViewer.adsorptionSurfaceIsoValue
       self.adsorptionSurfaceProbeMolecule = adsorptionViewer.adsorptionSurfaceProbeMolecule
       
@@ -958,7 +956,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.adsorptionVolumeTransferFunction = adsorptionViewer.adsorptionVolumeTransferFunction
       self.adsorptionVolumeStepLength = adsorptionViewer.adsorptionVolumeStepLength
       
-      self.minimumGridEnergyValue = adsorptionViewer.minimumGridEnergyValue
+      //self.minimumGridEnergyValue = adsorptionViewer.minimumGridEnergyValue
       
       self.adsorptionSurfaceHue = adsorptionViewer.adsorptionSurfaceHue
       self.adsorptionSurfaceSaturation = adsorptionViewer.adsorptionSurfaceSaturation
@@ -985,7 +983,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.adsorptionSurfaceBackSideSpecularColor = adsorptionViewer.adsorptionSurfaceBackSideSpecularColor
     }
     
-    if let cellStructureViewer: StructuralPropertyViewer = object as? StructuralPropertyViewer
+    if let cellStructureViewer: StructuralPropertyEditor = object as? StructuralPropertyEditor
     {
       self.structureType = cellStructureViewer.structureType
       self.structureMaterialType = cellStructureViewer.structureMaterialType
@@ -1005,7 +1003,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.structureLargestCavityDiameterAlongAViablePath = cellStructureViewer.structureLargestCavityDiameterAlongAViablePath
     }
     
-    if let annotationViewer: AnnotationViewer = object as? AnnotationViewer
+    if let annotationViewer: AnnotationEditor = object as? AnnotationEditor
     {
       self.atomTextType = annotationViewer.atomTextType
       self.atomTextFont = annotationViewer.atomTextFont
@@ -1018,7 +1016,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.atomTextEffect = annotationViewer.atomTextEffect
     }
     
-    if let infoViewer: InfoViewer = object as? InfoViewer
+    if let infoViewer: InfoEditor = object as? InfoEditor
     {
       self.authorFirstName = infoViewer.authorFirstName
       self.authorMiddleName = infoViewer.authorMiddleName
@@ -1263,9 +1261,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
 
     self.drawAdsorptionSurface = clone.drawAdsorptionSurface
     self.adsorptionSurfaceOpacity = clone.adsorptionSurfaceOpacity
+    self.adsorptionTransparencyThreshold = clone.adsorptionTransparencyThreshold
     self.adsorptionSurfaceIsoValue = clone.adsorptionSurfaceIsoValue
     
-    self.adsorptionSurfaceSize = clone.adsorptionSurfaceSize
+    self.encompassingPowerOfTwoCubicGridSize = clone.encompassingPowerOfTwoCubicGridSize
     self.adsorptionSurfaceNumberOfTriangles = clone.adsorptionSurfaceNumberOfTriangles
     
     self.adsorptionSurfaceProbeMolecule = clone.adsorptionSurfaceProbeMolecule
@@ -2915,7 +2914,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.structureMass += PredefinedElements.sharedInstance.elementSet[elementId].mass
     }
     
-    self.structureDensity = 1.0e-3 * self.structureMass / (SKConstants.AvogadroConstantPerAngstromCubed * self.cell.volume)
+    self.structureDensity = 1.0e-3 * self.structureMass / (SKConstant.AvogadroConstantPerAngstromCubed * self.cell.volume)
     self.structureSpecificVolume = 1.0e3 / self.structureDensity
     self.structureAccessiblePoreVolume = self.structureHeliumVoidFraction * self.structureSpecificVolume
   }
@@ -3041,9 +3040,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   {
     return (SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.0,0.0,0.0))
   }
-  
-  public var renderCanDrawAdsorptionSurface: Bool {return false}
-  
+    
   public func setSpaceGroup(number: Int) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     return nil
@@ -3450,6 +3447,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     // adsorption surface
     encoder.encode(self.drawAdsorptionSurface)
     encoder.encode(self.adsorptionSurfaceOpacity)
+    encoder.encode(self.adsorptionTransparencyThreshold)
     encoder.encode(self.adsorptionSurfaceIsoValue)
     encoder.encode(Double(self.minimumGridEnergyValue ?? 0.0))
     
@@ -3457,7 +3455,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     encoder.encode(self.adsorptionVolumeTransferFunction.rawValue)
     encoder.encode(self.adsorptionVolumeStepLength)
     
-    encoder.encode(self.adsorptionSurfaceSize)
+    encoder.encode(self.encompassingPowerOfTwoCubicGridSize)
     encoder.encode(Int(0))
     
     encoder.encode(self.adsorptionSurfaceProbeMolecule.rawValue)
@@ -3834,6 +3832,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     // adsorption surface
     self.drawAdsorptionSurface = try decoder.decode(Bool.self)
     self.adsorptionSurfaceOpacity = try decoder.decode(Double.self)
+    
+    if readVersionNumber >= 10 // introduced in version 10
+    {
+      self.adsorptionTransparencyThreshold = try decoder.decode(Double.self)
+    }
+    
     self.adsorptionSurfaceIsoValue = try decoder.decode(Double.self)
     self.minimumGridEnergyValue = Float(try decoder.decode(Double.self))
     
@@ -3846,7 +3850,14 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.adsorptionVolumeStepLength = try decoder.decode(Double.self)
     }
     
-    self.adsorptionSurfaceSize = try decoder.decode(Int.self)
+    if readVersionNumber <= 9
+    {
+      let _: Int = try decoder.decode(Int.self) // adsorptionSurfaceSize
+    }
+    else
+    {
+      self.encompassingPowerOfTwoCubicGridSize = try decoder.decode(Int.self)
+    }
     let _: Int = try decoder.decode(Int.self)  // numberOfTriangles
     
     guard let probeMolecule = Structure.ProbeMolecule(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}

@@ -142,7 +142,7 @@ public class SKMetalFramework
           
         // use 4 x epsilon for a probe epsilon of unity
         parameters[i] = SIMD2<Float>(Float(4.0*sqrt(currentPotentialParameters.x * probeParameter.x)),
-                                 Float(0.5 * (currentPotentialParameters.y + probeParameter.y)))
+                                     Float(0.5 * (currentPotentialParameters.y + probeParameter.y)))
       }
         
       var loopindex: Int = 0
@@ -210,7 +210,10 @@ public class SKMetalFramework
           commandEncoder.setBuffer(bufferReplicas, offset: 0, index: 6)
           commandEncoder.setBuffer(bufferOutput, offset: 0, index: 7)
         
-          commandEncoder.dispatchThreadgroups(MTLSize(width: NumberOfGridPoints/threadGroupCount, height: 1, depth: 1), threadsPerThreadgroup: MTLSize(width: threadGroupCount, height: 1, depth: 1))
+          let threadsPerGrid = MTLSize(width: Int(NumberOfGridPoints), height: 1, depth: 1)
+          let threadExecutionWidth: Int = pipelineState.threadExecutionWidth
+          let threadsPerThreadgroup: MTLSize = MTLSizeMake(threadExecutionWidth, 1, 1)
+          commandEncoder.dispatchThreads(threadsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
         
           commandEncoder.endEncoding()
         
@@ -288,7 +291,7 @@ public class SKMetalFramework
       
       data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
       
-      let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue)
+      let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue, dimensions: SIMD3<Int32>(128,128,128))
       marchingCubes.isoValue = Float(0.0)   // modified from: -probeParameters.x (which cause artifacts)
       
       var surfaceVertexBuffer: MTLBuffer? = nil
@@ -296,9 +299,15 @@ public class SKMetalFramework
       
       do
       {
-        try marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &surfaceVertexBuffer, numberOfTriangles: &numberOfTriangles)
-      } catch {
-         LogQueue.shared.error(destination: nil, message: error.localizedDescription)
+        if let buffer = try marchingCubes.prepareHistoPyramids(data)
+        {
+          surfaceVertexBuffer = buffer
+          numberOfTriangles = buffer.length / (3 * 3 * MemoryLayout<SIMD4<Float>>.stride)
+        }
+      }
+      catch
+      {
+        LogQueue.shared.error(destination: nil, message: error.localizedDescription)
       }
       
       if numberOfTriangles > 0,
@@ -322,7 +331,7 @@ public class SKMetalFramework
           }
         }
         
-        surfaceAreas.gravimetric.append(totalArea * SKConstants.AvogadroConstantPerAngstromSquared / structure.structureMass)
+        surfaceAreas.gravimetric.append(totalArea * SKConstant.AvogadroConstantPerAngstromSquared / structure.structureMass)
         surfaceAreas.volumetric.append(totalArea * 1e4 / structure.cell.volume)
       }
       else
@@ -333,94 +342,4 @@ public class SKMetalFramework
     }
     return surfaceAreas
   }
-}
-
-
-// https://github.com/jtbandes/Metalbrot.playground/blob/master/Metalbrot.playground/Sources/Helpers.swift
-
-extension MTLSize
-{
-  var hasZeroDimension: Bool {
-    return depth == 0 || width == 0 || height == 0
-  }
-}
-
-/// Encapsulates the sizes to be passed to `MTLComputeCommandEncoder.dispatchThreadgroups(_:threadsPerThreadgroup:)`.
-public struct ThreadgroupSizes
-{
-  var threadsPerThreadgroup: MTLSize
-  var threadgroupsPerGrid: MTLSize
-  
-  public static let zeros = ThreadgroupSizes(
-    threadsPerThreadgroup: MTLSize(),
-    threadgroupsPerGrid: MTLSize())
-  
-  var hasZeroDimension: Bool {
-    return threadsPerThreadgroup.hasZeroDimension || threadgroupsPerGrid.hasZeroDimension
-  }
-}
-
-public extension MTLComputePipelineState
-{
-  /// Selects "reasonable" values for threadsPerThreadgroup and threadgroupsPerGrid for the given `drawableSize`.
-  /// - Remark: The heuristics used here are not perfect. There are many ways to underutilize the GPU,
-  /// including selecting suboptimal threadgroup sizes, or branching in the shader code.
-  ///
-  /// If you are certain you can always use threadgroups with a multiple of `threadExecutionWidth`
-  /// threads, then you may want to use MTLComputePipleineDescriptor and its property
-  /// `threadGroupSizeIsMultipleOfThreadExecutionWidth` to configure your pipeline state.
-  ///
-  /// If your shader is doing some more interesting calculations, and your threads need to share memory in some
-  /// meaningful way, then you’ll probably want to do something less generalized to choose your threadgroups.
-  func threadgroupSizesForDrawableSize(_ drawableSize: CGSize) -> ThreadgroupSizes
-  {
-    let waveSize = self.threadExecutionWidth
-    let maxThreadsPerGroup = self.maxTotalThreadsPerThreadgroup
-    
-    let drawableWidth = Int(drawableSize.width)
-    let drawableHeight = Int(drawableSize.height)
-    
-    if drawableWidth == 0 || drawableHeight == 0 {
-      print("drawableSize is zero")
-      return .zeros
-    }
-    
-    // Determine the set of possible sizes (not exceeding maxThreadsPerGroup).
-    var candidates: [ThreadgroupSizes] = []
-    for groupWidth in 1...maxThreadsPerGroup {
-      for groupHeight in 1...(maxThreadsPerGroup/groupWidth) {
-        // Round up the number of groups to ensure the entire drawable size is covered.
-        // <http://stackoverflow.com/a/2745086/23649>
-        let groupsPerGrid = MTLSize(width: (drawableWidth + groupWidth - 1) / groupWidth,
-                                    height: (drawableHeight + groupHeight - 1) / groupHeight,
-                                    depth: 1)
-        
-        candidates.append(ThreadgroupSizes(
-          threadsPerThreadgroup: MTLSize(width: groupWidth, height: groupHeight, depth: 1),
-          threadgroupsPerGrid: groupsPerGrid))
-      }
-    }
-    
-    /// Make a rough approximation for how much compute power will be "wasted" (e.g. when the total number
-    /// of threads in a group isn’t an even multiple of `threadExecutionWidth`, or when the total number of
-    /// threads being dispatched exceeds the drawable size). Smaller is better.
-    func _estimatedUnderutilization(_ s: ThreadgroupSizes) -> Int {
-      let excessWidth = s.threadsPerThreadgroup.width * s.threadgroupsPerGrid.width - drawableWidth
-      let excessHeight = s.threadsPerThreadgroup.height * s.threadgroupsPerGrid.height - drawableHeight
-      
-      let totalThreadsPerGroup = s.threadsPerThreadgroup.width * s.threadsPerThreadgroup.height
-      let totalGroups = s.threadgroupsPerGrid.width * s.threadgroupsPerGrid.height
-      
-      let excessArea = excessWidth * drawableHeight + excessHeight * drawableWidth + excessWidth * excessHeight
-      let excessThreadsPerGroup = (waveSize - totalThreadsPerGroup % waveSize) % waveSize
-      
-      return excessArea + excessThreadsPerGroup * totalGroups
-    }
-    
-    // Choose the threadgroup sizes which waste the least amount of execution time/power.
-    let result = candidates.min { _estimatedUnderutilization($0) < _estimatedUnderutilization($1) }
-    return result ?? .zeros
-  }
-  
-  
 }

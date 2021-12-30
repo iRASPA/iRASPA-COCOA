@@ -34,9 +34,8 @@ import simd
 import MathKit
 import LogViewKit
 
-public final class SKPOSCARParser: SKParser, ProgressReporting
+public final class SKVASPPOSCARParser: SKParser, ProgressReporting
 {
-  weak var windowController: NSWindowController? = nil
   var cellFormulaUnitsZ: Int = 0
   var scanner: Scanner
   let letterSet: CharacterSet
@@ -60,11 +59,9 @@ public final class SKPOSCARParser: SKParser, ProgressReporting
   var currentProgressCount: Double = 0.0
   let percentageFinishedStep: Double
   
-  public init(displayName: String, data: Data, windowController: NSWindowController?) throws
+  public init(displayName: String, data: Data) throws
   {
-    //self.ProjectTreeNode = ProjectTreeNode
     self.displayName = displayName
-    self.windowController = windowController
     
     guard let string: String = String(data: data, encoding: String.Encoding.utf8) ?? String(data: data, encoding: String.Encoding.ascii) else
     {
@@ -110,8 +107,7 @@ public final class SKPOSCARParser: SKParser, ProgressReporting
     // skip commentline
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": contains no data")
-      return
+      throw SKParserError.containsNoData
     }
     
     // scan scaleFactor
@@ -123,8 +119,7 @@ public final class SKPOSCARParser: SKParser, ProgressReporting
     }
     else
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 2nd line should be the scale factor.")
-      return
+      throw SKParserError.VASPMissingScaleFactor
     }
     
     // read box first vector
@@ -135,8 +130,7 @@ public final class SKPOSCARParser: SKParser, ProgressReporting
     }
     else
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 3nd line should be the first vector of the box.")
-      return
+      throw SKParserError.MissingCellParameters
     }
     
     // read box second vector
@@ -149,8 +143,7 @@ public final class SKPOSCARParser: SKParser, ProgressReporting
     }
     else
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 4nd line should be the third vector of the box.")
-      return
+      throw SKParserError.MissingCellParameters
     }
     
     // read box third vector
@@ -161,8 +154,7 @@ public final class SKPOSCARParser: SKParser, ProgressReporting
     }
     else
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 5nd line should be the third vector of the box.")
-      return
+      throw SKParserError.MissingCellParameters
     }
     
     cell = SKCell(unitCell: double3x3(a, b, c))
