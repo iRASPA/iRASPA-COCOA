@@ -28,7 +28,6 @@
 		<dict>
 			<key>QLSupportedContentTypes</key>
 			<array>
-				<string>nl.darkwing.iraspa.universal.irspdoc</string>
 				<string>nl.darkwing.iraspa.irspdoc</string>
 				<string>nl.darkwing.iraspa.iraspa</string>
 				<string>net.sourceforge.openbabel.cif</string>
