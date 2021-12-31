@@ -82,6 +82,9 @@
 /* Class = "NSButtonCell"; title = "Color"; ObjectID = "aLW-k0-vrB"; */
 "aLW-k0-vrB.title" = "اللون";
 
+/* Class = "NSMenuItem"; title = "Rotation Around Y"; ObjectID = "ANS-KQ-pTJ"; */
+"ANS-KQ-pTJ.title" = "الدوران حول Y";
+
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "AWE-1B-YAz"; */
 "AWE-1B-YAz.placeholderString" = "cx";
 

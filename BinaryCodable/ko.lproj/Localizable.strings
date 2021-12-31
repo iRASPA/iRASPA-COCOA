@@ -4,6 +4,9 @@
 /* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "잘못된 아카이브 버전 (최신 iRASPA 버전으로 업그레이드 바람.)";
 
+/* No comment provided by engineer. */
+"Invalid Magic Number (Internal bug)" = "잘못된 매직 번호(내부 버그)";
+
 /* (No Comment) */
 "Unsuported File Type" = "지원되지 않는 파일 형식";
 

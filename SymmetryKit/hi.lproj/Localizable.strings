@@ -67,6 +67,9 @@
 /* (No Comment) */
 "Cobalt" = "कोबाल्ट";
 
+/* No comment provided by engineer. */
+"Contains no data" = "कोई डेटा नहीं है";
+
 /* (No Comment) */
 "Copernicium" = "कॉपरनिसियम";
 
@@ -93,6 +96,9 @@
 
 /* (No Comment) */
 "Europium" = "युरोपियम";
+
+/* No comment provided by engineer. */
+"Failed UTF-8 and ASCII decoding" = "विफल UTF-8 और ASCII डिकोडिंग";
 
 /* (No Comment) */
 "Fermium" = "फर्मियम";
@@ -184,6 +190,12 @@
 /* (No Comment) */
 "Mercury" = "मर्करी";
 
+/* No comment provided by engineer. */
+"Missing cell-parameters" = "गुम सेल-पैरामीटर";
+
+/* No comment provided by engineer. */
+"Molecular Orbital Input not supported" = "आणविक कक्षीय इनपुट समर्थित नहीं है";
+
 /* (No Comment) */
 "Molybdenum" = "मॉलिब्डेनम";
 
@@ -213,6 +225,9 @@
 
 /* (No Comment) */
 "Nobelium" = "नोबेलियम";
+
+/* No comment provided by engineer. */
+"Not a VTK file" = "वीटीके फ़ाइल नहीं";
 
 /* (No Comment) */
 "Oganesson" = "ओगेनेस्साॅन";
@@ -334,11 +349,26 @@
 /* (No Comment) */
 "Tungsten" = "टंग्स्टेन";
 
+/* No comment provided by engineer. */
+"Unknown data type" = "अज्ञात डेटा प्रकार";
+
 /* (No Comment) */
 "Uranium" = "यूरेनियम";
 
 /* (No Comment) */
 "Vanadium" = "वनडियम";
+
+/* No comment provided by engineer. */
+"VTK file must be of type StructuredPoints" = "VTK file must be of type StructuredPoints";
+
+/* No comment provided by engineer. */
+"VTK missing dimensions" = "VTK missing dimensions";
+
+/* No comment provided by engineer. */
+"VTK missing point data" = "VTK missing point data";
+
+/* No comment provided by engineer. */
+"VTK missing scale factor" = "VTK missing scale factor";
 
 /* (No Comment) */
 "Xenon" = "जेनन";

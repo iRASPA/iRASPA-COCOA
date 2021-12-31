@@ -67,6 +67,9 @@
 /* (No Comment) */
 "Cobalt" = "コバルト";
 
+/* No comment provided by engineer. */
+"Contains no data" = "データは含まれていません";
+
 /* (No Comment) */
 "Copernicium" = "コペルニシウム";
 
@@ -93,6 +96,9 @@
 
 /* (No Comment) */
 "Europium" = "ユウロピウム";
+
+/* No comment provided by engineer. */
+"Failed UTF-8 and ASCII decoding" = "失敗したUTF-8およびASCIIデコード";
 
 /* (No Comment) */
 "Fermium" = "フェルミウム";
@@ -184,6 +190,12 @@
 /* (No Comment) */
 "Mercury" = "水銀";
 
+/* No comment provided by engineer. */
+"Missing cell-parameters" = "セルパラメータがありません";
+
+/* No comment provided by engineer. */
+"Molecular Orbital Input not supported" = "分子軌道入力はサポートされていません";
+
 /* (No Comment) */
 "Molybdenum" = "モリブデン";
 
@@ -213,6 +225,9 @@
 
 /* (No Comment) */
 "Nobelium" = "ノーベリウム";
+
+/* No comment provided by engineer. */
+"Not a VTK file" = "VTKファイルではありません";
 
 /* (No Comment) */
 "Oganesson" = "オガネソン";
@@ -334,11 +349,26 @@
 /* (No Comment) */
 "Tungsten" = "タングステン";
 
+/* No comment provided by engineer. */
+"Unknown data type" = "不明なデータ型";
+
 /* (No Comment) */
 "Uranium" = "ウラン";
 
 /* (No Comment) */
 "Vanadium" = "バナジウム";
+
+/* No comment provided by engineer. */
+"VTK file must be of type StructuredPoints" = "VTK file must be of type StructuredPoints";
+
+/* No comment provided by engineer. */
+"VTK missing dimensions" = "VTK missing dimensions";
+
+/* No comment provided by engineer. */
+"VTK missing point data" = "VTK missing point data";
+
+/* No comment provided by engineer. */
+"VTK missing scale factor" = "VTK missing scale factor";
 
 /* (No Comment) */
 "Xenon" = "キセノン";

@@ -67,6 +67,9 @@
 /* (No Comment) */
 "Cobalt" = "Kobalt";
 
+/* No comment provided by engineer. */
+"Contains no data" = "Enthält keine Daten";
+
 /* (No Comment) */
 "Copernicium" = "Copernicium";
 
@@ -93,6 +96,9 @@
 
 /* (No Comment) */
 "Europium" = "Europium";
+
+/* No comment provided by engineer. */
+"Failed UTF-8 and ASCII decoding" = "Fehler bei der UTF-8- und ASCII-Decodierung";
 
 /* (No Comment) */
 "Fermium" = "Fermium";
@@ -184,6 +190,12 @@
 /* (No Comment) */
 "Mercury" = "Quecksilber";
 
+/* No comment provided by engineer. */
+"Missing cell-parameters" = "Fehlende Zellparameter";
+
+/* No comment provided by engineer. */
+"Molecular Orbital Input not supported" = "Molekularorbitale Eingabe wird nicht unterstützt";
+
 /* (No Comment) */
 "Molybdenum" = "Molybdän";
 
@@ -213,6 +225,9 @@
 
 /* (No Comment) */
 "Nobelium" = "Nobelium";
+
+/* No comment provided by engineer. */
+"Not a VTK file" = "Keine VTK-Datei";
 
 /* (No Comment) */
 "Oganesson" = "Oganesson";
@@ -334,11 +349,26 @@
 /* (No Comment) */
 "Tungsten" = "Wolfram";
 
+/* No comment provided by engineer. */
+"Unknown data type" = "Unbekannter Datentyp";
+
 /* (No Comment) */
 "Uranium" = "Uran";
 
 /* (No Comment) */
 "Vanadium" = "Vanadium";
+
+/* No comment provided by engineer. */
+"VTK file must be of type StructuredPoints" = "VTK file must be of type StructuredPoints";
+
+/* No comment provided by engineer. */
+"VTK missing dimensions" = "VTK missing dimensions";
+
+/* No comment provided by engineer. */
+"VTK missing point data" = "VTK missing point data";
+
+/* No comment provided by engineer. */
+"VTK missing scale factor" = "VTK missing scale factor";
 
 /* (No Comment) */
 "Xenon" = "Xenon";

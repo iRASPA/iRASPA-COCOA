@@ -4,6 +4,9 @@
 /* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "無効なアーカイブバージョン（最新版のiRASPAにアップグレードしてください）";
 
+/* No comment provided by engineer. */
+"Invalid Magic Number (Internal bug)" = "無効なマジックナンバー（内部バグ）";
+
 /* (No Comment) */
 "Unsuported File Type" = "サポートされていないファイルタイプ";
 
