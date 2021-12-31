@@ -4,6 +4,9 @@
 /* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "अमान्य पुरालेख संस्करण (नवीनतम आईरास्पा संस्करण में अपग्रेड करें)";
 
+/* No comment provided by engineer. */
+"Invalid Magic Number (Internal bug)" = "अमान्य मैजिक नंबर (आंतरिक बग)";
+
 /* (No Comment) */
 "Unsuported File Type" = "असंपुष्ट फ़ाइल प्रकार";
 

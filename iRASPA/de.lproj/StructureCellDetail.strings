@@ -220,7 +220,7 @@
 /* Class = "NSTextFieldCell"; title = "Minimum Replicas"; ObjectID = "JtJ-tY-Q48"; */
 "JtJ-tY-Q48.title" = "Minimale Nachbildungen";
 
-/* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "kAw-YZ-ELT"; */
+/* Class = "NSMenuItem"; title = "Grid Volumetric Data"; ObjectID = "kAw-YZ-ELT"; */
 "kAw-YZ-ELT.title" = "Polygonales Prisma";
 
 /* Class = "NSTextFieldCell"; title = "Symmetry Properties"; ObjectID = "KBR-dm-dts"; */
@@ -303,6 +303,9 @@
 
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "pqT-rt-W8M"; */
 "pqT-rt-W8M.placeholderString" = "cx";
+
+/* Class = "NSMenuItem"; title = "VTK Volumetric Data"; ObjectID = "pRB-wx-AK8"; */
+"pRB-wx-AK8.title" = "Volumetrische VTK-Daten";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle Z"; ObjectID = "PV6-bk-AS4"; */
 "PV6-bk-AS4.placeholderString" = "Winkel Z";
@@ -451,6 +454,9 @@
 /* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "XeZ-Hb-tao"; */
 "XeZ-Hb-tao.title" = "Kristallzylinder";
 
+/* Class = "NSMenuItem"; title = "RASPA Volumetric Data"; ObjectID = "xOm-9h-Hai"; */
+"xOm-9h-Hai.title" = "RASPA Volumetrische Daten";
+
 /* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area (Nitrogen)"; ObjectID = "xXh-YD-ajh"; */
 "xXh-YD-ajh.title" = "Gravimetrische Oberfläche (Stickstoff)";
 
@@ -468,6 +474,9 @@
 
 /* Class = "NSTextFieldCell"; title = "A"; ObjectID = "YTE-5c-osk"; */
 "YTE-5c-osk.title" = "A";
+
+/* Class = "NSMenuItem"; title = "Cube Volumetric Data"; ObjectID = "yws-Md-gRB"; */
+"yws-Md-gRB.title" = "Cube Volumetrische Daten";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Z"; ObjectID = "ZfA-8U-voh"; */
 "ZfA-8U-voh.placeholderString" = "Minimum Z";

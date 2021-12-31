@@ -109,6 +109,9 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle Y"; ObjectID = "cGa-VQ-Eds"; */
 "cGa-VQ-Eds.placeholderString" = "زاوية Y";
 
+/* Class = "NSMenuItem"; title = "VASP Volumetric Data"; ObjectID = "cO8-V3-QjK"; */
+"cO8-V3-QjK.title" = "بيانات VASP الحجمية";
+
 /* Class = "NSTextFieldCell"; placeholderString = "Shift X"; ObjectID = "cPv-Rn-zyw"; */
 "cPv-Rn-zyw.placeholderString" = "تحول X";
 
@@ -202,6 +205,9 @@
 /* Class = "NSTextFieldCell"; placeholderString = "ax"; ObjectID = "hx7-iu-woV"; */
 "hx7-iu-woV.placeholderString" = "ax";
 
+/* Class = "NSMenuItem"; title = "Polygonal"; ObjectID = "J78-45-Jou"; */
+"J78-45-Jou.title" = "متعدد الأضلاع";
+
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "JAA-9x-5kf"; */
 "JAA-9x-5kf.title" = "0";
 
@@ -220,7 +226,7 @@
 /* Class = "NSTextFieldCell"; title = "Minimum Replicas"; ObjectID = "JtJ-tY-Q48"; */
 "JtJ-tY-Q48.title" = "الحد الأدنى من النسخ المتماثلة";
 
-/* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "kAw-YZ-ELT"; */
+/* Class = "NSMenuItem"; title = "Grid Volumetric Data"; ObjectID = "kAw-YZ-ELT"; */
 "kAw-YZ-ELT.title" = "منشور متعدد الأضلاع";
 
 /* Class = "NSTextFieldCell"; title = "Symmetry Properties"; ObjectID = "KBR-dm-dts"; */
@@ -303,6 +309,9 @@
 
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "pqT-rt-W8M"; */
 "pqT-rt-W8M.placeholderString" = "cx";
+
+/* Class = "NSMenuItem"; title = "VTK Volumetric Data"; ObjectID = "pRB-wx-AK8"; */
+"pRB-wx-AK8.title" = "بيانات VTK الحجمية";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle Z"; ObjectID = "PV6-bk-AS4"; */
 "PV6-bk-AS4.placeholderString" = "زاوية Z";
@@ -451,6 +460,9 @@
 /* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "XeZ-Hb-tao"; */
 "XeZ-Hb-tao.title" = "اسطوانة كريستال";
 
+/* Class = "NSMenuItem"; title = "RASPA Volumetric Data"; ObjectID = "xOm-9h-Hai"; */
+"xOm-9h-Hai.title" = "بيانات RASPA الحجمية";
+
 /* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area (Nitrogen)"; ObjectID = "xXh-YD-ajh"; */
 "xXh-YD-ajh.title" = "مساحة السطح الوزنية (النيتروجين)";
 
@@ -468,6 +480,9 @@
 
 /* Class = "NSTextFieldCell"; title = "A"; ObjectID = "YTE-5c-osk"; */
 "YTE-5c-osk.title" = "A";
+
+/* Class = "NSMenuItem"; title = "Cube Volumetric Data"; ObjectID = "yws-Md-gRB"; */
+"yws-Md-gRB.title" = "بيانات CUBE الحجمية";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Z"; ObjectID = "ZfA-8U-voh"; */
 "ZfA-8U-voh.placeholderString" = "الحد الأدنى Z";

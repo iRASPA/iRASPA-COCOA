@@ -67,6 +67,9 @@
 /* (No Comment) */
 "Cobalt" = "코발트";
 
+/* No comment provided by engineer. */
+"Contains no data" = "데이터가 없습니다";
+
 /* (No Comment) */
 "Copernicium" = "코페르니슘";
 
@@ -93,6 +96,9 @@
 
 /* (No Comment) */
 "Europium" = "유로퓸";
+
+/* No comment provided by engineer. */
+"Failed UTF-8 and ASCII decoding" = "UTF-8 및 ASCII 디코딩 실패";
 
 /* (No Comment) */
 "Fermium" = "페르뮴";
@@ -184,6 +190,12 @@
 /* (No Comment) */
 "Mercury" = "수은";
 
+/* No comment provided by engineer. */
+"Missing cell-parameters" = "누락된 셀 매개변수";
+
+/* No comment provided by engineer. */
+"Molecular Orbital Input not supported" = "분자 궤도 입력이 지원되지 않음";
+
 /* (No Comment) */
 "Molybdenum" = "몰리브데넘";
 
@@ -213,6 +225,9 @@
 
 /* (No Comment) */
 "Nobelium" = "노벨륨";
+
+/* No comment provided by engineer. */
+"Not a VTK file" = "VTK 파일이 아님";
 
 /* (No Comment) */
 "Oganesson" = "오가네손";
@@ -334,11 +349,26 @@
 /* (No Comment) */
 "Tungsten" = "텅스텐";
 
+/* No comment provided by engineer. */
+"Unknown data type" = "알 수 없는 데이터 유형";
+
 /* (No Comment) */
 "Uranium" = "우라늄";
 
 /* (No Comment) */
 "Vanadium" = "바나듐";
+
+/* No comment provided by engineer. */
+"VTK file must be of type StructuredPoints" = "VTK file must be of type StructuredPoints";
+
+/* No comment provided by engineer. */
+"VTK missing dimensions" = "VTK missing dimensions";
+
+/* No comment provided by engineer. */
+"VTK missing point data" = "VTK missing point data";
+
+/* No comment provided by engineer. */
+"VTK missing scale factor" = "VTK missing scale factor";
 
 /* (No Comment) */
 "Xenon" = "제논";

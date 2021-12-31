@@ -82,6 +82,9 @@
 /* Class = "NSButtonCell"; title = "Color"; ObjectID = "aLW-k0-vrB"; */
 "aLW-k0-vrB.title" = "Kleur";
 
+/* Class = "NSMenuItem"; title = "Rotation Around Y"; ObjectID = "ANS-KQ-pTJ"; */
+"ANS-KQ-pTJ.title" = "Roteer rondom Y";
+
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "AWE-1B-YAz"; */
 "AWE-1B-YAz.placeholderString" = "cx";
 
@@ -171,6 +174,9 @@
 
 /* Class = "NSTextFieldCell"; title = "Style"; ObjectID = "gru-eQ-QHe"; */
 "gru-eQ-QHe.title" = "Stijl";
+
+/* Class = "NSTextFieldCell"; title = "Movie Type"; ObjectID = "Hen-Zy-o77"; */
+"Hen-Zy-o77.title" = "Movietype";
 
 /* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "heo-jf-KT6"; */
 "heo-jf-KT6.placeholderString" = "0.0";
@@ -426,6 +432,9 @@
 
 /* Class = "NSTextFieldCell"; title = "Quality/Type"; ObjectID = "YN2-kq-iUD"; */
 "YN2-kq-iUD.title" = "Kwaliteit/type";
+
+/* Class = "NSMenuItem"; title = "Frames"; ObjectID = "yvY-4Y-Scd"; */
+"yvY-4Y-Scd.title" = "Frames";
 
 /* Class = "NSMenuItem"; title = "Mid-top"; ObjectID = "z2p-wA-Dgi"; */
 "z2p-wA-Dgi.title" = "Midden-boven";

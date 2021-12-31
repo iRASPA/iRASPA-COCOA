@@ -4,6 +4,9 @@
 /* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "Недействительные версия архива (обновите до последней версии iRASPA)";
 
+/* No comment provided by engineer. */
+"Invalid Magic Number (Internal bug)" = "Недействительный магический номер (внутренняя ошибка)";
+
 /* (No Comment) */
 "Unsuported File Type" = "Неподдерживаемый тип файла";
 

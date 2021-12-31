@@ -4,6 +4,9 @@
 /* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "无效的存档版本（升级到最新的iRASPA版本）";
 
+/* No comment provided by engineer. */
+"Invalid Magic Number (Internal bug)" = "无效的幻数（内部错误";
+
 /* (No Comment) */
 "Unsuported File Type" = "不支持的文件类型";
 

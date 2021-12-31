@@ -150,9 +150,9 @@
 
 /* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "cw1-G3-6lk"; */
 "cw1-G3-6lk.title" = "아이템 3";
-m
+
 /* Class = "NSTextFieldCell"; title = "ORCHID ID"; ObjectID = "d8y-By-uMu"; */
-"d8y-By-uMu.title" = "ORCID ID";
+"d8y-By-uMu.title" = "ORCHID ID";
 
 /* Class = "NSMenuItem"; title = "Quasi-Newton"; ObjectID = "dbH-cK-y49"; */
 "dbH-cK-y49.title" = "준-뉴턴";

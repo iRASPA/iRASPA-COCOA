@@ -82,6 +82,9 @@
 /* Class = "NSButtonCell"; title = "Color"; ObjectID = "aLW-k0-vrB"; */
 "aLW-k0-vrB.title" = "رنگ";
 
+/* Class = "NSMenuItem"; title = "Rotation Around Y"; ObjectID = "ANS-KQ-pTJ"; */
+"ANS-KQ-pTJ.title" = "چرخش حول Y";
+
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "AWE-1B-YAz"; */
 "AWE-1B-YAz.placeholderString" = "cx";
 
@@ -171,6 +174,9 @@
 
 /* Class = "NSTextFieldCell"; title = "Style"; ObjectID = "gru-eQ-QHe"; */
 "gru-eQ-QHe.title" = "سبک";
+
+/* Class = "NSTextFieldCell"; title = "Movie Type"; ObjectID = "Hen-Zy-o77"; */
+"Hen-Zy-o77.title" = "نوع فیلم";
 
 /* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "heo-jf-KT6"; */
 "heo-jf-KT6.placeholderString" = "0.0";
