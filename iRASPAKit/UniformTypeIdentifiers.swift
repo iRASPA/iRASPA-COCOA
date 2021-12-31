@@ -34,10 +34,15 @@ import UniformTypeIdentifiers
 @available(OSX 11.0, *)
 extension UTType
 {
-  public static let irspdoc : UTType = UTType(exportedAs: "nl.darkwing.iraspa.universal.irspdoc")
+  public static var irspdoc : UTType
+  {
+     return UTType(exportedAs: "nl.darkwing.iraspa.irspdoc")
+  }
+  public static var iraspa : UTType
+  {
+    return UTType(exportedAs: "nl.darkwing.iraspa.iraspa")
+  }
   
-  public static let iraspa : UTType = UTType(exportedAs: "nl.darkwing.iraspa.iraspa")
- 
   public static var cif : UTType
   {
     return UTType(importedAs: "net.sourceforge.openbabel.cif")

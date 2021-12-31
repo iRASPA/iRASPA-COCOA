@@ -13,22 +13,23 @@
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>CrystalProject</string>
-			<key>CFBundleTypeName</key>
-			<string>iRASPA Document</string>
-			<key>CFBundleTypeOSTypes</key>
+			<key>CFBundleTypeMIMETypes</key>
 			<array>
-				<string>****</string>
+				<string>application/zip</string>
+				<string>application/octet-stream</string>
+				<string>application/x-zip-compressed</string>
+				<string>multipart/x-zip</string>
 			</array>
+			<key>CFBundleTypeName</key>
+			<string>iRASPA Universal Document</string>
 			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
+			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>nl.darkwing.iraspa.irspdoc</string>
 			</array>
-			<key>LSTypeIsPackage</key>
-			<integer>1</integer>
 			<key>NSDocumentClass</key>
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
@@ -42,15 +43,13 @@
 			<key>CFBundleTypeName</key>
 			<string>iRASPA project</string>
 			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
+			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>nl.darkwing.iraspa.iraspa</string>
 			</array>
-			<key>LSTypeIsPackage</key>
-			<integer>0</integer>
 			<key>NSDocumentClass</key>
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
@@ -139,35 +138,6 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>irspdoc</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>CrystalProject</string>
-			<key>CFBundleTypeMIMETypes</key>
-			<array>
-				<string>application/zip</string>
-				<string>application/octet-stream</string>
-				<string>application/x-zip-compressed</string>
-				<string>multipart/x-zip</string>
-			</array>
-			<key>CFBundleTypeName</key>
-			<string>iRASPA Universal Document</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>nl.darkwing.iraspa.universal.irspdoc</string>
-			</array>
-			<key>LSTypeIsPackage</key>
-			<integer>0</integer>
-			<key>NSDocumentClass</key>
-			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
 				<string>vtk</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
@@ -235,11 +205,13 @@
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
-				<string>public.composite-content</string>
-				<string>com.apple.package</string>
+				<string>public.item</string>
+				<string>public.data</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>iRASPA Document</string>
+			<string>iRASPA Universal Document</string>
+			<key>UTTypeIconFile</key>
+			<string>CrystalProject</string>
 			<key>UTTypeIdentifier</key>
 			<string>nl.darkwing.iraspa.irspdoc</string>
 			<key>UTTypeTagSpecification</key>
@@ -268,26 +240,6 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>iraspa</string>
-				</array>
-			</dict>
-		</dict>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.item</string>
-				<string>public.data</string>
-			</array>
-			<key>UTTypeDescription</key>
-			<string>iRASPA Universal Document</string>
-			<key>UTTypeIconFile</key>
-			<string>CrystalProject</string>
-			<key>UTTypeIdentifier</key>
-			<string>nl.darkwing.iraspa.universal.irspdoc</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>irspdoc</string>
 				</array>
 			</dict>
 		</dict>

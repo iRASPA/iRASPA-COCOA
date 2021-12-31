@@ -141,10 +141,13 @@ class AppDelegate: NSObject, NSApplicationDelegate
   }
   
 
-
   func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool
   {
-    return true
+     DispatchQueue.main.async {
+         guard sender.keyWindow == nil else { return }
+         NSDocumentController.shared.openDocument(nil)
+     }
+     return false
   }
 
   func applicationDidFinishLaunching(_ aNotification: Notification)
