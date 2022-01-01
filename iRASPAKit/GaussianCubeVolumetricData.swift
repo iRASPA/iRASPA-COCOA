@@ -95,6 +95,9 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, IsosurfaceVi
     self.average = average
     self.variance = variance
     self.adsorptionSurfaceIsoValue = average
+    self.adsorptionSurfaceRenderingMethod = .isoSurface
+    self.adsorptionVolumeTransferFunction = .CoolWarmDiverging
+    self.drawAdsorptionSurface = true
     
     let largestSize: Int = Int(max(dimensions.x,dimensions.y,dimensions.z))
     var k: Int = 1
