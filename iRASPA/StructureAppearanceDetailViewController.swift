@@ -2813,9 +2813,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
            !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           popUpbuttonRenderingType.isEditable = enabled && adsorptionSurfaceOn
-          if let renderingType: RKEnergySurfaceType = self.renderAdsorptionRenderingMethod
+          if let rawValue: Int = self.renderAdsorptionRenderingMethod?.rawValue
           {
-            popUpbuttonRenderingType.selectItem(at: renderingType.rawValue)
+            popUpbuttonRenderingType.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            
+            popUpbuttonRenderingType.selectItem(at: rawValue)
+          }
+          else
+          {
+            popUpbuttonRenderingType.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
@@ -2848,13 +2854,18 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
            !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           popUpbuttonTransferFunction.isEditable = enabled && adsorptionSurfaceOn
-          if let transferFunction: RKPredefinedVolumeRenderingTransferFunction = self.renderAdsorptionVolumeTransferFunction
+          if let rawValue: Int = self.renderAdsorptionVolumeTransferFunction?.rawValue
           {
-            popUpbuttonTransferFunction.selectItem(at: transferFunction.rawValue)
+            popUpbuttonTransferFunction.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            
+            popUpbuttonTransferFunction.selectItem(at: rawValue)
+          }
+          else
+          {
+            popUpbuttonTransferFunction.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
-      
       
       // Probe molecule
       if let popUpbuttonProbeParticle: iRASPAPopUpButton = view.viewWithTag(2) as? iRASPAPopUpButton
@@ -2864,13 +2875,18 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
            !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           popUpbuttonProbeParticle.isEditable = enabled && adsorptionSurfaceOn
-          if let probeMolecule: Structure.ProbeMolecule = self.renderAdsorptionSurfaceProbeMolecule
+          if let rawValue: Int = self.renderAdsorptionSurfaceProbeMolecule?.rawValue
           {
-            popUpbuttonProbeParticle.selectItem(at: probeMolecule.rawValue)
+            popUpbuttonProbeParticle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            
+            popUpbuttonProbeParticle.selectItem(at: rawValue)
+          }
+          else
+          {
+            popUpbuttonProbeParticle.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
-      
       
       if let textFieldIsovalue: NSTextField = view.viewWithTag(3) as? NSTextField
       {
