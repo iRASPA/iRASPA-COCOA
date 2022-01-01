@@ -85,8 +85,8 @@ class MetalGlobalAxesSystemShader
     }
     
     let depthStateDescriptor: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
-    depthStateDescriptor.depthCompareFunction = MTLCompareFunction.lessEqual
-    depthStateDescriptor.isDepthWriteEnabled = true
+    depthStateDescriptor.depthCompareFunction = MTLCompareFunction.always
+    depthStateDescriptor.isDepthWriteEnabled = false
     depthState = device.makeDepthStencilState(descriptor: depthStateDescriptor)
     
     let axesPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -244,6 +244,7 @@ class MetalGlobalAxesSystemShader
       
       commandEncoder.label = "Axes background command encoder"
       commandEncoder.setCullMode(MTLCullMode.none)
+      commandEncoder.setDepthClipMode(.clamp)
       commandEncoder.setRenderPipelineState(self.backgroundPipeline)
       commandEncoder.setDepthStencilState(clearDepthState)
       commandEncoder.setVertexBuffer(vertexTextBuffer, offset: 0, index: 0)
