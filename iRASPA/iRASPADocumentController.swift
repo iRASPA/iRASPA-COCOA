@@ -43,6 +43,7 @@ class iRASPADocumentController: NSDocumentController, NSOpenSavePanelDelegate
       return true
     }
     
+    // Handle cases based on file extension
     if #available(OSX 11.0, *)
     {
       if let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
@@ -69,6 +70,10 @@ class iRASPADocumentController: NSDocumentController, NSOpenSavePanelDelegate
           return true
         }
         if type.conforms(to: .vtk)
+        {
+          return true
+        }
+        if type.conforms(to: .cube)
         {
           return true
         }
@@ -111,28 +116,13 @@ class iRASPADocumentController: NSDocumentController, NSOpenSavePanelDelegate
       }
     }
     
+    // Handle cases based on file name
     if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" ||
-                                     url.lastPathComponent.uppercased() == "CONTCAR")
-    {
-      return true
-    }
-    
-    if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "CHGCAR")
-    {
-      return true
-    }
-    
-    if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "LOCPOT")
-    {
-      return true
-    }
-    
-    if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "ELFCAR")
-    {
-      return true
-    }
-    
-    if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")
+                                     url.lastPathComponent.uppercased() == "CONTCAR" ||
+                                     url.lastPathComponent.uppercased() == "CHGCAR" ||
+                                     url.lastPathComponent.uppercased() == "LOCPOT" ||
+                                     url.lastPathComponent.uppercased() == "ELFCAR" ||
+                                     url.lastPathComponent.uppercased() == "XDATCAR")
     {
       return true
     }

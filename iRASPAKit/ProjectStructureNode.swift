@@ -102,28 +102,22 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   
   public var ImageDotsPerInchValue: Double
   {
-    get
+    switch(imageDPI)
     {
-      switch(imageDPI)
-      {
-        case .dpi_72:
-          return 72.0
-         case .dpi_75:
-          return 75.0
-        case .dpi_150:
-          return 150.0
-        case .dpi_300:
-          return 300.0
-        case .dpi_600:
-          return 600.0
-        case .dpi_1200:
-          return 1200.0
-      }
+      case .dpi_72:
+        return 72.0
+       case .dpi_75:
+        return 75.0
+      case .dpi_150:
+        return 150.0
+      case .dpi_300:
+        return 300.0
+      case .dpi_600:
+        return 600.0
+      case .dpi_1200:
+        return 1200.0
     }
   }
-  
-
-  
   
   public enum DPI: Int
   {
@@ -323,6 +317,8 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   {
     // Critical: set the selection, otherwise no frames will be drawn
     setInitialSelectionIfNeeded()
+    
+    self.renderAxes.position = .none
       
     renderBackgroundCachedImage = drawGradientCGImage()
     camera.resetPercentage = 0.95

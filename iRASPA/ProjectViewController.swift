@@ -1899,15 +1899,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     {
       let selectedObjects = document.documentData.projectData.selectedTreeNodes
       
-      
       let saveOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [], recordIDsToDelete: [])
       saveOperation.recordsToSave = []
       saveOperation.recordIDsToDelete = nil
       saveOperation.isAtomic = false
       saveOperation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
-      
-      
-      
       
       for node in selectedObjects
       {
@@ -2957,12 +2953,13 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         {
           if let size: CGSize = self.windowController?.detailTabViewController?.renderViewController?.renderViewController.viewBounds
           {
+            renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
             renderCamera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
           }
         }
         
         projectStructureNode.setInitialSelectionIfNeeded()
-          self.windowController?.masterTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
+        self.windowController?.masterTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
         self.windowController?.detailTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
       }
       

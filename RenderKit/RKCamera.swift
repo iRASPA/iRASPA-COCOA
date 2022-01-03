@@ -140,9 +140,6 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
   
   public init()
   {
-    var boundingBoxMinimum: SIMD3<Double>
-    var boundingBoxMaximum: SIMD3<Double>
-    
     zNear = 1.0
     zFar = 1000.0
     
@@ -158,14 +155,15 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     angleOfView = 60.0 * Double.pi / 180.0
     resetPercentage = 0.85
     aspectRatio = windowWidth / windowHeight
-    boundingBoxMinimum = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
-    boundingBoxMaximum = SIMD3<Double>(x: 10.0, y: 10.0, z: 10.0)
+    let boundingBoxMinimum: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
+    let boundingBoxMaximum: SIMD3<Double> = SIMD3<Double>(x: 20.0, y: 20.0, z: 20.0)
     boundingBox = SKBoundingBox(minimum: boundingBoxMinimum, maximum: boundingBoxMaximum)
     boundingBoxAspectRatio = 1.0
     frustrumType = .orthographic;
     resetDirectionType = .plus_Z;
     
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0, y: 1, z:0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0.0, y: 1.0, z:0.0))
+    setCameraToOrthographic()
   }
   
   public required init(camera: RKCamera)
