@@ -209,7 +209,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
   // MARK: Reading data
   // =====================================================================
   
-  func readModernDocumentFileFormat(url: URL) throws
+  func readDocumentFileFormat(url: URL) throws
   {
     var info: mach_timebase_info_data_t = mach_timebase_info_data_t()
     mach_timebase_info(&info)
@@ -338,7 +338,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
     })
   }
   
-  func readModernProjectFileFormat(url: URL) throws
+  func readProjectFileFormat(url: URL) throws
   {
     // read single-project ".iraspa" format
     if let data: Data = try? Data(contentsOf: url),
@@ -393,8 +393,9 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let cifParser: SKCIFParser = try SKCIFParser(displayName: displayName, data: data)
         try cifParser.startParsing()
         let scene: Scene = Scene(parser: cifParser.scene)
-        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
         let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
@@ -432,8 +433,9 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let pdbParser: SKPDBParser = try SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
         try pdbParser.startParsing()
         let scene: Scene = Scene(parser: pdbParser.scene)
-        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
         let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
@@ -471,8 +473,9 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let xyzParser: SKXYZParser = try SKXYZParser(displayName: displayName, data: data)
         try xyzParser.startParsing()
         let scene: Scene = Scene(parser: xyzParser.scene)
-        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
         let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
@@ -510,8 +513,9 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let VASPParser: SKVASPPOSCARParser = try SKVASPPOSCARParser(displayName: displayName, data: data)
         try VASPParser.startParsing()
         let scene: Scene = Scene(parser: VASPParser.scene)
-        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
         let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
@@ -549,8 +553,9 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let VASPCHGCARParser: SKVASPCHGCARParser = try SKVASPCHGCARParser(displayName: displayName, data: data)
         try VASPCHGCARParser.startParsing()
         let scene: Scene = Scene(parser: VASPCHGCARParser.scene)
-        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
         let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
@@ -588,8 +593,9 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let VASPLOCPOTParser: SKVASPLOCPOTParser = try SKVASPLOCPOTParser(displayName: displayName, data: data)
         try VASPLOCPOTParser.startParsing()
         let scene: Scene = Scene(parser: VASPLOCPOTParser.scene)
-        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
         let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
@@ -627,8 +633,9 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let VASPELFCARParser: SKVASPELFCARParser = try SKVASPELFCARParser(displayName: displayName, data: data)
         try VASPELFCARParser.startParsing()
         let scene: Scene = Scene(parser: VASPELFCARParser.scene)
-        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
         let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
@@ -666,8 +673,9 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let VASPParser: SKVASPXDATCARParser = try SKVASPXDATCARParser(displayName: displayName, data: data)
         try VASPParser.startParsing()
         let scene: Scene = Scene(parser: VASPParser.scene)
-        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
         let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
@@ -701,9 +709,9 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
       switch(typeName)
       {
       case UTType.irspdoc.identifier:
-        try readModernDocumentFileFormat(url: url)
+        try readDocumentFileFormat(url: url)
       case UTType.iraspa.identifier:
-        try readModernProjectFileFormat(url: url)
+        try readProjectFileFormat(url: url)
       case UTType.cif.identifier:
         readCIFFileFormat(url: url)
       case UTType.pdb.identifier:
@@ -742,9 +750,9 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
       switch(typeName as CFString)
       {
       case typeirspdoc:
-        try readModernDocumentFileFormat(url: url)
+        try readDocumentFileFormat(url: url)
       case typeProject:
-        try readModernProjectFileFormat(url: url)
+        try readProjectFileFormat(url: url)
       case typeCIF:
         try readCIFFileFormat(url: url)
       case typePDB:
@@ -762,6 +770,14 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
           else if (url.lastPathComponent.uppercased() == "CHGCAR")
           {
             try readCHGCARFileFormat(url: url)
+          }
+          else if (url.lastPathComponent.uppercased() == "LOCPOT")
+          {
+            try readLOCPOTFileFormat(url: url)
+          }
+          else if (url.lastPathComponent.uppercased() == "ELFCAR")
+          {
+            try readELFCARFileFormat(url: url)
           }
           else if (url.lastPathComponent.uppercased() == "XDATCAR")
           {
@@ -795,7 +811,6 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
     printInfo.bottomMargin = 0
     printInfo.leftMargin = 0
     printInfo.rightMargin = 0
-    
     
     let printableView: NSView = PrintingView(renderViewController)
     

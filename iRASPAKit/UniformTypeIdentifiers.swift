@@ -31,6 +31,10 @@
 
 import UniformTypeIdentifiers
 
+// CFBundleDocumentTypes: if you want your app to open when the user double clicks one of these files.
+// UTExportedTypeDeclarations: if your app should be considered authoritative for that extension.
+// UTImportedTypeDeclarations: if you only want your app’s definitions to apply if no other definitions are available.
+
 @available(OSX 11.0, *)
 extension UTType
 {
@@ -71,6 +75,11 @@ extension UTType
   public static var cube : UTType
   {
     return UTType(importedAs: "nl.darkwing.iraspa.cube")
+  }
+  
+  public static var all : UTType
+  {
+    return UTType(importedAs: "public.item")
   }
 }
 

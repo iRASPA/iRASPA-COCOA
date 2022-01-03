@@ -157,6 +157,34 @@
 			<key>NSDocumentClass</key>
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Gasussian Cube file</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>nl.darkwing.iraspa.cube</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>All</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.item</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -176,6 +204,8 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array/>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -317,26 +347,6 @@
 				<key>public.mime-type</key>
 				<array>
 					<string>chemical/x-xyz</string>
-				</array>
-			</dict>
-		</dict>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.data</string>
-				<string>public.text</string>
-			</array>
-			<key>UTTypeDescription</key>
-			<string>VASP POSCAR</string>
-			<key>UTTypeIcons</key>
-			<dict/>
-			<key>UTTypeIdentifier</key>
-			<string>net.sourceforge.openbabel.poscar</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>poscar</string>
 				</array>
 			</dict>
 		</dict>
