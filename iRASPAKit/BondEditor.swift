@@ -36,6 +36,7 @@ import SimulationKit
 public protocol BondViewer: AtomViewer
 {
   var bondSetController: SKBondSetController {get}
+  func reComputeBonds()
 }
 
 public protocol BondEditor: AtomEditor

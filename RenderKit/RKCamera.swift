@@ -330,7 +330,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     angleOfView = newAngle
     orthoScale = (distance.z - 0.5 * delta.z) * tan(0.5 * angleOfView)
     
-    zNear = max(1.0, distance.z - max(delta.x, delta.y, delta.z))
+    zNear = max(1.0, distance.z - 1.2 * max(delta.x, delta.y, delta.z))
     zFar = distance.z + 2.0*delta.z
     
     let inverseFocalPoint: Double = tan(angleOfView * 0.5)
@@ -387,7 +387,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     
     distance.z = max(orthoScale * focalPoint + 0.5 * delta.z, 1.0)
     
-    zNear = max(1.0, distance.z - max(delta.x, delta.y, delta.z))
+    zNear = max(1.0, distance.z - 1.2 *  max(delta.x, delta.y, delta.z))
     zFar = distance.z + 2.0*delta.z
         
     // halfHeight  half of frustum height at znear  znear∗tan(fov/2)
@@ -423,7 +423,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     let inverseFocalPoint: Double = tan(angleOfView * 0.5)
     orthoScale = max(distance.z - 0.5 * delta.z, 1.0) * inverseFocalPoint
     
-    zNear = max(1.0, distance.z - max(delta.x, delta.y, delta.z))
+    zNear = max(1.0, distance.z - 1.2 * max(delta.x, delta.y, delta.z))
     zFar = distance.z + 2.0*delta.z
     
     if (aspectRatio > boundingBoxAspectRatio)
