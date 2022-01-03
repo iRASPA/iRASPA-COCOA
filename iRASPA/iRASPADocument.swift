@@ -702,6 +702,46 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
     }
   }
   
+  func readCubeFileFormat(url: URL) throws
+  {
+    if let data: Data = try? Data.init(contentsOf: url)
+    {
+      let displayName: String = url.deletingPathExtension().lastPathComponent
+      
+      do
+      {
+        let VASPParser: SKGaussianCubeParser = try SKGaussianCubeParser(displayName: displayName, data: data)
+        try VASPParser.startParsing()
+        let scene: Scene = Scene(parser: VASPParser.scene)
+        let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
+        let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+        let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
+        
+        DispatchQueue.main.async {
+          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          
+          if #available(OSX 11.0, *)
+          {
+            self.fileType = UTType.irspdoc.identifier
+          }
+          else
+          {
+            self.fileType = typeirspdoc as String
+          }
+          self.fileURL = nil                   // disassociate document from file; makes document "untitled"
+          self.displayName = displayName
+          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
+        }
+      }
+      catch
+      {
+        LogQueue.shared.error(destination: self.windowControllers.first, message: "Accesing PDB-file failed with error, " + error.localizedDescription)
+        return
+      }
+    }
+  }
+  
   override func read(from url: URL, ofType typeName: String) throws
   {
     if #available(OSX 11.0, *)
@@ -718,6 +758,8 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         try readPDBFileFormat(url: url)
       case UTType.xyz.identifier:
         try readXYZFileFormat(url: url)
+      case UTType.cube.identifier:
+        try readCubeFileFormat(url: url)
       default:
         if (url.pathExtension.isEmpty)
         {
@@ -759,6 +801,8 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         try readPDBFileFormat(url: url)
       case typeXYZ:
         try readXYZFileFormat(url: url)
+      case typeGAUSSIANCUBE:
+        try readCubeFileFormat(url: url)
       default:
         if (url.pathExtension.isEmpty)
         {

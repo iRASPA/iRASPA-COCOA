@@ -362,7 +362,7 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           atomViewer.atomTreeController.tag()
         }
         
-        if let bondViewer = iRASPAstructure.object as? BondEditor
+        if let bondViewer = iRASPAstructure.object as? BondViewer
         {
           bondViewer.bondSetController.tag()
           bondViewer.reComputeBonds()

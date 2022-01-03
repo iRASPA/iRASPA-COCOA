@@ -1255,7 +1255,7 @@ public class VASPVolumetricData: Structure, IsosurfaceViewer, RKRenderAtomSource
   
   public override func computeBondsOperation(structure: Structure, windowController: NSWindowController?) -> FKOperation?
   {
-    return Crystal.RecomputeBondsOperation(structure: structure, windowController: windowController)
+    return VASPVolumetricData.RecomputeBondsOperation(structure: structure, windowController: windowController)
   }
   
   public class RecomputeBondsOperation: FKOperation

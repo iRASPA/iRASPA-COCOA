@@ -1298,7 +1298,7 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, IsosurfaceVi
   
   public override func computeBondsOperation(structure: Structure, windowController: NSWindowController?) -> FKOperation?
   {
-    return Crystal.RecomputeBondsOperation(structure: structure, windowController: windowController)
+    return GaussianCubeVolumetricData.RecomputeBondsOperation(structure: structure, windowController: windowController)
   }
   
   public class RecomputeBondsOperation: FKOperation
