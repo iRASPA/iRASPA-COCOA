@@ -107,6 +107,14 @@ public final class Movie: NSObject, ObjectViewer, NSPasteboardWriting, NSPastebo
     self.selectedFrame = self.frames.first
   }
   
+  public convenience init(frames: [iRASPAObject])
+  {
+    self.init()
+    self.displayName = frames.first?.object.displayName ?? "unknown"
+    self.frames = frames
+    self.selectedFrame = self.frames.first
+  }
+  
   public convenience init(displayName: String, frames: [iRASPAObject])
   {
     self.init()

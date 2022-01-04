@@ -98,6 +98,12 @@ public final class SceneList:  ObjectViewer, BinaryDecodable, BinaryEncodable
     self.scenes = scenes
   }
   
+  public convenience init(frames: [iRASPAObject])
+  {
+    self.init()
+    self.scenes = [Scene(frames: frames)]
+  }
+  
   public var allObjects: [Object]
   {
     return self.scenes.flatMap{$0.allObjects}

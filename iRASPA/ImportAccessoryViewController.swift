@@ -29,6 +29,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 import Cocoa
+import SymmetryKit
 
 class ImportAccessoryNSBox: NSBox
 {
@@ -41,7 +42,23 @@ class ImportAccessoryNSBox: NSBox
 
 public class ImportAccessoryViewController: NSViewController
 {
-  @IBOutlet var importSeparateProjects: NSButton?
-  @IBOutlet var onlyAsymmetricUnit: NSButton?
+  @IBOutlet var proteinsOnlyAsymmetricUnit: NSButton?
   @IBOutlet var importAsMolecule: NSButton?
+  
+  public var importType: SKParser.ImportType = .asSingleProject
+  
+  @IBAction func changedImportType(_ sender: NSButton)
+  {    
+    switch(sender.tag)
+    {
+    case 1:
+      self.importType = .asSeperateProjects
+    case 2:
+      self.importType = .asSingleProject
+    case 3:
+      self.importType = .asMovieFrames
+    default:
+      break
+    }
+  }
 }

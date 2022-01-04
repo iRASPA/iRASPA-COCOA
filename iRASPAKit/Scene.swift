@@ -94,11 +94,16 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
     self.movies = scene.movies
   }
   
-  
   public convenience init(movies: [Movie])
   {
     self.init()
     self.movies = movies
+  }
+  
+  public convenience init(frames: [iRASPAObject])
+  {
+    self.init()
+    self.movies = [Movie(frames: frames)]
   }
   
   public convenience init(name: String, movies: [Movie])
