@@ -41,7 +41,7 @@ class ReadStructureGroupOperation: FKGroupOperation
   unowned var projectTreeNode : ProjectTreeNode
   unowned var colorSets: SKColorSets
   unowned var forceFieldSets: SKForceFieldSets
-  
+    
   public init(projectTreeNode : ProjectTreeNode, urls: [URL], windowController: NSWindowController?, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, onlyAsymmetricUnit: Bool, asMolecule: Bool) throws
   {
     self.projectTreeNode = projectTreeNode
@@ -53,28 +53,42 @@ class ReadStructureGroupOperation: FKGroupOperation
     progress = Progress.discreteProgress(totalUnitCount: Int64(urls.count))
     progress.completedUnitCount = 0
     
+    var operations: [ReadStructureOperation] = []
     for url in urls
     {
       let operation: ReadStructureOperation = try ReadStructureOperation(ProjectTreeNode: projectTreeNode, url: url, windowController: windowController, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
       progress.addChild(operation.progress, withPendingUnitCount: 1)
-      self.addOperation(operation)
+      operations.append(operation)
     }
+    
+    // after all reading is done, process the urls 'in order'.
+    let gatherOperation = BlockOperation(block: {[weak self] in
+        if let self = self
+        {
+          if !self.isCancelled
+          {
+            for operation in operations
+            {
+              if let parserScene = operation.parser?.scene
+              {
+                let scene: Scene = Scene(parser: parserScene)
+                self.scenes.append(scene)
+              }
+            }
+          }
+        }
+      })
+    
+    // make sure all reading operations are finished
+    for operation in operations
+    {
+      gatherOperation.addDependency(operation)
+    }
+    
+    self.addOperations(operations + [gatherOperation])
     
     completionBlock = {
       self.progress.completedUnitCount = Int64(urls.count)
-    }
-  }
-  
-  let lock: NSLock = NSLock()
-  
-  override func operationDidFinish(_ operation: Operation, withErrors: [NSError])
-  {
-    if let parserScene = (operation as? ReadStructureOperation)?.parser?.scene
-    {
-      let scene: Scene = Scene(parser: parserScene)
-      lock.lock()
-      scenes.append(scene)
-      lock.unlock()
     }
   }
 }

@@ -44,7 +44,8 @@ public class ImportProjectOperation: FKGroupOperation
   
   unowned let treeController: ProjectTreeController
   
-  public init(projectTreeNode: ProjectTreeNode, outlineView: NSOutlineView?, treeController: ProjectTreeController, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, urls: [URL], onlyAsymmetricUnit: Bool, asMolecule: Bool) throws
+  // urls are in order of selection in import panel.
+  public init(projectTreeNode: ProjectTreeNode, outlineView: NSOutlineView?, treeController: ProjectTreeController, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, urls: [URL], onlyAsymmetricUnit: Bool, asMolecule: Bool, asMovie: Bool) throws
   {
     self.outlineView = outlineView
     self.projectTreeNode = projectTreeNode
@@ -59,15 +60,23 @@ public class ImportProjectOperation: FKGroupOperation
     // This progress's children are weighted, the reading takes 20% and the computation of the bonds takes the remaining portion
     progress = Progress.discreteProgress(totalUnitCount: 100)
     progress.completedUnitCount = 0
-    
-    
+        
     let readStructureOperation: ReadStructureGroupOperation = try ReadStructureGroupOperation(projectTreeNode: projectTreeNode, urls: urls, windowController: windowController, colorSets: colorSets, forceFieldSets: forceFieldSets, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
     progress.addChild(readStructureOperation.progress, withPendingUnitCount: 20)
     
     self.addOperation(readStructureOperation)
     
     let adapterOperation = BlockOperation(block: {[weak self, unowned readStructureOperation] in
-      let sceneList: SceneList = SceneList(scenes: readStructureOperation.scenes)
+      let sceneList: SceneList
+      if asMovie
+      {
+        sceneList = SceneList(frames: readStructureOperation.scenes.flatMap{$0.allIRASPObjects})
+      }
+      else
+      {
+        sceneList = SceneList(scenes: readStructureOperation.scenes)
+      }
+      
       let projectStructureNode: ProjectStructureNode = ProjectStructureNode(name: projectTreeNode.displayName, sceneList: sceneList)
       projectTreeNode.representedObject = iRASPAProject(structureProject: projectStructureNode)
       

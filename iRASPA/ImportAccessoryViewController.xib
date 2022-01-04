@@ -1,66 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ImportAccessoryViewController">
             <connections>
                 <outlet property="importAsMolecule" destination="nrb-wX-u5i" id="112-ED-yb5"/>
-                <outlet property="importSeparateProjects" destination="wbD-DN-bij" id="J1d-5F-Dgf"/>
-                <outlet property="onlyAsymmetricUnit" destination="OBy-lO-Uh1" id="dlx-a8-ceg"/>
+                <outlet property="proteinsOnlyAsymmetricUnit" destination="OBy-lO-Uh1" id="dlx-a8-ceg"/>
                 <outlet property="view" destination="0Bn-an-cp4" id="H40-nj-O6g"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <box autoresizesSubviews="NO" boxType="custom" borderType="bezel" borderWidth="2" cornerRadius="2" title="Box" titlePosition="noTitle" id="0Bn-an-cp4" customClass="ImportAccessoryNSBox" customModule="iRASPA" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="146"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-            <view key="contentView" id="cL7-Ry-Bbi">
-                <rect key="frame" x="2" y="2" width="476" height="142"/>
-                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+        <box autoresizesSubviews="NO" horizontalHuggingPriority="220" verticalHuggingPriority="220" boxType="custom" borderType="bezel" borderWidth="2" cornerRadius="2" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="0Bn-an-cp4" customClass="ImportAccessoryNSBox" customModule="iRASPA" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="653" height="146"/>
+            <view key="contentView" horizontalHuggingPriority="230" verticalHuggingPriority="230" id="cL7-Ry-Bbi">
+                <rect key="frame" x="2" y="2" width="649" height="142"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                 <subviews>
-                    <box fixedFrame="YES" title="Import Options" translatesAutoresizingMaskIntoConstraints="NO" id="YD9-Cz-1kH">
-                        <rect key="frame" x="17" y="16" width="305" height="106"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <box horizontalHuggingPriority="240" verticalHuggingPriority="240" title="Import Options" id="YD9-Cz-1kH">
+                        <rect key="frame" x="17" y="16" width="615" height="106"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                         <view key="contentView" id="IEl-sU-fc3">
-                            <rect key="frame" x="3" y="3" width="299" height="88"/>
+                            <rect key="frame" x="3" y="3" width="609" height="88"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wbD-DN-bij">
-                                    <rect key="frame" x="18" y="52" width="265" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Import as Separate Projects" bezelStyle="regularSquare" imagePosition="left" inset="2" id="haw-Jn-ePK">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                </button>
-                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OBy-lO-Uh1">
-                                    <rect key="frame" x="18" y="31" width="265" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Only Asymmetric-Unit" bezelStyle="regularSquare" imagePosition="left" inset="2" id="sJx-zs-qHY">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                </button>
-                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nrb-wX-u5i">
-                                    <rect key="frame" x="18" y="11" width="96" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="As Molecule" bezelStyle="regularSquare" imagePosition="left" inset="2" id="FdK-32-9m4">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                </button>
+                                <gridView horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" xPlacement="leading" yPlacement="fill" rowAlignment="none" rowSpacing="5" columnSpacing="166" id="zxg-Vd-zvW">
+                                    <rect key="frame" x="20" y="20" width="552" height="58"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <rows>
+                                        <gridRow id="IRP-Mk-C9b"/>
+                                        <gridRow id="IEK-Io-ONV"/>
+                                        <gridRow yPlacement="top" id="eVW-ET-rk5"/>
+                                    </rows>
+                                    <columns>
+                                        <gridColumn id="YDR-ie-enm"/>
+                                        <gridColumn id="c5n-AM-T5D"/>
+                                    </columns>
+                                    <gridCells>
+                                        <gridCell row="IRP-Mk-C9b" column="YDR-ie-enm" id="DVb-oJ-2kB">
+                                            <button key="contentView" horizontalHuggingPriority="280" verticalHuggingPriority="780" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="Qrc-Zt-Sys">
+                                                <rect key="frame" x="-2" y="41" width="153" height="18"/>
+                                                <buttonCell key="cell" type="radio" title="As Separate Projects" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="dc9-jZ-Cjt">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="changedImportType:" target="-2" id="9Oo-sh-k8X"/>
+                                                </connections>
+                                            </button>
+                                        </gridCell>
+                                        <gridCell row="IRP-Mk-C9b" column="c5n-AM-T5D" id="n39-Yi-qSX">
+                                            <button key="contentView" horizontalHuggingPriority="280" verticalHuggingPriority="780" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="OBy-lO-Uh1">
+                                                <rect key="frame" x="315" y="41" width="237" height="18"/>
+                                                <buttonCell key="cell" type="check" title="For Proteins Only Asymmetric-Unit" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="sJx-zs-qHY">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                            </button>
+                                        </gridCell>
+                                        <gridCell row="IEK-Io-ONV" column="YDR-ie-enm" id="jY6-4v-AUA">
+                                            <button key="contentView" horizontalHuggingPriority="280" verticalHuggingPriority="780" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="QUL-ed-KIu">
+                                                <rect key="frame" x="-2" y="20" width="129" height="18"/>
+                                                <buttonCell key="cell" type="radio" title="As Single Project" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="KTC-jX-hB7">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="changedImportType:" target="-2" id="vhW-4m-Bzn"/>
+                                                </connections>
+                                            </button>
+                                        </gridCell>
+                                        <gridCell row="IEK-Io-ONV" column="c5n-AM-T5D" id="4wa-OD-tYD">
+                                            <button key="contentView" horizontalHuggingPriority="280" verticalHuggingPriority="780" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="nrb-wX-u5i">
+                                                <rect key="frame" x="315" y="20" width="100" height="18"/>
+                                                <buttonCell key="cell" type="check" title="As Molecule" bezelStyle="regularSquare" imagePosition="left" inset="2" id="FdK-32-9m4">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                            </button>
+                                        </gridCell>
+                                        <gridCell row="eVW-ET-rk5" column="YDR-ie-enm" id="551-ex-rVX">
+                                            <button key="contentView" horizontalHuggingPriority="280" verticalHuggingPriority="780" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="NoD-VY-cbD">
+                                                <rect key="frame" x="-2" y="-1" width="130" height="18"/>
+                                                <buttonCell key="cell" type="radio" title="As Movie Frames" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="MrV-hq-0cU">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="changedImportType:" target="-2" id="bj8-Bc-Sym"/>
+                                                </connections>
+                                            </button>
+                                        </gridCell>
+                                        <gridCell row="eVW-ET-rk5" column="c5n-AM-T5D" id="Yvl-Ah-1U6"/>
+                                    </gridCells>
+                                </gridView>
                             </subviews>
                         </view>
                     </box>
                 </subviews>
             </view>
+            <constraints>
+                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="146" id="dRr-iW-UuR"/>
+                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="653" id="rvd-qN-2t8"/>
+            </constraints>
             <color key="fillColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <point key="canvasLocation" x="220" y="162"/>
+            <point key="canvasLocation" x="306.5" y="162"/>
         </box>
     </objects>
 </document>

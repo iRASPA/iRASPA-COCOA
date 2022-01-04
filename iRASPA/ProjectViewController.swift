@@ -525,21 +525,20 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
      openPanel.begin { (result) -> Void in
        if result == NSApplication.ModalResponse.OK
        {
-         if let importButton: NSButton = importAccessoryViewController.importSeparateProjects,
-            let onlyAsymmetricUnitButton: NSButton = importAccessoryViewController.onlyAsymmetricUnit,
+         if let onlyAsymmetricUnitButton: NSButton = importAccessoryViewController.proteinsOnlyAsymmetricUnit,
             let asMoleculeButton: NSButton = importAccessoryViewController.importAsMolecule
          {
-           let asSeparateProjects: Bool = importButton.state == NSControl.StateValue.on ? true : false
+           //let asSeparateProjects: Bool = importButton.state == NSControl.StateValue.on ? true : false
            let onlyAsymmetricUnit: Bool = onlyAsymmetricUnitButton.state == NSControl.StateValue.on ? true : false
            let asMolecule: Bool = asMoleculeButton.state == NSControl.StateValue.on ? true : false
          
-           self.importStructureFiles(openPanel.urls as [URL], asSeparateProjects: asSeparateProjects, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+           self.importStructureFiles(openPanel.urls as [URL], importType: importAccessoryViewController.importType, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
          }
        }
      }
   }
   
-  func importStructureFiles(_ URLs: [URL], asSeparateProjects: Bool, onlyAsymmetricUnit: Bool, asMolecule: Bool)
+  func importStructureFiles(_ URLs: [URL], importType: SKParser.ImportType, onlyAsymmetricUnit: Bool, asMolecule: Bool)
   {
     guard URLs.count > 0 else {return}
     
@@ -574,7 +573,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       }
       
 
-      if (asSeparateProjects)
+      if (importType == .asSeperateProjects)
       {
         // import as separate projects: loop over urls
         self.projectOutlineView?.beginUpdates()
@@ -599,7 +598,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           // send as a single operation to the 'window-controller-queue'
           do
           {
-            let operation = try ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: [url], onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+            let operation = try ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: [url], onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, asMovie: false)
             node.importOperation = operation
             windowController?.projectConcurrentQueue.addOperation(operation)
           
@@ -632,7 +631,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         // send as a single operation to the 'window-controller-queue'
         do
         {
-          let operation = try ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: URLs, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+          let operation = try ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: URLs, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, asMovie: importType == SKParser.ImportType.asMovieFrames)
           node.importOperation = operation
           windowController?.projectConcurrentQueue.addOperation(operation)
         }

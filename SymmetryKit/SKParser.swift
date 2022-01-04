@@ -35,6 +35,14 @@ import simd
 
 public class SKParser: NSObject
 {
+  public enum ImportType: Int
+  {
+    case asSeperateProjects = 0
+    case asSingleProject = 1
+    case asMovieFrames = 2
+  }
+  
+  
   public var scene: [[SKStructure]] = []
     
   public var unknownAtoms: Set<String> = []
