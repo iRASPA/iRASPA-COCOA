@@ -209,6 +209,7 @@ class MetalEnergyVolumeRenderedSurfaceShader
     {
       commandEncoder.setRenderPipelineState(surfacePipeLine)
       commandEncoder.setCullMode(MTLCullMode.back)
+      commandEncoder.setDepthClipMode(.clamp)
       
       // for transparent surface:
       // disable depth-buffer updates (depth-buffer testing is still active)
@@ -269,6 +270,7 @@ class MetalEnergyVolumeRenderedSurfaceShader
     {
       commandEncoder.setRenderPipelineState(transparentPipeLine)
       commandEncoder.setCullMode(MTLCullMode.back)
+      commandEncoder.setDepthClipMode(.clamp)
       
       // for transparent surface:
       // disable depth-buffer updates (depth-buffer testing is still active)
