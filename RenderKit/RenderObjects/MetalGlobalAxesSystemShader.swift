@@ -85,8 +85,8 @@ class MetalGlobalAxesSystemShader
     }
     
     let depthStateDescriptor: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
-    depthStateDescriptor.depthCompareFunction = MTLCompareFunction.always
-    depthStateDescriptor.isDepthWriteEnabled = false
+    depthStateDescriptor.depthCompareFunction = MTLCompareFunction.lessEqual
+    depthStateDescriptor.isDepthWriteEnabled = true
     depthState = device.makeDepthStencilState(descriptor: depthStateDescriptor)
     
     let axesPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
