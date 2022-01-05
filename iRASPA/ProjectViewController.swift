@@ -3349,7 +3349,9 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       // copy&paste in via the general pasteboard
       let pasteboard = NSPasteboard.general
       
-      let treeNodesToBeCopied: [ProjectTreeNode] = Array(treeController.selectedTreeNodes)
+      let treeNodesToBeCopied: [ProjectTreeNode] = Array(treeController.selectedTreeNodes).sorted { a, b in
+        return a.indexPath < b.indexPath
+      }
       
       pasteboard.clearContents()
       pasteboard.writeObjects(treeNodesToBeCopied)
