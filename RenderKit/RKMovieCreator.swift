@@ -99,6 +99,43 @@ public class RKMovieCreator: NSObject
     assetInput.addObserver(self, forKeyPath: "readyForMoreMediaData", options: NSKeyValueObservingOptions.new, context: &myContext)
   }
   
+  public init(url: URL, width: Int, height: Int, framesPerSecond: Int)
+  {
+    self.renderer = provider
+    self.url = url
+    self.framesPerSecond = Int32(framesPerSecond)
+    
+    qualitySetting = [AVVideoCodecKey:AVVideoCodecType.h264 as AnyObject, AVVideoWidthKey: width as AnyObject, AVVideoHeightKey: height as AnyObject,
+      AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: width*height*24 as AnyObject, AVVideoMaxKeyFrameIntervalKey: 150 as AnyObject, AVVideoProfileLevelKey:AVVideoProfileLevelH264HighAutoLevel as AnyObject, AVVideoAllowFrameReorderingKey: false as AnyObject, AVVideoH264EntropyModeKey:AVVideoH264EntropyModeCAVLC as AnyObject] as AnyObject]
+    
+    self.width = width
+    self.height = height
+    
+    bytesPerRow = width * 4
+    
+    self.assetInput = AVAssetWriterInput(mediaType: AVMediaType.video, outputSettings: qualitySetting)
+    
+    let bufferAttributes: [String: AnyObject] = [String(kCVPixelBufferPixelFormatTypeKey): Int(kCVPixelFormatType_32BGRA) as AnyObject]
+    self.assetInputAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: assetInput, sourcePixelBufferAttributes: bufferAttributes)
+    
+    do
+    {
+      // // AVFileTypeQuickTimeMovie (mov) or AVFileTypeMPEG4 (mp4)
+      self.assetWriter = try AVAssetWriter(url: url, fileType: AVFileType.mp4)
+    }
+    catch let error as NSError
+    {
+      fatalError("\(error)")
+    }
+    
+    super.init()
+    
+    assetWriter?.add(assetInput)
+    
+    assetInput.addObserver(self, forKeyPath: "readyForMoreMediaData", options: NSKeyValueObservingOptions.new, context: &myContext)
+  }
+  
+  
   public func beginEncoding()
   {
     // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
@@ -129,7 +166,7 @@ public class RKMovieCreator: NSObject
         return
       }
   
-      renderer?.makeCVPicture(pixelBuffer!)
+      //renderer?.makeCVPicture(pixelBuffer!)
       
       // Wait until write is ready
       if (!assetInput.isReadyForMoreMediaData)

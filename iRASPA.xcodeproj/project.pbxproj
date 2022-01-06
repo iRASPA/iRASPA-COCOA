@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -393,6 +393,10 @@
 		9393439C25694AA9001D7D2E /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393439B25694AA9001D7D2E /* ThumbnailProvider.swift */; };
 		939343A125694AA9001D7D2E /* iRASPAThumbnailExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9393439625694AA9001D7D2E /* iRASPAThumbnailExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		939343D325694C5A001D7D2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 939343D225694C5A001D7D2E /* Assets.xcassets */; };
+		9395024F278639020094C604 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395024E278639020094C604 /* AVFoundation.framework */; platformFilter = maccatalyst; };
+		939502502786390E0094C604 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4B71E26A92C00B8FE9B /* Metal.framework */; platformFilter = maccatalyst; };
+		939502512786FA000094C604 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9395024E278639020094C604 /* AVFoundation.framework */; platformFilter = maccatalyst; };
+		939502522786FA0B0094C604 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4B71E26A92C00B8FE9B /* Metal.framework */; platformFilter = maccatalyst; };
 		9397C620203B4F4300FE4A9C /* ImportAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9397C61F203B4F4300FE4A9C /* ImportAccessoryViewController.xib */; };
 		9397C622203B4F6800FE4A9C /* ImportAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9397C621203B4F6800FE4A9C /* ImportAccessoryViewController.swift */; };
 		93986CCD2616FF8E00D10B7D /* OutlineViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93986CCC2616FF8E00D10B7D /* OutlineViewItem.swift */; };
@@ -733,6 +737,16 @@
 		93E20F8D26A6F44D00473702 /* FindPointGroupNoPartialOccupanciesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8C26A6F44C00473702 /* FindPointGroupNoPartialOccupanciesTests.swift */; };
 		93E20F9126A99A5800473702 /* SKAsymmetricUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F9026A99A5800473702 /* SKAsymmetricUnit.swift */; };
 		93E37F96268C754300AD5DA3 /* SKSymmetryOperationSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E37F95268C754300AD5DA3 /* SKSymmetryOperationSet.swift */; };
+		93E67A6D2785A28A007550D3 /* MovieCreationService.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = 93E67A622785A28A007550D3 /* MovieCreationService.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		93E67A7A2785A2A0007550D3 /* PictureCreationServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E67A792785A2A0007550D3 /* PictureCreationServiceDelegate.swift */; };
+		93E67A7C2785A2A0007550D3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E67A7B2785A2A0007550D3 /* main.swift */; };
+		93E67A802785A2A0007550D3 /* PictureCreationService.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = 93E67A752785A2A0007550D3 /* PictureCreationService.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		93E67A862785A352007550D3 /* MovieCreationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E67A652785A28A007550D3 /* MovieCreationService.swift */; };
+		93E67A872785A352007550D3 /* MovieCreationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E67A642785A28A007550D3 /* MovieCreationServiceProtocol.swift */; };
+		93E67A882785A352007550D3 /* MovieCreationServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E67A662785A28A007550D3 /* MovieCreationServiceDelegate.swift */; };
+		93E67A892785A352007550D3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E67A682785A28A007550D3 /* main.swift */; };
+		93E67A8A2785A356007550D3 /* PictureCreationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E67A772785A2A0007550D3 /* PictureCreationServiceProtocol.swift */; };
+		93E67A8B2785A356007550D3 /* PictureCreationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E67A782785A2A0007550D3 /* PictureCreationService.swift */; };
 		93E7594B21DBC056009B9C5C /* iRASPADocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */; };
 		93E92DEF21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */; };
 		93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */; };
@@ -1171,6 +1185,34 @@
 			remoteGlobalIDString = 93CE77E91EA0EA3900D068E1;
 			remoteInfo = CatchObjectiveCExceptions;
 		};
+		93E67A6B2785A28A007550D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93E67A612785A28A007550D3;
+			remoteInfo = MovieCreationService;
+		};
+		93E67A7E2785A2A0007550D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93E67A742785A2A0007550D3;
+			remoteInfo = PictureCreationService;
+		};
+		93E67A8C2785ACFA007550D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 930DD60E1E26B96A00B8FE9B;
+			remoteInfo = iRASPAKit;
+		};
+		93E67A8E2785AD01007550D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 930DD60E1E26B96A00B8FE9B;
+			remoteInfo = iRASPAKit;
+		};
 		93F3A5A221874A15008E41A2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 938388001E26A4A800112FBA /* Project object */;
@@ -1244,6 +1286,18 @@
 			files = (
 				93BF30C31FB3707B00FFCCB0 /* iRASPA-CLI.app in CopyFiles */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93E67A3F27859D43007550D3 /* Embed XPC Services */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
+			dstSubfolderSpec = 16;
+			files = (
+				93E67A6D2785A28A007550D3 /* MovieCreationService.xpc in Embed XPC Services */,
+				93E67A802785A2A0007550D3 /* PictureCreationService.xpc in Embed XPC Services */,
+			);
+			name = "Embed XPC Services";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1768,6 +1822,9 @@
 		9393439D25694AA9001D7D2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9393439E25694AA9001D7D2E /* iRASPAThumbnailExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iRASPAThumbnailExtension.entitlements; sourceTree = "<group>"; };
 		939343D225694C5A001D7D2E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9395024C278634080094C604 /* PictureCreationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PictureCreationService.entitlements; sourceTree = "<group>"; };
+		9395024D2786342E0094C604 /* MovieCreationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MovieCreationService.entitlements; sourceTree = "<group>"; };
+		9395024E278639020094C604 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		939733C2264913A300922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AboutWindow.strings; sourceTree = "<group>"; };
 		939733C3264913A300922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Preferences.strings; sourceTree = "<group>"; };
 		939733C4264913A300922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
@@ -2247,6 +2304,18 @@
 		93E20F9026A99A5800473702 /* SKAsymmetricUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAsymmetricUnit.swift; sourceTree = "<group>"; };
 		93E37F95268C754300AD5DA3 /* SKSymmetryOperationSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSymmetryOperationSet.swift; sourceTree = "<group>"; };
 		93E3E0A31EAB8D8D00BC5652 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		93E67A622785A28A007550D3 /* MovieCreationService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = MovieCreationService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
+		93E67A642785A28A007550D3 /* MovieCreationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCreationServiceProtocol.swift; sourceTree = "<group>"; };
+		93E67A652785A28A007550D3 /* MovieCreationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCreationService.swift; sourceTree = "<group>"; };
+		93E67A662785A28A007550D3 /* MovieCreationServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCreationServiceDelegate.swift; sourceTree = "<group>"; };
+		93E67A682785A28A007550D3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		93E67A6A2785A28A007550D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93E67A752785A2A0007550D3 /* PictureCreationService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = PictureCreationService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
+		93E67A772785A2A0007550D3 /* PictureCreationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureCreationServiceProtocol.swift; sourceTree = "<group>"; };
+		93E67A782785A2A0007550D3 /* PictureCreationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureCreationService.swift; sourceTree = "<group>"; };
+		93E67A792785A2A0007550D3 /* PictureCreationServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureCreationServiceDelegate.swift; sourceTree = "<group>"; };
+		93E67A7B2785A2A0007550D3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		93E67A7D2785A2A0007550D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPADocumentController.swift; sourceTree = "<group>"; };
 		93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalEllipsoidShader.swift; sourceTree = "<group>"; };
 		93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalBondCylinderGeometry.swift; sourceTree = "<group>"; };
@@ -2515,6 +2584,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		93E67A5F2785A28A007550D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				939502502786390E0094C604 /* Metal.framework in Frameworks */,
+				9395024F278639020094C604 /* AVFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93E67A722785A2A0007550D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				939502522786FA0B0094C604 /* Metal.framework in Frameworks */,
+				939502512786FA000094C604 /* AVFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		93F3A59A21874A15008E41A2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2565,6 +2652,7 @@
 		930DD4B41E26A92200B8FE9B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9395024E278639020094C604 /* AVFoundation.framework */,
 				9311CE25256707140080AFA4 /* libbz2.a */,
 				9311CE1D256707140080AFA4 /* libffi.a */,
 				9311CE29256707140080AFA4 /* libformw.a */,
@@ -3211,6 +3299,8 @@
 				933FFECF243A1E23004E337F /* PythonKit */,
 				93A0C4272567B20D002BC083 /* iRASPAQuickLookExtension */,
 				9393439A25694AA9001D7D2E /* iRASPAThumbnailExtension */,
+				93E67A632785A28A007550D3 /* MovieCreationService */,
+				93E67A762785A2A0007550D3 /* PictureCreationService */,
 				938388091E26A4A800112FBA /* Products */,
 				930DD4B41E26A92200B8FE9B /* Frameworks */,
 			);
@@ -3239,6 +3329,8 @@
 				9393439625694AA9001D7D2E /* iRASPAThumbnailExtension.appex */,
 				937737E62680D7A900D47499 /* SymmetryKitTests.xctest */,
 				933EEF3B2681DDDE00067CF4 /* MathKitTests.xctest */,
+				93E67A622785A28A007550D3 /* MovieCreationService.xpc */,
+				93E67A752785A2A0007550D3 /* PictureCreationService.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3680,6 +3772,32 @@
 				93F12B592034816F00FFABC3 /* SpaceGroupEditor.swift */,
 			);
 			name = Protocols;
+			sourceTree = "<group>";
+		};
+		93E67A632785A28A007550D3 /* MovieCreationService */ = {
+			isa = PBXGroup;
+			children = (
+				9395024D2786342E0094C604 /* MovieCreationService.entitlements */,
+				93E67A642785A28A007550D3 /* MovieCreationServiceProtocol.swift */,
+				93E67A652785A28A007550D3 /* MovieCreationService.swift */,
+				93E67A662785A28A007550D3 /* MovieCreationServiceDelegate.swift */,
+				93E67A682785A28A007550D3 /* main.swift */,
+				93E67A6A2785A28A007550D3 /* Info.plist */,
+			);
+			path = MovieCreationService;
+			sourceTree = "<group>";
+		};
+		93E67A762785A2A0007550D3 /* PictureCreationService */ = {
+			isa = PBXGroup;
+			children = (
+				9395024C278634080094C604 /* PictureCreationService.entitlements */,
+				93E67A772785A2A0007550D3 /* PictureCreationServiceProtocol.swift */,
+				93E67A782785A2A0007550D3 /* PictureCreationService.swift */,
+				93E67A792785A2A0007550D3 /* PictureCreationServiceDelegate.swift */,
+				93E67A7B2785A2A0007550D3 /* main.swift */,
+				93E67A7D2785A2A0007550D3 /* Info.plist */,
+			);
+			path = PictureCreationService;
 			sourceTree = "<group>";
 		};
 		93EAABA61ED9786300FE61D8 /* Parsers */ = {
@@ -4182,6 +4300,7 @@
 				9383883B1E26A4FC00112FBA /* Embed Frameworks */,
 				93BF30B21FB3642400FFCCB0 /* CopyFiles */,
 				93A0C4042567B07B002BC083 /* Embed App Extensions */,
+				93E67A3F27859D43007550D3 /* Embed XPC Services */,
 			);
 			buildRules = (
 			);
@@ -4202,6 +4321,8 @@
 				93A0C3B72567ACF8002BC083 /* PBXTargetDependency */,
 				93A0C4302567B20D002BC083 /* PBXTargetDependency */,
 				939343A025694AA9001D7D2E /* PBXTargetDependency */,
+				93E67A6C2785A28A007550D3 /* PBXTargetDependency */,
+				93E67A7F2785A2A0007550D3 /* PBXTargetDependency */,
 			);
 			name = iRASPA;
 			productName = iRASPA;
@@ -4345,6 +4466,42 @@
 			productName = CatchObjectiveCExceptions;
 			productReference = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		93E67A612785A28A007550D3 /* MovieCreationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 93E67A6E2785A28A007550D3 /* Build configuration list for PBXNativeTarget "MovieCreationService" */;
+			buildPhases = (
+				93E67A5E2785A28A007550D3 /* Sources */,
+				93E67A5F2785A28A007550D3 /* Frameworks */,
+				93E67A602785A28A007550D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				93E67A8D2785ACFA007550D3 /* PBXTargetDependency */,
+			);
+			name = MovieCreationService;
+			productName = MovieCreationService;
+			productReference = 93E67A622785A28A007550D3 /* MovieCreationService.xpc */;
+			productType = "com.apple.product-type.xpc-service";
+		};
+		93E67A742785A2A0007550D3 /* PictureCreationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 93E67A812785A2A0007550D3 /* Build configuration list for PBXNativeTarget "PictureCreationService" */;
+			buildPhases = (
+				93E67A712785A2A0007550D3 /* Sources */,
+				93E67A722785A2A0007550D3 /* Frameworks */,
+				93E67A732785A2A0007550D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				93E67A8F2785AD01007550D3 /* PBXTargetDependency */,
+			);
+			name = PictureCreationService;
+			productName = PictureCreationService;
+			productReference = 93E67A752785A2A0007550D3 /* PictureCreationService.xpc */;
+			productType = "com.apple.product-type.xpc-service";
 		};
 		93F3A59C21874A15008E41A2 /* BinaryCodable */ = {
 			isa = PBXNativeTarget;
@@ -4503,6 +4660,16 @@
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
+					93E67A612785A28A007550D3 = {
+						CreatedOnToolsVersion = 13.2.1;
+						DevelopmentTeam = 24U2ZRZ6SC;
+						ProvisioningStyle = Automatic;
+					};
+					93E67A742785A2A0007550D3 = {
+						CreatedOnToolsVersion = 13.2.1;
+						DevelopmentTeam = 24U2ZRZ6SC;
+						ProvisioningStyle = Automatic;
+					};
 					93F3A59C21874A15008E41A2 = {
 						CreatedOnToolsVersion = 10.0;
 						DevelopmentTeam = 24U2ZRZ6SC;
@@ -4559,6 +4726,8 @@
 				933FFECD243A1E23004E337F /* PythonKit */,
 				93A0C4242567B20D002BC083 /* iRASPAQuickLookExtension */,
 				9393439525694AA9001D7D2E /* iRASPAThumbnailExtension */,
+				93E67A612785A28A007550D3 /* MovieCreationService */,
+				93E67A742785A2A0007550D3 /* PictureCreationService */,
 			);
 		};
 /* End PBXProject section */
@@ -4725,6 +4894,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				93793B5721DE11C3004CAD9C /* LICENSE in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93E67A602785A28A007550D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93E67A732785A2A0007550D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5346,6 +5529,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		93E67A5E2785A28A007550D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93E67A862785A352007550D3 /* MovieCreationService.swift in Sources */,
+				93E67A882785A352007550D3 /* MovieCreationServiceDelegate.swift in Sources */,
+				93E67A892785A352007550D3 /* main.swift in Sources */,
+				93E67A872785A352007550D3 /* MovieCreationServiceProtocol.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93E67A712785A2A0007550D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93E67A7C2785A2A0007550D3 /* main.swift in Sources */,
+				93E67A8B2785A356007550D3 /* PictureCreationService.swift in Sources */,
+				93E67A8A2785A356007550D3 /* PictureCreationServiceProtocol.swift in Sources */,
+				93E67A7A2785A2A0007550D3 /* PictureCreationServiceDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		93F3A59921874A15008E41A2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5611,6 +5816,26 @@
 			isa = PBXTargetDependency;
 			target = 93CE77E91EA0EA3900D068E1 /* CatchObjectiveCExceptions */;
 			targetProxy = 93CE77EF1EA0EA3900D068E1 /* PBXContainerItemProxy */;
+		};
+		93E67A6C2785A28A007550D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93E67A612785A28A007550D3 /* MovieCreationService */;
+			targetProxy = 93E67A6B2785A28A007550D3 /* PBXContainerItemProxy */;
+		};
+		93E67A7F2785A2A0007550D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93E67A742785A2A0007550D3 /* PictureCreationService */;
+			targetProxy = 93E67A7E2785A2A0007550D3 /* PBXContainerItemProxy */;
+		};
+		93E67A8D2785ACFA007550D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 930DD60E1E26B96A00B8FE9B /* iRASPAKit */;
+			targetProxy = 93E67A8C2785ACFA007550D3 /* PBXContainerItemProxy */;
+		};
+		93E67A8F2785AD01007550D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 930DD60E1E26B96A00B8FE9B /* iRASPAKit */;
+			targetProxy = 93E67A8E2785AD01007550D3 /* PBXContainerItemProxy */;
 		};
 		93F3A5A321874A15008E41A2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -6111,7 +6336,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = SimulationKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6143,7 +6372,11 @@
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = SimulationKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6172,7 +6405,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = SymmetryKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
@@ -6202,7 +6439,11 @@
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = SymmetryKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
@@ -6230,7 +6471,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = RenderKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6262,7 +6507,11 @@
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = RenderKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6293,7 +6542,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = iRASPAKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
@@ -6325,7 +6578,11 @@
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = iRASPAKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
@@ -6350,7 +6607,11 @@
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = MathKitTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MathKitTests;
@@ -6371,7 +6632,11 @@
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = MathKitTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MathKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6401,7 +6666,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PythonKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PythonKit",
@@ -6443,7 +6712,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PythonKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PythonKit",
@@ -6481,7 +6754,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PowerSourceKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
@@ -6512,7 +6789,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PowerSourceKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
@@ -6535,7 +6816,11 @@
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SymmetryKitTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.SymmetryKitTests;
@@ -6556,7 +6841,11 @@
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SymmetryKitTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.SymmetryKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6682,7 +6971,8 @@
 				MTL_OPTIMIZATION_LEVEL = s;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 			};
@@ -6706,7 +6996,10 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = iRASPA/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -6742,7 +7035,10 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = iRASPA/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -6776,7 +7072,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = MathKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
@@ -6806,7 +7106,11 @@
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = MathKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
@@ -6833,7 +7137,11 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAThumbnailExtension/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 2.2.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -6859,7 +7167,11 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAThumbnailExtension/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
@@ -6884,7 +7196,11 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAQuickLookExtension/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 2.2.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -6910,7 +7226,11 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAQuickLookExtension/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
@@ -6941,7 +7261,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = LogViewKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
@@ -6975,7 +7299,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = LogViewKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
@@ -7004,7 +7332,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = OperationKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
@@ -7034,7 +7366,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = OperationKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
@@ -7121,7 +7457,11 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				INFOPLIST_FILE = CatchObjectiveCExceptions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
@@ -7150,7 +7490,11 @@
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = CatchObjectiveCExceptions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
@@ -7158,6 +7502,132 @@
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		93E67A6F2785A28A007550D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = MovieCreationService/MovieCreationService.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 135;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MovieCreationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MovieCreationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
+				MARKETING_VERSION = 2.2.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MovieCreationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+			};
+			name = Debug;
+		};
+		93E67A702785A28A007550D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = MovieCreationService/MovieCreationService.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 135;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MovieCreationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MovieCreationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
+				MARKETING_VERSION = 2.2.3;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MovieCreationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+			};
+			name = Release;
+		};
+		93E67A822785A2A0007550D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = PictureCreationService/PictureCreationService.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 135;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PictureCreationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PictureCreationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
+				MARKETING_VERSION = 2.2.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PictureCreationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+			};
+			name = Debug;
+		};
+		93E67A832785A2A0007550D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = PictureCreationService/PictureCreationService.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 135;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PictureCreationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PictureCreationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
+				MARKETING_VERSION = 2.2.3;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PictureCreationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
 			};
 			name = Release;
 		};
@@ -7183,7 +7653,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BinaryCodable/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -7219,7 +7693,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BinaryCodable/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
@@ -7253,7 +7731,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ZIPFoundation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -7289,7 +7771,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ZIPFoundation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
@@ -7453,6 +7939,24 @@
 			buildConfigurations = (
 				93CE77F41EA0EA3900D068E1 /* Debug */,
 				93CE77F51EA0EA3900D068E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		93E67A6E2785A28A007550D3 /* Build configuration list for PBXNativeTarget "MovieCreationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93E67A6F2785A28A007550D3 /* Debug */,
+				93E67A702785A28A007550D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		93E67A812785A2A0007550D3 /* Build configuration list for PBXNativeTarget "PictureCreationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93E67A822785A2A0007550D3 /* Debug */,
+				93E67A832785A2A0007550D3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

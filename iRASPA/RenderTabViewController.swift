@@ -37,6 +37,9 @@ import SymmetryKit
 import SimulationKit
 import LogViewKit
 import MathKit
+import PictureCreationService
+import MovieCreationService
+import BinaryCodable
 
 class RenderTabViewController: NSTabViewController, NSMenuItemValidation, WindowControllerConsumer, ProjectConsumer, GlobalModifierFlagsConsumer
 {
@@ -2797,15 +2800,10 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
 
   func makePicture()
   {
-    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
-    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
-    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController,
-       let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
     {
       let size: NSSize = NSMakeSize(CGFloat(project.renderImageNumberOfPixels),CGFloat(rint(Double(project.renderImageNumberOfPixels)/aspectRatioValue)))
-      
-      guard let imageData: Data = renderViewController.makePicture(size: size, camera: project.renderCamera, imageQuality: project.renderImageQuality) else {return}
-    
+
       let savePanel: NSSavePanel = NSSavePanel()
       savePanel.nameFieldStringValue = "picture.tiff"
       savePanel.canSelectHiddenExtension = true
@@ -2818,8 +2816,19 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
         if result == NSApplication.ModalResponse.OK
         {
-          let selectedFile: URL = savePanel.url!
-          try? imageData.write(to: selectedFile, options: [.atomic])
+          let connection = NSXPCConnection(serviceName: "nl.darkwing.iRASPA.PictureCreationService")
+          connection.remoteObjectInterface = NSXPCInterface(with: PictureCreationProtocol.self)
+          connection.resume()
+
+          let service = connection.remoteObjectProxyWithErrorHandler { error in
+              print("Received error:", error)
+          } as? PictureCreationProtocol
+          
+          service?.makePicture(project: project, camera: project.renderCamera ?? RKCamera(), size: size) { imageData in
+            DispatchQueue.main.async(execute: {
+              try? imageData.write(to: savePanel.url!, options: [.atomic])
+            })
+          }
         }
       })
     }
@@ -2827,38 +2836,12 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   func makeMovie()
   {
-    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
-    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
-    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController,
-       let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
+    if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
     {
       let savePanel: NSSavePanel = NSSavePanel()
       savePanel.nameFieldStringValue = "movie.mp4"
       savePanel.canSelectHiddenExtension = true
       savePanel.allowedFileTypes = ["mp4"]
-      
-      /*
-      let publicationString: NSMutableAttributedString = NSMutableAttributedString(string: "For use in scientific publications, please cite:\n")
-      let fontMask: NSFontTraitMask = NSFontTraitMask.boldFontMask
-      let stringRange: NSRange = NSMakeRange(0, publicationString.length - 1)
-      publicationString.applyFontTraits(fontMask, range: stringRange)
-      publicationString.append(NSAttributedString(string: "D. Dubbeldam, S. Calero, and T.J.H. Vlugt,\n \"iRASPA: GPU-Accelerated Visualization Software for Materials Scientists\",\nMol. Simulat., DOI: 10.1080/08927022.2018.1426855, 2018. "))
-      
-      let foundRange: NSRange = publicationString.mutableString.range(of: "10.1080/08927022.2018.1426855")
-      
-      if foundRange.location != NSNotFound
-      {
-        publicationString.addAttribute(NSAttributedStringKey.link, value: "http://dx.doi.org/10.1080/08927022.2018.1426855", range: foundRange)
-      }
-      
-      let accessoryView: NSView = NSView(frame: NSMakeRect(0.0, 0.0, 600, 70.0))
-      let textView: NSTextView = NSTextView(frame: NSMakeRect(0.0, 0.0, 600, 70.0))
-      textView.drawsBackground = true
-      textView.isEditable = false
-      textView.textStorage?.setAttributedString(publicationString)
-      accessoryView.addSubview(textView)
-      savePanel.accessoryView = textView
-      */
       
       let exportPictureAccessoryViewController: ExportPictureAccessoryViewController = ExportPictureAccessoryViewController(nibName: "ExportPictureAccessoryViewController", bundle: Bundle.main)
       
@@ -2867,6 +2850,24 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
         if result == NSApplication.ModalResponse.OK
         {
+          let connection = NSXPCConnection(serviceName: "nl.darkwing.iRASPA.MovieCreationService")
+          connection.remoteObjectInterface = NSXPCInterface(with: MovieCreationProtocol.self)
+          connection.resume()
+
+          let service = connection.remoteObjectProxyWithErrorHandler { error in
+              print("Received error:", error)
+          } as? MovieCreationProtocol
+          
+          service?.makeVideo(project: project, camera: project.renderCamera ?? RKCamera(), size: NSSize(width: 1600, height: 1200)) { movieURL in
+            DispatchQueue.main.async(execute: {
+              try? FileManager.default.removeItem(at: savePanel.url!)
+              try! FileManager.default.moveItem(at: movieURL, to: savePanel.url!)
+              debugPrint()
+              //try? movieData.write(to: savePanel.url!, options: [.atomic])
+            })
+          }
+            
+          /*
           if let selectedFile: URL = savePanel.url,
              let maximumNumberOfFrames = project.sceneList.maximumNumberOfFrames
           {
@@ -2918,6 +2919,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
             self.reloadData()
             self.redraw()
           }
+           */
         }
       })
     }

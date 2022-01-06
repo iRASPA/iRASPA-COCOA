@@ -41,7 +41,7 @@ public struct CameraNotificationStrings
   public static let projectionDidChangeNotification: String = "CameraProjectionDidChangeNotification"
 }
 
-public class RKCamera: BinaryDecodable, BinaryEncodable
+public class RKCamera: NSObject, BinaryDecodable, BinaryEncodable, NSSecureCoding
 {
   private static var classVersionNumber: Int = 1
   
@@ -138,7 +138,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     }
   }
   
-  public init()
+  public override init()
   {
     zNear = 1.0
     zFar = 1000.0
@@ -163,6 +163,8 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     resetDirectionType = .plus_Z;
     
     viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0.0, y: 1.0, z:0.0))
+    super.init()
+    
     setCameraToOrthographic()
   }
   
@@ -865,6 +867,33 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0, y: 1, z:0))
     
     self.initialized = false
+  }
+  
+  // MARK: -
+  // MARK: NSSecureCoding support
+  
+  public static var supportsSecureCoding: Bool = true
+  
+  public func encode(with coder: NSCoder)
+  {
+    let binaryEncoder: BinaryEncoder = BinaryEncoder()
+    binaryEncoder.encode(self)
+    let data: Data = Data(binaryEncoder.data)
+    coder.encode(data, forKey: "data")
+  }
+  
+  public convenience required init?(coder decoder: NSCoder)
+  {
+    guard let data: Data = decoder.decodeObject(of: NSData.self, forKey: "data") as Data? else {return nil}
+    let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
+    do
+    {
+      try self.init(fromBinary: binaryDecoder)
+    }
+    catch
+    {
+      return nil
+    }
   }
   
 }

@@ -30,55 +30,8 @@
  *************************************************************************************************************/
 
 import Foundation
-import BinaryCodable
 
-public class ProjectNode: NSObject, BinaryDecodable, BinaryEncodable
-{
-  private static var classVersionNumber: Int = 1
-  public var displayName: String = "Default"
-  
-  // each project has its own undo-manager
-  public lazy var undoManager: UndoManager = UndoManager()
-  public var fileName: String = UUID().uuidString
-  
-  /// A Boolean value indicating whether the project has changes that have not been saved
-  ///
-  /// - returns: true if the project is edited, otherwise false
-  public var isEdited: Bool = false
-
-  public init(name: String)
-  {
-    self.displayName = name
-  }
-  
-  public var infoPanelString: String
-  {
-    return self.displayName
-  }
-  
-  // MARK: -
-  // MARK: Binary Encodable support
-  
-  public func binaryEncode(to encoder: BinaryEncoder)
-  {
-    encoder.encode(ProjectNode.classVersionNumber)
-    encoder.encode(self.displayName)
-    encoder.encode(self.isEdited)
-  }
-  
-  // MARK: -
-  // MARK: Binary Decodable support
-  
-  required public init(fromBinary decoder: BinaryDecoder) throws
-  {
-    let readVersionNumber: Int = try decoder.decode(Int.self)
-    if readVersionNumber > ProjectNode.classVersionNumber
-    {
-      throw BinaryDecodableError.invalidArchiveVersion
-    }
-    self.displayName  = try decoder.decode(String.self)
-    self.isEdited  = try decoder.decode(Bool.self)
-    self.fileName = ""
-  }
-}
-
+let delegate = PictureCreationServiceDelegate()
+let listener = NSXPCListener.service()
+listener.delegate = delegate
+listener.resume()
