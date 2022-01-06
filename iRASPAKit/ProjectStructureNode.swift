@@ -36,7 +36,7 @@ import SimulationKit
 import RenderKit
 import SymmetryKit
 
-public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRenderCameraSource
+public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRenderCameraSource, NSSecureCoding
 {
   private static var classVersionNumber: Int = 5
   
@@ -579,4 +579,34 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     try super.init(fromBinary: decoder)
   }
   
+  // MARK: -
+  // MARK: NSSecureCoding support
+  
+  public static var supportsSecureCoding: Bool = true
+  
+  public func encode(with coder: NSCoder)
+  {
+    let binaryEncoder: BinaryEncoder = BinaryEncoder()
+    binaryEncoder.encode(self)
+    let data: Data = Data(binaryEncoder.data)
+    coder.encode(data, forKey: "data")
+    
+    // encode selection
+  }
+  
+  public convenience required init?(coder decoder: NSCoder)
+  {
+    guard let data: Data = decoder.decodeObject(of: NSData.self, forKey: "data") as Data? else {return nil}
+    let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
+    do
+    {
+      try self.init(fromBinary: binaryDecoder)
+    }
+    catch
+    {
+      return nil
+    }
+    
+    // decode selection
+  }
 }

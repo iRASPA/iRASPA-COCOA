@@ -206,7 +206,6 @@ public class RKFontAtlas
                                bitsPerPixel: 0)
     
     im.addRepresentation(rep!)
-    im.lockFocus()
     
     let context = NSGraphicsContext.current?.cgContext
     for (i, line) in lines.enumerated()
@@ -235,7 +234,6 @@ public class RKFontAtlas
         }
       }
     }
-    im.unlockFocus()
   }
   
   private func createTextureData()
