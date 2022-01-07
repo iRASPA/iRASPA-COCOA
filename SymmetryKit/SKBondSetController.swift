@@ -34,7 +34,7 @@ import BinaryCodable
 
 public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
 {
-  private static var classVersionNumber: Int = 2
+  private static var classVersionNumber: Int = 3
   
   public var arrangedObjects: [ SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom> ] = []
   
@@ -225,99 +225,45 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
   {
     encoder.encode(SKBondSetController.classVersionNumber)
     encoder.encode(self.arrangedObjects)
+    encoder.encode(Array(self.selectedObjects))
   }
   
   // MARK: -
   // MARK: Binary Decodable support
   
-  var readVersionNumber: UInt32 = 0
-  var readBonds: [SKBondNode] = []
-  
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
-    readVersionNumber = try decoder.decode(UInt32.self)
+    let readVersionNumber: Int = try decoder.decode(Int.self)
     if readVersionNumber > SKBondSetController.classVersionNumber
     {
       throw BinaryDecodableError.invalidArchiveVersion
     }
     
     self.selectedObjects = []
-    
-    if readVersionNumber == 0
+    self.arrangedObjects = try decoder.decode([SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>].self)
+    if readVersionNumber >= 3 // introduced in version 3
     {
-      let readVersionNumber2: UInt32 = try decoder.decode(UInt32.self)
-      if (readVersionNumber2 > 1)
-      {
-        readVersionNumber = 1
-        self.arrangedObjects = try decoder.decode([ SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom> ].self)
-      }
-      else
-      {
-        let length: Int = Int(try decoder.decode(Int.self))
-        var atom1Tags: [Int] = []
-        var atom2Tags: [Int] = []
-        var bondBoundaryTypes: [Int] = []
-        for _ in 0..<length
-        {
-          let a = try decoder.decode(Int.self)
-          let b = try decoder.decode(Int.self)
-          let c = try decoder.decode(Int.self)
-          atom1Tags.append(a)
-          atom2Tags.append(b)
-          bondBoundaryTypes.append(c)
-        }
-      
-        for ((atom1Tag, atom2Tag), boundaryType) in zip(zip(atom1Tags, atom2Tags), bondBoundaryTypes)
-        {
-          guard let bondType = SKBondNode.BoundaryType(rawValue: boundaryType) else {throw BinaryCodableError.invalidArchiveData}
-          let bond: SKBondNode = SKBondNode(atom1: SKBondNode.uninitializedAtom, atom2: SKBondNode.uninitializedAtom, boundaryType: bondType)
-          bond.atom1Tag = atom1Tag
-          bond.atom2Tag = atom2Tag
-          readBonds.append(bond)
-        }
-      }
-    }
-    else
-    {
-      self.arrangedObjects = try decoder.decode([ SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom> ].self)
+      let selection: [Int] = try decoder.decode([Int].self)
+      self.selectedObjects = IndexSet(selection)
     }
   }
   
   public func restoreBonds(atomTreeController: SKAtomTreeController)
   {
-    if readVersionNumber == 0
+    // restore references to asymmetricAtoms in the asymmetricBonds
+    let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    for i in 0..<self.arrangedObjects.count
     {
-      // fill in atoms from stored atom-tags
-      let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-      let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
-      
-      for bond in readBonds
-      {
-        let atom1 = atomList[min(bond.atom1Tag, bond.atom2Tag)]
-        let atom2 = atomList[max(bond.atom1Tag, bond.atom2Tag)]
-        bond.atom1 = atom1
-        bond.atom2 = atom2
-      }
-      
-      self.bonds = readBonds
+      self.arrangedObjects[i].atom1 = asymmetricAtoms[min(self.arrangedObjects[i].tag1,self.arrangedObjects[i].tag2)]
+      self.arrangedObjects[i].atom2 = asymmetricAtoms[max(self.arrangedObjects[i].tag1,self.arrangedObjects[i].tag2)]
     }
-    else
+    
+    // restore the references to atom-copies in bond-copies
+    let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
+    for bond in self.bonds
     {
-      // restore references to asymmetricAtoms in the asymmetricBonds
-      let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-      for i in 0..<self.arrangedObjects.count
-      {
-        self.arrangedObjects[i].atom1 = asymmetricAtoms[min(self.arrangedObjects[i].tag1,self.arrangedObjects[i].tag2)]
-        self.arrangedObjects[i].atom2 = asymmetricAtoms[max(self.arrangedObjects[i].tag1,self.arrangedObjects[i].tag2)]
-      }
-      
-      // restore the references to atom-copies in bond-copies
-      let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
-      for bond in self.bonds
-      {
-        bond.atom1 = atomList[min(bond.atom1Tag, bond.atom2Tag)]
-        bond.atom2 = atomList[max(bond.atom1Tag, bond.atom2Tag)]
-      }
+      bond.atom1 = atomList[min(bond.atom1Tag, bond.atom2Tag)]
+      bond.atom2 = atomList[max(bond.atom1Tag, bond.atom2Tag)]
     }
   }
 }

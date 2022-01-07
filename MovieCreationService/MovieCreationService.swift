@@ -45,7 +45,7 @@ class MovieCreationService: NSObject, MovieCreationProtocol
   
   func makeVideo(project: ProjectStructureNode, camera: RKCamera, size: NSSize, withReply reply: @escaping (URL) -> Void)
   {
-    project.setInitialSelectionIfNeeded() // FIX
+    project.setInitialSelectionIfNeeded()
     camera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
     let maximumNumberOfFrames = project.sceneList.maximumNumberOfFrames ?? 0
     

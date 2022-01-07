@@ -35,7 +35,7 @@ import simd
 
 public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
 {
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
 
   private var hiddenRootNode: SKAtomTreeNode
   
@@ -445,6 +445,10 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
     {
       return Array(selectedTreeNodes).map{$0.indexPath}
     }
+    set(newSelection)
+    {
+      selectedTreeNodes = Set(newSelection.compactMap{self.nodeAtIndexPath($0)})
+    }
   }
   
   // Will create an IndexPath after the selection, or as for the top of the children of a group node
@@ -512,6 +516,7 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
   {
     encoder.encode(SKAtomTreeController.classVersionNumber)
     encoder.encode(self.hiddenRootNode)
+    encoder.encode(selectedTreeNodes.map{$0.indexPath})
   }
   
   // MARK: -
@@ -526,6 +531,12 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
     }
     
     self.hiddenRootNode = try decoder.decode(SKAtomTreeNode.self)
+    
+    if readVersionNumber >= 2 // introduced in version 2
+    {
+      let indexPaths: [IndexPath] = try decoder.decode([IndexPath].self)
+      self.selectionIndexPaths = indexPaths
+    }
   }
 }
 
