@@ -2824,10 +2824,14 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
               print("Received error:", error)
           } as? PictureCreationProtocol
           
-          service?.makePicture(project: project, camera: project.renderCamera ?? RKCamera(), size: size) { imageData in
-            DispatchQueue.main.async(execute: {
-              try? imageData.write(to: savePanel.url!, options: [.atomic])
-            })
+          if let camera = project.renderCamera,
+             let url = savePanel.url
+          {
+            service?.makePicture(project: project, camera: camera, size: size) { imageData in
+              DispatchQueue.main.async(execute: {
+                try? imageData.write(to: url, options: [.atomic])
+              })
+            }
           }
         }
       })
@@ -2858,68 +2862,20 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
               print("Received error:", error)
           } as? MovieCreationProtocol
           
-          service?.makeVideo(project: project, camera: project.renderCamera ?? RKCamera(), size: NSSize(width: 1600, height: 1200)) { movieURL in
-            DispatchQueue.main.async(execute: {
-              try? FileManager.default.removeItem(at: savePanel.url!)
-              try! FileManager.default.moveItem(at: movieURL, to: savePanel.url!)
-              debugPrint()
-              //try? movieData.write(to: savePanel.url!, options: [.atomic])
-            })
-          }
-            
-          /*
-          if let selectedFile: URL = savePanel.url,
-             let maximumNumberOfFrames = project.sceneList.maximumNumberOfFrames
+          let ratio: Double = self.aspectRatioValue
+          let size: NSSize = NSSize(width: Int(project.renderImageNumberOfPixels),
+                                    height: Int(0.5 + Double(project.renderImageNumberOfPixels)/ratio))
+          
+          if let camera = project.renderCamera,
+             let url = savePanel.url
           {
-            let ratio: Double = self.aspectRatioValue
-            let sizeX: Int = Int(project.renderImageNumberOfPixels)
-            let sizeY: Int = Int(0.5 + Double(project.renderImageNumberOfPixels)/ratio)
-          
-            let movie: RKMovieCreator = RKMovieCreator(url: selectedFile, width: sizeX, height: sizeY, framesPerSecond: project.numberOfFramesPerSecond , provider: renderViewController)
-          
-            
-            let savedSelection = project.sceneList.selection
-            
-            movie.beginEncoding()
-            switch(project.movieType)
-            {
-            case .frames:
-              project.sceneList.setAllMovieFramesToBeginning()
-              self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: project.renderStructures)
-              for _ in 0..<maximumNumberOfFrames
-              {
-                // only recompute ambient occlusion when there is more than 1 frame in the movie to avoid flickering
-                // when there are two movie in a scene we need to recompute all anyway
-                self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: project.renderStructures)
-                renderViewController.reloadData(ambientOcclusionQuality: .picture)
-                movie.addFrameToVideo()
-                project.sceneList.advanceAllMovieFrames()
-              }
-            case .rotationY:
-              renderViewController.reloadData(ambientOcclusionQuality: .picture)
-              for _ in stride(from: 0, through: 360, by: 3)
-              {
-                movie.addFrameToVideo()
-                let theta: Double = -3.0 * Double.pi/180.0
-                project.renderCamera?.rotateCameraAroundAxisY(angle: theta)
-              }
-              break
-            case .rotationXYlemniscate:
-              break
+            service?.makeVideo(project: project, camera: camera, size: size) { movieURL in
+              DispatchQueue.main.async(execute: {
+                try? FileManager.default.removeItem(at: url)
+                try! FileManager.default.moveItem(at: movieURL, to: url)
+              })
             }
-            movie.endEncoding()
-            
-            project.sceneList.selection = savedSelection
-            
-            if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), !renderStructures.isEmpty
-            {
-              self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
-            }
-          
-            self.reloadData()
-            self.redraw()
           }
-           */
         }
       })
     }
