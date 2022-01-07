@@ -2250,76 +2250,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   {
     return nil
   }
- /*
-  // MARK: -
-  // MARK: cell property-wrapper
-  
-  public var unitCell: double3x3
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.unitCell
-  }
-  
-  public var cellLengthA: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.a
-  }
-  
-  public var cellLengthB: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.b
-  }
-  
-  public var cellLengthC: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.c
-  }
-  
-  public var cellAngleAlpha: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.alpha
-  }
-  
-  public var cellAngleBeta: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.beta
-  }
-  
-  public var cellAngleGamma: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.gamma
-  }
-  
-  public var cellVolume: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.volume
-  }
-  
-  public var cellPerpendicularWidthsX: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.perpendicularWidths.x
-  }
-  
-  public var cellPerpendicularWidthsY: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.perpendicularWidths.y
-  }
-  
-  public var cellPerpendicularWidthsZ: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
-    return boundaryBoxCell.perpendicularWidths.z
-  }
-  */
+ 
   
   // MARK: -
   // MARK: general structure operations
@@ -3328,19 +3259,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     let calendar = Calendar.current
     
     encoder.encode(Structure.classVersionNumber)
-    
-    //encoder.encode(self.displayName)
-    //encoder.encode(isVisible)
-    
-    //encoder.encode(self.spaceGroupHallNumber ?? Int(1))
-    //encoder.encode(cell)
-    //encoder.encode(periodic)
-    //encoder.encode(origin)
-    //encoder.encode(scaling)
-    //encoder.encode(orientation)
-    //encoder.encode(rotationDelta)
-    
-    
     
     encoder.encode(frameworkProbeMolecule.rawValue)
     

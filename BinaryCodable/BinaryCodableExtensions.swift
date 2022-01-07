@@ -54,6 +54,23 @@ extension Int32: BinaryDecodable
   }
 }
 
+extension Int: BinaryEncodable
+{
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(Int(self))
+  }
+}
+
+extension Int: BinaryDecodable
+{
+  public init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let x: Int = try decoder.decode(Int.self)
+    self.init(x)
+  }
+}
+
 extension Float: BinaryEncodable
 {
   public func binaryEncode(to encoder: BinaryEncoder)
@@ -68,6 +85,24 @@ extension Float: BinaryDecodable
   {
     let x: Float = try decoder.decode(Float.self)
     self.init(x)
+  }
+}
+
+extension IndexPath: BinaryEncodable
+{
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    let elements: [IndexPath.Element] = Array<IndexPath.Element>(self)
+    encoder.encode(elements)
+  }
+}
+
+extension IndexPath: BinaryDecodable
+{
+  public init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let elements: [IndexPath.Element] = try decoder.decode([IndexPath.Element].self)
+    self.init(indexes: elements)
   }
 }
 

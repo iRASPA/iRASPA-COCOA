@@ -174,6 +174,25 @@ public extension BinaryEncoder
     self.encode(value.w)
   }
   
+  /*
+  func encode(_ value: [IndexPath])
+  {
+    self.encode(value.count)
+    for index in value
+    {
+      self.encode(index)
+    }
+  }
+  
+  func encode(_ value: IndexPath)
+  {
+    self.encode(value.count)
+    for index in value
+    {
+      self.encode(index)
+    }
+  }*/
+  
   func encode(_ value: String)
   {
     let array: [UInt16] = Array(value.utf16)

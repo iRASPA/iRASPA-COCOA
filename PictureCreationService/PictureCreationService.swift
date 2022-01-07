@@ -38,7 +38,7 @@ class PictureCreationService: NSObject, PictureCreationProtocol
 {
   func makePicture(project projectStructureNode: ProjectStructureNode, camera: RKCamera, size: NSSize, withReply reply: @escaping (NSData) -> Void)
   {
-    projectStructureNode.setInitialSelectionIfNeeded()
+    //projectStructureNode.setInitialSelectionIfNeeded()
     
     camera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
     

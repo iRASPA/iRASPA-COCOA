@@ -582,6 +582,9 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   // MARK: -
   // MARK: NSSecureCoding support
   
+  /// The NSSecureCoding protocol is convenient to send ProjectStructureNode Objects over XPC.
+  /// XPC is used for picture and movie creation for example.
+  
   public static var supportsSecureCoding: Bool = true
   
   public func encode(with coder: NSCoder)
@@ -591,12 +594,17 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     let data: Data = Data(binaryEncoder.data)
     coder.encode(data, forKey: "data")
     
-    // encode selection
+    // save the selection
+    let indexPaths: [IndexPath] = self.sceneList.selectionIndexPaths
+    let binarySelectionEncoder: BinaryEncoder = BinaryEncoder()
+    binarySelectionEncoder.encode(indexPaths)
+    let selectionData: Data = Data(binarySelectionEncoder.data)
+    coder.encode(selectionData, forKey: "selection")
   }
   
   public convenience required init?(coder decoder: NSCoder)
   {
-    guard let data: Data = decoder.decodeObject(of: NSData.self, forKey: "data") as Data? else {return nil}
+    guard let data: Data = decoder.decodeObject(of: NSData.self, forKey: "data") as Data?  else {return nil}
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
     do
     {
@@ -607,6 +615,10 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
       return nil
     }
     
-    // decode selection
+    // restore selection    
+    guard let selectionData: Data = decoder.decodeObject(of: NSData.self, forKey: "selection") as Data? else {return nil}
+    let binarySelectionDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](selectionData))
+    let indexPaths: [IndexPath] = (try? binarySelectionDecoder.decode([IndexPath].self)) ?? []
+    self.sceneList.selectionIndexPaths = indexPaths
   }
 }

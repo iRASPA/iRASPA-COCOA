@@ -192,7 +192,37 @@ public final class SceneList:  ObjectViewer, BinaryDecodable, BinaryEncodable
     }
   }
   
-  
+  var selectionIndexPaths: [IndexPath]
+  {
+    get
+    {
+      var indexPaths: [IndexPath] = []
+      for (sceneIndex, scene) in scenes.enumerated()
+      {
+        for (movieIndex, movie) in scene.movies.enumerated()
+        {
+          for (frameIndex, frame) in movie.frames.enumerated()
+          {
+            if movie.selectedFrames.contains(frame)
+            {
+              let indexPath: IndexPath = IndexPath(indexes: [sceneIndex,movieIndex, frameIndex])
+              indexPaths.append(indexPath)
+            }
+          }
+        }
+      }
+      return indexPaths
+    }
+    set(indexPaths)
+    {
+      for indexPath in indexPaths
+      {
+        let scene: Scene = scenes[indexPath[0]]
+        let movie: Movie = scene.movies[indexPath[1]]
+        movie.selectedFrames.insert(movie.frames[indexPath[2]])
+      }
+    }
+  }
   
   
   // used in movie-playing
