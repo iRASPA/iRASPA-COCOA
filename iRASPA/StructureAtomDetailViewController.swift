@@ -363,7 +363,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           view?.textField?.font = NSFont.systemFont(ofSize: view?.textField?.font?.pointSize ?? 18.0, weight: NSFont.Weight.regular)
           
           view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled && isAtomEditor
-          if let _ = (self.representedObject as? iRASPAObject)?.object as? RKRenderObjectSource
+          if let _ = (self.representedObject as? iRASPAObject)?.object as? RKRenderPrimitiveSource
           {
             view?.textField?.isEditable = false
           }
@@ -386,7 +386,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           */
           
           view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled && isAtomEditor
-          if let _ = (self.representedObject as? iRASPAObject)?.object as? RKRenderObjectSource
+          if let _ = (self.representedObject as? iRASPAObject)?.object as? RKRenderPrimitiveSource
           {
             view?.textField?.isEditable = false
           }
@@ -666,7 +666,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       let element: Int
       let displayName: String
-      if let _  = (self.representedObject as? iRASPAObject)?.object as? RKRenderObjectSource
+      if let _  = (self.representedObject as? iRASPAObject)?.object as? RKRenderPrimitiveSource
       {
         element = 0
         displayName = "center"

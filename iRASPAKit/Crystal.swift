@@ -2288,11 +2288,11 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, I
     let numberOfValues: Int32 = encompassingCubicGridSize * encompassingCubicGridSize * encompassingCubicGridSize
     var newdata = Array<SIMD4<Float>>(repeating: SIMD4<Float>(0.0,0.0,0.0,0.0), count: Int(numberOfValues))
         
-    for x: Int32 in 0..<dimensions.x
+    for z: Int32 in 0..<dimensions.z
     {
       for y: Int32 in 0..<dimensions.y
       {
-        for z: Int32 in 0..<dimensions.z
+        for x: Int32 in 0..<dimensions.x
         {
           let index: Int = Int(x+encompassingCubicGridSize*y+z*encompassingCubicGridSize*encompassingCubicGridSize)
           let value = copiedData[Int(x + dimensions.x*y + z*dimensions.x*dimensions.y)]
