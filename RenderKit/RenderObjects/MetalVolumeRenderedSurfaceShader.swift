@@ -1237,7 +1237,7 @@ class MetalEnergyVolumeRenderedSurfaceShader
     SIMD4<Float>(0.011765, 0.011765, 0.011765, 0.984375),
     SIMD4<Float>(0.007843, 0.007843, 0.007843, 0.988281),
     SIMD4<Float>(0.003922, 0.003922, 0.003922, 0.992188),
-    SIMD4<Float>(0.000000, 0.000000, 0.000000, 1.000000),
+    SIMD4<Float>(0.000000, 0.000000, 0.000000, 1.000000)
   ]
   
   static var GrayTransferFunction: [SIMD4<Float>] =

@@ -51,6 +51,23 @@ public protocol RKRenderObject: AnyObject
   func absoluteCartesianScenePosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
 }
 
+public protocol RKRenderLocalAxesSource
+{
+  var renderLocalAxis: RKLocalAxes {get}
+}
+
+public protocol RKRenderUnitCellSource: RKRenderObject
+{
+  var drawUnitCell: Bool {get}
+  
+  var unitCellScaleFactor: Double {get}
+  var unitCellDiffuseColor: NSColor {get}
+  var unitCellDiffuseIntensity: Double {get}
+  
+  var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms] {get}
+  var renderUnitCellCylinders: [RKInPerInstanceAttributesBonds] {get}
+}
+
 public protocol RKRenderAtomSource: RKRenderObject
 {
   var numberOfAtoms: Int {get}
@@ -143,17 +160,6 @@ public protocol RKRenderBondSource: RKRenderObject
   var bondSelectionScaling: Double {get}
 }
 
-public protocol RKRenderUnitCellSource: RKRenderObject
-{
-  var drawUnitCell: Bool {get}
-  var unitCellScaleFactor: Double {get}
-  var unitCellDiffuseColor: NSColor {get}
-  var unitCellDiffuseIntensity: Double {get}
-  
-  var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms] {get}
-  var renderUnitCellCylinders: [RKInPerInstanceAttributesBonds] {get}
-}
-
 public protocol RKRenderAdsorptionSurfaceSource: RKRenderObject
 {
   var drawAdsorptionSurface: Bool {get}
@@ -199,9 +205,9 @@ public protocol RKRenderAdsorptionSurfaceSource: RKRenderObject
   var adsorptionSurfaceBackSideShininess: Double {get}
 }
 
-public protocol RKRenderObjectSource //: RKRenderStructure
+public protocol RKRenderPrimitiveSource
 {
-  var numberOfAtoms: Int {get}
+  //var numberOfAtoms: Int {get}
   var drawAtoms: Bool {get}
   var isVisible: Bool {get}
   
@@ -255,13 +261,13 @@ public protocol RKRenderObjectSource //: RKRenderStructure
   var primitiveBackSideShininess: Double {get}
 }
 
-public protocol RKRenderCrystalEllipsoidObjectsSource: RKRenderObjectSource
+public protocol RKRenderCrystalEllipsoidObjectsSource: RKRenderPrimitiveSource
 {
   var renderCrystalEllipsoidObjects: [RKInPerInstanceAttributesAtoms] {get}
   var renderSelectedCrystalEllipsoidObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
-public protocol RKRenderEllipsoidObjectsSource: RKRenderObjectSource
+public protocol RKRenderEllipsoidObjectsSource: RKRenderPrimitiveSource
 {
   var renderEllipsoidObjects: [RKInPerInstanceAttributesAtoms] {get}
   var renderSelectedEllipsoidObjects: [RKInPerInstanceAttributesAtoms] {get}
@@ -269,33 +275,28 @@ public protocol RKRenderEllipsoidObjectsSource: RKRenderObjectSource
 
 
 
-public protocol RKRenderCrystalCylinderObjectsSource: RKRenderObjectSource
+public protocol RKRenderCrystalCylinderObjectsSource: RKRenderPrimitiveSource
 {
   var renderCrystalCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
   var renderSelectedCrystalCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
-public protocol RKRenderCylinderObjectsSource: RKRenderObjectSource
+public protocol RKRenderCylinderObjectsSource: RKRenderPrimitiveSource
 {
   var renderCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
   var renderSelectedCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
-public protocol RKRenderCrystalPolygonalPrismObjectsSource: RKRenderObjectSource
+public protocol RKRenderCrystalPolygonalPrismObjectsSource: RKRenderPrimitiveSource
 {
   var renderCrystalPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
   var renderSelectedCrystalPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
-public protocol RKRenderPolygonalPrismObjectsSource: RKRenderObjectSource
+public protocol RKRenderPolygonalPrismObjectsSource: RKRenderPrimitiveSource
 {
   var renderPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
   var renderSelectedPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
-}
-
-public protocol RKRenderLocalAxesSource
-{
-  var renderLocalAxis: RKLocalAxes {get}
 }
 
 public protocol RKRenderCameraSource: AnyObject
@@ -331,21 +332,3 @@ public protocol RKRenderDataSource: AnyObject
   
   var renderAxes: RKGlobalAxes {get}
 }
-
-/*
-public protocol RKRenderDensityVolumeSource: AnyObject
-{
-  var data: Data {get}
-  var dimensions: SIMD3<Int32> {get}
-  var spacing: SIMD3<Double> {get}
-}
-
-public protocol RKRenderRASPADensityVolumeSource: RKRenderDensityVolumeSource
-{
-
-}
-
-public protocol RKRenderVTKDensityVolumeSource: RKRenderDensityVolumeSource
-{
-
-}*/

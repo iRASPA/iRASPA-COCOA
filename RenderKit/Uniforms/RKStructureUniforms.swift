@@ -266,7 +266,7 @@ public struct RKStructureUniforms
       self.bondSelectionScaling = Float(max(1.001,structure.bondSelectionScaling)) // avoid artifacts
     }
     
-    if let structure: RKRenderObjectSource = structure as? RKRenderObjectSource
+    if let structure: RKRenderPrimitiveSource = structure as? RKRenderPrimitiveSource
     {
       self.atomSelectionStripesDensity = Float(structure.atomSelectionStripesDensity)
       self.atomSelectionStripesFrequency = Float(structure.atomSelectionStripesFrequency)

@@ -126,7 +126,7 @@ fragment FragOutput VolumeRenderedSurfaceFragmentShader(VolumeRenderedSurfaceVer
     float4 c = transferFunction.sample(transferFunctionSampler,values.r,isosurfaceUniforms.transferFunctionIndex);
 
     // allow to "zoom in" using the transparency
-    c.a = isosurfaceUniforms.diffuseFrontSide.w * smoothstep(isosurfaceUniforms.transparencyThreshold, 1.0, c.a);
+    c.a = smoothstep(isosurfaceUniforms.transparencyThreshold, 1.0, c.a);
 
     float3 R = reflect(-direction, normal);
     ambient = float3(0.1f,0.1f,0.1f);
@@ -189,7 +189,7 @@ fragment FragOutput VolumeRenderedSurfaceFragmentShader(VolumeRenderedSurfaceVer
   hsv.z = hsv.z * isosurfaceUniforms.value;
   
   output.depth = newDepth;
-  output.albedo = float4(hsv2rgb(hsv) * colour.a, colour.a);
+  output.albedo = float4(hsv2rgb(hsv) * isosurfaceUniforms.diffuseFrontSide.w * colour.a, isosurfaceUniforms.diffuseFrontSide.w * colour.a);
   
   return output;
 }

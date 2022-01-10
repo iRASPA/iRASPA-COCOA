@@ -53,8 +53,8 @@
 /* Class = "NSTextFieldCell"; title = "Bond Scale Factor"; ObjectID = "5tk-gG-FdV"; */
 "5tk-gG-FdV.title" = "Bond Scale Factor";
 
-/* Class = "NSTextFieldCell"; title = "Energy Isosurface"; ObjectID = "5xK-C0-rPU"; */
-"5xK-C0-rPU.title" = "Energy Isosurface";
+/* Class = "NSTextFieldCell"; title = "Volumetric Data"; ObjectID = "5xK-C0-rPU"; */
+"5xK-C0-rPU.title" = "Volumetric Data";
 
 /* Class = "NSBox"; title = "Bond Lighting"; ObjectID = "6Aw-j2-ekx"; */
 "6Aw-j2-ekx.title" = "Bond Lighting";

@@ -176,15 +176,12 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, IsosurfaceVi
     let numberOfValues: Int32 = encompassingCubicGridSize * encompassingCubicGridSize * encompassingCubicGridSize
     var newdata = Array<SIMD4<Float>>(repeating: SIMD4<Float>(0.0,0.0,0.0,0.0), count: Int(numberOfValues))
     
-    
-    
     for x: Int32 in 0..<dimensions.x
     {
       for y: Int32 in 0..<dimensions.y
       {
         for z: Int32 in 0..<dimensions.z
         {
-          let index: Int = Int(x+encompassingCubicGridSize*y+z*encompassingCubicGridSize*encompassingCubicGridSize)
           let value = copiedData[Int(x + dimensions.x*y + z*dimensions.x*dimensions.y)]
           
           let xi: Int32 = Int32(Float(x) + 0.5)
@@ -208,6 +205,7 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, IsosurfaceVi
           let zd2: Float =  copiedData[Int(x+y*dimensions.x+((zi+1+dimensions.z) % dimensions.z)*dimensions.x*dimensions.y)]
           let gz: Float =  (zd1 - zd0) * (1.0 - zf) + (zd2 - zd1) * zf
           
+          let index: Int = Int(x+encompassingCubicGridSize*y+z*encompassingCubicGridSize*encompassingCubicGridSize)
           newdata[index] = SIMD4<Float>(value,gx,gy,gz)
         }
       }
