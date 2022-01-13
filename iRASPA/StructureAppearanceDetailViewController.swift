@@ -114,7 +114,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           // fast way of updating: get the current-view, set properties on it, and update the rect to redraw
           if let proxyProject = self.proxyProject, proxyProject.isEditable,
-             !self.iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty,
+             !self.iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty,
              let view: NSTableCellView = self.appearanceOutlineView?.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView,
              let isovalue: Double = self.renderAdsorptionSurfaceIsovalue,
              let sliderIsovalue: NSSlider = view.viewWithTag(4) as? NSSlider,
@@ -2775,7 +2775,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     var adsorptionSurfaceOn: Bool = false
     if let proxyProject = proxyProject, proxyProject.isEditable,
-       !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+       !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
     {
       adsorptionSurfaceOn = self.renderAdsorptionSurfaceOn ?? false
     }
@@ -2788,7 +2788,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         checkDrawAdsorptionSurfacebutton.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           checkDrawAdsorptionSurfacebutton.isEnabled = enabled
           
@@ -2810,7 +2810,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonRenderingType.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           popUpbuttonRenderingType.isEditable = enabled && adsorptionSurfaceOn
           if let rawValue: Int = self.renderAdsorptionRenderingMethod?.rawValue
@@ -2832,7 +2832,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldStepLength.isEditable = false
         textFieldStepLength.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldStepLength.isEditable = enabled && adsorptionSurfaceOn
           if let stepLength = self.renderAdsorptionVolumeStepLength
@@ -2851,7 +2851,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonTransferFunction.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           popUpbuttonTransferFunction.isEditable = enabled && adsorptionSurfaceOn
           if let rawValue: Int = self.renderAdsorptionVolumeTransferFunction?.rawValue
@@ -2872,7 +2872,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonProbeParticle.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           popUpbuttonProbeParticle.isEditable = enabled && adsorptionSurfaceOn
           if let rawValue: Int = self.renderAdsorptionSurfaceProbeMolecule?.rawValue
@@ -2893,7 +2893,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldIsovalue.isEditable = false
         textFieldIsovalue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldIsovalue.isEditable = enabled && adsorptionSurfaceOn
           if let isovalue = self.renderAdsorptionSurfaceIsovalue
@@ -2910,7 +2910,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderIsovalue.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderIsovalue.isEnabled = enabled && adsorptionSurfaceOn
           if let isovalue = self.renderAdsorptionSurfaceIsovalue,
@@ -2930,7 +2930,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldOpacity.isEditable = false
         textFieldOpacity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldOpacity.isEditable = enabled && adsorptionSurfaceOn
           if let opacity = self.renderAdsorptionSurfaceOpacity
@@ -2947,7 +2947,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderOpacity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderOpacity.isEnabled = enabled && adsorptionSurfaceOn
           if let opacity = self.renderAdsorptionSurfaceOpacity
@@ -2970,7 +2970,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldTransparencyThreshold.isEditable = false
         textFieldTransparencyThreshold.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldTransparencyThreshold.isEditable = enabled && adsorptionSurfaceOn
           if let opacity = self.renderAdsorptionTransparencyThreshold
@@ -2987,7 +2987,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderTransparencyThreshold.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderTransparencyThreshold.isEnabled = enabled && adsorptionSurfaceOn
           if let opacity = self.renderAdsorptionTransparencyThreshold
@@ -3012,13 +3012,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         popUpbuttonSurfaceSize.autoenablesItems = false
         
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           popUpbuttonSurfaceSize.isEditable = enabled && adsorptionSurfaceOn
           if let powerOfTwo: Int = self.renderEncompassingPowerOfTwoCubicGridSize,
              let dimensions: SIMD3<Int32> = self.renderGridDimension
           {
-            popUpbuttonSurfaceSize.isEnabled = !self.iRASPAObjects.compactMap{($0.object as? IsosurfaceEditor)}.isEmpty
+            popUpbuttonSurfaceSize.isEnabled = !self.iRASPAObjects.compactMap{($0.object as? VolumetricDataEditor)}.isEmpty
             popUpbuttonSurfaceSize.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonSurfaceSize.selectItem(at: powerOfTwo)
             
@@ -3040,7 +3040,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldHue.isEditable = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceHue: Double = self.renderAdsorptionSurfaceHue
@@ -3055,7 +3055,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderHue.minValue = 0.0
         sliderHue.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderHue.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceHue: Double = self.renderAdsorptionSurfaceHue
@@ -3071,7 +3071,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldSaturation.isEditable = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceSaturation: Double = self.renderAdsorptionSurfaceSaturation
@@ -3086,7 +3086,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSaturation.minValue = 0.0
         sliderSaturation.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderSaturation.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceSaturation: Double = self.renderAdsorptionSurfaceSaturation
@@ -3102,7 +3102,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldValue.isEditable = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceValue: Double = self.renderAdsorptionSurfaceValue
@@ -3117,7 +3117,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderValue.minValue = 0.0
         sliderValue.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderValue.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceValue: Double = self.renderAdsorptionSurfaceValue
@@ -3133,7 +3133,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         button.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           button.isEnabled = enabled && adsorptionSurfaceOn
           
@@ -3156,7 +3156,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldExposure.isEditable = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceFrontSideHDRExposure: Double = self.renderAdsorptionSurfaceFrontSideHDRExposure
@@ -3175,7 +3175,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderExposure.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceFrontSideHDRExposure: Double = self.renderAdsorptionSurfaceFrontSideHDRExposure
@@ -3192,7 +3192,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontAmbientIntensity.isEditable = false
         textFieldFrontAmbientIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldFrontAmbientIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let ambientIntensity = self.renderAdsorptionSurfaceFrontSideAmbientIntensity
@@ -3209,7 +3209,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontAmbientIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderFrontAmbientIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let ambientIntensity = self.renderAdsorptionSurfaceFrontSideAmbientIntensity
@@ -3225,7 +3225,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         ambientFrontSideColor.isEnabled = false
         ambientFrontSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           ambientFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceFrontSideAmbientColor
@@ -3241,7 +3241,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontDiffuseIntensity.isEditable = false
         textFieldFrontDiffuseIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldFrontDiffuseIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let diffuseIntensity = self.renderAdsorptionSurfaceFrontSideDiffuseIntensity
@@ -3258,7 +3258,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontDiffuseIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderFrontDiffuseIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let diffuseIntensity = self.renderAdsorptionSurfaceFrontSideDiffuseIntensity
@@ -3274,7 +3274,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         diffuseFrontSideColor.isEnabled = false
         diffuseFrontSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           diffuseFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceFrontSideDiffuseColor
@@ -3290,7 +3290,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontSpecularIntensity.isEditable = false
         textFieldFrontSpecularIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldFrontSpecularIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let specularIntensity = self.renderAdsorptionSurfaceFrontSideSpecularIntensity
@@ -3307,7 +3307,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontSpecularIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderFrontSpecularIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let specularIntensity = self.renderAdsorptionSurfaceFrontSideSpecularIntensity
@@ -3323,7 +3323,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         specularFrontSideColor.isEnabled = false
         specularFrontSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           specularFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceFrontSideSpecularColor
@@ -3340,7 +3340,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontShininess.isEditable = false
         textFieldFrontShininess.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldFrontShininess.isEditable = enabled && adsorptionSurfaceOn
           if let shininess = self.renderAdsorptionSurfaceFrontSideShininess
@@ -3357,7 +3357,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontShininess.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderFrontShininess.isEnabled = enabled && adsorptionSurfaceOn
           if let shininess = self.renderAdsorptionSurfaceFrontSideShininess
@@ -3376,7 +3376,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         button.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           button.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceHDR: Bool = self.renderAdsorptionSurfaceBackSideHDR
@@ -3398,7 +3398,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldExposure.isEditable = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceBackSideHDRExposure: Double = self.renderAdsorptionSurfaceBackSideHDRExposure
@@ -3417,7 +3417,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderExposure.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceBackSideHDRExposure: Double = self.renderAdsorptionSurfaceBackSideHDRExposure
@@ -3433,7 +3433,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackAmbientIntensity.isEditable = false
         textFieldBackAmbientIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldBackAmbientIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let ambientIntensity = self.renderAdsorptionSurfaceBackSideAmbientIntensity
@@ -3450,7 +3450,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackAmbientIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderBackAmbientIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let ambientIntensity = self.renderAdsorptionSurfaceBackSideAmbientIntensity
@@ -3466,7 +3466,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         ambientBackSideColor.isEnabled = false
         ambientBackSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           ambientBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceBackSideAmbientColor
@@ -3482,7 +3482,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackDiffuseIntensity.isEditable = false
         textFieldBackDiffuseIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldBackDiffuseIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let diffuseIntensity = self.renderAdsorptionSurfaceBackSideDiffuseIntensity
@@ -3499,7 +3499,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackDiffuseIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderBackDiffuseIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let diffuseIntensity = self.renderAdsorptionSurfaceBackSideDiffuseIntensity
@@ -3515,7 +3515,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         diffuseBackSideColor.isEnabled = false
         diffuseBackSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           diffuseBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceBackSideDiffuseColor
@@ -3531,7 +3531,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackSpecularIntensity.isEditable = false
         textFieldBackSpecularIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldBackSpecularIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let specularIntensity = self.renderAdsorptionSurfaceBackSideSpecularIntensity
@@ -3548,7 +3548,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackSpecularIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderBackSpecularIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let specularIntensity = self.renderAdsorptionSurfaceBackSideSpecularIntensity
@@ -3564,7 +3564,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         specularBackSideColor.isEnabled = false
         specularBackSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           specularBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceBackSideSpecularColor
@@ -3580,7 +3580,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackShininess.isEditable = false
         textFieldBackShininess.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           textFieldBackShininess.isEditable = enabled && adsorptionSurfaceOn
           if let shininess = self.renderAdsorptionSurfaceBackSideShininess
@@ -3597,7 +3597,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackShininess.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           sliderBackShininess.isEnabled = enabled && adsorptionSurfaceOn
           if let shininess = self.renderAdsorptionSurfaceBackSideShininess
@@ -9771,13 +9771,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
 
   public var renderGridRangeMinimum: Double?
   {
-    let set: Set<(Double)> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.range.0})
+    let set: Set<(Double)> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.range.0})
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderGridRangeMaximum: Double?
   {
-    let set: Set<(Double)> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.range.1})
+    let set: Set<(Double)> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.range.1})
     return Set(set).count == 1 ? set.first! : nil
   }
   
@@ -9785,12 +9785,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.drawAdsorptionSurface})
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.drawAdsorptionSurface})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.drawAdsorptionSurface = newValue ?? false}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.drawAdsorptionSurface = newValue ?? false}
     }
   }
   
@@ -9798,12 +9798,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceOpacity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceOpacity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceOpacity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceOpacity = newValue ?? 1.0}
     }
   }
   
@@ -9811,12 +9811,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionTransparencyThreshold})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionTransparencyThreshold})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionTransparencyThreshold = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionTransparencyThreshold = newValue ?? 1.0}
     }
   }
   
@@ -9824,24 +9824,24 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceIsoValue})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceIsoValue})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceIsoValue = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceIsoValue = newValue ?? 0.0}
     }
   }
   
   public var renderAdsorptionSurfaceMinimumValue: Double?
   {
-    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.range.0})
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.range.0})
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderAdsorptionSurfaceMaximumValue: Double?
   {
-    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.range.1})
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.range.1})
     return Set(set).count == 1 ? set.first! : nil
   }
   
@@ -9849,18 +9849,18 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.encompassingPowerOfTwoCubicGridSize})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.encompassingPowerOfTwoCubicGridSize})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceEditor)?.encompassingPowerOfTwoCubicGridSize = newValue ?? 6}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataEditor)?.encompassingPowerOfTwoCubicGridSize = newValue ?? 6}
     }
   }
   
   public var renderGridDimension: SIMD3<Int32>?
   {
-    let set: Set<SIMD3<Int32>> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.dimensions})
+    let set: Set<SIMD3<Int32>> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.dimensions})
     return Set(set).count == 1 ? set.first! : nil
   }
   
@@ -9868,12 +9868,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceRenderingMethod.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceRenderingMethod.rawValue})
       return Set(set).count == 1 ? RKEnergySurfaceType(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceRenderingMethod = newValue ?? RKEnergySurfaceType.isoSurface}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceRenderingMethod = newValue ?? RKEnergySurfaceType.isoSurface}
     }
   }
   
@@ -9881,12 +9881,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionVolumeTransferFunction.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionVolumeTransferFunction.rawValue})
       return Set(set).count == 1 ? RKPredefinedVolumeRenderingTransferFunction(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionVolumeTransferFunction = newValue ?? RKPredefinedVolumeRenderingTransferFunction.CoolWarmDiverging}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionVolumeTransferFunction = newValue ?? RKPredefinedVolumeRenderingTransferFunction.CoolWarmDiverging}
     }
   }
   
@@ -9894,12 +9894,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionVolumeStepLength})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionVolumeStepLength})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionVolumeStepLength = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionVolumeStepLength = newValue ?? 1.0}
     }
   }
   
@@ -9907,12 +9907,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceProbeMolecule.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceProbeMolecule.rawValue})
       return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
     }
   }
   
@@ -9920,12 +9920,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceHue})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceHue})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceHue = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceHue = newValue ?? 1.0}
     }
   }
     
@@ -9933,12 +9933,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceSaturation})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceSaturation})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceSaturation = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceSaturation = newValue ?? 1.0}
     }
   }
     
@@ -9946,12 +9946,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceValue})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceValue})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceValue = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceValue = newValue ?? 1.0}
     }
   }
    
@@ -9960,12 +9960,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideHDR})
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideHDR})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideHDR = newValue ?? true}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideHDR = newValue ?? true}
     }
   }
   
@@ -9973,12 +9973,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideHDRExposure})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideHDRExposure})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideHDRExposure = newValue ?? 1.5}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -9986,12 +9986,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -9999,12 +9999,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideDiffuseIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -10012,12 +10012,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideSpecularIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideSpecularIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideSpecularIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -10025,12 +10025,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideShininess})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideShininess})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideShininess = newValue ?? 4.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideShininess = newValue ?? 4.0}
     }
   }
   
@@ -10038,12 +10038,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideAmbientColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideAmbientColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
     }
   }
   
@@ -10051,12 +10051,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideDiffuseColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
     }
   }
   
@@ -10064,12 +10064,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideHDR})
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideHDR})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideHDR = newValue ?? true}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideHDR = newValue ?? true}
     }
   }
   
@@ -10077,12 +10077,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideHDRExposure})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideHDRExposure})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideHDRExposure = newValue ?? 1.5}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -10090,12 +10090,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -10103,12 +10103,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideDiffuseIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideDiffuseIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideDiffuseIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -10116,12 +10116,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideSpecularIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideSpecularIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideSpecularIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -10129,12 +10129,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideShininess})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideShininess})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideShininess = newValue ?? 4.0}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideShininess = newValue ?? 4.0}
     }
   }
   
@@ -10142,12 +10142,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideSpecularColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideSpecularColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
     }
   }
   
@@ -10155,12 +10155,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideAmbientColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
     }
   }
   
@@ -10168,12 +10168,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideDiffuseColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideDiffuseColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
     }
   }
   
@@ -10181,12 +10181,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideSpecularColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideSpecularColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
     }
   }
 

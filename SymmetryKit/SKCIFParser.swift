@@ -190,15 +190,17 @@ public final class SKCIFParser: SKParser, ProgressReporting
     {
       scene[currentMovie][currentFrame].kind = .proteinCrystal
       scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnit
+      scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnit ? 1 : self.spaceGroup.spaceGroupSetting.number
     }
     else
     {
       scene[currentMovie][currentFrame].kind = .crystal
       scene[currentMovie][currentFrame].drawUnitCell = true
+      scene[currentMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
     }
     
     scene[currentMovie][currentFrame].displayName = self.name
-    scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnit ? 1 : self.spaceGroup.spaceGroupSetting.number
+    
     scene[currentMovie][currentFrame].cell = cell
     scene[currentMovie][currentFrame].periodic = true
     scene[currentMovie][currentFrame].atoms = self.atoms
@@ -224,15 +226,17 @@ public final class SKCIFParser: SKParser, ProgressReporting
       {
         scene[currentSolventMovie][currentFrame].kind = .proteinCrystalSolvent
         scene[currentSolventMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnit
+        scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnit ? 1 : self.spaceGroup.spaceGroupSetting.number
       }
       else
       {
         scene[currentSolventMovie][currentFrame].kind = .crystalSolvent
         scene[currentSolventMovie][currentFrame].drawUnitCell = true
+        scene[currentSolventMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
       }
     
       scene[currentSolventMovie][currentFrame].displayName = self.name
-      scene[currentSolventMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnit ? 1 : self.spaceGroup.spaceGroupSetting.number
+      
       scene[currentSolventMovie][currentFrame].cell = cell
       scene[currentSolventMovie][currentFrame].periodic = true
       scene[currentSolventMovie][currentFrame].atoms = self.solvent

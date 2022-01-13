@@ -942,7 +942,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.bondSelectionScaling = bondAppearanceViewer.bondSelectionScaling
     }
     
-    if let adsorptionViewer: IsosurfaceViewer = object as? IsosurfaceViewer
+    if let adsorptionViewer: VolumetricDataViewer = object as? VolumetricDataViewer
     {
       self.drawAdsorptionSurface = adsorptionViewer.drawAdsorptionSurface
       self.encompassingPowerOfTwoCubicGridSize = adsorptionViewer.encompassingPowerOfTwoCubicGridSize

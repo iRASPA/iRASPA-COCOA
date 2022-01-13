@@ -119,7 +119,7 @@ public class RASPAVolumetricData: VolumetricData, RKRenderAdsorptionSurfaceSourc
       arr2 = convertedData.map{Float($0)}
     }
     
-    var maximum: Float = Float.leastNormalMagnitude
+    var maximum: Float = -Float.greatestFiniteMagnitude
     var minimum: Float = Float.greatestFiniteMagnitude
     var sum: Float = 0.0
     var sumSquared: Float = 0.0

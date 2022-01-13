@@ -38,7 +38,7 @@ import OperationKit
 import LogViewKit
 import simd
 
-public class VASPVolumetricData: Structure, IsosurfaceViewer, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource
+public class VASPVolumetricData: Structure, VolumetricDataViewer, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource
 {
   private static var classVersionNumber: Int = 1
   
@@ -70,7 +70,7 @@ public class VASPVolumetricData: Structure, IsosurfaceViewer, RKRenderAtomSource
   {
     super.init(from: object)
     
-    if let isosurfaceViewer: IsosurfaceViewer = object as? IsosurfaceViewer
+    if let isosurfaceViewer: VolumetricDataViewer = object as? VolumetricDataViewer
     {
       self.dimensions = isosurfaceViewer.dimensions
       self.spacing = isosurfaceViewer.spacing

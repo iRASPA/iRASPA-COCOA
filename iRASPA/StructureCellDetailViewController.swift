@@ -1148,7 +1148,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureHeliumVoidFraction.isEditable = false
         textFieldRenderStructureHeliumVoidFraction.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           textFieldRenderStructureHeliumVoidFraction.isEnabled = enabled
           if let structureHeliumVoidFraction: Double = self.renderStructureHeliumVoidFraction
@@ -1182,7 +1182,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureAccessiblePoreVolume.isEditable = false
         textFieldRenderStructureAccessiblePoreVolume.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           textFieldRenderStructureAccessiblePoreVolume.isEnabled = enabled
           if let structureAccessiblePoreVolume: Double = self.renderStructureAccessiblePoreVolume
@@ -1199,7 +1199,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let buttonComputeHeliumVoidFraction: NSButton = view.viewWithTag(10) as? NSButton
       {
         buttonComputeHeliumVoidFraction.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           buttonComputeHeliumVoidFraction.isEnabled = enabled
         }
@@ -1211,7 +1211,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let popUpbuttonProbeParticle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
         popUpbuttonProbeParticle.isEditable = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           popUpbuttonProbeParticle.isEditable = enabled
           if let probeMolecule: Structure.ProbeMolecule = self.renderFrameworkProbeMolecule
@@ -1226,7 +1226,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEditable = false
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.stringValue = ""
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEnabled = enabled
           if let structureVolumetricNitrogenSurfaceArea: Double = self.renderStructureVolumetricNitrogenSurfaceArea
@@ -1244,7 +1244,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEditable = false
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.stringValue = ""
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEnabled = enabled
           if let structureGravimetricNitrogenSurfaceArea: Double = self.renderStructureGravimetricNitrogenSurfaceArea
@@ -1263,7 +1263,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureNumberOfChannelSystems.isEditable = false
         textFieldRenderStructureNumberOfChannelSystems.stringValue = ""
         textFieldRenderStructureNumberOfChannelSystems.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           textFieldRenderStructureNumberOfChannelSystems.isEnabled = enabled
           textFieldRenderStructureNumberOfChannelSystems.isEditable = enabled
@@ -1282,7 +1282,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureNumberOfInaccessiblePockets.isEditable = false
         textFieldRenderStructureNumberOfInaccessiblePockets.stringValue = ""
         textFieldRenderStructureNumberOfInaccessiblePockets.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           textFieldRenderStructureNumberOfInaccessiblePockets.isEnabled = enabled
           textFieldRenderStructureNumberOfInaccessiblePockets.isEditable = enabled
@@ -1302,7 +1302,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let buttonComputeVolumetricSurfaceArea: NSButton = view.viewWithTag(10) as? NSButton
       {
         buttonComputeVolumetricSurfaceArea.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           buttonComputeVolumetricSurfaceArea.isEnabled = enabled
         }
@@ -1311,7 +1311,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let buttonComputeGeometricSurfaceArea: NSButton = view.viewWithTag(11) as? NSButton
       {
         buttonComputeGeometricSurfaceArea.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           buttonComputeGeometricSurfaceArea.isEnabled = enabled
         }
@@ -1324,7 +1324,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureDimensionalityOfPoreSystem.isEditable = false
         textFieldRenderStructureDimensionalityOfPoreSystem.stringValue = ""
         textFieldRenderStructureDimensionalityOfPoreSystem.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           textFieldRenderStructureDimensionalityOfPoreSystem.isEnabled = enabled
           textFieldRenderStructureDimensionalityOfPoreSystem.isEditable = enabled
@@ -1343,7 +1343,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureLargestCavityDiameter.isEditable = false
         textFieldRenderStructureLargestCavityDiameter.stringValue = ""
         textFieldRenderStructureLargestCavityDiameter.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           textFieldRenderStructureLargestCavityDiameter.isEnabled = enabled
           textFieldRenderStructureLargestCavityDiameter.isEditable = enabled
@@ -1362,7 +1362,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureRestrictingPoreLimitingDiameter.isEditable = false
         textFieldRenderStructureRestrictingPoreLimitingDiameter.stringValue = ""
         textFieldRenderStructureRestrictingPoreLimitingDiameter.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           textFieldRenderStructureRestrictingPoreLimitingDiameter.isEnabled = enabled
           textFieldRenderStructureRestrictingPoreLimitingDiameter.isEditable = enabled
@@ -1381,7 +1381,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEditable = false
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.stringValue = ""
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & IsosurfaceViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEnabled = enabled
           textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEditable = enabled
@@ -3337,7 +3337,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      let structures: [Structure & StructuralPropertyEditor & IsosurfaceViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & IsosurfaceViewer})
+      let structures: [Structure & StructuralPropertyEditor & VolumetricDataViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & VolumetricDataViewer})
       let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
         
       for (i, result) in results.enumerated()
@@ -3392,7 +3392,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     {
      do
       {
-        let structures: [Structure & StructuralPropertyEditor & IsosurfaceViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & IsosurfaceViewer})
+        let structures: [Structure & StructuralPropertyEditor & VolumetricDataViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & VolumetricDataViewer})
         let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: $0.frameworkProbeParameters)})
         for (i, result) in results.enumerated()
         {
@@ -4199,12 +4199,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureHeliumVoidFraction})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureHeliumVoidFraction})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureHeliumVoidFraction = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureHeliumVoidFraction = newValue ?? 0.0}
     }
   }
   
@@ -4225,12 +4225,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureAccessiblePoreVolume})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureAccessiblePoreVolume})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureAccessiblePoreVolume = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureAccessiblePoreVolume = newValue ?? 0.0}
     }
   }
   
@@ -4238,12 +4238,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.frameworkProbeMolecule.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.frameworkProbeMolecule.rawValue})
       return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.frameworkProbeMolecule = newValue ?? .helium}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.frameworkProbeMolecule = newValue ?? .helium}
     }
   }
   
@@ -4251,12 +4251,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureVolumetricNitrogenSurfaceArea})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureVolumetricNitrogenSurfaceArea})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureVolumetricNitrogenSurfaceArea = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureVolumetricNitrogenSurfaceArea = newValue ?? 0.0}
     }
   }
   
@@ -4264,12 +4264,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureGravimetricNitrogenSurfaceArea})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricNitrogenSurfaceArea})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureGravimetricNitrogenSurfaceArea = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricNitrogenSurfaceArea = newValue ?? 0.0}
     }
   }
   
@@ -4277,12 +4277,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureNumberOfChannelSystems})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureNumberOfChannelSystems})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureNumberOfChannelSystems = newValue ?? 0}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureNumberOfChannelSystems = newValue ?? 0}
     }
   }
   
@@ -4291,12 +4291,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureNumberOfInaccessiblePockets})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureNumberOfInaccessiblePockets})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureNumberOfInaccessiblePockets = newValue ?? 0}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureNumberOfInaccessiblePockets = newValue ?? 0}
     }
   }
   
@@ -4304,12 +4304,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureDimensionalityOfPoreSystem})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureDimensionalityOfPoreSystem})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureDimensionalityOfPoreSystem = newValue ?? 0}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureDimensionalityOfPoreSystem = newValue ?? 0}
     }
   }
   
@@ -4317,12 +4317,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureLargestCavityDiameter})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureLargestCavityDiameter})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureLargestCavityDiameter = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureLargestCavityDiameter = newValue ?? 0.0}
     }
   }
   
@@ -4331,12 +4331,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureRestrictingPoreLimitingDiameter})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureRestrictingPoreLimitingDiameter})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureRestrictingPoreLimitingDiameter = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureRestrictingPoreLimitingDiameter = newValue ?? 0.0}
     }
   }
   
@@ -4344,12 +4344,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureLargestCavityDiameterAlongAViablePath})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureLargestCavityDiameterAlongAViablePath})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & IsosurfaceViewer)?.structureLargestCavityDiameterAlongAViablePath = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureLargestCavityDiameterAlongAViablePath = newValue ?? 0.0}
     }
   }
   

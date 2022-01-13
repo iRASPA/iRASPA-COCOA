@@ -721,7 +721,7 @@
 		93D70EFC274CED1D00FBD919 /* AnnotationEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EFB274CED1D00FBD919 /* AnnotationEditor.swift */; };
 		93D70EFE274CF1D600FBD919 /* BondStructureEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EFD274CF1D600FBD919 /* BondStructureEditor.swift */; };
 		93D70F00274CF21900FBD919 /* LocalAxesEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EFF274CF21900FBD919 /* LocalAxesEditor.swift */; };
-		93D70F02274CF23800FBD919 /* IsosurfaceViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70F01274CF23800FBD919 /* IsosurfaceViewer.swift */; };
+		93D70F02274CF23800FBD919 /* VolumetricDataViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70F01274CF23800FBD919 /* VolumetricDataViewer.swift */; };
 		93D70F04274E3C7900FBD919 /* InfoEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70F03274E3C7900FBD919 /* InfoEditor.swift */; };
 		93D70F07274FB9A200FBD919 /* ForceFieldViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70F06274FB9A200FBD919 /* ForceFieldViewer.swift */; };
 		93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */; };
@@ -2287,7 +2287,7 @@
 		93D70EFB274CED1D00FBD919 /* AnnotationEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationEditor.swift; sourceTree = "<group>"; };
 		93D70EFD274CF1D600FBD919 /* BondStructureEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BondStructureEditor.swift; sourceTree = "<group>"; };
 		93D70EFF274CF21900FBD919 /* LocalAxesEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAxesEditor.swift; sourceTree = "<group>"; };
-		93D70F01274CF23800FBD919 /* IsosurfaceViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsosurfaceViewer.swift; sourceTree = "<group>"; };
+		93D70F01274CF23800FBD919 /* VolumetricDataViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumetricDataViewer.swift; sourceTree = "<group>"; };
 		93D70F03274E3C7900FBD919 /* InfoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoEditor.swift; sourceTree = "<group>"; };
 		93D70F06274FB9A200FBD919 /* ForceFieldViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceFieldViewer.swift; sourceTree = "<group>"; };
 		93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullPrecisionNumberFormatter.swift; sourceTree = "<group>"; };
@@ -3766,7 +3766,7 @@
 				93D70EFD274CF1D600FBD919 /* BondStructureEditor.swift */,
 				93D70EF7274CD3BD00FBD919 /* UnitCellEditor.swift */,
 				93D70EFF274CF21900FBD919 /* LocalAxesEditor.swift */,
-				93D70F01274CF23800FBD919 /* IsosurfaceViewer.swift */,
+				93D70F01274CF23800FBD919 /* VolumetricDataViewer.swift */,
 				93D70EFB274CED1D00FBD919 /* AnnotationEditor.swift */,
 				93F86E582721BE3C0060E250 /* StructuralPropertyEditor.swift */,
 				93F12B592034816F00FFABC3 /* SpaceGroupEditor.swift */,
@@ -5191,7 +5191,7 @@
 				9399E62D2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift in Sources */,
 				93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */,
 				93A31CA11EB5F75E0010101B /* ImportProjectOperation.swift in Sources */,
-				93D70F02274CF23800FBD919 /* IsosurfaceViewer.swift in Sources */,
+				93D70F02274CF23800FBD919 /* VolumetricDataViewer.swift in Sources */,
 				938B44E71EB7AE74006B7704 /* ImportNodesFromCloud.swift in Sources */,
 				93F936411EBCE2600094C509 /* ProjectGULPNode.swift in Sources */,
 				930DD6461E26BA5D00B8FE9B /* Crystal.swift in Sources */,

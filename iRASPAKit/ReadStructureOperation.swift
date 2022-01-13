@@ -63,7 +63,7 @@ class ReadStructureOperation: FKOperation
     case "CIF":
       parser = try SKCIFParser(displayName: displayName, data: data, onlyAsymmetricUnit: onlyAsymmetricUnit)
     case "PDB":
-      parser = try SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, onlyAsymmetricUnitProtein: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule)
+      parser = try SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule)
     case "XYZ":
       parser = try SKXYZParser(displayName: displayName, data: data)
     case "POSCAR", "CONTCAR":

@@ -256,7 +256,7 @@ public final class SKVASPLOCPOTParser: SKParser, ProgressReporting
       
      
   
-      var max: Float = Float.leastNormalMagnitude
+      var max: Float = -Float.greatestFiniteMagnitude
       var min: Float = Float.greatestFiniteMagnitude
       let numberOfValues: Int = Int(dimensions.x * dimensions.y * dimensions.z)
       gridData = Array<Float>(repeating: 0.0, count: numberOfValues)

@@ -276,7 +276,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, pdb data: Data, preview: Bool)
   {
-    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true, preview: preview) else {return nil}
+    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: true, asMolecule: false, asProtein: true, preview: preview) else {return nil}
     try? pdbParser.startParsing()
     let scene: Scene = Scene(parser: pdbParser.scene)
     let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])

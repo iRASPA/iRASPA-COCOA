@@ -277,7 +277,7 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
   
   private convenience init?(displayName: String, pdb data: Data)
   {
-    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true) else {return nil}
+    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: true, asMolecule: false, asProtein: true) else {return nil}
     try? pdbParser.startParsing()
     let scene: Scene = Scene(parser: pdbParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}

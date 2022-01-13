@@ -430,7 +430,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
       
       do
       {
-        let pdbParser: SKPDBParser = try SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
+        let pdbParser: SKPDBParser = try SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: true, asMolecule: false, asProtein: true)
         try pdbParser.startParsing()
         let scene: Scene = Scene(parser: pdbParser.scene)
         let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])

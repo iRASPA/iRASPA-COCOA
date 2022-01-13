@@ -34,7 +34,7 @@ import simd
 import RenderKit
 
 
-public protocol IsosurfaceViewer: AnyObject
+public protocol VolumetricDataViewer: AnyObject
 {
   var drawAdsorptionSurface: Bool {get set}
   var encompassingPowerOfTwoCubicGridSize: Int {get}
@@ -79,7 +79,7 @@ public protocol IsosurfaceViewer: AnyObject
   var adsorptionSurfaceBackSideSpecularColor: NSColor {get set}
 }
 
-public protocol IsosurfaceEditor: IsosurfaceViewer
+public protocol VolumetricDataEditor: VolumetricDataViewer
 {
   var encompassingPowerOfTwoCubicGridSize: Int {get set}
 }

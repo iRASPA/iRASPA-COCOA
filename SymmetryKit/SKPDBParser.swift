@@ -55,7 +55,6 @@ public final class SKPDBParser: SKParser, ProgressReporting
   
   var periodic: Bool = false
   var onlyAsymmetricUnitMolecule: Bool = false
-  var onlyAsymmetricUnitProtein: Bool = false
   var asMolecule: Bool = false
   var asProtein: Bool = false
   var preview: Bool = false
@@ -113,8 +112,8 @@ public final class SKPDBParser: SKParser, ProgressReporting
           if (periodic && !asProtein)
           {
             scene[currentMovie][currentFrame].kind = .proteinCrystal
-            scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitProtein
-            scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitProtein ? 1 : self.spaceGroup.spaceGroupSetting.number
+            scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitMolecule
+            scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitMolecule ? 1 : self.spaceGroup.spaceGroupSetting.number
           }
           else
           {
@@ -131,8 +130,8 @@ public final class SKPDBParser: SKParser, ProgressReporting
             if (periodic && !asProtein)
             {
               scene[currentMovie][currentFrame].kind = .proteinCrystal
-              scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitProtein
-              scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitProtein ? 1 : self.spaceGroup.spaceGroupSetting.number
+              scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitMolecule
+              scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitMolecule ? 1 : self.spaceGroup.spaceGroupSetting.number
             }
             else
             {
@@ -147,7 +146,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
             {
               scene[currentMovie][currentFrame].kind = .molecularCrystal
               scene[currentMovie][currentFrame].drawUnitCell = true
-              scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitMolecule ? 1 : self.spaceGroup.spaceGroupSetting.number
+              scene[currentMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
             }
             else
             {
@@ -175,11 +174,10 @@ public final class SKPDBParser: SKParser, ProgressReporting
     
   }
   
-  public init(displayName: String, data: Data, onlyAsymmetricUnitMolecule: Bool, onlyAsymmetricUnitProtein: Bool, asMolecule: Bool, asProtein: Bool, preview: Bool = false) throws
+  public init(displayName: String, data: Data, onlyAsymmetricUnitMolecule: Bool, asMolecule: Bool, asProtein: Bool, preview: Bool = false) throws
   {
     self.displayName = displayName
     self.onlyAsymmetricUnitMolecule = onlyAsymmetricUnitMolecule
-    self.onlyAsymmetricUnitProtein = onlyAsymmetricUnitProtein
     self.asMolecule = asMolecule
     self.asProtein = asProtein
     self.preview = preview
