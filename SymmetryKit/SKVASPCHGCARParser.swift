@@ -258,7 +258,7 @@ public final class SKVASPCHGCARParser: SKParser, ProgressReporting
   
       var sum: Float = 0.0
       var sumSquared: Float = 0.0
-      var max: Float = Float.leastNormalMagnitude
+      var max: Float = -Float.greatestFiniteMagnitude
       var min: Float = Float.greatestFiniteMagnitude
       let inverseVolume: Float = Float(1.0/cell.volume)
       let numberOfValues: Int = Int(dimensions.x * dimensions.y * dimensions.z)

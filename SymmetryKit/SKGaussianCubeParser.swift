@@ -216,7 +216,7 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     
    
     
-    var max: Float = Float.leastNormalMagnitude
+    var max: Float = -Float.greatestFiniteMagnitude
     var min: Float = Float.greatestFiniteMagnitude
     var sum: Float = 0.0
     var sumSquared: Float = 0.0

@@ -38,7 +38,7 @@ import OperationKit
 import LogViewKit
 import simd
 
-public class GaussianCubeVolumetricData: Structure, UnitCellViewer, IsosurfaceViewer, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource
+public class GaussianCubeVolumetricData: Structure, UnitCellViewer, VolumetricDataViewer, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource
 {  
   private static var classVersionNumber: Int = 1
   
@@ -69,7 +69,7 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, IsosurfaceVi
   {
     super.init(from: object)
     
-    if let isosurfaceViewer: IsosurfaceViewer = object as? IsosurfaceViewer
+    if let isosurfaceViewer: VolumetricDataViewer = object as? VolumetricDataViewer
     {
       self.dimensions = isosurfaceViewer.dimensions
       self.spacing = isosurfaceViewer.spacing

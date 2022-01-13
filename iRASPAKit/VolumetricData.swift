@@ -36,7 +36,7 @@ import BinaryCodable
 import simd
 
 
-public class VolumetricData: Object, IsosurfaceViewer, RKRenderUnitCellSource
+public class VolumetricData: Object, VolumetricDataViewer, RKRenderUnitCellSource
 {  
   private static var classVersionNumber: Int = 2
   
@@ -136,7 +136,7 @@ public class VolumetricData: Object, IsosurfaceViewer, RKRenderUnitCellSource
   {
     super.init(from: object)
     
-    if let isosurfaceViewer: IsosurfaceViewer = object as? IsosurfaceViewer
+    if let isosurfaceViewer: VolumetricDataViewer = object as? VolumetricDataViewer
     {
       self.drawAdsorptionSurface = isosurfaceViewer.drawAdsorptionSurface
       self.encompassingPowerOfTwoCubicGridSize = isosurfaceViewer.encompassingPowerOfTwoCubicGridSize
