@@ -233,7 +233,7 @@ class MetalEnergyVolumeRenderedSurfaceShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource,
+          if let structure: RKRenderVolumetricDataSource = structure as? RKRenderVolumetricDataSource,
              let vertexBuffer = vertexBuffer,
              let indexBuffer = indexBuffer,
              let texture = textureData[i][j],
@@ -294,7 +294,7 @@ class MetalEnergyVolumeRenderedSurfaceShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource,
+          if let structure: RKRenderVolumetricDataSource = structure as? RKRenderVolumetricDataSource,
              let vertexBuffer = vertexBuffer,
              let indexBuffer = indexBuffer,
              let texture = textureData[i][j],
@@ -350,7 +350,7 @@ class MetalEnergyVolumeRenderedSurfaceShader
         
         for (j, structure) in structures.enumerated()
         {
-          if let structure = structure as? RKRenderAdsorptionSurfaceSource,
+          if let structure = structure as? RKRenderVolumetricDataSource,
               structure.drawAdsorptionSurface,
               structure.adsorptionSurfaceRenderingMethod == .volumeRendering
           {

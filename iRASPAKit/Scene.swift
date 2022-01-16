@@ -373,6 +373,11 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           bondViewer.reComputeBonds()
         }
         
+        if let structuralPropertyViewer = iRASPAstructure.object as?  StructuralPropertyViewer
+        {
+          structuralPropertyViewer.recomputeDensityProperties()
+        }
+        
         
         movie.frames.append(iRASPAstructure)
       }

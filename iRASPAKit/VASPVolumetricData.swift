@@ -38,7 +38,7 @@ import OperationKit
 import LogViewKit
 import simd
 
-public class VASPVolumetricData: Structure, VolumetricDataViewer, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource
+public class VASPVolumetricData: Structure, VolumetricDataViewer, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderVolumetricDataSource
 {
   private static var classVersionNumber: Int = 1
   

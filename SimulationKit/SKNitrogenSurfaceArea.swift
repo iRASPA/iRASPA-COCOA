@@ -70,6 +70,7 @@ public class SKNitrogenSurfaceArea
               totalArea += area
             }
           }
+          debugPrint("total area \(totalArea)")
           results.append(totalArea)
         }
         else
