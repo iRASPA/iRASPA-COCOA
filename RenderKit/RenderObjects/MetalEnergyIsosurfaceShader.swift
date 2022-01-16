@@ -172,7 +172,7 @@ class MetalEnergyIsosurfaceShader
       
       for (j,structure) in structures.enumerated()
       {
-        if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource,
+        if let structure: RKRenderVolumetricDataSource = structure as? RKRenderVolumetricDataSource,
            let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: i, movieIndex: j),
            let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
            structure.drawAdsorptionSurface,
@@ -225,7 +225,7 @@ class MetalEnergyIsosurfaceShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource,
+          if let structure: RKRenderVolumetricDataSource = structure as? RKRenderVolumetricDataSource,
              let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: i, movieIndex: j),
              let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
              structure.drawAdsorptionSurface,
@@ -279,7 +279,7 @@ class MetalEnergyIsosurfaceShader
         
         for (j, structure) in structures.enumerated()
         {
-          if let structure = structure as? RKRenderAdsorptionSurfaceSource, structure.drawAdsorptionSurface
+          if let structure = structure as? RKRenderVolumetricDataSource, structure.drawAdsorptionSurface
           {
             var data: [Float] = []
             

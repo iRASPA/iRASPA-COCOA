@@ -38,7 +38,7 @@ import LogViewKit
 import SimulationKit
 import OperationKit
 
-public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCellEditor, VolumetricDataEditor, SpaceGroupEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource, Cloning
+public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCellEditor, VolumetricDataEditor, SpaceGroupEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderVolumetricDataSource, Cloning
 {  
   private static var classVersionNumber: Int = 2
     

@@ -51,7 +51,7 @@ public protocol StructuralPropertyViewer: AnyObject
   var structureNumberOfChannelSystems: Int {get}
   var structureNumberOfInaccessiblePockets: Int {get}
   var structureDimensionalityOfPoreSystem: Int {get}
-  var structureLargestCavityDiameter : Double {get}
+  var structureLargestCavityDiameter: Double {get}
   var structureRestrictingPoreLimitingDiameter: Double {get}
   var structureLargestCavityDiameterAlongAViablePath : Double {get}
 }

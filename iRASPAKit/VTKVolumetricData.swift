@@ -35,7 +35,7 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public class VTKVolumetricData: VolumetricData, RKRenderAdsorptionSurfaceSource, UnitCellEditor, Cloning
+public class VTKVolumetricData: VolumetricData, RKRenderVolumetricDataSource, UnitCellEditor, Cloning
 {
   private static var classVersionNumber: Int = 1
   

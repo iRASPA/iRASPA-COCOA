@@ -160,7 +160,7 @@ public protocol RKRenderBondSource: RKRenderObject
   var bondSelectionScaling: Double {get}
 }
 
-public protocol RKRenderAdsorptionSurfaceSource: RKRenderObject
+public protocol RKRenderVolumetricDataSource: RKRenderObject
 {
   var drawAdsorptionSurface: Bool {get}
   

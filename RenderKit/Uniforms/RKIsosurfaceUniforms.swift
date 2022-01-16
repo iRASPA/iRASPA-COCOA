@@ -83,7 +83,7 @@ public struct RKIsosurfaceUniforms
     self.boxMatrix = float4x4(Double3x3: boxMatrix)
     self.inverseBoxMatrix = float4x4(Double3x3: boxMatrix.inverse)
     
-    if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource
+    if let structure: RKRenderVolumetricDataSource = structure as? RKRenderVolumetricDataSource
     {
       self.stepLength = Float(structure.adsorptionVolumeStepLength)
       

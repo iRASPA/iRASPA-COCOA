@@ -37,7 +37,7 @@ import simd
 
 import Foundation
 
-public class RASPAVolumetricData: VolumetricData, RKRenderAdsorptionSurfaceSource, UnitCellEditor, Cloning
+public class RASPAVolumetricData: VolumetricData, RKRenderVolumetricDataSource, UnitCellEditor, Cloning
 {
   private static var classVersionNumber: Int = 1
   
