@@ -57,15 +57,15 @@ public protocol AtomStructureEditor: AnyObject
   func getRepresentationForceFieldOrder() -> SKForceFieldSets.ForceFieldOrder?
   func setRepresentationForceFieldOrder(order: SKForceFieldSets.ForceFieldOrder?, forceFieldSets: SKForceFieldSets)
   
+ 
+  var drawAtoms: Bool {get set}
+  
   var atomHue: Double {get set}
   var atomSaturation: Double {get set}
   var atomValue: Double {get set}
   var atomScaleFactor: Double {get set}
   
-  var drawAtoms: Bool {get set}
-  
   var atomAmbientOcclusion: Bool {get set}
-  
   var atomHDR: Bool {get set}
   var atomHDRExposure: Double {get set}
   

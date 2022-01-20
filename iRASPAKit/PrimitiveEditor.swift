@@ -42,8 +42,8 @@ public protocol PrimitiveEditor: AnyObject
   var primitiveOpacity: Double {get set}
   var primitiveNumberOfSides: Int {get set}
   var primitiveIsCapped: Bool {get set}
-  var primitiveIsFractional: Bool {get set}
-  var primitiveThickness: Double {get set}
+  var primitiveIsFractional: Bool {get set} // check if needed
+  var primitiveThickness: Double {get set} // check if needed
   
   var primitiveSelectionStyle: RKSelectionStyle {get set}
   var primitiveSelectionScaling: Double {get set}
