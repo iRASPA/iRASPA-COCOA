@@ -24,7 +24,6 @@
 		930C97671FCEC6AD00B4611E /* InfoTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C97661FCEC6AD00B4611E /* InfoTableRowView.swift */; };
 		930C97691FCEC6C200B4611E /* ElementsTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C97681FCEC6C200B4611E /* ElementsTableRowView.swift */; };
 		930C976B1FCEC6D300B4611E /* CellTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C976A1FCEC6D300B4611E /* CellTableRowView.swift */; };
-		930DC94D23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DC94C23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift */; };
 		930DD49D1E26A80F00B8FE9B /* SimulationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 930DD48D1E26A80E00B8FE9B /* SimulationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		930DD4A01E26A80F00B8FE9B /* SimulationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD48B1E26A80E00B8FE9B /* SimulationKit.framework */; };
 		930DD4A11E26A80F00B8FE9B /* SimulationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD48B1E26A80E00B8FE9B /* SimulationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -407,8 +406,6 @@
 		9399E6332459DA3700036EBF /* MetalCrystalPolygonalPrismShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E6322459DA3700036EBF /* MetalCrystalPolygonalPrismShader.swift */; };
 		9399E6352459DADC00036EBF /* MetalCrystalEllipsoidShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E6342459DADB00036EBF /* MetalCrystalEllipsoidShader.swift */; };
 		9399E6372459DB5000036EBF /* MetalCrystalCylinderShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E6362459DB5000036EBF /* MetalCrystalCylinderShader.swift */; };
-		939A4DCA276CC78A00DEDD3C /* SKMetalMarchingCubes64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939A4DC9276CC78A00DEDD3C /* SKMetalMarchingCubes64.swift */; };
-		939A4DCC276CFEC100DEDD3C /* SKMetalMarchingCubes512.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939A4DCB276CFEC100DEDD3C /* SKMetalMarchingCubes512.swift */; };
 		939B205D1EF2C8370061DE8D /* simd_quatd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B205C1EF2C8370061DE8D /* simd_quatd.swift */; };
 		939B205F1EF2CE670061DE8D /* double4x4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B205E1EF2CE670061DE8D /* double4x4.swift */; };
 		939B20611EF2CE750061DE8D /* double3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B20601EF2CE750061DE8D /* double3x3.swift */; };
@@ -421,9 +418,7 @@
 		939B20731EF2D0920061DE8D /* Int32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B20721EF2D0920061DE8D /* Int32.swift */; };
 		939C5693234A3BC1009A9BB2 /* MarchingCubes3D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 939C5692234A3BC1009A9BB2 /* MarchingCubes3D.metal */; };
 		939C8A7C263308C700ECA258 /* CreditsOtherContributors.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 939C8A7B263308C700ECA258 /* CreditsOtherContributors.rtf */; };
-		939E7F4B276DE2E900CC654D /* SKMetalMarchingCubes32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E7F4A276DE2E900CC654D /* SKMetalMarchingCubes32.swift */; };
 		939E7F4D276F2FF100CC654D /* SKMetalMarchingCubes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E7F4C276F2FF100CC654D /* SKMetalMarchingCubes.swift */; };
-		939E7F4F276FC91800CC654D /* SKMetalMarchingCubes16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E7F4E276FC91800CC654D /* SKMetalMarchingCubes16.swift */; };
 		939E7F512779D78A00CC654D /* VolumeRenderedSurfaceShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 939E7F502779D78A00CC654D /* VolumeRenderedSurfaceShader.metal */; };
 		939E7F53277A362F00CC654D /* SKVASPELFCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E7F52277A362F00CC654D /* SKVASPELFCARParser.swift */; };
 		939FFA7F225362B1000A1A46 /* SKVASPXDATCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939FFA7E225362B1000A1A46 /* SKVASPXDATCARParser.swift */; };
@@ -1372,7 +1367,6 @@
 		930C97661FCEC6AD00B4611E /* InfoTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableRowView.swift; sourceTree = "<group>"; };
 		930C97681FCEC6C200B4611E /* ElementsTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementsTableRowView.swift; sourceTree = "<group>"; };
 		930C976A1FCEC6D300B4611E /* CellTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellTableRowView.swift; sourceTree = "<group>"; };
-		930DC94C23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes256.swift; sourceTree = "<group>"; };
 		930DD48B1E26A80E00B8FE9B /* SimulationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SimulationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		930DD48D1E26A80E00B8FE9B /* SimulationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimulationKit.h; sourceTree = "<group>"; };
 		930DD48E1E26A80E00B8FE9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1876,8 +1870,6 @@
 		9399E6322459DA3700036EBF /* MetalCrystalPolygonalPrismShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalPolygonalPrismShader.swift; sourceTree = "<group>"; };
 		9399E6342459DADB00036EBF /* MetalCrystalEllipsoidShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalEllipsoidShader.swift; sourceTree = "<group>"; };
 		9399E6362459DB5000036EBF /* MetalCrystalCylinderShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalCylinderShader.swift; sourceTree = "<group>"; };
-		939A4DC9276CC78A00DEDD3C /* SKMetalMarchingCubes64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes64.swift; sourceTree = "<group>"; };
-		939A4DCB276CFEC100DEDD3C /* SKMetalMarchingCubes512.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes512.swift; sourceTree = "<group>"; };
 		939B205C1EF2C8370061DE8D /* simd_quatd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = simd_quatd.swift; sourceTree = "<group>"; };
 		939B205E1EF2CE670061DE8D /* double4x4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = double4x4.swift; sourceTree = "<group>"; };
 		939B20601EF2CE750061DE8D /* double3x3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = double3x3.swift; sourceTree = "<group>"; };
@@ -1890,9 +1882,7 @@
 		939B20721EF2D0920061DE8D /* Int32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int32.swift; sourceTree = "<group>"; };
 		939C5692234A3BC1009A9BB2 /* MarchingCubes3D.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MarchingCubes3D.metal; sourceTree = "<group>"; };
 		939C8A7B263308C700ECA258 /* CreditsOtherContributors.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = CreditsOtherContributors.rtf; sourceTree = "<group>"; };
-		939E7F4A276DE2E900CC654D /* SKMetalMarchingCubes32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes32.swift; sourceTree = "<group>"; };
 		939E7F4C276F2FF100CC654D /* SKMetalMarchingCubes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes.swift; sourceTree = "<group>"; };
-		939E7F4E276FC91800CC654D /* SKMetalMarchingCubes16.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes16.swift; sourceTree = "<group>"; };
 		939E7F502779D78A00CC654D /* VolumeRenderedSurfaceShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = VolumeRenderedSurfaceShader.metal; sourceTree = "<group>"; };
 		939E7F52277A362F00CC654D /* SKVASPELFCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVASPELFCARParser.swift; sourceTree = "<group>"; };
 		939FFA7E225362B1000A1A46 /* SKVASPXDATCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVASPXDATCARParser.swift; sourceTree = "<group>"; };
@@ -2630,12 +2620,7 @@
 				939C5692234A3BC1009A9BB2 /* MarchingCubes3D.metal */,
 				930DD4AC1E26A89D00B8FE9B /* SKMetalFramework.swift */,
 				939E7F4C276F2FF100CC654D /* SKMetalMarchingCubes.swift */,
-				939E7F4E276FC91800CC654D /* SKMetalMarchingCubes16.swift */,
-				939E7F4A276DE2E900CC654D /* SKMetalMarchingCubes32.swift */,
-				939A4DC9276CC78A00DEDD3C /* SKMetalMarchingCubes64.swift */,
 				937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */,
-				930DC94C23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift */,
-				939A4DCB276CFEC100DEDD3C /* SKMetalMarchingCubes512.swift */,
 				937807DC21C598AA00EC4466 /* SKVoidFraction.swift */,
 				937807DE21C598E200EC4466 /* SKNitrogenSurfaceArea.swift */,
 				930DD48E1E26A80E00B8FE9B /* Info.plist */,
@@ -4935,21 +4920,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				937807D921C58E9500EC4466 /* SKConstant.swift in Sources */,
-				939A4DCA276CC78A00DEDD3C /* SKMetalMarchingCubes64.swift in Sources */,
 				930DD4B11E26A8BC00B8FE9B /* ComputeEnergyGrid.metal in Sources */,
 				939C5693234A3BC1009A9BB2 /* MarchingCubes3D.metal in Sources */,
 				937479531FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift in Sources */,
 				93BDF7651FB638810006692C /* SimulationKitProtocols.swift in Sources */,
 				93DA9EE523DEFE4600FB4E51 /* SimulationKitErrors.swift in Sources */,
 				937807DF21C598E200EC4466 /* SKNitrogenSurfaceArea.swift in Sources */,
-				939E7F4B276DE2E900CC654D /* SKMetalMarchingCubes32.swift in Sources */,
 				93426FD31F8CB7990034F0BF /* SKForceFieldType.swift in Sources */,
 				937807DD21C598AA00EC4466 /* SKVoidFraction.swift in Sources */,
 				93426FD71F8CCC030034F0BF /* SKForceFieldSets.swift in Sources */,
-				939E7F4F276FC91800CC654D /* SKMetalMarchingCubes16.swift in Sources */,
-				939A4DCC276CFEC100DEDD3C /* SKMetalMarchingCubes512.swift in Sources */,
 				930DD4AE1E26A89D00B8FE9B /* SKMetalFramework.swift in Sources */,
-				930DC94D23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift in Sources */,
 				93426FD51F8CB9650034F0BF /* SKForceFieldSet.swift in Sources */,
 				939E7F4D276F2FF100CC654D /* SKMetalMarchingCubes.swift in Sources */,
 			);
@@ -6327,7 +6307,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6342,7 +6322,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SimulationKit;
@@ -6362,7 +6342,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6378,7 +6358,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SimulationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6396,7 +6376,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6411,7 +6391,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6429,7 +6409,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6445,7 +6425,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6462,7 +6442,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6477,7 +6457,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.RenderKit;
@@ -6497,7 +6477,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6513,7 +6493,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.RenderKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6532,7 +6512,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6548,7 +6528,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -6568,7 +6548,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6584,7 +6564,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -6657,7 +6637,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6676,7 +6656,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
@@ -6703,7 +6683,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6722,7 +6702,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -6744,7 +6724,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6760,7 +6740,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6779,7 +6759,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6795,7 +6775,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6991,7 +6971,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -7006,7 +6986,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7030,7 +7010,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -7045,7 +7025,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7063,7 +7043,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7078,7 +7058,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7096,7 +7076,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7112,7 +7092,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7132,7 +7112,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7143,7 +7123,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7162,7 +7142,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7173,7 +7153,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7191,7 +7171,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7202,7 +7182,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7221,7 +7201,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7232,7 +7212,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7251,7 +7231,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7267,7 +7247,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -7289,7 +7269,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7305,7 +7285,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -7323,7 +7303,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7338,7 +7318,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7357,7 +7337,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7372,7 +7352,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7392,7 +7372,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7402,7 +7382,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7421,7 +7401,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7431,7 +7411,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7447,7 +7427,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7463,7 +7443,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7479,7 +7459,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7496,7 +7476,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7516,7 +7496,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7526,7 +7506,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MovieCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7548,7 +7528,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7558,7 +7538,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MovieCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7579,7 +7559,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7589,7 +7569,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PictureCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7611,7 +7591,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7621,7 +7601,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PictureCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7643,7 +7623,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7659,7 +7639,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -7683,7 +7663,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7699,7 +7679,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -7721,7 +7701,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7737,7 +7717,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -7761,7 +7741,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 137;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7777,7 +7757,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
