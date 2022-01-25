@@ -54,55 +54,20 @@ public class SKMetalMarchingCubes
   {
   }
   
-  public static func constructIsoSurfaceVertexBuffer(device: MTLDevice?, commandQueue: MTLCommandQueue?, data: [Float], isovalue: Double, dimensions: SIMD3<Int32>, gridSizeType: GridSizeType?) throws -> MTLBuffer?
+  public static func constructIsoSurfaceVertexBuffer(device: MTLDevice?, commandQueue: MTLCommandQueue?, data: [Float], isovalue: Double, dimensions: SIMD3<Int32>) throws -> MTLBuffer?
   {
     guard let device: MTLDevice = device ?? MTLCreateSystemDefaultDevice(),
-          let commandQueue: MTLCommandQueue = commandQueue ?? device.makeCommandQueue(),
-          let gridSizeType: GridSizeType = gridSizeType
+          let commandQueue: MTLCommandQueue = commandQueue ?? device.makeCommandQueue()
           else {
             return nil
           }
     
-    switch(gridSizeType)
-    {
-    case .size16x16x16:
-      let marchingCubes = SKMetalMarchingCubes16(device: device, commandQueue: commandQueue, dimensions: dimensions)
-      
-      marchingCubes.isoValue = Float(isovalue)
-      
-      return try marchingCubes.prepareHistoPyramids(data)
-    case .size32x32x32:
-      let marchingCubes = SKMetalMarchingCubes32(device: device, commandQueue: commandQueue, dimensions: dimensions)
-      
-      marchingCubes.isoValue = Float(isovalue)
-      
-      return try marchingCubes.prepareHistoPyramids(data)
-    case .size64x64x64:
-      let marchingCubes = SKMetalMarchingCubes64(device: device, commandQueue: commandQueue, dimensions: dimensions)
-      
-      marchingCubes.isoValue = Float(isovalue)
-      
-      return try marchingCubes.prepareHistoPyramids(data)
-    case .size128x128x128:
+  
       let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue, dimensions: dimensions)
       
       marchingCubes.isoValue = Float(isovalue)
       
       return try marchingCubes.prepareHistoPyramids(data)
-    case .size256x256x256:
-      let marchingCubes = SKMetalMarchingCubes256(device: device, commandQueue: commandQueue, dimensions: dimensions)
-      
-      marchingCubes.isoValue = Float(isovalue)
-      
-      return try marchingCubes.prepareHistoPyramids(data)
-    case .size512x512x512:
-      let marchingCubes = SKMetalMarchingCubes512(device: device, commandQueue: commandQueue, dimensions: dimensions)
-      
-      marchingCubes.isoValue = Float(isovalue)
-      
-      return try marchingCubes.prepareHistoPyramids(data)
-    default:
-      return nil
-    }
+   
   }
 }

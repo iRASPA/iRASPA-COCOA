@@ -334,7 +334,7 @@ class MetalEnergyIsosurfaceShader
             
             do
             {
-              if let buffer = try SKMetalMarchingCubes.constructIsoSurfaceVertexBuffer(device: device, commandQueue: commandQueue, data: data, isovalue: structure.adsorptionSurfaceIsoValue, dimensions: dimensions, gridSizeType: SKMetalMarchingCubes.GridSizeType(rawValue: gridSizeType))
+              if let buffer = try SKMetalMarchingCubes.constructIsoSurfaceVertexBuffer(device: device, commandQueue: commandQueue, data: data, isovalue: structure.adsorptionSurfaceIsoValue, dimensions: dimensions)
               {
                 vertexBuffer[i][j] = buffer
                 structure.adsorptionSurfaceNumberOfTriangles = buffer.length / (3 * 3 * MemoryLayout<SIMD4<Float>>.stride)
