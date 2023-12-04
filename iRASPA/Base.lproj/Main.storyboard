@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22155"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -842,15 +842,13 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="425" y="461" width="1500" height="800"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
-                        <toolbar key="toolbar" implicitIdentifier="45B18C96-1B23-44F1-B08D-A8C369D7DDF9" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="1qV-Ns-G3z">
+                        <toolbar key="toolbar" implicitIdentifier="45B18C96-1B23-44F1-B08D-A8C369D7DDF9" autosavesConfiguration="NO" displayMode="iconOnly" sizeMode="regular" id="1qV-Ns-G3z">
                             <allowedToolbarItems>
-                                <toolbarItem implicitItemIdentifier="84697F77-2FAC-478C-B48A-5E62737D3EE5" label="" paletteLabel="" tag="-1" id="mmg-Yu-YsF">
+                                <toolbarItem implicitItemIdentifier="84697F77-2FAC-478C-B48A-5E62737D3EE5" label="" paletteLabel="" tag="-1" sizingBehavior="auto" id="mmg-Yu-YsF">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="350" height="34"/>
-                                    <size key="maxSize" width="500" height="34"/>
                                     <customView key="view" id="WXy-eN-Cn1" customClass="NSInformationPanelView" customModule="iRASPA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="14" width="350" height="34"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     </customView>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="chh-4o-ljZ"/>
@@ -858,10 +856,8 @@
                                 <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="gg6-5C-6if"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="B04-H0-ckM"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="nMe-Ou-BZg"/>
-                                <toolbarItem implicitItemIdentifier="483D26EB-800E-4E1B-9F51-B99602359BEB" label="" paletteLabel="" tag="-1" title="Box" id="xcr-uF-CJi">
+                                <toolbarItem implicitItemIdentifier="483D26EB-800E-4E1B-9F51-B99602359BEB" label="" paletteLabel="" tag="-1" title="Box" sizingBehavior="auto" id="xcr-uF-CJi">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="90" height="32"/>
-                                    <size key="maxSize" width="110" height="32"/>
                                     <box key="view" borderType="none" title="Box" titlePosition="noTitle" id="3x3-A1-D5u">
                                         <rect key="frame" x="0.0" y="14" width="92" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
@@ -870,7 +866,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <segmentedControl verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hoG-Kr-Kd0">
-                                                    <rect key="frame" x="0.0" y="4" width="100" height="23"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="23"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES"/>
                                                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectAny" id="Khj-N3-fhm">
                                                         <font key="font" metaFont="system"/>
@@ -890,10 +886,8 @@
                                         </view>
                                     </box>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="1EE68DA0-9CEE-4470-916F-BAE9692888E0" label="" paletteLabel="" tag="-1" title="Box" id="PGC-W5-BV6">
+                                <toolbarItem implicitItemIdentifier="1EE68DA0-9CEE-4470-916F-BAE9692888E0" label="" paletteLabel="" tag="-1" title="Box" sizingBehavior="auto" id="PGC-W5-BV6">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="32" height="32"/>
-                                    <size key="maxSize" width="110" height="32"/>
                                     <box key="view" borderType="none" title="Box" titlePosition="noTitle" id="2fK-ne-Lfp">
                                         <rect key="frame" x="0.0" y="14" width="38" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -902,7 +896,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9K4-HB-tTt">
-                                                    <rect key="frame" x="8" y="6" width="22" height="24"/>
+                                                    <rect key="frame" x="7" y="0.0" width="23" height="24"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
                                                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSShareTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="JWg-4y-RFR">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1039,7 +1033,7 @@
     <resources>
         <image name="BottomCollapsablePanel" width="18" height="14"/>
         <image name="LeftCollapsablePanel" width="18" height="14"/>
-        <image name="NSShareTemplate" width="15" height="17"/>
+        <image name="NSShareTemplate" width="19" height="23"/>
         <image name="RightCollapsablePanel" width="18" height="14"/>
     </resources>
 </document>
