@@ -1,0 +1,36 @@
+data_11
+
+_citation_title "Framework silica structures generated using simulated annealing with a potential energy function based on an H6Si2O7 molecule"
+_citation_author_name "M.B.jr. Boisen, G.V. Gibbs, and M.S.T. Bukowinski"
+_citation_journal_abbrev "Physics and Chemistry of Minerals"
+_citation_journal_volume "21"
+_citation_page_first "269"
+_citation_page_last "284"
+_citation_year "1994"
+_citation_special_details "https://doi.org/10.1007/BF00202091"
+
+_cell_length_a                   6.9979
+_cell_length_b                   8.2122
+_cell_length_c                   6.5106
+_cell_angle_alpha                90.0000
+_cell_angle_beta                 114.9303
+_cell_angle_gamma                90.0000
+_cell_formula_units_Z            8
+
+_symmetry_space_group_name_Hall  'C 2y'
+_symmetry_Int_Tables_number      5
+_symmetry_cell_setting           monoclinic
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Si1 Si  0.20423 0.00000 0.21347
+Si2 Si  0.39511 0.81983 0.64098
+O1  O   0.50000 0.71754 0.50000
+O2  O   0.00000 0.93053 0.00000
+O3  O   0.79134 0.92676 0.55053
+O4  O   0.41950 0.94158 0.19267
+O5  O   0.80752 0.19767 0.77866

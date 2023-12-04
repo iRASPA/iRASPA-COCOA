@@ -33,6 +33,30 @@ import SymmetryKit
 
 class ImportAccessoryNSBox: NSBox
 {
+  override init(frame frameRect: NSRect)
+  {
+    super.init(frame: frameRect)
+    
+    self.wantsLayer = true
+    
+    // Optimzing Drawing and scrolling, 2013 session 215
+    // Also: must be present for 'dataWithPDF' to show checkboxes and radiobuttons
+    self.canDrawSubviewsIntoLayer = true
+  }
+  
+  required init?(coder: NSCoder)
+  {
+    super.init(coder: coder)
+    
+    self.wantsLayer = true
+    
+    // Optimzing Drawing and scrolling, 2013 session 215
+    // Also: must be present for 'dataWithPDF' to show checkboxes and radiobuttons
+    self.canDrawSubviewsIntoLayer = true
+  }
+  
+  override var isOpaque: Bool { return false }
+  
   override var intrinsicContentSize: NSSize
   {
     return NSMakeSize(NSView.noIntrinsicMetric, 126.0)
