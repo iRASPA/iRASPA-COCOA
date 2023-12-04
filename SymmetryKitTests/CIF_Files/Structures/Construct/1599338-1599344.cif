@@ -1,0 +1,484 @@
+####################################################################### 
+# 
+# This file contains crystal structure data downloaded from the 
+# Cambridge Structural Database (CSD) hosted by the Cambridge 
+# Crystallographic Data Centre (CCDC) in cooperation with FIZ Karlsruhe.
+# 
+# Please note that these data are only for research purposes or private use.
+# For detailed information please see under Terms & Conditions.
+# Full information about CCDC and FIZ Karlsruhe data access policies and 
+# citation guidelines are available at http://www.ccdc.cam.ac.uk/access/V1
+# 
+# Audit and citation data items may have been added by FIZ Karlsruhe. 
+# Please retain this information to preserve the provenance of 
+# this file and to allow appropriate attribution of the data. 
+# 
+#######################################################################
+
+data_23195-ICSD
+_database_code_depnum_ccdc_archive 'CCDC 1599338'
+loop_
+_citation_id
+_citation_doi
+_citation_year
+1 10.1107/S0567740869002974 1969
+_audit_update_record             
+;
+2018-02-26 deposited with the CCDC.	2021-09-23 downloaded from the CCDC.
+;
+_database_code_ICSD              23195
+_chemical_name_systematic        'Calcium Uranate'
+_chemical_formula_sum            'Ca1 O4 U1'
+_cell_length_a                   6.2683
+_cell_length_b                   6.2683
+_cell_length_c                   6.2683
+_cell_angle_alpha                36.04
+_cell_angle_beta                 36.04
+_cell_angle_gamma                36.04
+_cell_volume                     76.26
+_cell_formula_units_Z            1
+_symmetry_space_group_name_H-M   'R -3 m R'
+_symmetry_Int_Tables_number      166
+_symmetry_cell_setting           rhombohedral
+_refine_ls_R_factor_all          0.048
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 '-z, -y, -x'
+2 '-z, -x, -y'
+3 '-x, -z, -y'
+4 '-y, -z, -x'
+5 '-y, -x, -z'
+6 '-x, -y, -z'
+7 'z, y, x'
+8 'z, x, y'
+9 'x, z, y'
+10 'y, z, x'
+11 'y, x, z'
+12 'x, y, z'
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Ca1 Ca2+ 0.5 0.5 0.5
+U1 U6+ 0 0 0
+O1 O2- 0.1118 0.1118 0.1118
+O2 O2- 0.3627 0.3627 0.3627
+
+#End of data_23195-ICSD
+
+
+####################################################################### 
+# 
+# This file contains crystal structure data downloaded from the 
+# Cambridge Structural Database (CSD) hosted by the Cambridge 
+# Crystallographic Data Centre (CCDC) in cooperation with FIZ Karlsruhe.
+# 
+# Please note that these data are only for research purposes or private use.
+# For detailed information please see under Terms & Conditions.
+# Full information about CCDC and FIZ Karlsruhe data access policies and 
+# citation guidelines are available at http://www.ccdc.cam.ac.uk/access/V1
+# 
+# Audit and citation data items may have been added by FIZ Karlsruhe. 
+# Please retain this information to preserve the provenance of 
+# this file and to allow appropriate attribution of the data. 
+# 
+#######################################################################
+
+data_23201-ICSD
+_database_code_depnum_ccdc_archive 'CCDC 1599344'
+loop_
+_citation_id
+_citation_doi
+_citation_year
+1 10.1107/S0567740869002974 1969
+_audit_update_record             
+;
+2018-02-26 deposited with the CCDC.	2021-09-23 downloaded from the CCDC.
+;
+_database_code_ICSD              23201
+_chemical_name_systematic        'Strontium Hexaoxouranate'
+_chemical_formula_sum            'O6 Sr3 U1'
+_cell_length_a                   5.9588
+_cell_length_b                   6.1795
+_cell_length_c                   8.5535
+_cell_angle_alpha                90
+_cell_angle_beta                 90.192
+_cell_angle_gamma                90
+_cell_volume                     314.96
+_cell_formula_units_Z            2
+_symmetry_space_group_name_H-M   'P 1 21 1'
+_symmetry_Int_Tables_number      4
+_symmetry_cell_setting           monoclinic
+_refine_ls_R_factor_all          0.121
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 '-x, y+1/2, -z'
+2 'x, y, z'
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Sr1 Sr2+ 0.2391 0.0126 0.7546
+Sr2 Sr2+ 0.2671 0.4975 0.0066
+Sr3 Sr2+ 0.7527 0.0859 0.4803
+U1 U6+ 0.2478 0 0.2472
+O1 O2- 0.6308 0.4511 0.5243
+O2 O2- 0.5048 0.1892 0.1971
+O3 O2- 0.0893 0.2948 0.3244
+O4 O2- 0.1505 0.0682 0.0173
+O5 O2- 0.0545 0.3444 0.7087
+O6 O2- 0.5713 0.2381 0.8271
+
+#End of data_23201-ICSD
+
+
+####################################################################### 
+# 
+# This file contains crystal structure data downloaded from the 
+# Cambridge Structural Database (CSD) hosted by the Cambridge 
+# Crystallographic Data Centre (CCDC) in cooperation with FIZ Karlsruhe.
+# 
+# Please note that these data are only for research purposes or private use.
+# For detailed information please see under Terms & Conditions.
+# Full information about CCDC and FIZ Karlsruhe data access policies and 
+# citation guidelines are available at http://www.ccdc.cam.ac.uk/access/V1
+# 
+# Audit and citation data items may have been added by FIZ Karlsruhe. 
+# Please retain this information to preserve the provenance of 
+# this file and to allow appropriate attribution of the data. 
+# 
+#######################################################################
+
+data_23199-ICSD
+_database_code_depnum_ccdc_archive 'CCDC 1599342'
+loop_
+_citation_id
+_citation_doi
+_citation_year
+1 10.1107/S0567740869002974 1969
+_audit_update_record             
+;
+2018-02-26 deposited with the CCDC.	2021-09-23 downloaded from the CCDC.
+;
+_database_code_ICSD              23199
+_chemical_name_systematic        'Strontium Pentaoxouranate'
+_chemical_formula_sum            'O5 Sr2 U1'
+_cell_length_a                   8.1043
+_cell_length_b                   5.6614
+_cell_length_c                   11.9185
+_cell_angle_alpha                90
+_cell_angle_beta                 108.985
+_cell_angle_gamma                90
+_cell_volume                     517.09
+_cell_formula_units_Z            4
+_symmetry_space_group_name_H-M   'P 1 21/c 1'
+_symmetry_Int_Tables_number      14
+_symmetry_cell_setting           monoclinic
+_refine_ls_R_factor_all          0.096
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 'x, -y+1/2, z+1/2'
+2 '-x, -y, -z'
+3 '-x, y+1/2, -z+1/2'
+4 'x, y, z'
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Sr1 Sr2+ 0.1571 0.0747 0.3181
+Sr2 Sr2+ 0.3359 0.9926 0.6379
+U1 U6+ 0 0 0
+U2 U6+ 0.5 0 0
+O1 O2- 0.4501 0.3215 0.3354
+O2 O2- 0.8912 0.2959 0.3579
+O3 O2- 0.6017 0.2978 0.0731
+O4 O2- 0.0153 0.2573 0.1176
+O5 O2- 0.2499 0.1552 0.9956
+
+#End of data_23199-ICSD
+
+
+####################################################################### 
+# 
+# This file contains crystal structure data downloaded from the 
+# Cambridge Structural Database (CSD) hosted by the Cambridge 
+# Crystallographic Data Centre (CCDC) in cooperation with FIZ Karlsruhe.
+# 
+# Please note that these data are only for research purposes or private use.
+# For detailed information please see under Terms & Conditions.
+# Full information about CCDC and FIZ Karlsruhe data access policies and 
+# citation guidelines are available at http://www.ccdc.cam.ac.uk/access/V1
+# 
+# Audit and citation data items may have been added by FIZ Karlsruhe. 
+# Please retain this information to preserve the provenance of 
+# this file and to allow appropriate attribution of the data. 
+# 
+#######################################################################
+
+data_23196-ICSD
+_database_code_depnum_ccdc_archive 'CCDC 1599339'
+loop_
+_citation_id
+_citation_doi
+_citation_year
+1 10.1107/S0567740869002974 1969
+_audit_update_record             
+;
+2018-02-26 deposited with the CCDC.	2021-09-23 downloaded from the CCDC.
+;
+_database_code_ICSD              23196
+_chemical_name_systematic        'Strontium Uranate'
+_chemical_formula_sum            'O4 Sr1 U1'
+_cell_length_a                   5.4896
+_cell_length_b                   7.977
+_cell_length_c                   8.1297
+_cell_angle_alpha                90
+_cell_angle_beta                 90
+_cell_angle_gamma                90
+_cell_volume                     356
+_cell_formula_units_Z            4
+_symmetry_space_group_name_H-M   'P b c m'
+_symmetry_Int_Tables_number      57
+_symmetry_cell_setting           orthorhombic
+_refine_ls_R_factor_all          0.113
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 'x, -y+1/2, z+1/2'
+2 '-x, y+1/2, z'
+3 'x, y, -z+1/2'
+4 '-x, -y, -z'
+5 '-x, y+1/2, -z+1/2'
+6 'x, -y+1/2, -z'
+7 '-x, -y, z+1/2'
+8 'x, y, z'
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Sr1 Sr2+ 0.471 0.2013 0.25
+U1 U6+ 0 0 0
+O1 O2- 0.2998 0.9193 0.081
+O2 O2- 0.1726 0.25 0
+O3 O2- 0.8602 0.03 0.25
+
+#End of data_23196-ICSD
+
+
+####################################################################### 
+# 
+# This file contains crystal structure data downloaded from the 
+# Cambridge Structural Database (CSD) hosted by the Cambridge 
+# Crystallographic Data Centre (CCDC) in cooperation with FIZ Karlsruhe.
+# 
+# Please note that these data are only for research purposes or private use.
+# For detailed information please see under Terms & Conditions.
+# Full information about CCDC and FIZ Karlsruhe data access policies and 
+# citation guidelines are available at http://www.ccdc.cam.ac.uk/access/V1
+# 
+# Audit and citation data items may have been added by FIZ Karlsruhe. 
+# Please retain this information to preserve the provenance of 
+# this file and to allow appropriate attribution of the data. 
+# 
+#######################################################################
+
+data_23197-ICSD
+_database_code_depnum_ccdc_archive 'CCDC 1599340'
+loop_
+_citation_id
+_citation_doi
+_citation_year
+1 10.1107/S0567740869002974 1969
+_audit_update_record             
+;
+2018-02-26 deposited with the CCDC.	2021-09-23 downloaded from the CCDC.
+;
+_database_code_ICSD              23197
+_chemical_name_systematic        'Barium Uranate'
+_chemical_formula_sum            'Ba1 O4 U1'
+_cell_length_a                   5.7553
+_cell_length_b                   8.1411
+_cell_length_c                   8.2335
+_cell_angle_alpha                90
+_cell_angle_beta                 90
+_cell_angle_gamma                90
+_cell_volume                     385.78
+_cell_formula_units_Z            4
+_symmetry_space_group_name_H-M   'P b c m'
+_symmetry_Int_Tables_number      57
+_symmetry_cell_setting           orthorhombic
+_refine_ls_R_factor_all          0.131
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 'x, -y+1/2, z+1/2'
+2 '-x, y+1/2, z'
+3 'x, y, -z+1/2'
+4 '-x, -y, -z'
+5 '-x, y+1/2, -z+1/2'
+6 'x, -y+1/2, -z'
+7 '-x, -y, z+1/2'
+8 'x, y, z'
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Ba1 Ba2+ 0.4749 0.2008 0.25
+U1 U6+ 0 0 0
+O1 O2- 0.2939 0.9246 0.069
+O2 O2- 0.1515 0.25 0
+O3 O2- 0.8775 0.0276 0.25
+
+#End of data_23197-ICSD
+
+
+####################################################################### 
+# 
+# This file contains crystal structure data downloaded from the 
+# Cambridge Structural Database (CSD) hosted by the Cambridge 
+# Crystallographic Data Centre (CCDC) in cooperation with FIZ Karlsruhe.
+# 
+# Please note that these data are only for research purposes or private use.
+# For detailed information please see under Terms & Conditions.
+# Full information about CCDC and FIZ Karlsruhe data access policies and 
+# citation guidelines are available at http://www.ccdc.cam.ac.uk/access/V1
+# 
+# Audit and citation data items may have been added by FIZ Karlsruhe. 
+# Please retain this information to preserve the provenance of 
+# this file and to allow appropriate attribution of the data. 
+# 
+#######################################################################
+
+data_23200-ICSD
+_database_code_depnum_ccdc_archive 'CCDC 1599343'
+loop_
+_citation_id
+_citation_doi
+_citation_year
+1 10.1107/S0567740869002974 1969
+_audit_update_record             
+;
+2018-02-26 deposited with the CCDC.	2021-09-23 downloaded from the CCDC.
+;
+_database_code_ICSD              23200
+_chemical_name_systematic        'Tricalcium Uranate'
+_chemical_formula_sum            'Ca3 O6 U1'
+_cell_length_a                   5.7275
+_cell_length_b                   5.9564
+_cell_length_c                   8.2982
+_cell_angle_alpha                90
+_cell_angle_beta                 90.568
+_cell_angle_gamma                90
+_cell_volume                     283.08
+_cell_formula_units_Z            2
+_symmetry_space_group_name_H-M   'P 1 21 1'
+_symmetry_Int_Tables_number      4
+_symmetry_cell_setting           monoclinic
+_refine_ls_R_factor_all          0.108
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 '-x, y+1/2, -z'
+2 'x, y, z'
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Ca1 Ca2+ 0.2621 0.9975 0.7488
+Ca2 Ca2+ 0.2723 0.4223 0.0123
+Ca3 Ca2+ 0.7532 0.0288 0.4761
+U1 U6+ 0.2459 0 0.2519
+O1 O2- 0.6319 0.41 0.5173
+O2 O2- 0.5605 0.1618 0.1938
+O3 O2- 0.0747 0.2744 0.3323
+O4 O2- 0.1165 0.0484 0.0152
+O5 O2- 0.0327 0.3053 0.6942
+O6 O2- 0.574 0.1963 0.8252
+
+#End of data_23200-ICSD
+
+
+####################################################################### 
+# 
+# This file contains crystal structure data downloaded from the 
+# Cambridge Structural Database (CSD) hosted by the Cambridge 
+# Crystallographic Data Centre (CCDC) in cooperation with FIZ Karlsruhe.
+# 
+# Please note that these data are only for research purposes or private use.
+# For detailed information please see under Terms & Conditions.
+# Full information about CCDC and FIZ Karlsruhe data access policies and 
+# citation guidelines are available at http://www.ccdc.cam.ac.uk/access/V1
+# 
+# Audit and citation data items may have been added by FIZ Karlsruhe. 
+# Please retain this information to preserve the provenance of 
+# this file and to allow appropriate attribution of the data. 
+# 
+#######################################################################
+
+data_23198-ICSD
+_database_code_depnum_ccdc_archive 'CCDC 1599341'
+loop_
+_citation_id
+_citation_doi
+_citation_year
+1 10.1107/S0567740869002974 1969
+_audit_update_record             
+;
+2018-02-26 deposited with the CCDC.	2021-09-23 downloaded from the CCDC.
+;
+_database_code_ICSD              23198
+_chemical_name_systematic        'Dicalcium Uranate'
+_chemical_formula_sum            'Ca2 O5 U1'
+_cell_length_a                   7.9137
+_cell_length_b                   5.4409
+_cell_length_c                   11.4482
+_cell_angle_alpha                90
+_cell_angle_beta                 108.803
+_cell_angle_gamma                90
+_cell_volume                     466.63
+_cell_formula_units_Z            4
+_symmetry_space_group_name_H-M   'P 1 21/c 1'
+_symmetry_Int_Tables_number      14
+_symmetry_cell_setting           monoclinic
+_refine_ls_R_factor_all          0.126
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 'x, -y+1/2, z+1/2'
+2 '-x, -y, -z'
+3 '-x, y+1/2, -z+1/2'
+4 'x, y, z'
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Ca1 Ca2+ 0.1592 0.0621 0.32
+Ca2 Ca2+ 0.3462 0.9985 0.6414
+U1 U6+ 0 0 0
+U2 U6+ 0.5 0 0
+O1 O2- 0.4447 0.3202 0.3267
+O2 O2- 0.8802 0.2831 0.3532
+O3 O2- 0.6197 0.3043 0.072
+O4 O2- 0.0163 0.261 0.1295
+O5 O2- 0.2507 0.1873 0.9953
+
+#End of data_23198-ICSD
+
+
