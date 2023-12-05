@@ -813,14 +813,13 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
-                                        <menuItem title="iRASPA Help" id="FKE-Sm-Kum">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        <menuItem title="iRASPA Help" keyEquivalent="H" id="FKE-Sm-Kum">
                                             <connections>
                                                 <action selector="showHelp:" target="Ady-hI-5gd" id="y7X-2Q-9no"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="iRASPA Online Help" id="GyD-Zq-ud0">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        <menuItem title="iRASPA Online Help" alternate="YES" keyEquivalent="H" id="GyD-Zq-ud0">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                             <connections>
                                                 <action selector="openOnlineHelp:" target="Voe-Tx-rLC" id="9kW-8g-k2U"/>
                                             </connections>
