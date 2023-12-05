@@ -42,7 +42,7 @@ class NSLabelSegmentedControl: NSSegmentedControl
     let paragraph = NSMutableParagraphStyle()
     paragraph.lineBreakMode = .byWordWrapping
     paragraph.alignment = .center
-    label.draw(in: self.bounds, withAttributes: [NSAttributedString.Key.paragraphStyle : paragraph])
+    label.draw(in: self.bounds, withAttributes: [NSAttributedString.Key.paragraphStyle : paragraph, NSAttributedString.Key.foregroundColor: NSColor.textColor])
   }
 }
 
