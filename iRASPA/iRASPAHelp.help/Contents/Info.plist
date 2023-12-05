@@ -2,41 +2,31 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en-us</string>
-	<key>CFBundleIdentifier</key>
-	<string>nl.darkwing.iRASPA.help</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>iRASPAHelp</string>
-	<key>CFBundlePackageType</key>
-	<string>BNDL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1</string>
-	<key>CFBundleSignature</key>
-	<string>hbwr</string>
-	<key>CFBundleVersion</key>
-	<string>1</string>
-	<key>HPDBookAccessPath</key>
-	<string>index.html</string>
-	<key>HPDBookIconPath</key>
-	<string>../SharedGlobalArt/AppIconDefault_iRASPAHelp.png</string>
-	<key>HPDBookIndexPath</key>
-	<string>iRASPAHelp.helpindex</string>
-	<key>HPDBookKBProduct</key>
-	<string></string>
-	<key>HPDBookKBURL</key>
-	<string>https://help.iraspa.org</string>
-	<key>HPDBookRemoteURL</key>
-	<string>https://help.iraspa.org</string>
-	<key>HPDBookTitle</key>
-	<string>iRASPA Help</string>
-	<key>HPDBookType</key>
-	<string>3</string>
-	<key>HPDBookUsesExternalViewer</key>
-	<false/>
-	<key>HPDBookTopicListTemplatePath</key>
-	<string></string>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en-us</string>
+    <key>CFBundleIdentifier</key>
+    <string>nl.darkwing.iRASPA.help</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundlePackageType</key>
+    <string>BNDL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>22</string>
+    <key>CFBundleSignature</key>
+    <string>hbwr</string>
+    <key>CFBundleVersion</key>
+    <string>22</string>
+    <key>HPDBookAccessPath</key>
+    <string>index.html</string>
+    <key>HPDBookIconPath</key>
+    <string>../SharedGlobalArt/AppIconDefault_iRASPAHelp.png</string>
+    <key>HPDBookIndexPath</key>
+    <string>iRASPAHelp.helpindex</string>
+    <key>HPDBookTitle</key>
+    <string>iRASPA Help</string>
+    <key>HPDBookType</key>
+    <string>3</string>
+    <key>HPDBookUsesExternalViewer</key>
+    <false/>
 </dict>
 </plist>

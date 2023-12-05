@@ -813,9 +813,16 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
-                                        <menuItem title="iRASPA Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                                        <menuItem title="iRASPA Help" id="FKE-Sm-Kum">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="showHelp:" target="Ady-hI-5gd" id="y7X-2Q-9no"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="iRASPA Online Help" id="GyD-Zq-ud0">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openOnlineHelp:" target="Voe-Tx-rLC" id="9kW-8g-k2U"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -848,7 +855,7 @@
                                     <nil key="toolTip"/>
                                     <customView key="view" id="WXy-eN-Cn1" customClass="NSInformationPanelView" customModule="iRASPA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="14" width="350" height="34"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <autoresizingMask key="autoresizingMask"/>
                                     </customView>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="chh-4o-ljZ"/>
@@ -860,7 +867,7 @@
                                     <nil key="toolTip"/>
                                     <box key="view" borderType="none" title="Box" titlePosition="noTitle" id="3x3-A1-D5u">
                                         <rect key="frame" x="0.0" y="14" width="92" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
+                                        <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" id="IdW-p3-8g8">
                                             <rect key="frame" x="0.0" y="0.0" width="92" height="32"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -890,7 +897,7 @@
                                     <nil key="toolTip"/>
                                     <box key="view" borderType="none" title="Box" titlePosition="noTitle" id="2fK-ne-Lfp">
                                         <rect key="frame" x="0.0" y="14" width="38" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" id="F8i-7m-mqE">
                                             <rect key="frame" x="0.0" y="0.0" width="38" height="32"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
