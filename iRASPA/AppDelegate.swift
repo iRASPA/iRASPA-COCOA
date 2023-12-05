@@ -76,6 +76,14 @@ class AppDelegate: NSObject, NSApplicationDelegate
     self.aboutWindowController.showWindow(self)
   }
   
+  @IBAction func openOnlineHelp(_ sender: AnyObject)
+  {
+    if let url = URL(string: "https://help.iraspa.org/index.html")
+    {
+      NSWorkspace.shared.open(url)
+    }
+  }
+  
   func fetchNotificationChanges()
   {
     /*
