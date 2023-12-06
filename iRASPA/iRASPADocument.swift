@@ -796,7 +796,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
       case typeProject:
         try readProjectFileFormat(url: url)
       case typeCIF:
-        try readCIFFileFormat(url: url)
+        readCIFFileFormat(url: url)
       case typePDB:
         try readPDBFileFormat(url: url)
       case typeXYZ:

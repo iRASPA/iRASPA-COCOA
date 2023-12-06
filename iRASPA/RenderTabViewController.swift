@@ -861,7 +861,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         context.timingFunction = CAMediaTimingFunction(name: .easeIn)
         context.duration = 0.25
         context.allowsImplicitAnimation = true
-        self?.transformationPanelLeftLayoutConstraint?.animator().constant = ancherDistance
+        self?.transformationPanelLeftLayoutConstraint?.animator().constant = self?.ancherDistance ?? 0
         self?.transformationPanel?.animator().layer?.opacity = 1.0
       }) {}
     case (false,true):
@@ -871,7 +871,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         context.timingFunction = CAMediaTimingFunction(name: .easeIn)
         context.duration = 0.25
         context.allowsImplicitAnimation = true
-        transformationPanel?.animator().layer?.opacity = 0.0
+        self?.transformationPanel?.animator().layer?.opacity = 0.0
         self?.transformationPanelLeftLayoutConstraint?.animator().constant = -20
         })
       {

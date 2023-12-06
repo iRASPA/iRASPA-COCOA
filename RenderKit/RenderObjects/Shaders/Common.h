@@ -36,13 +36,13 @@
 
 using namespace simd;
 
-typedef struct
+typedef struct FragOutput
 {
   float4 albedo [[color(0)]];
   float  depth [[depth(any)]];
 } FragOutput;
 
-typedef struct
+typedef struct InPerVertex
 {
   float4 position;
   float4 normal;
@@ -50,7 +50,7 @@ typedef struct
   float2 pad;
 } InPerVertex;
 
-typedef struct
+typedef struct InPrimitivePerVertex
 {
   float4 position;
   float4 normal;
@@ -59,7 +59,7 @@ typedef struct
   float2 pad;
 } InPrimitivePerVertex;
 
-typedef struct
+typedef struct InPerInstanceAttributes
 {
   float4 position;
   float4 ambient;
@@ -70,7 +70,7 @@ typedef struct
 } InPerInstanceAttributes;
 
 
-typedef struct
+typedef struct InPerInstanceTextAttributes
 {
   float4 position;
   float4 scale;
@@ -78,7 +78,7 @@ typedef struct
   float st[4];
 } InPerInstanceTextAttributes;
 
-typedef struct
+typedef struct InPerInstanceAttributesBonds
 {
   float4 position1;
   float4 position2;
@@ -91,7 +91,7 @@ typedef struct
 
 
 
-struct AtomSphereVertexShaderOut
+typedef struct AtomSphereVertexShaderOut
 {
   float4 position [[position]];
   float4 ambient [[ flat ]];
@@ -114,9 +114,9 @@ struct AtomSphereVertexShaderOut
   float clippingDistance3;
   float clippingDistance4;
   float clippingDistance5;
-};
+} AtomSphereVertexShaderOut;
 
-struct AxesVertexShaderOut
+typedef struct AxesVertexShaderOut
 {
   float4 position [[position]];
   float4 ambient;
@@ -127,18 +127,18 @@ struct AxesVertexShaderOut
   float3 Model_N;
   float3 L;
   float3 V;
-};
+} AxesVertexShaderOut;
 
-struct PrimitiveVertexShaderOut
+typedef struct PrimitiveVertexShaderOut
 {
   float4 position [[position]];
   float3 N;
   float3 Model_N;
   float3 L;
   float3 V;
-};
+} PrimitiveVertexShaderOut;
 
-struct AtomSphereImposterVertexShaderOut
+typedef struct AtomSphereImposterVertexShaderOut
 {
   float4 position [[position]];
   float4 eye_position;
@@ -159,23 +159,23 @@ struct AtomSphereImposterVertexShaderOut
   float4 ambientOcclusionTransformMatrix2 [[ flat ]];
   float4 ambientOcclusionTransformMatrix3 [[ flat ]];
   float4 ambientOcclusionTransformMatrix4 [[ flat ]];
-};
+} AtomSphereImposterVertexShaderOut;
 
 // Ray
-struct Ray
+typedef struct Ray
 {
   float3 origin;
   float3 direction;
-};
+} Ray;
 
 // Axis-aligned bounding box
-struct AABB
+typedef struct AABB
 {
   float3 top;
   float3 bottom;
-};
+} AABB;
 
-typedef struct
+typedef struct FrameUniforms
 {
   float4x4 projectionMatrix;
   float4x4 viewMatrix;
@@ -207,7 +207,7 @@ typedef struct
 
 
 
-typedef struct
+typedef struct ShadowUniforms
 {
   float4x4 projectionMatrix;
   float4x4 viewMatrix;
@@ -215,7 +215,7 @@ typedef struct
   float4x4 normalMatrix;
 } ShadowUniforms;
 
-typedef struct
+typedef struct StructureUniforms
 {
   int sceneIdentifier1;
   int MovieIdentifier1;
@@ -350,7 +350,7 @@ typedef struct
   //----------------------------------------  1024 bytes boundary
 } StructureUniforms;
 
-typedef struct
+typedef struct IsosurfaceUniforms
 {
   float4x4 unitCellMatrix;
   float4x4 inverseUnitCellMatrix;
@@ -384,7 +384,7 @@ typedef struct
   float4 pad6;
 } IsosurfaceUniforms;
 
-typedef struct
+typedef struct Light
 {
   float4 position;
   float4 ambient;
@@ -408,13 +408,13 @@ typedef struct
   float pad6;
 } Light;
 
-typedef struct
+typedef struct LightUniforms
 {
   Light lights[4];
 } LightUniforms;
 
 
-typedef struct
+typedef struct GlobalAxesUniforms
 {
   float4 axesBackgroundColor;
   float4 textColor[3];

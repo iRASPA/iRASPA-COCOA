@@ -142,7 +142,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     {
       let asymmetricBond: SKAsymmetricBond = bondViewer.bondSetController.arrangedObjects[row]
       
-      guard let bond: SKBondNode = asymmetricBond.copies.first else {return nil}
+      //guard let bond: SKBondNode = asymmetricBond.copies.first else {return nil}
       
       // FIX
       //let bondLength = structure.bondLength(bond)

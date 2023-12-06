@@ -207,11 +207,11 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     if(numberOfAtoms<0)
     {
       // read number of orbitals
-      if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-         let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-         words.count >= 1, let numberOfMolecularOrbitals = Int(words[0])
-      {
-      }
+      //if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+      //   let words: [String] = scannedLine?.components(separatedBy: //CharacterSet.whitespaces).filter({!$0.isEmpty}),
+      //   words.count >= 1, let numberOfMolecularOrbitals = Int(words[0])
+      //{
+      //}
     }
     
    
