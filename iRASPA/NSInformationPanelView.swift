@@ -123,14 +123,14 @@ class NSInformationPanelView: NSView
   override init(frame frameRect: NSRect) {
     super.init(frame: frameRect)
     
-    var heightConstraint: NSLayoutConstraint = self.heightAnchor.constraint(equalToConstant: 32)
+    let heightConstraint: NSLayoutConstraint = self.heightAnchor.constraint(equalToConstant: 32)
     heightConstraint.isActive = true;
   }
   
   required init?(coder: NSCoder) {
     super.init(coder: coder)
     
-    var heightConstraint: NSLayoutConstraint = self.heightAnchor.constraint(equalToConstant: 32)
+    let heightConstraint: NSLayoutConstraint = self.heightAnchor.constraint(equalToConstant: 32)
     heightConstraint.isActive = true;
   }
    

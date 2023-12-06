@@ -83,7 +83,7 @@ public struct SKAsymmetricBond<A: SKAsymmetricAtom, B: SKAsymmetricAtom>: Hashab
     }
   }
   
-  public static func ==<A, B> (lhs: SKAsymmetricBond<A, B>, rhs: SKAsymmetricBond<A, B>) -> Bool
+  public static func ==<A1, B1> (lhs: SKAsymmetricBond<A1, B1>, rhs: SKAsymmetricBond<A1, B1>) -> Bool
   {
     return (lhs.atom1 === rhs.atom1 && lhs.atom2 === rhs.atom2) || (lhs.atom1 === rhs.atom2 && lhs.atom2 === rhs.atom1)
   }
