@@ -76,9 +76,14 @@ public struct DocumentData: BinaryDecodable, BinaryEncodable
     return projectData.rootNodes[2].childNodes[0].childNodes[1]
   }
   
-  public var cloudIZARootNode: ProjectTreeNode
+  public var cloudCoREMOF2019RootNode: ProjectTreeNode
   {
     return projectData.rootNodes[2].childNodes[0].childNodes[2]
+  }
+  
+  public var cloudIZARootNode: ProjectTreeNode
+  {
+    return projectData.rootNodes[2].childNodes[0].childNodes[3]
   }
   
   public init()
