@@ -48,4 +48,5 @@ public protocol BondEditor: AtomEditor
   func computeChangedBondLength(asymmetricBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
   func computeChangedBondLength(bond: SKBondNode, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
   func typeBonds()
+  func bondLength(_ bond: SKBondNode) -> Double
 }
