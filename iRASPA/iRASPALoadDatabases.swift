@@ -232,6 +232,122 @@ extension ProjectViewController
     })
   }
   
+  func loadCoREMOFASR2019Database(documentData: DocumentData)
+  {
+    DispatchQueue.global(qos: .userInitiated).async(execute: {
+      if let url: URL = Bundle.main.url(forResource: "CloudCoREMOFASR2019Database_v1.1.4", withExtension: "data")
+      {
+        do
+        {
+          let cloudFileWrapper = try FileWrapper(url: url, options: FileWrapper.ReadingOptions.immediate)
+          if let data: Data = cloudFileWrapper.regularFileContents
+          {
+            // get the whole tree of ProxyProject but do not load the 'representedObjects' (i.e. the projects themselves)
+            // The projects will be loaded 'on-demand'
+            
+            let cloudProjectTreeNode: ProjectTreeNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectTreeNode.self)
+            
+            for node in cloudProjectTreeNode.flattenedGroupNodes()
+            {
+              node.representedObject.project = ProjectGroup(name: node.displayName)
+              node.representedObject.lazyStatus = .loaded
+            }
+            
+            DispatchQueue.main.async {
+              let projectOutlineView: ProjectOutlineView? = self.projectOutlineView
+              
+              // update project outlineview
+              projectOutlineView?.beginUpdates()
+              
+              documentData.cloudCoREMOFASR2019RootNode.representedObject.fileNameUUID = cloudProjectTreeNode.representedObject.fileNameUUID
+              for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
+              {
+                child.insert(inParent: documentData.cloudCoREMOFASR2019RootNode, atIndex: index)
+              }
+              
+              documentData.cloudCoREMOFASR2019RootNode.flattenedNodes().forEach{$0.isEditable = false}
+              documentData.projectData.updateFilteredNodes()
+              projectOutlineView?.endUpdates()
+              
+              self.windowController?.detailTabViewController?.directoryViewController?.reloadData()
+            }
+          }
+          else
+          {
+            LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
+          }
+        }
+        catch let error
+        {
+           LogQueue.shared.error(destination: self.windowController, message: "Loading error, " + error.localizedDescription)
+          
+        }
+      }
+      else
+      {
+        LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
+      }
+    })
+  }
+  
+  func loadCoREMOFFSR2019Database(documentData: DocumentData)
+  {
+    DispatchQueue.global(qos: .userInitiated).async(execute: {
+      if let url: URL = Bundle.main.url(forResource: "CloudCoREMOFFSR2019Database_v1.1.4", withExtension: "data")
+      {
+        do
+        {
+          let cloudFileWrapper = try FileWrapper(url: url, options: FileWrapper.ReadingOptions.immediate)
+          if let data: Data = cloudFileWrapper.regularFileContents
+          {
+            // get the whole tree of ProxyProject but do not load the 'representedObjects' (i.e. the projects themselves)
+            // The projects will be loaded 'on-demand'
+            
+            let cloudProjectTreeNode: ProjectTreeNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectTreeNode.self)
+            
+            for node in cloudProjectTreeNode.flattenedGroupNodes()
+            {
+              node.representedObject.project = ProjectGroup(name: node.displayName)
+              node.representedObject.lazyStatus = .loaded
+            }
+            
+            DispatchQueue.main.async {
+              let projectOutlineView: ProjectOutlineView? = self.projectOutlineView
+              
+              // update project outlineview
+              projectOutlineView?.beginUpdates()
+              
+              documentData.cloudCoREMOFFSR2019RootNode.representedObject.fileNameUUID = cloudProjectTreeNode.representedObject.fileNameUUID
+              for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
+              {
+                child.insert(inParent: documentData.cloudCoREMOFFSR2019RootNode, atIndex: index)
+              }
+              
+              documentData.cloudCoREMOFFSR2019RootNode.flattenedNodes().forEach{$0.isEditable = false}
+              documentData.projectData.updateFilteredNodes()
+              projectOutlineView?.endUpdates()
+              
+              self.windowController?.detailTabViewController?.directoryViewController?.reloadData()
+            }
+          }
+          else
+          {
+            LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
+          }
+        }
+        catch let error
+        {
+           LogQueue.shared.error(destination: self.windowController, message: "Loading error, " + error.localizedDescription)
+          
+        }
+      }
+      else
+      {
+        LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
+      }
+    })
+  }
+  
   func loadIZADatabase(documentData: DocumentData)
   {
     DispatchQueue.global(qos: .userInitiated).async(execute: {
@@ -400,6 +516,119 @@ extension ProjectViewController
       print(error.localizedDescription)
     }
   }
+  
+  func saveCoREMOFASR2019Database(documentData: DocumentData)
+  {
+    let projectTreeNodeNodes: [ProjectTreeNode] = documentData.cloudCoREMOFASR2019RootNode.flattenedNodes()
+    
+    documentData.cloudCoREMOFASR2019RootNode.isEditable = false
+    for projectTreeNode in projectTreeNodeNodes
+    {
+      // set project to not editable
+      projectTreeNode.isEditable = false
+      
+      if(projectTreeNode.representedObject.nodeType == .leaf)
+      {
+        projectTreeNode.representedObject.lazyStatus = .lazy
+        projectTreeNode.representedObject.storageType = .publicCloud
+        
+        if let projectStructure: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyEditor
+        {
+          // if modified, take the new data
+          projectTreeNode.representedObject.volumetricSurfaceArea = structure.structureVolumetricNitrogenSurfaceArea
+          projectTreeNode.representedObject.gravimetricSurfaceArea = structure.structureGravimetricNitrogenSurfaceArea
+          projectTreeNode.representedObject.heliumVoidFraction = structure.structureHeliumVoidFraction
+          projectTreeNode.representedObject.largestOverallCavityDiameter = structure.structureLargestCavityDiameter
+          projectTreeNode.representedObject.restrictingPoreDiameter = structure.structureRestrictingPoreLimitingDiameter
+          projectTreeNode.representedObject.largestDiameterAlongViablePath = structure.structureLargestCavityDiameterAlongAViablePath
+          projectTreeNode.representedObject.density = structure.structureDensity
+          projectTreeNode.representedObject.mass = structure.structureMass
+          projectTreeNode.representedObject.specificVolume = structure.structureSpecificVolume
+          projectTreeNode.representedObject.accessiblePoreVolume = structure.structureAccessiblePoreVolume
+          projectTreeNode.representedObject.numberOfChannelSystems = structure.structureNumberOfChannelSystems
+          projectTreeNode.representedObject.numberOfInaccesiblePockets = structure.structureNumberOfInaccessiblePockets
+          projectTreeNode.representedObject.dimensionalityPoreSystem = structure.structureDimensionalityOfPoreSystem
+          projectTreeNode.representedObject.materialType = structure.structureMaterialType
+        }
+      }
+      
+    }
+    
+    
+    let binaryEncoder: BinaryEncoder = BinaryEncoder()
+    binaryEncoder.encode(documentData.cloudCoREMOFASR2019RootNode)
+    let data: Data = Data(binaryEncoder.data)
+    
+    let paths: [URL] = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask)
+    let url: URL = paths[0].appendingPathComponent("CloudCoREMOFASR2019Database_v1.1.4.data")
+
+    do
+    {
+      try data.write(to: url, options: Data.WritingOptions.atomic)
+     }
+    catch
+    {
+      print(error.localizedDescription)
+    }
+  }
+  
+  func saveCoREMOFFSR2019Database(documentData: DocumentData)
+  {
+    let projectTreeNodeNodes: [ProjectTreeNode] = documentData.cloudCoREMOFFSR2019RootNode.flattenedNodes()
+    
+    documentData.cloudCoREMOFFSR2019RootNode.isEditable = false
+    for projectTreeNode in projectTreeNodeNodes
+    {
+      // set project to not editable
+      projectTreeNode.isEditable = false
+      
+      if(projectTreeNode.representedObject.nodeType == .leaf)
+      {
+        projectTreeNode.representedObject.lazyStatus = .lazy
+        projectTreeNode.representedObject.storageType = .publicCloud
+        
+        if let projectStructure: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyEditor
+        {
+          // if modified, take the new data
+          projectTreeNode.representedObject.volumetricSurfaceArea = structure.structureVolumetricNitrogenSurfaceArea
+          projectTreeNode.representedObject.gravimetricSurfaceArea = structure.structureGravimetricNitrogenSurfaceArea
+          projectTreeNode.representedObject.heliumVoidFraction = structure.structureHeliumVoidFraction
+          projectTreeNode.representedObject.largestOverallCavityDiameter = structure.structureLargestCavityDiameter
+          projectTreeNode.representedObject.restrictingPoreDiameter = structure.structureRestrictingPoreLimitingDiameter
+          projectTreeNode.representedObject.largestDiameterAlongViablePath = structure.structureLargestCavityDiameterAlongAViablePath
+          projectTreeNode.representedObject.density = structure.structureDensity
+          projectTreeNode.representedObject.mass = structure.structureMass
+          projectTreeNode.representedObject.specificVolume = structure.structureSpecificVolume
+          projectTreeNode.representedObject.accessiblePoreVolume = structure.structureAccessiblePoreVolume
+          projectTreeNode.representedObject.numberOfChannelSystems = structure.structureNumberOfChannelSystems
+          projectTreeNode.representedObject.numberOfInaccesiblePockets = structure.structureNumberOfInaccessiblePockets
+          projectTreeNode.representedObject.dimensionalityPoreSystem = structure.structureDimensionalityOfPoreSystem
+          projectTreeNode.representedObject.materialType = structure.structureMaterialType
+        }
+      }
+      
+    }
+    
+    
+    let binaryEncoder: BinaryEncoder = BinaryEncoder()
+    binaryEncoder.encode(documentData.cloudCoREMOFFSR2019RootNode)
+    let data: Data = Data(binaryEncoder.data)
+    
+    let paths: [URL] = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask)
+    let url: URL = paths[0].appendingPathComponent("CloudCoREMOFFSR2019Database_v1.1.4.data")
+
+    do
+    {
+      try data.write(to: url, options: Data.WritingOptions.atomic)
+     }
+    catch
+    {
+      print(error.localizedDescription)
+    }
+  }
+  
   
   func saveIZADatabase(documentData: DocumentData)
   {

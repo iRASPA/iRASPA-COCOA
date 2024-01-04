@@ -1466,25 +1466,47 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   
   public override var boundingBox: SKBoundingBox
   {
-    let minimumReplica = cell.minimumReplica
-    let maximumReplica = cell.maximumReplica
+    var minimum: SIMD3<Double> = self.cell.enclosingBoundingBox.minimum
+    var maximum: SIMD3<Double> = self.cell.enclosingBoundingBox.maximum
     
-    let c0: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(minimumReplica.x),  y: Double(minimumReplica.y),  z: Double(minimumReplica.z)))
-    let c1: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(minimumReplica.z)))
-    let c2: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(minimumReplica.z)))
-    let c3: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(minimumReplica.z)))
-    let c4: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(minimumReplica.x),   y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1)))
-    let c5: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1)))
-    let c6: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1)))
-    let c7: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1)))
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
     
-    let minimum = SIMD3<Double>(x: min(c0.x, c1.x, c2.x, c3.x, c4.x, c5.x, c6.x, c7.x),
-                                y: min(c0.y, c1.y, c2.y, c3.y, c4.y, c5.y, c6.y, c7.y),
-                                z: min(c0.z, c1.z, c2.z, c3.z, c4.z, c5.z, c6.z, c7.z))
-
-    let maximum = SIMD3<Double>(x: max(c0.x, c1.x, c2.x, c3.x, c4.x, c5.x, c6.x, c7.x),
-                                y: max(c0.y, c1.y, c2.y, c3.y, c4.y, c5.y, c6.y, c7.y),
-                                z: max(c0.z, c1.z, c2.z, c3.z, c4.z, c5.z, c6.z, c7.z))
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+      
+    // only use leaf-nodes
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    
+    for atom in atoms
+    {
+      let pos: SIMD3<Double> = SIMD3<Double>.flip(v: atom.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+    
+      for k1 in minimumReplicaX...maximumReplicaX
+      {
+        for k2 in minimumReplicaY...maximumReplicaY
+        {
+          for k3 in minimumReplicaZ...maximumReplicaZ
+          {
+            let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
+            let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
+            
+            let radius: Double = (atom.asymmetricParentAtom?.drawRadius ?? 0.0) * self.atomScaleFactor
+            minimum.x = min(minimum.x, cartesianPosition.x - radius)
+            minimum.y = min(minimum.y, cartesianPosition.y - radius)
+            minimum.z = min(minimum.z, cartesianPosition.z - radius)
+            
+            maximum.x = max(maximum.x, cartesianPosition.x + radius)
+            maximum.y = max(maximum.y, cartesianPosition.y + radius)
+            maximum.z = max(maximum.z, cartesianPosition.z + radius)
+           
+          }
+        }
+      }
+    }
     
     return SKBoundingBox(minimum: minimum, maximum: maximum)
   }
