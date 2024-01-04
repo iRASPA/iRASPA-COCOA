@@ -130,12 +130,14 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     
     let cloudNodeCoREMOF: ProjectTreeNode = ProjectTreeNode(displayName: "CoRE MOF v1.0", recordID: CKRecord.ID(recordName: "982F3A9C-7B2D-809B-8F9D-852F2F7FB839"), representedObject: iRASPAProject(group: ProjectGroup(name: "CoRE MOF v1.0")))
     let cloudNodeCoREMOFDDEC: ProjectTreeNode = ProjectTreeNode(displayName: "CoRE MOF v1.0 DDEC", recordID: CKRecord.ID(recordName: "55DEA27F-47C8-81CA-CE43-956EAA1DCF2D"), representedObject: iRASPAProject(group: ProjectGroup(name: "CoRE MOF v1.0 DDEC")))
-    let cloudNodeCoREMOF2019: ProjectTreeNode = ProjectTreeNode(displayName: "CoRE MOF v1.1.4 2019", recordID: CKRecord.ID(recordName: "321A2B10-925E-4A70-8E79-80DC9F31F564"), representedObject: iRASPAProject(group: ProjectGroup(name: "CoRE MOF v1.1.4 2019")))
+    let cloudNodeCoREMOFASR2019: ProjectTreeNode = ProjectTreeNode(displayName: "CoRE MOF ASR 2019", recordID: CKRecord.ID(recordName: "321A2B10-925E-4A70-8E79-80DC9F31F564"), representedObject: iRASPAProject(group: ProjectGroup(name: "CoRE MOF ASR 2019")))
+    let cloudNodeCoREMOFFSR2019: ProjectTreeNode = ProjectTreeNode(displayName: "CoRE MOF FSR 2019", recordID: CKRecord.ID(recordName: "D7294935-AA69-49C2-AF63-E0CF70B3BE21"), representedObject: iRASPAProject(group: ProjectGroup(name: "CoRE MOF FSR 2019")))
     let cloudNodeIZA: ProjectTreeNode = ProjectTreeNode(displayName: "IZA Zeolite Topologies", recordID: CKRecord.ID(recordName: "6383111E-4D0E-1675-82F2-E97FEB76FDE4"), representedObject: iRASPAProject(group: ProjectGroup(name: "IZA Zeolite Topologies")))
     self.insertNode(cloudNodeCoREMOF, inItem: cloudMainNode, atIndex: 0)
     self.insertNode(cloudNodeCoREMOFDDEC, inItem: cloudMainNode, atIndex: 1)
-    self.insertNode(cloudNodeCoREMOF2019, inItem: cloudMainNode, atIndex: 2)
-    self.insertNode(cloudNodeIZA, inItem: cloudMainNode, atIndex: 3)
+    self.insertNode(cloudNodeCoREMOFASR2019, inItem: cloudMainNode, atIndex: 2)
+    self.insertNode(cloudNodeCoREMOFFSR2019, inItem: cloudMainNode, atIndex: 3)
+    self.insertNode(cloudNodeIZA, inItem: cloudMainNode, atIndex: 4)
     
     galleryRootNode.isExpanded = true
     projectRootNode.isExpanded = true

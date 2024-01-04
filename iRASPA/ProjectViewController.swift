@@ -169,6 +169,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       self.loadGalleryDatabase(documentData: documentData)
       self.loadCoREMOFDatabase(documentData: documentData)
       self.loadCoREMOFDDECDatabase(documentData: documentData)
+      self.loadCoREMOFASR2019Database(documentData: documentData)
+      self.loadCoREMOFFSR2019Database(documentData: documentData)
       self.loadIZADatabase(documentData: documentData)
     }
   }
@@ -1897,15 +1899,19 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     if let document: iRASPADocument = windowController?.document as? iRASPADocument
     {
       let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      let objects: [[ProjectTreeNode]] = Array(selectedObjects).chunked(by: 100)
       
-      let saveOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [], recordIDsToDelete: [])
-      saveOperation.recordsToSave = []
-      saveOperation.recordIDsToDelete = nil
-      saveOperation.isAtomic = false
-      saveOperation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
-      
-      for node in selectedObjects
+      for chunck in objects
       {
+        let saveOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [], recordIDsToDelete: [])
+        saveOperation.recordsToSave = []
+        saveOperation.recordIDsToDelete = nil
+        saveOperation.isAtomic = false
+        saveOperation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
+      
+     
+        for node in chunck
+        {
           if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode,
              let structure: StructuralPropertyEditor = projectStructure.allIRASPAStructures.first as? StructuralPropertyEditor
           {
@@ -1924,27 +1930,27 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             let dim: NSNumber = NSNumber(value: structure.structureDimensionalityOfPoreSystem)
             let type: NSString =  NSString(string: structure.structureMaterialType)
             node.representedObjectInfo =
-              [ "vsa": VSA,
-                "gsa": GSA,
-                "voidfraction" : helium,
-                "di" : di,
-                "df" : df,
-                "dif" : dif,
-                "density" : density,
-                "mass" : mass,
-                "specific_v" : specificV,
-                "accesible_v" : AccesibleV,
-                "n_channels" : Nchannels,
-                "n_pockets" : Npockets,
-                "dim" : dim,
-                "type" : type
+            [ "vsa": VSA,
+              "gsa": GSA,
+              "voidfraction" : helium,
+              "di" : di,
+              "df" : df,
+              "dif" : dif,
+              "density" : density,
+              "mass" : mass,
+              "specific_v" : specificV,
+              "accesible_v" : AccesibleV,
+              "n_channels" : Nchannels,
+              "n_pockets" : Npockets,
+              "dim" : dim,
+              "type" : type
             ]
           }
           //let parentRecordID = CKRecordID(recordName: parentId)
-  
-        let recordID: CKRecord.ID = CKRecord.ID(recordName: node.representedObject.fileNameUUID)
-        let record: CKRecord = CKRecord(recordType: "ProjectNode", recordID: recordID)
-         
+          
+          let recordID: CKRecord.ID = CKRecord.ID(recordName: node.representedObject.fileNameUUID)
+          let record: CKRecord = CKRecord(recordType: "ProjectNode", recordID: recordID)
+          
           //record["displayName"] = node.representedObject.displayName as CKRecordValue
           //record["parent"] = CKRecord.Reference(recordID: CKRecord.ID(recordName: parentId), action: CKRecord.Reference.Action.none)
           //record["type"] = node.representedObject.projectType.rawValue as CKRecordValue
@@ -1971,10 +1977,13 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           saveOperation.savePolicy = CKModifyRecordsOperation.RecordSavePolicy.changedKeys
           
           saveOperation.recordsToSave?.append(record)
+          //debugPrint("node.representedObject.fileNameUUID: ", node.representedObject.fileNameUUID)
+        }
+        
+        Cloud.shared.cloudQueue.addOperations([saveOperation], waitUntilFinished: true)
+        debugPrint("cloud save done!")
       }
       
-      Cloud.shared.cloudQueue.addOperations([saveOperation], waitUntilFinished: true)
-      debugPrint("done!")
     }
   }
   
@@ -2351,6 +2360,22 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     }
   }
   
+  @IBAction func ProjectContextMenuSaveCoreASRMOF2019(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      saveCoREMOFASR2019Database(documentData: document.documentData)
+    }
+  }
+  
+  @IBAction func ProjectContextMenuSaveCoreFSRMOF2019(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      saveCoREMOFFSR2019Database(documentData: document.documentData)
+    }
+  }
+  
   @IBAction func ProjectContextMenuSaveIZA(_ sender: NSMenuItem)
   {
     if let document: iRASPADocument = windowController?.document as? iRASPADocument
@@ -2365,7 +2390,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     generateThumbnail()
   }
   
-  @IBAction func ProjectContextGenerateThumbnailForSelection(_ sender: NSMenuItem)
+  @IBAction func ProjectContextMenuSetToCoreMOF2019(_ sender: NSMenuItem)
   {
     if let document: iRASPADocument = windowController?.document as? iRASPADocument
     {
@@ -2373,12 +2398,106 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       for node in selectedObjects
       {
-        if node.isEditable
+        if let projectStructureNode: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
         {
-          node.unwrapLazyLocalPresentedObjectIfNeeded()
+          // if no camera present yet (e.g. after cif-import), create one
+          if projectStructureNode.renderCamera == nil
+          {
+            projectStructureNode.renderCamera = RKCamera()
+            projectStructureNode.renderCamera?.initialized = true
+            projectStructureNode.allObjects.forEach{$0.reComputeBoundingBox()}
+            if let renderCamera = projectStructureNode.renderCamera
+            {
+              renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
+              renderCamera.resetCameraDistance()
+            }
+          }
           
-          document.documentData.projectData.selectedTreeNode = node
-          switchToCurrentProject()
+          // adjust the camera to a possible change of the window-size
+          if let renderCamera = projectStructureNode.renderCamera
+          {
+            renderCamera.resetPercentage = 0.85
+            if let size: CGSize = self.windowController?.detailTabViewController?.renderViewController?.renderViewController.viewBounds
+            {
+              renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
+              renderCamera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
+              renderCamera.resetCameraDistance()
+            }
+          }
+          
+          if let scene: Scene = projectStructureNode.sceneList.scenes.first
+          {
+            projectStructureNode.allObjects.compactMap({$0 as? Structure}).forEach{scene.setToCoreMOF2019Style(structure: $0)}
+          }
+        }
+      }
+    }
+  }
+  
+  @IBAction func ProjectContextGenerateThumbnailForSelection(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument,
+       let device = MTLCreateSystemDefaultDevice()
+    {
+      let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      
+      for node in selectedObjects
+      {
+        node.unwrapLazyLocalPresentedObjectIfNeeded()
+        
+        
+        
+        if let projectStructureNodeOriginal: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
+        {
+          // make copy so as to leave the original settings intact
+          let binaryEncoder: BinaryEncoder = BinaryEncoder()
+          binaryEncoder.encode(projectStructureNodeOriginal)
+          let data = Data(binaryEncoder.data)
+          let binaryDecoder = BinaryDecoder(data: [UInt8](data))
+          if let projectStructureNode: ProjectStructureNode = try? ProjectStructureNode(fromBinary: binaryDecoder)
+          {
+            let size: NSSize = NSSize(width: 96, height: 84)
+            
+            // adjust the camera to a possible change of the window-size
+            let camera: RKCamera = RKCamera()
+  
+            // Critical: set the selection, otherwise no frames will be drawn
+            projectStructureNode.setInitialSelectionIfNeeded()
+            
+            projectStructureNode.renderAxes.position = .none
+            
+            projectStructureNode.renderBackgroundCachedImage = projectStructureNode.drawGradientCGImage()
+            camera.resetPercentage = 0.85
+            camera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
+            
+            camera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
+            camera.resetCameraDistance()
+            
+            
+            let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: projectStructureNode, camera: camera)
+            
+            if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera, imageQuality: .rgb_8_bits, transparentBackground: false,   renderQuality: .picture)
+            {
+              let cgImage: CGImage
+            
+              let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.first.rawValue)
+              let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
+              let dataProvider: CGDataProvider = CGDataProvider(data: data as CFData)!
+              let bitsPerComponent: Int = 8
+              let bitsPerPixel: Int = 32
+              let bytesPerRow: Int = 4 * Int(size.width)
+              cgImage = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel, bytesPerRow:   bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo, provider: dataProvider, decode: nil, shouldInterpolate: false, intent:   CGColorRenderingIntent.defaultIntent)!
+            
+              let imageRep: NSBitmapImageRep = NSBitmapImageRep(cgImage: cgImage)
+              imageRep.size = NSMakeSize(CGFloat(projectStructureNode.renderImagePhysicalSizeInInches * 72),   CGFloat(projectStructureNode.renderImagePhysicalSizeInInches * 72.0 * Double(size.height) / Double(size.width)))
+            
+              if let thumbnail: Data = imageRep.representation(using: NSBitmapImageRep.FileType.jpeg2000, properties: [:])
+              {
+                debugPrint(cgImage.width, cgImage.height, thumbnail.count)
+                node.thumbnail = thumbnail
+              }
+            }
+          }
         }
       }
     }
@@ -2919,7 +3038,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       }
       
       
-        
       if let _: ProjectGroup = proxyProject.representedObject.project as? ProjectGroup
       {
         self.windowController?.masterTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.directoryBrowser.rawValue
@@ -2954,6 +3072,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           {
             renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
             renderCamera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
+            renderCamera.resetCameraDistance()
           }
         }
         
@@ -2976,8 +3095,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
          proxyProject.thumbnail == nil
       {
         //try? proxyProject.thumbnail?.write(to: URL(fileURLWithPath: "/Users/dubbelda/Downloads/12345.png"))
-        //let thumbnailSize: NSSize = NSSize(width: 96, height: 84)
-        let thumbnailSize: NSSize = NSSize(width: 160, height: 140)
+        let thumbnailSize: NSSize = NSSize(width: 96, height: 84)
+        //let thumbnailSize: NSSize = NSSize(width: 160, height: 140)
         let camera: RKCamera = RKCamera(camera: camera)
         camera.initialized = true
         camera.resetPercentage = 0.85

@@ -441,6 +441,57 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
     structure.citationDatebaseCodes = ""
   }
   
+  public func setToCoreMOF2019Style(structure: Structure)
+  {
+    structure.atomRepresentationStyle = .fancy
+    
+    structure.structureMaterialType = "MOF"
+    structure.setRepresentationStyle(style: .fancy)
+    
+    let calender = NSCalendar.current
+    var dateComponents: DateComponents = DateComponents()
+    dateComponents.year = 2019
+    dateComponents.month = 11
+    dateComponents.day = 4
+    let date: Date = calender.date(from: dateComponents)!
+
+    structure.authorFirstName = "Yongchul"
+    structure.authorMiddleName = " "
+    structure.authorLastName = "Chung"
+    structure.authorOrchidID = ""
+    structure.authorResearcherID = ""
+    structure.authorAffiliationUniversityName = "Pusan National University"
+    structure.authorAffiliationFacultyName = ""
+    structure.authorAffiliationInstituteName = "School of Chemical and Biomolecular Engineering"
+    structure.authorAffiliationCityName = "Busan"
+    structure.authorAffiliationCountryName = Locale.current.localizedString(forRegionCode: "KR") ?? "Netherlands"
+    structure.creationDate = date
+    structure.creationTemperature = ""
+    structure.creationTemperatureScale = .Kelvin
+    structure.creationPressure = ""
+    structure.creationPressureScale = .Pascal
+    structure.creationMethod = .simulation
+    structure.creationUnitCellRelaxationMethod = .allFixed
+    structure.creationAtomicPositionsSoftwarePackage = "Materials Studio"
+    structure.creationAtomicPositionsIonsRelaxationAlgorithm = .none
+    structure.creationAtomicPositionsIonsRelaxationCheck = .none
+    structure.creationAtomicPositionsForcefield = ""
+    structure.creationAtomicPositionsForcefieldDetails = ""
+    structure.creationAtomicChargesSoftwarePackage = ""
+    structure.creationAtomicChargesAlgorithms = ""
+    structure.creationAtomicChargesForcefield = ""
+    structure.creationAtomicChargesForcefieldDetails = ""
+    structure.citationArticleTitle = "Advances, Updates, and Analytics for the Computation-Ready, Experimental Metal–Organic Framework Database: CoRE MOF 2019"
+    structure.citationJournalTitle = "Chemistry of Materials"
+    structure.citationAuthors = "Yongchul G. Chung, Emmanuel Haldoupis, Benjamin J. Bucior, Maciej Haranczyk, Seulchan Lee, Hongda Zhang, Konstantinos D. Vogiatzis, Marija Milisavljevic, Sanliang Ling, Jeffrey S. Camp, Ben Slater, J. Ilja Siepmann*, David S. Sholl, and Randall Q. Snurr"
+    structure.citationJournalVolume = "64"
+    structure.citationJournalNumber = "12"
+    structure.citationJournalPageNumbers = "5985-5998"
+    structure.citationDOI = "10.1021/acs.jced.9b00835"
+    structure.citationPublicationDate = date
+    structure.citationDatebaseCodes = ""
+  }
+  
   public func setToDDECStyle(structure: Structure)
   {
     structure.atomRepresentationStyle = .fancy
