@@ -2622,19 +2622,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     return self.transformedBoundingBox
   }
   
-  /*
-  public var boundingBox: SKBoundingBox
-  {
-    return SKBoundingBox()
-  }*/
-  
   public var clipBonds: Bool
   {
     return false
   }
-  
-  
- 
   
   public func numberOfReplicas() -> Int
   {
