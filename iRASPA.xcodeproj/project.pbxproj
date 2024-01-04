@@ -243,6 +243,8 @@
 		9364BAF3275F5BE200A78FC6 /* SKVASPCHGCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9364BAF2275F5BE200A78FC6 /* SKVASPCHGCARParser.swift */; };
 		9364BAF527611D9F00A78FC6 /* SKVASPLOCPOTParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9364BAF427611D9F00A78FC6 /* SKVASPLOCPOTParser.swift */; };
 		93682C3C1F2729A00041F436 /* iRASPALoadDatabases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */; };
+		9369D3E32B45A5EB00B7AFCB /* CloudCoREMOFASR2019Database_v1.1.4.data in Resources */ = {isa = PBXBuildFile; fileRef = 9369D3E22B45A5EB00B7AFCB /* CloudCoREMOFASR2019Database_v1.1.4.data */; };
+		9369D3E52B46B11800B7AFCB /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9369D3E42B46B11800B7AFCB /* Array.swift */; };
 		936AF6DB26B985B600E91649 /* SKAsymmetricAtom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AF6DA26B985B600E91649 /* SKAsymmetricAtom.swift */; };
 		936AF6DD26BC082000E91649 /* MetalCappedConeGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AF6DC26BC082000E91649 /* MetalCappedConeGeometry.swift */; };
 		936AF6DF26BC2B6700E91649 /* MetalCapsuleGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AF6DE26BC2B6700E91649 /* MetalCapsuleGeometry.swift */; };
@@ -374,6 +376,7 @@
 		938446E22264895D00C0A0AC /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938446E12264895D00C0A0AC /* NSView.swift */; };
 		938657AF1F2349F60029395C /* CloudIZADatabase.data in Resources */ = {isa = PBXBuildFile; fileRef = 938657AE1F2349E20029395C /* CloudIZADatabase.data */; };
 		9386FBB12019DEAA00442E5C /* RKCachedFontAtlas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9386FBB02019DEAA00442E5C /* RKCachedFontAtlas.swift */; };
+		938816B52B4099DA000DF5B8 /* CloudCoREMOFFSR2019Database_v1.1.4.data in Resources */ = {isa = PBXBuildFile; fileRef = 938816B42B4099DA000DF5B8 /* CloudCoREMOFFSR2019Database_v1.1.4.data */; };
 		938B1C711F2682410017116B /* DirectoryCollectionSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B1C701F2682410017116B /* DirectoryCollectionSplitViewController.swift */; };
 		938B44E51EB7AB2F006B7704 /* FetchCurrentUserRcordOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B44E41EB7AB2F006B7704 /* FetchCurrentUserRcordOperation.swift */; };
 		938B44E71EB7AE74006B7704 /* ImportNodesFromCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B44E61EB7AE74006B7704 /* ImportNodesFromCloud.swift */; };
@@ -1664,6 +1667,8 @@
 		9364BAF2275F5BE200A78FC6 /* SKVASPCHGCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVASPCHGCARParser.swift; sourceTree = "<group>"; };
 		9364BAF427611D9F00A78FC6 /* SKVASPLOCPOTParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVASPLOCPOTParser.swift; sourceTree = "<group>"; };
 		93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPALoadDatabases.swift; sourceTree = "<group>"; };
+		9369D3E22B45A5EB00B7AFCB /* CloudCoREMOFASR2019Database_v1.1.4.data */ = {isa = PBXFileReference; lastKnownFileType = file; path = CloudCoREMOFASR2019Database_v1.1.4.data; sourceTree = "<group>"; };
+		9369D3E42B46B11800B7AFCB /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		936AF6DA26B985B600E91649 /* SKAsymmetricAtom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAsymmetricAtom.swift; sourceTree = "<group>"; };
 		936AF6DC26BC082000E91649 /* MetalCappedConeGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedConeGeometry.swift; sourceTree = "<group>"; };
 		936AF6DE26BC2B6700E91649 /* MetalCapsuleGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCapsuleGeometry.swift; sourceTree = "<group>"; };
@@ -1797,6 +1802,7 @@
 		938446E12264895D00C0A0AC /* NSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
 		938657AE1F2349E20029395C /* CloudIZADatabase.data */ = {isa = PBXFileReference; lastKnownFileType = file; path = CloudIZADatabase.data; sourceTree = "<group>"; };
 		9386FBB02019DEAA00442E5C /* RKCachedFontAtlas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKCachedFontAtlas.swift; sourceTree = "<group>"; };
+		938816B42B4099DA000DF5B8 /* CloudCoREMOFFSR2019Database_v1.1.4.data */ = {isa = PBXFileReference; lastKnownFileType = file; path = CloudCoREMOFFSR2019Database_v1.1.4.data; sourceTree = "<group>"; };
 		938B1C701F2682410017116B /* DirectoryCollectionSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCollectionSplitViewController.swift; sourceTree = "<group>"; };
 		938B44E41EB7AB2F006B7704 /* FetchCurrentUserRcordOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchCurrentUserRcordOperation.swift; sourceTree = "<group>"; };
 		938B44E61EB7AE74006B7704 /* ImportNodesFromCloud.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportNodesFromCloud.swift; sourceTree = "<group>"; };
@@ -3392,6 +3398,8 @@
 		938657AD1F2349AC0029395C /* StructureDatabases */ = {
 			isa = PBXGroup;
 			children = (
+				938816B42B4099DA000DF5B8 /* CloudCoREMOFFSR2019Database_v1.1.4.data */,
+				9369D3E22B45A5EB00B7AFCB /* CloudCoREMOFASR2019Database_v1.1.4.data */,
 				93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */,
 				938657AE1F2349E20029395C /* CloudIZADatabase.data */,
 				9300AE9B1F1FC86B0052DA45 /* CloudCoREMOFDatabase_v1.0.data */,
@@ -3436,6 +3444,7 @@
 				932A1C931F967D62000A0037 /* AngleNumberFormatter.swift */,
 				93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */,
 				93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */,
+				9369D3E42B46B11800B7AFCB /* Array.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -4803,8 +4812,10 @@
 				93FC88A11F5042E80009478E /* Preferences.storyboard in Resources */,
 				93B5EE561FC31D5A009922F2 /* AboutWindow.storyboard in Resources */,
 				93446ED0237969DB0040CD8E /* StructureCellDetail.storyboard in Resources */,
+				938816B52B4099DA000DF5B8 /* CloudCoREMOFFSR2019Database_v1.1.4.data in Resources */,
 				93446EC1237968870040CD8E /* StructureElementDetail.storyboard in Resources */,
 				93D1C7B726F2034A00B76FE0 /* InfoPlist.strings in Resources */,
+				9369D3E32B45A5EB00B7AFCB /* CloudCoREMOFASR2019Database_v1.1.4.data in Resources */,
 				9397C620203B4F4300FE4A9C /* ImportAccessoryViewController.xib in Resources */,
 				93446EC6237968E90040CD8E /* StructureInfoDetail.storyboard in Resources */,
 				938388121E26A4A800112FBA /* Assets.xcassets in Resources */,
@@ -5227,6 +5238,7 @@
 				9373377D1EB5FFF900E0655F /* ImportCloudProjectOperation.swift in Sources */,
 				93F936311EB8FFC30094C509 /* NSSquareButton.swift in Sources */,
 				93274E832205AA13004031BA /* EllipsoidPrimitive.swift in Sources */,
+				9369D3E52B46B11800B7AFCB /* Array.swift in Sources */,
 				938B44ED1EB7B38C006B7704 /* CloudSubscribeOperation.swift in Sources */,
 				930DD64A1E26BA5D00B8FE9B /* ProteinCrystal.swift in Sources */,
 				93B8F2E51EB1DE630052BDF8 /* Notifications.swift in Sources */,
@@ -6308,7 +6320,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6325,7 +6337,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6347,7 +6359,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6365,7 +6377,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6385,7 +6397,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6402,7 +6414,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
@@ -6422,7 +6434,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6440,7 +6452,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
@@ -6459,7 +6471,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6476,7 +6488,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6498,7 +6510,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6516,7 +6528,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6537,7 +6549,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6555,7 +6567,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
@@ -6577,7 +6589,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6595,7 +6607,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
@@ -6673,7 +6685,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6693,7 +6705,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
@@ -6721,7 +6733,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6741,7 +6753,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -6764,7 +6776,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6782,7 +6794,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
@@ -6803,7 +6815,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -6821,7 +6833,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
@@ -7025,7 +7037,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7041,7 +7053,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7065,7 +7077,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7081,7 +7093,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7116,7 +7128,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
@@ -7136,7 +7148,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7154,7 +7166,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
@@ -7176,7 +7188,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7188,7 +7200,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7207,7 +7219,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7219,7 +7231,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7237,7 +7249,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7249,7 +7261,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7268,7 +7280,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7280,7 +7292,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7299,7 +7311,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7317,7 +7329,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
@@ -7341,7 +7353,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7359,7 +7371,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
@@ -7379,7 +7391,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7396,7 +7408,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
@@ -7417,7 +7429,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7434,7 +7446,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
@@ -7456,7 +7468,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7467,7 +7479,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7486,7 +7498,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7497,7 +7509,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7513,7 +7525,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7531,7 +7543,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
@@ -7549,7 +7561,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7568,7 +7580,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
@@ -7590,7 +7602,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7601,7 +7613,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MovieCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7623,7 +7635,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7634,7 +7646,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MovieCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7655,7 +7667,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7666,7 +7678,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PictureCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7688,7 +7700,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7699,7 +7711,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PictureCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7721,7 +7733,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7739,7 +7751,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -7765,7 +7777,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7783,7 +7795,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
@@ -7807,7 +7819,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7825,7 +7837,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -7851,7 +7863,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 140;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
@@ -7869,7 +7881,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MARKETING_VERSION = 2.2.6;
+				MARKETING_VERSION = 2.3.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;

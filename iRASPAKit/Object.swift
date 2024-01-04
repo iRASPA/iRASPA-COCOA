@@ -166,7 +166,7 @@ public class Object: NSObject, RKRenderObject, BinaryDecodable, BinaryEncodable
   
   public var transformedBoundingBox: SKBoundingBox
   {
-    let currentBoundingBox: SKBoundingBox = self.cell.boundingBox
+    let currentBoundingBox: SKBoundingBox = self.boundingBox
     
     let transformation = double4x4.init(transformation: double4x4(self.orientation), aroundPoint: currentBoundingBox.center)
     let transformedBoundingBox: SKBoundingBox = currentBoundingBox.adjustForTransformation(transformation)
