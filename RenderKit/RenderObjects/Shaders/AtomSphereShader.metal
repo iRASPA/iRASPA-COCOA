@@ -43,7 +43,7 @@ vertex AtomSphereVertexShaderOut AtomSphereVertexShader(const device InPerVertex
 {
   AtomSphereVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   float4 pos =  scale * vertices[vid].position + positions[iid].position;
   if (structureUniforms.colorAtomsWithBondColor)
   {
@@ -176,7 +176,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterOrthographicVertexSha
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   
   if (structureUniforms.colorAtomsWithBondColor)
   {
@@ -211,7 +211,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterOrthographicVertexSha
   
   
   vert.texcoords = vertices[vid].position.xy;
-  vert.sphere_radius = structureUniforms.atomScaleFactor * positions[iid].scale;
+  vert.sphere_radius = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   float4 pos2 = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
   pos2.xy += scale.xy * float2(vertices[vid].position.x,vertices[vid].position.y);
   
@@ -330,7 +330,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterPerspectiveVertexShad
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   
   if (structureUniforms.colorAtomsWithBondColor)
   {
@@ -365,7 +365,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterPerspectiveVertexShad
   
   vert.frag_center= (frameUniforms.viewMatrix * structureUniforms.modelMatrix *  positions[iid].position).xyz;
   vert.texcoords = vertices[vid].position.xy;
-  vert.sphere_radius = structureUniforms.atomScaleFactor * positions[iid].scale;
+  vert.sphere_radius = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   
   float4 pos2 = frameUniforms.viewMatrix * structureUniforms.modelMatrix *  positions[iid].position;
   pos2.xy += 1.5 * scale.xy * float2(vertices[vid].position.x,vertices[vid].position.y);

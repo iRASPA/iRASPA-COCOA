@@ -129,7 +129,7 @@ public final class Molecule: Structure, AtomEditor, BondEditor, RKRenderAtomSour
         let w: Double = (typeIsVisible && copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
         let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
          
-        let radius: Double = copy.asymmetricParentAtom?.drawRadius ?? 1.0
+        let radius: Double = isUnity ? 1.0 : (copy.asymmetricParentAtom?.drawRadius ?? 1.0)
         let ambient: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
         let diffuse: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
         let specular: NSColor = self.atomSpecularColor
@@ -222,7 +222,7 @@ public final class Molecule: Structure, AtomEditor, BondEditor, RKRenderAtomSour
         let w: Double = (typeIsVisible && copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
         let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
         
-        let radius: Double = copy.asymmetricParentAtom?.drawRadius ?? 1.0
+        let radius: Double = isUnity ? 1.0 : (copy.asymmetricParentAtom?.drawRadius ?? 1.0)
         let ambient: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
         let diffuse: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
         let specular: NSColor = self.atomSpecularColor

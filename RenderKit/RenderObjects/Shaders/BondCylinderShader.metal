@@ -67,17 +67,15 @@ vertex InternalBondVertexShaderOut BondCylinderVertexShader(const device InPerVe
   float4 scale = positions[iid].scale;
   float4 pos =  vertices[vid].position;
   
-  
-  
   float4 pos1 = positions[iid].position1;
   float4 pos2 = positions[iid].position2;
   
   float3 dr = (pos2 - pos1).xyz;
   float bondLength = length(dr);
   
-  vert.mix.x = clamp(structureUniforms.atomScaleFactor,0.0,0.7) * scale.x;
+  vert.mix.x = clamp(structureUniforms.atomScaleFactor,0.0,3.7) * scale.x;
   vert.mix.y = vertices[vid].position.y;  // range 0.0..1.0
-  vert.mix.z = 1.0 - clamp(structureUniforms.atomScaleFactor,0.0,0.7) * scale.z;
+  vert.mix.z = 1.0 - clamp(structureUniforms.atomScaleFactor,0.0,3.7) * scale.z;
   vert.mix.w = scale.x/scale.z;
   
   
@@ -144,7 +142,8 @@ fragment float4 BondCylinderFragmentShader(InternalBondVertexShaderOut vert [[st
   float4 ambient = vert.ambient;
   float4 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess + structureUniforms.bondShininess) * vert.specular;
   float4 diffuse = max(dot(N, L), 0.0);
-  float t = clamp((vert.mix.y - vert.mix.x)/(vert.mix.z - vert.mix.x),0.0,1.0);
+  //float t = clamp((vert.mix.y - vert.mix.x)/(vert.mix.z - vert.mix.x), 0.0, 1.0);
+  float t = vert.mix.y;
 
   switch(structureUniforms.bondColorMode)
   {
@@ -298,7 +297,8 @@ fragment float4 ExternalBondCylinderFragmentShader(ExternalBondVertexShaderOut v
   float4 ambient = vert.ambient;
   float4 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess + structureUniforms.bondShininess) * vert.specular;
   float4 diffuse = max(dot(N, L), 0.0);
-  float t = clamp((vert.mix.y - vert.mix.x)/(vert.mix.z - vert.mix.x),0.0,1.0);
+  //float t = clamp((vert.mix.y - vert.mix.x)/(vert.mix.z - vert.mix.x),0.0,1.0);
+  float t = vert.mix.y;
   
   // [[ clip_distance ]] appears to working only for two clipping planes
   // work-around: brute-force 'discard_fragment'

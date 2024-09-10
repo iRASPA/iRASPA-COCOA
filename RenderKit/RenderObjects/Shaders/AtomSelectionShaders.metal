@@ -57,7 +57,7 @@ vertex GlowVertexShaderOut AtomGlowSphereVertexShader(const device InPerVertex *
 {
   GlowVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   float4 pos =  scale * vertices[vid].position + positions[iid].position;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
@@ -88,7 +88,7 @@ vertex GlowVertexShaderOut AtomGlowSphereImposterOrthographicVertexShader(const 
 {
   GlowVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
@@ -146,7 +146,7 @@ vertex GlowVertexShaderOut AtomGlowSphereImposterPerspectiveVertexShader(const d
 {
   GlowVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
@@ -310,7 +310,7 @@ vertex AtomSphereVertexShaderOut AtomSelectionWorleyNoise3DSphereVertexShader(co
 {
   AtomSphereVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   float4 pos =  scale * vertices[vid].position + positions[iid].position;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
@@ -387,7 +387,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionWorleyNoise3DOrthographicV
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
@@ -493,7 +493,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionWorleyNoise3DPerspectiveVe
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
@@ -604,7 +604,7 @@ vertex AtomSphereVertexShaderOut AtomSelectionStripedSphereVertexShader(const de
 {
   AtomSphereVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   float4 pos =  scale * vertices[vid].position + positions[iid].position;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
@@ -673,7 +673,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionStripedSphereOrthographicV
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
@@ -772,7 +772,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionStripedSpherePerspectiveVe
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;

@@ -577,6 +577,9 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     }
     
     try super.init(fromBinary: decoder)
+    
+    // render the bacground from color, gradient, or picture into the cached image that is used for rendering
+    //renderBackgroundCachedImage = drawGradientCGImage()
   }
   
   // MARK: -

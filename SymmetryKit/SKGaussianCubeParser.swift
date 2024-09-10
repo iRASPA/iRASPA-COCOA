@@ -146,7 +146,7 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     {
       dimensions.x = abs(dx)
       conversionFactor.x = dx.signum() == -1 ? 1.0 : BohrToAngstrom
-      a = conversionFactor.x * Double(dx) * SIMD3<Double>(ax,ay,az)
+      a = conversionFactor.x * Double(abs(dx)) * SIMD3<Double>(ax,ay,az)
     }
     else
     {
@@ -160,7 +160,7 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     {
       dimensions.y = abs(dy)
       conversionFactor.y = dy.signum() == -1 ? 1.0 : BohrToAngstrom
-      b = conversionFactor.y * Double(dy) * SIMD3<Double>(bx,by,bz)
+      b = conversionFactor.y * Double(abs(dy)) * SIMD3<Double>(bx,by,bz)
     }
     else
     {
@@ -174,7 +174,7 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     {
       dimensions.z = abs(dz)
       conversionFactor.z = dz.signum() == -1 ? 1.0 : BohrToAngstrom
-      c = conversionFactor.z * Double(dz) * SIMD3<Double>(cx,cy,cz)
+      c = conversionFactor.z * Double(abs(dz)) * SIMD3<Double>(cx,cy,cz)
     }
     else
     {

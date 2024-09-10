@@ -104,7 +104,7 @@ class Project
    
     projectStructureNode.setInitialSelectionIfNeeded()
     
-    projectStructureNode.renderBackgroundCachedImage = projectStructureNode.drawGradientCGImage()
+    projectStructureNode.renderBackgroundImage = projectStructureNode.drawGradientCGImage()
       
     camera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
       

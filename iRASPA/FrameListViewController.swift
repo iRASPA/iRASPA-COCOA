@@ -1101,7 +1101,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
         let url: URL = dropDestination.appendingPathComponent(displayName).appendingPathExtension(pathExtension)
         do
         {
-          try compressedData.write(to: url, options: .atomic)
+          try compressedData.write(to: url, options: Data.WritingOptions.atomic)
         }
         catch
         {

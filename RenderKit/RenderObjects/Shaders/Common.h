@@ -335,18 +335,18 @@ typedef struct StructureUniforms
 
   float primitiveSelectionScaling = 1.01;
   float primitiveSelectionIntensity = 0.8;
-  float pad7;
-  float pad8;
+  bool isUnity;
+  float pad7 = 0.0;
 
   float primitiveHue = 1.0;
   float primitiveSaturation = 1.0;
   float primitiveValue = 1.0;
-  float pad9;
+  float pad8 = 0.0;
   
   float4 localAxesPosition;
   float4 numberOfReplicas;
-  float4 pad11;
-  float4 pad12;
+  float4 pad9;
+  float4 pad10;
   //----------------------------------------  1024 bytes boundary
 } StructureUniforms;
 
