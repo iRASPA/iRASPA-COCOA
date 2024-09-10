@@ -1862,7 +1862,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
         let url: URL = dropDestination.appendingPathComponent(node.displayName).appendingPathExtension(pathExtension)
         do
         {
-          try compressedData.write(to: url, options: .atomic)
+          try compressedData.write(to: url, options: Data.WritingOptions.atomic)
         }
         catch
         {

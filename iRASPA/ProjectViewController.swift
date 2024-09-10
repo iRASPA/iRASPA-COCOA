@@ -3077,6 +3077,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         }
         
         projectStructureNode.setInitialSelectionIfNeeded()
+        projectStructureNode.renderBackgroundCachedImage = projectStructureNode.drawGradientCGImage()
         self.windowController?.masterTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
         self.windowController?.detailTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
       }

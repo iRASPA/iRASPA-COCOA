@@ -2829,7 +2829,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           {
             service?.makePicture(project: project, camera: camera, size: size) { imageData in
               DispatchQueue.main.async(execute: {
-                try? imageData.write(to: url, options: [.atomic])
+                try? imageData.write(to: url, options: [Data.WritingOptions.atomic])
               })
             }
           }

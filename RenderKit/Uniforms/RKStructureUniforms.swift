@@ -156,18 +156,18 @@ public struct RKStructureUniforms
 
   public var primitiveSelectionScaling: Float = 1.01;
   public var primitiveSelectionIntensity: Float = 0.8;
-  public var pad7: Float = 0.0;
-  public var pad8: Float = 0.0;
+  public var isUnity: Bool = false;
+  public var pad7: Float = 0.0
 
   public var primitiveHue: Float = 1.0;
   public var primitiveSaturation: Float = 1.0;
   public var primitiveValue: Float = 1.0;
-  public var pad9: Float = 0.0;
+  public var pad8: Float = 0.0
 
   public var localAxisPosition: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
   public var numberOfReplicas: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
-  public var pad11: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
-  public var pad12: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var pad9: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var pad10: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
  
   
   public init()
@@ -257,6 +257,7 @@ public struct RKStructureUniforms
       self.bondSpecularColor = Float(structure.bondSpecularIntensity) * SIMD4<Float>(color: structure.bondSpecularColor)
       self.bondShininess = Float(structure.bondShininess)
       
+      self.isUnity = structure.isUnity
       
       self.bondSelectionStripesDensity = Float(structure.bondSelectionStripesDensity)
       self.bondSelectionStripesFrequency = Float(structure.bondSelectionStripesFrequency)
