@@ -20,7 +20,7 @@ PyAPI_FUNC(char*) _Py_EncodeLocaleRaw(
 
 #ifndef Py_LIMITED_API
 #  define Py_CPYTHON_FILEUTILS_H
-#  include  "cpython_fileutils.h"
+#  include  <PythonKit/cpython_fileutils.h>
 #  undef Py_CPYTHON_FILEUTILS_H
 #endif
 

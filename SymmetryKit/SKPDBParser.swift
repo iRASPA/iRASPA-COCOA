@@ -218,579 +218,574 @@ public final class SKPDBParser: SKParser, ProgressReporting
     
     while(!scanner.isAtEnd)
     {
-      var scannedLine: NSString?
-      
       // scan line
-      if (scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine))
+      if let scannedLine: NSString = scanner.scanUpToCharacters(from: newLineChararterSet) as NSString?
       {
-        if let scannedLine: NSString = scannedLine
+        lineNumber += 1
+        
+        
+        let length = scannedLine.length
+        guard (length >= 3) else
         {
-          lineNumber += 1
-          
-          
-          let length = scannedLine.length
-          guard (length >= 3) else
+          // only keyword present
+          break
+        }
+        let shortKeyword: String = scannedLine.substring(with: NSRange(location: 0, length: 3))
+        
+        
+        switch(shortKeyword)
+        {
+        case "TER":
+          if(atoms.count > 0)
           {
-            // only keyword present
+            addFrameToStructure()
+            currentMovie += 1
+            if(preview)
+            {
+              return
+            }
+          }
+          continue
+        default:
+          break
+        }
+        
+        guard (length >= 6) else
+        {
+          // only keyword present
+          break
+        }
+        let keyword: String = scannedLine.substring(with: NSRange(location: 0, length: 6))
+        
+        
+        switch(keyword)
+        {
+        case "HEADER":
+          break
+        case "AUTHOR":
+          break
+        case "REVDAT":
+          break
+        case "JRNL  ":
+          break
+        case "REMARK":
+          break
+        case "MODEL ":
+          // reset the current frame-list and current atom to zero
+          currentMovie = 0
+        
+          guard (length > 10) else
+          {
+            let modelString: String = scannedLine.substring(from: 6)
+            if let integerValue: Int = Int(modelString)
+            {
+              atoms = []
+              currentFrame = max(0, integerValue-1)
+              currentFrame = modelNumber
+              modelNumber += 1
+            }
             break
           }
-          let shortKeyword: String = scannedLine.substring(with: NSRange(location: 0, length: 3))
-         
-          
-          switch(shortKeyword)
+          guard (length > 14) else
           {
-          case "TER":
-            if(atoms.count > 0)
-            {
-              addFrameToStructure()
-              currentMovie += 1
-              if(preview)
-              {
-                return
-              }
-            }
-            continue
-          default:
-            break
-          }
-           
-          guard (length >= 6) else
-          {
-            // only keyword present
-            break
-          }
-          let keyword: String = scannedLine.substring(with: NSRange(location: 0, length: 6))
-          
-          
-          switch(keyword)
-          {
-          case "HEADER":
-            break
-          case "AUTHOR":
-            break
-          case "REVDAT":
-            break
-          case "JRNL  ":
-            break
-          case "REMARK":
-            break
-          case "MODEL ":
-            // reset the current frame-list and current atom to zero
-            currentMovie = 0
-            
-            guard (length > 10) else
-            {
-              let modelString: String = scannedLine.substring(from: 6)
-              if let integerValue: Int = Int(modelString)
-              {
-                atoms = []
-                currentFrame = max(0, integerValue-1)
-                currentFrame = modelNumber
-                modelNumber += 1
-              }
-              break
-            }
-            guard (length > 14) else
-            {
-              let modelString: String = scannedLine.substring(from: 10)
-              if let integerValue: Int = Int(modelString)
-              {
-                currentFrame = max(0, integerValue-1)
-              }
-              break
-            }
-            let modelString: String = scannedLine.substring(with: NSRange(location: 10, length: 4))
+            let modelString: String = scannedLine.substring(from: 10)
             if let integerValue: Int = Int(modelString)
             {
               currentFrame = max(0, integerValue-1)
             }
-          case "ENDMDL":
-            // also frames with zero atoms are allowed in PDB movies from RASPA. This happens in grand-canonical ensembles at low fugacities.
-            addFrameToStructure()
-            currentFrame += 1
-            continue
-          case "SCALE1":
-            guard (length > 20) else
-            {
-              break
-            }
-            let scaleAXString: String = scannedLine.substring(with: NSRange(location: 10, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleAXString)
-            {
-              scaleMatrix[0][0] = doubleValue
-            }
-            
-            guard (length > 30) else
-            {
-              break
-            }
-            let scaleAYString: String = scannedLine.substring(with: NSRange(location: 20, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleAYString)
-            {
-              scaleMatrix[1][0] = doubleValue
-            }
-            guard (length > 40) else
-            {
-              break
-            }
-            let scaleAZString: String = scannedLine.substring(with: NSRange(location: 30, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleAZString)
-            {
-              scaleMatrix[2][0] = doubleValue
-              scaleMatrixDefined[0] = true
-            }
-            guard (length > 55) else
-            {
-              break
-            }
-            let scaleATString: String = scannedLine.substring(with: NSRange(location: 45, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleATString)
-            {
-              translation[0] = doubleValue
-            }
             break
-          case "SCALE2":
-            guard (length > 20) else
-            {
-              break
-            }
-            let scaleAXString: String = scannedLine.substring(with: NSRange(location: 10, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleAXString)
-            {
-              scaleMatrix[0][1] = doubleValue
-            }
-            guard (length > 30) else
-            {
-              break
-            }
-            let scaleAYString: String = scannedLine.substring(with: NSRange(location: 20, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleAYString)
-            {
-              scaleMatrix[1][1] = doubleValue
-            }
-            guard (length > 40) else
-            {
-              break
-            }
-            let scaleAZString: String = scannedLine.substring(with: NSRange(location: 30, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleAZString)
-            {
-              scaleMatrix[2][1] = doubleValue
-              scaleMatrixDefined[1] = true
-            }
-            guard (length > 55) else
-            {
-              break
-            }
-            let scaleATString: String = scannedLine.substring(with: NSRange(location: 45, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleATString)
-            {
-              translation[1] = doubleValue
-            }
-          case "SCALE3":
-            guard (length > 20) else
-            {
-              break
-            }
-            let scaleAXString: String = scannedLine.substring(with: NSRange(location: 10, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleAXString)
-            {
-              scaleMatrix[0][2] = doubleValue
-            }
-            guard (length > 30) else
-            {
-              break
-            }
-            let scaleAYString: String = scannedLine.substring(with: NSRange(location: 20, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleAYString)
-            {
-              scaleMatrix[1][2] = doubleValue
-            }
-            guard (length > 40) else
-            {
-              break
-            }
-            let scaleAZString: String = scannedLine.substring(with: NSRange(location: 30, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleAZString)
-            {
-              scaleMatrix[2][2] = doubleValue
-              scaleMatrixDefined[2] = true
-            }
-            guard (length > 55) else
-            {
-              break
-            }
-            let scaleATString: String = scannedLine.substring(with: NSRange(location: 45, length: 10)).trimmingCharacters(in: .whitespaces)
-            if let doubleValue = Double(scaleATString)
-            {
-              translation[2] = doubleValue
-            }
-            
-          case "CRYST1":
-            let length = scannedLine.length
-            
-            guard (length >= 16) else
-            {
-              let cellAString: String = scannedLine.substring(from: 6).trimmingCharacters(in: .whitespaces)
-              if let doubleValue: Double = Double(cellAString)
-              {
-                a = doubleValue
-              }
-              break
-            }
-            let cellAString: String = scannedLine.substring(with: NSRange(location: 6, length: 9)).trimmingCharacters(in: .whitespaces)
+          }
+          let modelString: String = scannedLine.substring(with: NSRange(location: 10, length: 4))
+          if let integerValue: Int = Int(modelString)
+          {
+            currentFrame = max(0, integerValue-1)
+          }
+        case "ENDMDL":
+          // also frames with zero atoms are allowed in PDB movies from RASPA. This happens in grand-canonical ensembles at low fugacities.
+          addFrameToStructure()
+          currentFrame += 1
+          continue
+        case "SCALE1":
+          guard (length > 20) else
+          {
+            break
+          }
+          let scaleAXString: String = scannedLine.substring(with: NSRange(location: 10, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleAXString)
+          {
+            scaleMatrix[0][0] = doubleValue
+          }
+        
+          guard (length > 30) else
+          {
+            break
+          }
+          let scaleAYString: String = scannedLine.substring(with: NSRange(location: 20, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleAYString)
+          {
+            scaleMatrix[1][0] = doubleValue
+          }
+          guard (length > 40) else
+          {
+            break
+          }
+          let scaleAZString: String = scannedLine.substring(with: NSRange(location: 30, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleAZString)
+          {
+            scaleMatrix[2][0] = doubleValue
+            scaleMatrixDefined[0] = true
+          }
+          guard (length > 55) else
+          {
+            break
+          }
+          let scaleATString: String = scannedLine.substring(with: NSRange(location: 45, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleATString)
+          {
+            translation[0] = doubleValue
+          }
+          break
+        case "SCALE2":
+          guard (length > 20) else
+          {
+            break
+          }
+          let scaleAXString: String = scannedLine.substring(with: NSRange(location: 10, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleAXString)
+          {
+            scaleMatrix[0][1] = doubleValue
+          }
+          guard (length > 30) else
+          {
+            break
+          }
+          let scaleAYString: String = scannedLine.substring(with: NSRange(location: 20, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleAYString)
+          {
+            scaleMatrix[1][1] = doubleValue
+          }
+          guard (length > 40) else
+          {
+            break
+          }
+          let scaleAZString: String = scannedLine.substring(with: NSRange(location: 30, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleAZString)
+          {
+            scaleMatrix[2][1] = doubleValue
+            scaleMatrixDefined[1] = true
+          }
+          guard (length > 55) else
+          {
+            break
+          }
+          let scaleATString: String = scannedLine.substring(with: NSRange(location: 45, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleATString)
+          {
+            translation[1] = doubleValue
+          }
+        case "SCALE3":
+          guard (length > 20) else
+          {
+            break
+          }
+          let scaleAXString: String = scannedLine.substring(with: NSRange(location: 10, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleAXString)
+          {
+            scaleMatrix[0][2] = doubleValue
+          }
+          guard (length > 30) else
+          {
+            break
+          }
+          let scaleAYString: String = scannedLine.substring(with: NSRange(location: 20, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleAYString)
+          {
+            scaleMatrix[1][2] = doubleValue
+          }
+          guard (length > 40) else
+          {
+            break
+          }
+          let scaleAZString: String = scannedLine.substring(with: NSRange(location: 30, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleAZString)
+          {
+            scaleMatrix[2][2] = doubleValue
+            scaleMatrixDefined[2] = true
+          }
+          guard (length > 55) else
+          {
+            break
+          }
+          let scaleATString: String = scannedLine.substring(with: NSRange(location: 45, length: 10)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue = Double(scaleATString)
+          {
+            translation[2] = doubleValue
+          }
+        
+        case "CRYST1":
+          let length = scannedLine.length
+        
+          guard (length >= 16) else
+          {
+            let cellAString: String = scannedLine.substring(from: 6).trimmingCharacters(in: .whitespaces)
             if let doubleValue: Double = Double(cellAString)
             {
               a = doubleValue
             }
-            guard (length >= 25) else
-            {
-              let cellBString: String = scannedLine.substring(from: 15).trimmingCharacters(in: .whitespaces)
-              if let doubleValue: Double = Double(cellBString)
-              {
-                b = doubleValue
-              }
-              break
-            }
-            let cellBString: String = scannedLine.substring(with: NSRange(location: 15, length: 9)).trimmingCharacters(in: .whitespaces)
+            break
+          }
+          let cellAString: String = scannedLine.substring(with: NSRange(location: 6, length: 9)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue: Double = Double(cellAString)
+          {
+            a = doubleValue
+          }
+          guard (length >= 25) else
+          {
+            let cellBString: String = scannedLine.substring(from: 15).trimmingCharacters(in: .whitespaces)
             if let doubleValue: Double = Double(cellBString)
             {
               b = doubleValue
             }
-            guard (length >= 34) else
-            {
-              let cellCString: String = scannedLine.substring(from: 24).trimmingCharacters(in: .whitespaces)
-              if let doubleValue: Double = Double(cellCString)
-              {
-                c = doubleValue
-              }
-              break
-            }
-            let cellCString: String = scannedLine.substring(with: NSRange(location: 24, length: 9)).trimmingCharacters(in: .whitespaces)
+            break
+          }
+          let cellBString: String = scannedLine.substring(with: NSRange(location: 15, length: 9)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue: Double = Double(cellBString)
+          {
+            b = doubleValue
+          }
+          guard (length >= 34) else
+          {
+            let cellCString: String = scannedLine.substring(from: 24).trimmingCharacters(in: .whitespaces)
             if let doubleValue: Double = Double(cellCString)
             {
               c = doubleValue
             }
-            // when we have read 'CRYST1 a b c' we consider this a MolecularCrystal
-            periodic = true
-            
-            guard (length >= 41) else
-            {
-              let cellAlphaString: String = scannedLine.substring(from: 33).trimmingCharacters(in: .whitespaces)
-              if let doubleValue: Double = Double(cellAlphaString)
-              {
-                alpha = doubleValue
-              }
-              break
-            }
-            let cellAlphaString: String = scannedLine.substring(with: NSRange(location: 33, length: 7)).trimmingCharacters(in: .whitespaces)
+            break
+          }
+          let cellCString: String = scannedLine.substring(with: NSRange(location: 24, length: 9)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue: Double = Double(cellCString)
+          {
+            c = doubleValue
+          }
+          // when we have read 'CRYST1 a b c' we consider this a MolecularCrystal
+          periodic = true
+        
+          guard (length >= 41) else
+          {
+            let cellAlphaString: String = scannedLine.substring(from: 33).trimmingCharacters(in: .whitespaces)
             if let doubleValue: Double = Double(cellAlphaString)
             {
               alpha = doubleValue
             }
-            guard (length >= 48) else
-            {
-              let cellBetaString: String = scannedLine.substring(from: 40).trimmingCharacters(in: .whitespaces)
-              if let doubleValue: Double = Double(cellBetaString)
-              {
-                beta = doubleValue
-              }
-              break
-            }
-            let cellBetaString: String = scannedLine.substring(with: NSRange(location: 40, length: 7)).trimmingCharacters(in: .whitespaces)
+            break
+          }
+          let cellAlphaString: String = scannedLine.substring(with: NSRange(location: 33, length: 7)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue: Double = Double(cellAlphaString)
+          {
+            alpha = doubleValue
+          }
+          guard (length >= 48) else
+          {
+            let cellBetaString: String = scannedLine.substring(from: 40).trimmingCharacters(in: .whitespaces)
             if let doubleValue: Double = Double(cellBetaString)
             {
               beta = doubleValue
             }
-            guard (length >= 55) else
-            {
-              let cellGammaString: String = scannedLine.substring(from: 47).trimmingCharacters(in: .whitespaces)
-              if let doubleValue: Double = Double(cellGammaString)
-              {
-                gamma = doubleValue
-                self.cell = SKCell(a: a, b: b, c: c, alpha: alpha*Double.pi/180.0, beta: beta*Double.pi/180.0, gamma: gamma*Double.pi/180.0)
-              }
-              break
-            }
-            let cellGammaString: String = scannedLine.substring(with: NSRange(location: 47, length: 7)).trimmingCharacters(in: .whitespaces)
+            break
+          }
+          let cellBetaString: String = scannedLine.substring(with: NSRange(location: 40, length: 7)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue: Double = Double(cellBetaString)
+          {
+            beta = doubleValue
+          }
+          guard (length >= 55) else
+          {
+            let cellGammaString: String = scannedLine.substring(from: 47).trimmingCharacters(in: .whitespaces)
             if let doubleValue: Double = Double(cellGammaString)
             {
               gamma = doubleValue
-              
               self.cell = SKCell(a: a, b: b, c: c, alpha: alpha*Double.pi/180.0, beta: beta*Double.pi/180.0, gamma: gamma*Double.pi/180.0)
             }
-            
-            guard (length >= 67) else
+            break
+          }
+          let cellGammaString: String = scannedLine.substring(with: NSRange(location: 47, length: 7)).trimmingCharacters(in: .whitespaces)
+          if let doubleValue: Double = Double(cellGammaString)
+          {
+            gamma = doubleValue
+        
+            self.cell = SKCell(a: a, b: b, c: c, alpha: alpha*Double.pi/180.0, beta: beta*Double.pi/180.0, gamma: gamma*Double.pi/180.0)
+          }
+        
+          guard (length >= 67) else
+          {
+            let spaceGroupString: String = scannedLine.substring(from: 55).trimmingCharacters(in: NSCharacterSet.whitespaces).lowercased().capitalizeFirst
+            if (self.spaceGroup.number == 1)
             {
-              let spaceGroupString: String = scannedLine.substring(from: 55).trimmingCharacters(in: NSCharacterSet.whitespaces).lowercased().capitalizeFirst
-              if (self.spaceGroup.number == 1)
+              if let spaceGroup = SKSpacegroup(H_M: spaceGroupString)
               {
-                if let spaceGroup = SKSpacegroup(H_M: spaceGroupString)
-                {
-                  self.spaceGroup = spaceGroup
-                }
+                self.spaceGroup = spaceGroup
               }
-              break
             }
-            let spaceGroupString: String = (scannedLine.substring(with: NSRange(location: 55, length: 11)).trimmingCharacters(in: NSCharacterSet.whitespaces).lowercased().capitalizeFirst)
-            
-            if let spaceGroup = SKSpacegroup(H_M: spaceGroupString)
-            {
-              self.spaceGroup = spaceGroup
-            }
-            guard (length >= 70) else
-            {
-              break
-            }
-            let zValueString: String = scannedLine.substring(with: NSRange(location: 66, length: 4)).trimmingCharacters(in: .whitespaces)
-            if let zValue: Int = Int(zValueString)
-            {
-              self.cell.zValue = zValue
-            }
-          case "ORIGX1":
             break
-          case "ORIGX2":
+          }
+          let spaceGroupString: String = (scannedLine.substring(with: NSRange(location: 55, length: 11)).trimmingCharacters(in:   NSCharacterSet.whitespaces).lowercased().capitalizeFirst)
+        
+          if let spaceGroup = SKSpacegroup(H_M: spaceGroupString)
+          {
+            self.spaceGroup = spaceGroup
+          }
+          guard (length >= 70) else
+          {
             break
-          case "ORIGX3":
+          }
+          let zValueString: String = scannedLine.substring(with: NSRange(location: 66, length: 4)).trimmingCharacters(in: .whitespaces)
+          if let zValue: Int = Int(zValueString)
+          {
+            self.cell.zValue = zValue
+          }
+        case "ORIGX1":
+          break
+        case "ORIGX2":
+          break
+        case "ORIGX3":
+          break
+        case "ATOM  ", "HETATM":
+          //  COLUMNS   LENGHT  DATA TYPE       CONTENTS
+          //  --------------------------------------------------------------------------------
+          //   0 -  5   6       Record name     "ATOM  "
+          //   6 - 10   5       Integer         Atom serial number.
+          //  11        1
+          //  12 - 15   4       Atom            Atom name.
+          //  16        1       Character       Alternate location indicator.
+          //  17 - 19   3       Residue name    Residue name.
+          //  20        1
+          //  21        1       Character       Chain identifier.
+          //  22 - 25   4       Integer         Residue sequence number.
+          //  26        1       AChar           Code for insertion of residues.
+          //  27 - 29   3
+          //  30 - 37   8       Real(8.3)       Orthogonal coordinates for X in Angstroms.
+          //  38 - 45   8       Real(8.3)       Orthogonal coordinates for Y in Angstroms.
+          //  46 - 53   8       Real(8.3)       Orthogonal coordinates for Z in Angstroms.
+          //  54 - 59   6       Real(6.2)       Occupancy.
+          //  60 - 65   6       Real(6.2)       Temperature factor (Default = 0.0).
+          //  66 - 71   6
+          //  72 - 75   4       LString(4)      Segment identifier, left-justified.
+          //  76 - 77   2       LString(2)      Element symbol, right-justified.
+          //  78 - 79   2       LString(2)      Charge on the atom.
+        
+          // count as nucleic acid atom
+          numberOfNucleicAcidAtoms += 1
+          numberOfAtoms += 1
+        
+          if keyword == "HETATM"
+          {
+            numberOfSolventAtoms += 1
+          }
+        
+          guard (scannedLine.length >= 11) else
+          {
             break
-          case "ATOM  ", "HETATM":
-            //  COLUMNS   LENGHT  DATA TYPE       CONTENTS
-            //  --------------------------------------------------------------------------------
-            //   0 -  5   6       Record name     "ATOM  "
-            //   6 - 10   5       Integer         Atom serial number.
-            //  11        1
-            //  12 - 15   4       Atom            Atom name.
-            //  16        1       Character       Alternate location indicator.
-            //  17 - 19   3       Residue name    Residue name.
-            //  20        1
-            //  21        1       Character       Chain identifier.
-            //  22 - 25   4       Integer         Residue sequence number.
-            //  26        1       AChar           Code for insertion of residues.
-            //  27 - 29   3
-            //  30 - 37   8       Real(8.3)       Orthogonal coordinates for X in Angstroms.
-            //  38 - 45   8       Real(8.3)       Orthogonal coordinates for Y in Angstroms.
-            //  46 - 53   8       Real(8.3)       Orthogonal coordinates for Z in Angstroms.
-            //  54 - 59   6       Real(6.2)       Occupancy.
-            //  60 - 65   6       Real(6.2)       Temperature factor (Default = 0.0).
-            //  66 - 71   6
-            //  72 - 75   4       LString(4)      Segment identifier, left-justified.
-            //  76 - 77   2       LString(2)      Element symbol, right-justified.
-            //  78 - 79   2       LString(2)      Charge on the atom.
-            
-            // count as nucleic acid atom
-            numberOfNucleicAcidAtoms += 1
-            numberOfAtoms += 1
-            
-            if keyword == "HETATM"
+          }
+        
+          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color:   NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
+        
+          let atomSerialNumberString: String = scannedLine.substring(with: NSRange(location: 6, length: 5))
+          if let integerValue: Int = Int(atomSerialNumberString)
+          {
+            let atomSerialNumber: Int = integerValue
+            atom.serialNumber = atomSerialNumber
+          }
+          guard (scannedLine.length >= 17) else
+          {
+            break
+          }
+        
+          let atomName: String = scannedLine.substring(with: NSRange(location: 12, length: 4))
+          let atomDisplayName: String = atomName.trimmingCharacters(in: CharacterSet.whitespaces) as String
+          atom.displayName = atomDisplayName
+          atom.remotenessIndicator = atomName[atomName.index(atomName.startIndex, offsetBy: 2)]
+          atom.branchDesignator = atomName[atomName.index(atomName.startIndex, offsetBy: 3)]
+          if atomName.count >= 2
+          {
+            let atomNameString = String(atomName.prefix(2)).trimmingCharacters(in: CharacterSet.whitespaces) as String
+            if let atomicNumber: Int = SKElement.atomData[atomNameString.capitalizeFirst]?["atomicNumber"] as? Int
             {
-              numberOfSolventAtoms += 1
+              atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+              atom.elementIdentifier = atomicNumber
             }
-            
-            guard (scannedLine.length >= 11) else
+            else
             {
-              break
-            }
-            
-            let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
-            
-            let atomSerialNumberString: String = scannedLine.substring(with: NSRange(location: 6, length: 5))
-            if let integerValue: Int = Int(atomSerialNumberString)
-            {
-              let atomSerialNumber: Int = integerValue
-              atom.serialNumber = atomSerialNumber
-            }
-            guard (scannedLine.length >= 17) else
-            {
-              break
-            }
-            
-            let atomName: String = scannedLine.substring(with: NSRange(location: 12, length: 4))
-            let atomDisplayName: String = atomName.trimmingCharacters(in: CharacterSet.whitespaces) as String
-            atom.displayName = atomDisplayName
-            atom.remotenessIndicator = atomName[atomName.index(atomName.startIndex, offsetBy: 2)]
-            atom.branchDesignator = atomName[atomName.index(atomName.startIndex, offsetBy: 3)]
-            if atomName.count >= 2
-            {
-              let atomNameString = String(atomName.prefix(2)).trimmingCharacters(in: CharacterSet.whitespaces) as String
-              if let atomicNumber: Int = SKElement.atomData[atomNameString.capitalizeFirst]?["atomicNumber"] as? Int
+              let letters = CharacterSet.letters
+              let atomNameString = String(atomName.unicodeScalars.filter { letters.contains($0)})
+              if let atomicNumber: Int = SKElement.atomData[atomNameString.capitalizeFirst]?["atomicNumber"] as? Int, atomicNumber>0
               {
                 atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
                 atom.elementIdentifier = atomicNumber
               }
-              else
-              {
-                let letters = CharacterSet.letters
-                let atomNameString = String(atomName.unicodeScalars.filter { letters.contains($0)})
-                if let atomicNumber: Int = SKElement.atomData[atomNameString.capitalizeFirst]?["atomicNumber"] as? Int, atomicNumber>0
-                {
-                  atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-                  atom.elementIdentifier = atomicNumber
-                }
-              }
             }
-            
-            guard (scannedLine.length >= 18) else
-            {
-              break
-            }
-            let alternateLocationIndicator: String = scannedLine.substring(with: NSRange(location: 16, length: 1))
-            atom.alternateLocationIndicator = Character(alternateLocationIndicator)
-            
-            guard (scannedLine.length >= 21) else
-            {
-              break
-            }
-            let residueName: String = scannedLine.substring(with: NSRange(location: 17, length: 3))
-            atom.residueName = residueName as String
-            
-            
-            if let residueData: Dictionary<String,Any> = SKElement.residueDefinitions[residueName.uppercased() + "+" + atomDisplayName.uppercased()]
-            {
-              numberOfAminoAcidAtoms += 1
-              if let name: String = residueData["Element"] as? String,
-                let atomicNumber: Int = SKElement.atomData[name.capitalizeFirst]?["atomicNumber"] as? Int,
-                atomicNumber>0
-              {
-                atom.elementIdentifier = atomicNumber
-                atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-              }
-            }
-            
-            
-            guard (scannedLine.length >= 23) else
-            {
-              break
-            }
-            let chainIdentifier: String = scannedLine.substring(with: NSRange(location: 21, length: 1))
-            atom.chainIdentifier = Character(chainIdentifier)
-            
-            guard (scannedLine.length >= 27) else
-            {
-              break
-            }
-            let residueSequenceNumberString: String = scannedLine.substring(with: NSRange(location: 22, length: 4))
-            if let residueSequenceNumber = Int(residueSequenceNumberString.trimmingCharacters(in: .whitespaces))
-            {
-              atom.residueSequenceNumber = residueSequenceNumber
-            }
-            
-            guard (scannedLine.length >= 28) else
-            {
-              break
-            }
-            let codeForInsertionOfResidues: String = scannedLine.substring(with: NSRange(location: 26, length: 1))
-            atom.codeForInsertionOfResidues = Character(codeForInsertionOfResidues)
-            
-            guard (scannedLine.length >= 54) else
-            {
-              let _ = chainIdentifier
-              break
-            }
-            let orthogonalXCoordinateString: String = scannedLine.substring(with: NSRange(location: 30, length: 8)).trimmingCharacters(in: .whitespaces)
-            let orthogonalYCoordinateString: String = scannedLine.substring(with: NSRange(location: 38, length: 8)).trimmingCharacters(in: .whitespaces)
-            let orthogonalZCoordinateString: String = scannedLine.substring(with: NSRange(location: 46, length: 8)).trimmingCharacters(in: .whitespaces)
-            
-            
-            if let orthogonalXCoordinate: Double = Double(orthogonalXCoordinateString),
-              let orthogonalYCoordinate: Double = Double(orthogonalYCoordinateString),
-              let orthogonalZCoordinate: Double = Double(orthogonalZCoordinateString)
-            {
-              // with the position we have enough information to decide to add the atom
-              atom.fractional = false
-              atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
-            }
-            guard (scannedLine.length >= 60) else
-            {
-              if atom.elementIdentifier == 0
-              {
-                unknownAtoms.insert(atom.displayName)
-              }
-              // add atom to the list
-              atoms.append(atom)
-              break
-            }
-            let occupancyString: String = scannedLine.substring(with: NSRange(location: 54, length: 6)).trimmingCharacters(in: .whitespaces)
-            
-            if let occupancy: Double = Double(occupancyString)
-            {
-              atom.occupancy = occupancy
-            }
-            guard (scannedLine.length >= 66) else
-            {
-              if atom.elementIdentifier == 0
-              {
-                unknownAtoms.insert(atom.displayName)
-              }
-              // add atom to the list
-              atoms.append(atom)
-              break
-            }
-            let temperatureFactorString: String = scannedLine.substring(with: NSRange(location: 60, length: 6)).trimmingCharacters(in: .whitespaces)
-            if let temperatureFactor = Double(temperatureFactorString)
-            {
-              atom.temperaturefactor = temperatureFactor
-            }
-            
-            guard (scannedLine.length >= 76) else
-            {
-              if atom.elementIdentifier == 0
-              {
-                unknownAtoms.insert(atom.displayName)
-              }
-              // add atom to the list
-              atoms.append(atom)
-              break
-            }
-            let segmentIdentifier: String = scannedLine.substring(with: NSRange(location: 72, length: 4))
-            guard (scannedLine.length >= 78) else
-            {
-              let _ = segmentIdentifier
-              if atom.elementIdentifier == 0
-              {
-                unknownAtoms.insert(atom.displayName)
-              }
-              // add atom to the list
-              atoms.append(atom)
-              break
-            }
-            
-            
-            let elementSymbol: String = scannedLine.substring(with: NSRange(location: 76, length: 2))
-            let elementSymbolString: String = elementSymbol.trimmingCharacters(in: CharacterSet.whitespaces)
-            if let atomicNumber: Int = SKElement.atomData[elementSymbolString.capitalizeFirst]?["atomicNumber"] as? Int, atomicNumber>0
+          }
+        
+          guard (scannedLine.length >= 18) else
+          {
+            break
+          }
+          let alternateLocationIndicator: String = scannedLine.substring(with: NSRange(location: 16, length: 1))
+          atom.alternateLocationIndicator = Character(alternateLocationIndicator)
+        
+          guard (scannedLine.length >= 21) else
+          {
+            break
+          }
+          let residueName: String = scannedLine.substring(with: NSRange(location: 17, length: 3))
+          atom.residueName = residueName as String
+        
+        
+          if let residueData: Dictionary<String,Any> = SKElement.residueDefinitions[residueName.uppercased() + "+" + atomDisplayName.uppercased()]
+          {
+            numberOfAminoAcidAtoms += 1
+            if let name: String = residueData["Element"] as? String,
+              let atomicNumber: Int = SKElement.atomData[name.capitalizeFirst]?["atomicNumber"] as? Int,
+              atomicNumber>0
             {
               atom.elementIdentifier = atomicNumber
               atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
             }
-            
-            guard (scannedLine.length >= 80) else
-            {
-              // add atom to the list
-              if atom.elementIdentifier == 0
-              {
-                unknownAtoms.insert(atom.displayName)
-              }
-              atoms.append(atom)
-              break
-            }
-            
-            let chargeString: String = scannedLine.substring(with: NSRange(location: 78, length: 2))
-            if let chargeValue: Double = Double(chargeString.trimmingCharacters(in: .whitespaces))
-            {
-              atom.charge = chargeValue
-            }
-            
+          }
+        
+        
+          guard (scannedLine.length >= 23) else
+          {
+            break
+          }
+          let chainIdentifier: String = scannedLine.substring(with: NSRange(location: 21, length: 1))
+          atom.chainIdentifier = Character(chainIdentifier)
+        
+          guard (scannedLine.length >= 27) else
+          {
+            break
+          }
+          let residueSequenceNumberString: String = scannedLine.substring(with: NSRange(location: 22, length: 4))
+          if let residueSequenceNumber = Int(residueSequenceNumberString.trimmingCharacters(in: .whitespaces))
+          {
+            atom.residueSequenceNumber = residueSequenceNumber
+          }
+        
+          guard (scannedLine.length >= 28) else
+          {
+            break
+          }
+          let codeForInsertionOfResidues: String = scannedLine.substring(with: NSRange(location: 26, length: 1))
+          atom.codeForInsertionOfResidues = Character(codeForInsertionOfResidues)
+        
+          guard (scannedLine.length >= 54) else
+          {
+            let _ = chainIdentifier
+            break
+          }
+          let orthogonalXCoordinateString: String = scannedLine.substring(with: NSRange(location: 30, length: 8)).trimmingCharacters(in: .whitespaces)
+          let orthogonalYCoordinateString: String = scannedLine.substring(with: NSRange(location: 38, length: 8)).trimmingCharacters(in: .whitespaces)
+          let orthogonalZCoordinateString: String = scannedLine.substring(with: NSRange(location: 46, length: 8)).trimmingCharacters(in: .whitespaces)
+        
+        
+          if let orthogonalXCoordinate: Double = Double(orthogonalXCoordinateString),
+            let orthogonalYCoordinate: Double = Double(orthogonalYCoordinateString),
+            let orthogonalZCoordinate: Double = Double(orthogonalZCoordinateString)
+          {
+            // with the position we have enough information to decide to add the atom
+            atom.fractional = false
+            atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+          }
+          guard (scannedLine.length >= 60) else
+          {
             if atom.elementIdentifier == 0
             {
               unknownAtoms.insert(atom.displayName)
             }
-            
             // add atom to the list
             atoms.append(atom)
-          default:
-            //debugPrint("scannedLine \(scannedLine)")
             break
           }
+          let occupancyString: String = scannedLine.substring(with: NSRange(location: 54, length: 6)).trimmingCharacters(in: .whitespaces)
+        
+          if let occupancy: Double = Double(occupancyString)
+          {
+            atom.occupancy = occupancy
+          }
+          guard (scannedLine.length >= 66) else
+          {
+            if atom.elementIdentifier == 0
+            {
+              unknownAtoms.insert(atom.displayName)
+            }
+            // add atom to the list
+            atoms.append(atom)
+            break
+          }
+          let temperatureFactorString: String = scannedLine.substring(with: NSRange(location: 60, length: 6)).trimmingCharacters(in: .whitespaces)
+          if let temperatureFactor = Double(temperatureFactorString)
+          {
+            atom.temperaturefactor = temperatureFactor
+          }
+        
+          guard (scannedLine.length >= 76) else
+          {
+            if atom.elementIdentifier == 0
+            {
+              unknownAtoms.insert(atom.displayName)
+            }
+            // add atom to the list
+            atoms.append(atom)
+            break
+          }
+          let segmentIdentifier: String = scannedLine.substring(with: NSRange(location: 72, length: 4))
+          guard (scannedLine.length >= 78) else
+          {
+            let _ = segmentIdentifier
+            if atom.elementIdentifier == 0
+            {
+              unknownAtoms.insert(atom.displayName)
+            }
+            // add atom to the list
+            atoms.append(atom)
+            break
+          }
+        
+        
+          let elementSymbol: String = scannedLine.substring(with: NSRange(location: 76, length: 2))
+          let elementSymbolString: String = elementSymbol.trimmingCharacters(in: CharacterSet.whitespaces)
+          if let atomicNumber: Int = SKElement.atomData[elementSymbolString.capitalizeFirst]?["atomicNumber"] as? Int, atomicNumber>0
+          {
+            atom.elementIdentifier = atomicNumber
+            atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+          }
+        
+          guard (scannedLine.length >= 80) else
+          {
+            // add atom to the list
+            if atom.elementIdentifier == 0
+            {
+              unknownAtoms.insert(atom.displayName)
+            }
+            atoms.append(atom)
+            break
+          }
+        
+          let chargeString: String = scannedLine.substring(with: NSRange(location: 78, length: 2))
+          if let chargeValue: Double = Double(chargeString.trimmingCharacters(in: .whitespaces))
+          {
+            atom.charge = chargeValue
+          }
+        
+          if atom.elementIdentifier == 0
+          {
+            unknownAtoms.insert(atom.displayName)
+          }
+        
+          // add atom to the list
+          atoms.append(atom)
+        default:
+          //debugPrint("scannedLine \(scannedLine)")
+          break
         }
       }
       

@@ -391,7 +391,10 @@ public extension BinaryDecoder
   /// swapping or other postprocessing is done.
   func read<T>(into: inout T) throws
   {
-    try read(MemoryLayout<T>.size, into: &into)
+    try withUnsafeMutablePointer(to: &into) {into in
+      try read(MemoryLayout<T>.size, into: into)
+    }
+    
   }
 }
 

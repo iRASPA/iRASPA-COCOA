@@ -1299,7 +1299,7 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, VolumetricDa
     return GaussianCubeVolumetricData.RecomputeBondsOperation(structure: structure, windowController: windowController)
   }
   
-  public class RecomputeBondsOperation: FKOperation
+  public class RecomputeBondsOperation: FKOperation, @unchecked Sendable
   {
     let structure : Structure
     weak var windowController: NSWindowController? = nil

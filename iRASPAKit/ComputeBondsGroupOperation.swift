@@ -32,7 +32,7 @@
 import Foundation
 import OperationKit
 
-class ComputeBondsGroupOperation: FKGroupOperation
+class ComputeBondsGroupOperation: FKGroupOperation, @unchecked Sendable
 {
   weak var windowController: NSWindowController?
   

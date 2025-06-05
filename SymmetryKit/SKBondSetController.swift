@@ -120,7 +120,8 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
   
   public func data() -> Data
   {
-    return NSArchiver.archivedData(withRootObject: arrangedObjects)
+    //return NSArchiver.archivedData(withRootObject: arrangedObjects)
+    return try! NSKeyedArchiver.archivedData(withRootObject: arrangedObjects, requiringSecureCoding: false)
   }
   
   public var invertedSelection: IndexSet

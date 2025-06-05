@@ -31,11 +31,11 @@
 
 public class ProjectProgressIndicator: NSProgressIndicator
 {
-  public var backgroundStyle: NSView.BackgroundStyle = .light
+  public var backgroundStyle: NSView.BackgroundStyle = NSView.BackgroundStyle.normal
   {
     didSet
     {
-      self.appearance = backgroundStyle == .light ? NSAppearance(named: NSAppearance.Name.vibrantLight) : NSAppearance(named: NSAppearance.Name.vibrantDark)
+      self.appearance = backgroundStyle == NSView.BackgroundStyle.normal ? NSAppearance(named: NSAppearance.Name.vibrantLight) : NSAppearance(named: NSAppearance.Name.vibrantDark)
     }
   }
   

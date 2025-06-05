@@ -1,9 +1,9 @@
 #ifndef Py_PYPORT_H
 #define Py_PYPORT_H
 
-#include "pyconfig.h" /* include for defines */
+#include <PythonKit/pyconfig.h> /* include for defines */
 
-#include "inttypes.h"
+#include <PythonKit/inttypes.h>
 
 
 /* Defines to build Python and its standard library:
@@ -658,7 +658,7 @@ extern char * _getpty(int *, int, mode_t, int);
 #       define HAVE_DECLSPEC_DLL
 #endif
 
-#include "exports.h"
+#include <PythonKit/exports.h>
 
 /* only get special linkage if built as shared or platform is Cygwin */
 #if defined(Py_ENABLE_SHARED) || defined(__CYGWIN__)

@@ -1023,7 +1023,7 @@ PyAPI_FUNC(int) PyUnicode_IsIdentifier(PyObject *s);
 
 #ifndef Py_LIMITED_API
 #  define Py_CPYTHON_UNICODEOBJECT_H
-#  include  "cpython_unicodeobject.h"
+#  include  <PythonKit/cpython_unicodeobject.h>
 #  undef Py_CPYTHON_UNICODEOBJECT_H
 #endif
 

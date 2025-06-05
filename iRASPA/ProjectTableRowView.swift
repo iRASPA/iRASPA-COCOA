@@ -116,7 +116,7 @@ public class ProjectTableRowView: NSTableRowView, CALayerDelegate
       implicitelySelectedLayer?.frame = (self.layer?.bounds ?? CGRect()).insetBy(dx: 10, dy: 0)
       if self.isEmphasized
       {
-        implicitelySelectedLayer?.backgroundColor = NSColor.alternateSelectedControlColor.withAlphaComponent(0.20).cgColor
+        implicitelySelectedLayer?.backgroundColor = NSColor.selectedContentBackgroundColor.withAlphaComponent(0.20).cgColor
       }
       else
       {

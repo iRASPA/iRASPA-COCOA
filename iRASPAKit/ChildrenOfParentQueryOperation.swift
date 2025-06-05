@@ -34,7 +34,7 @@ import LogViewKit
 import CloudKit
 import OperationKit
 
-public class ChildrenOfParentQueryOperation: FKGroupOperation
+public class ChildrenOfParentQueryOperation: FKGroupOperation, @unchecked Sendable
 {
   public var childNodes: [ProjectTreeNode] = []
   
@@ -112,7 +112,8 @@ public class ChildrenOfParentQueryOperation: FKGroupOperation
     {
       do
       {
-        proxyProject.representedObjectInfo = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(representedObjectInfoData) as? [String: AnyObject] ?? [:]
+        //proxyProject.representedObjectInfo = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(representedObjectInfoData) as? [String: AnyObject] ?? [:]
+        proxyProject.representedObjectInfo = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSDictionary.self, from: representedObjectInfoData) as? [String: AnyObject] ?? [:]
       }
       catch
       {

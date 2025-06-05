@@ -1960,7 +1960,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
   }
   
   
-  public class RecomputeBondsOperation: FKOperation
+  public class RecomputeBondsOperation: FKOperation, @unchecked Sendable
   {
     let structure : Structure
     var windowController: NSWindowController? = nil

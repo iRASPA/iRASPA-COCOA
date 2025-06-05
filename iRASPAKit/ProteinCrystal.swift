@@ -1944,7 +1944,7 @@ public final class ProteinCrystal: Structure, AtomEditor, BondEditor, UnitCellEd
   }
   
   
-  public class RecomputeBondsOperation: FKOperation
+  public class RecomputeBondsOperation: FKOperation, @unchecked Sendable
   {
     let structure : Structure
     var windowController: NSWindowController? = nil

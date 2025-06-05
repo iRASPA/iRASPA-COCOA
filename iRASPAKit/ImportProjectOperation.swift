@@ -34,7 +34,7 @@ import OperationKit
 import SimulationKit
 import SymmetryKit
 
-public class ImportProjectOperation: FKGroupOperation
+public class ImportProjectOperation: FKGroupOperation, @unchecked Sendable
 {
   private var lock: NSLock = NSLock()
   private var progressViewKVOContext = 0

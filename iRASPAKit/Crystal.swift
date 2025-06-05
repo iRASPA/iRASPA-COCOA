@@ -2167,7 +2167,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
     return Crystal.RecomputeBondsOperation(structure: structure, windowController: windowController)
   }
   
-  public class RecomputeBondsOperation: FKOperation
+  public class RecomputeBondsOperation: FKOperation, @unchecked Sendable
   {
     let structure : Structure
     weak var windowController: NSWindowController? = nil

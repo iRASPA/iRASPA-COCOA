@@ -72,7 +72,7 @@ PyAPI_FUNC(int) PyBytes_AsStringAndSize(
 
 #ifndef Py_LIMITED_API
 #  define Py_CPYTHON_BYTESOBJECT_H
-#  include  "cpython_bytesobject.h"
+#  include  <PythonKit/cpython_bytesobject.h>
 #  undef Py_CPYTHON_BYTESOBJECT_H
 #endif
 

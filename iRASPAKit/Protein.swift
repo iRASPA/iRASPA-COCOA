@@ -1069,7 +1069,7 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
   }
   
   
-  public class RecomputeBondsOperation: FKOperation
+  public class RecomputeBondsOperation: FKOperation, @unchecked Sendable
   {
     let structure : Structure
     var windowController: NSWindowController? = nil

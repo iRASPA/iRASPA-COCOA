@@ -92,7 +92,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
   
   func checkForComment() -> Bool
   {
-    let _: Int = self.scanner.scanLocation
+    let _: String.Index = self.scanner.currentIndex
     return true
   }
   
@@ -124,18 +124,15 @@ public final class SKCIFParser: SKParser, ProgressReporting
   
   public override func startParsing() throws
   {
-    var tempstring: NSString? = nil
-    
     // define 1 steps
     progress.totalUnitCount = 1
     
     while(!scanner.isAtEnd)
     {
       // scan to first keyword
-      let previousScanLocation: Int = self.scanner.scanLocation
-      scanner.scanCharacters(from: keywordSet,into: &tempstring)
+      let previousScanLocation: String.Index = self.scanner.currentIndex
       
-      if let tempstring: String = tempstring as String?,
+      if let tempstring: String = scanner.scanCharacters(from: keywordSet),
          let keyword: CaseInsensitiveString = CaseInsensitiveString(tempstring)
       {
         if (keyword.hasPrefix("_audit"))
@@ -173,7 +170,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
         else if (keyword.hasPrefix("#"))
         {
           // set back for the case that there is only a string of "#####"
-          self.scanner.scanLocation = previousScanLocation
+          self.scanner.currentIndex = previousScanLocation
           skipComment()
         }
       }
@@ -260,51 +257,48 @@ public final class SKCIFParser: SKParser, ProgressReporting
   
   func skipComment()
   {
-    self.scanner.scanUpToCharacters(from: CharacterSet.newlines, into: nil)
+    let _ = self.scanner.scanUpToCharacters(from: CharacterSet.newlines)
   }
   
   func scanInteger() -> Int
   {
-    var tempstring: NSString? = nil
-    var value: Int = 0
+    let previousScanLocation: String.Index = scanner.currentIndex
     
-    if !self.scanner.scanInt(&value)
+    if let value = self.scanner.scanInt()
     {
-      scanner.scanCharacters(from: keywordSet,into: &tempstring)
-      if let string: String = tempstring as String?
-      {
-        return (string.trimmingCharacters(in: CharacterSet.punctuationCharacters) as NSString).integerValue
-      }
-      return 0
+      return value;
     }
-    return value
+    
+    scanner.currentIndex = previousScanLocation
+    if let string: String = scanner.scanCharacters(from: keywordSet)
+    {
+      return (string.trimmingCharacters(in: CharacterSet.punctuationCharacters) as NSString).integerValue
+    }
+    return 0
   }
   
   func scanDouble() -> Double
   {
-    var tempstring: NSString? = nil
-    var value: Double = 0.0
+    let previousScanLocation: String.Index = scanner.currentIndex
     
-    if !self.scanner.scanDouble(&value)
+    if let value = self.scanner.scanDouble()
     {
-      scanner.scanCharacters(from: keywordSet,into: &tempstring)
-      if let string: String = tempstring as String?
-      {
-        return (string.trimmingCharacters(in: CharacterSet.punctuationCharacters) as NSString).doubleValue
-      }
-      return 0.0
+      return value
     }
-    return value
+    
+    scanner.currentIndex = previousScanLocation
+    if let string: String = scanner.scanCharacters(from: keywordSet)
+    {
+      return (string.trimmingCharacters(in: CharacterSet.punctuationCharacters) as NSString).doubleValue
+    }
+    return 0.0
   }
   
   func scanString() -> String?
   {
-    var tempString: NSString? = nil
-    self.scanner.scanUpToCharacters(from: CharacterSet.newlines, into: &tempString)
-    
-    if let string = tempString
+    if let string = self.scanner.scanUpToCharacters(from: CharacterSet.newlines)
     {
-      return string as String
+      return string
     }
     return nil
   }
@@ -474,34 +468,29 @@ public final class SKCIFParser: SKParser, ProgressReporting
   
   func parseValue() -> String?
   {
-    var tempString: NSString? = nil
-    var previousScanLocation: Int
+    var previousScanLocation: String.Index=self.scanner.currentIndex
     
     if self.scanner.isAtEnd
     {
       return nil
     }
     
-    previousScanLocation=self.scanner.scanLocation
+    previousScanLocation = self.scanner.currentIndex
     
-    while(self.scanner.scanCharacters(from: keywordSet, into:&tempString) && (tempString != nil) && (tempString!.hasPrefix("#")))
+    while let tempString = self.scanner.scanCharacters(from: keywordSet), tempString.hasPrefix("#")
     {
-      if let keyword = tempString
-      {
-        if (keyword.hasPrefix("#"))
-        {
-          skipComment()
-        }
-      }
+      skipComment()
+      previousScanLocation = self.scanner.currentIndex
     }
     
-    if let string: String = tempString as String?
+    self.scanner.currentIndex = previousScanLocation
+    if let string: String = self.scanner.scanCharacters(from: keywordSet)
     {
       // detect end of loop
       if (string.hasPrefix("_") || string.hasPrefix("loop_"))
       {
         // set scanner back to before parsing the value
-        self.scanner.scanLocation = previousScanLocation
+        self.scanner.currentIndex = previousScanLocation
         return nil
       }
         
@@ -525,34 +514,29 @@ public final class SKCIFParser: SKParser, ProgressReporting
   
   func parseLoop()
   {
-    var tempString: NSString? = nil
-    var previousScanLocation: Int
+    var previousScanLocation: String.Index
     var tags: [CaseInsensitiveString] = [CaseInsensitiveString]()
     
     // part 1: read the 'tags'
-    previousScanLocation = self.scanner.scanLocation
-    while(self.scanner.scanCharacters(from: keywordSet, into:&tempString) && (tempString != nil) && (tempString!.hasPrefix("_") || (tempString!.hasPrefix("#"))))
+    previousScanLocation = self.scanner.currentIndex
+    while let keyword = self.scanner.scanCharacters(from: keywordSet), (keyword.hasPrefix("_") || (keyword.hasPrefix("#")))
     {
-      if let keyword: String = tempString as String?
+      if (keyword.hasPrefix("#"))
       {
-       
-        if (keyword.hasPrefix("#"))
-        {
-          skipComment()
-        }
-        else if (keyword.hasPrefix("_"))
-        {
-          // found a tag -> add it to the tags-array
-          tags.append(CaseInsensitiveString(stringLiteral: keyword))
-          
-        }
+        skipComment()
       }
-      previousScanLocation=self.scanner.scanLocation
+      else if (keyword.hasPrefix("_"))
+      {
+        // found a tag -> add it to the tags-array
+        tags.append(CaseInsensitiveString(stringLiteral: keyword))
+      }
+      
+      previousScanLocation = self.scanner.currentIndex
     }
     
     
     // set scanner back to the first <value>
-    self.scanner.scanLocation=previousScanLocation
+    self.scanner.currentIndex = previousScanLocation
     
     // part 2: read the values
     var value: String?

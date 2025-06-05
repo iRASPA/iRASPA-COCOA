@@ -100,7 +100,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
                                                          NSPasteboardTypeMovie,
                                                          NSPasteboardTypeFrame])
     self.movieOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType.fileURL])
-    self.movieOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType.filePromise])
+    //self.movieOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType.filePromise])
     
     self.movieOutlineView?.setDraggingSourceOperationMask(.every, forLocal: true)
     self.movieOutlineView?.setDraggingSourceOperationMask(.every, forLocal: false)

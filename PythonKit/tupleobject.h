@@ -36,7 +36,7 @@ PyAPI_FUNC(PyObject *) PyTuple_Pack(Py_ssize_t, ...);
 
 #ifndef Py_LIMITED_API
 #  define Py_CPYTHON_TUPLEOBJECT_H
-#  include  "cpython_tupleobject.h"
+#  include  <PythonKit/cpython_tupleobject.h>
 #  undef Py_CPYTHON_TUPLEOBJECT_H
 #endif
 

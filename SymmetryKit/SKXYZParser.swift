@@ -105,44 +105,42 @@ public final class SKXYZParser: SKParser, ProgressReporting
     //var modelNumber: Int = 0
     
     while(!scanner.isAtEnd)
-    {
-      var scannedLine: NSString?
-      
+    {      
       // scan line
-      if (scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine))
+      if let line = scanner.scanUpToCharacters(from: newLineChararterSet)
       {
-        if let line = scannedLine
+        
+        // update progress
+        currentProgressCount += 1.0
+        if( Int(currentProgressCount * percentageFinishedStep) > Int((currentProgressCount-1.0) * percentageFinishedStep))
         {
-          // update progress
-          currentProgressCount += 1.0
-          if( Int(currentProgressCount * percentageFinishedStep) > Int((currentProgressCount-1.0) * percentageFinishedStep))
+          progress.completedUnitCount += 1
+        }
+        
+        let words: [String] = line.components(separatedBy: CharacterSet.whitespaces)
+        if let firstWord: String = words.first,
+           let numberOfAtoms: Int = Int(firstWord)
+        {
+          var periodic = false
+          let prefix: String = "Lattice=\""
+          // commentline containing the box-sizes
+          if let scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
           {
-            progress.completedUnitCount += 1
-          }
-          
-          let words: [String] = line.components(separatedBy: CharacterSet.whitespaces)
-          if let firstWord: String = words.first,
-             let numberOfAtoms: Int = Int(firstWord)
-          {
-            var periodic = false
-            let prefix: String = "Lattice=\""
-            // commentline containing the box-sizes
-            if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-              let commentString = scannedLine?.trimmingCharacters(in: CharacterSet.whitespaces),
-              commentString.hasPrefix(prefix)
+            let commentString = scannedLine.trimmingCharacters(in: CharacterSet.whitespaces)
+            if commentString.hasPrefix(prefix)
             {
               let cellString = String(commentString.dropFirst(prefix.count))
               let separationCharacters = CharacterSet.whitespaces.union(CharacterSet(charactersIn: "\""))
               let words: [String] = cellString.components(separatedBy: separationCharacters).filter({!$0.isEmpty})
               if words.count >= 9,
-                let ax = Double(words[0]), let ay = Double(words[1]), let az = Double(words[2]),
-                let bx = Double(words[3]), let by = Double(words[4]), let bz = Double(words[5]),
-                let cx = Double(words[6]), let cy = Double(words[7]), let cz = Double(words[8])
+                 let ax = Double(words[0]), let ay = Double(words[1]), let az = Double(words[2]),
+                 let bx = Double(words[3]), let by = Double(words[4]), let bz = Double(words[5]),
+                 let cx = Double(words[6]), let cy = Double(words[7]), let cz = Double(words[8])
               {
                 periodic = true
                 let unitCell: double3x3 = double3x3([SIMD3<Double>(ax,ay,az), SIMD3<Double>(bx,by,bz), SIMD3<Double>(cx,cy,cz)])
                 cell = SKCell(unitCell: unitCell)
-              
+                
                 // update progress
                 currentProgressCount += 1.0
                 if( Int(currentProgressCount * percentageFinishedStep) > Int((currentProgressCount-1.0) * percentageFinishedStep))
@@ -151,48 +149,43 @@ public final class SKXYZParser: SKParser, ProgressReporting
                 }
               }
             }
-            
-            var atoms: [SKAsymmetricAtom] = []
+          }
+          
+          var atoms: [SKAsymmetricAtom] = []
 
-            for  _ in 0..<numberOfAtoms
+          for  _ in 0..<numberOfAtoms
+          {
+            if let scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet),
+              let words: [String] = (scannedLine as String?)?.condensingWhitespace().components(separatedBy: CharacterSet.whitespaces),
+              words.count >= 4
             {
-              if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-                let words: [String] = (scannedLine as String?)?.condensingWhitespace().components(separatedBy: CharacterSet.whitespaces),
-                words.count >= 4
-              {
-                let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
-                
-                
-                if let atomicNumber: Int = SKElement.atomData[words[0].capitalizeFirst]?["atomicNumber"] as? Int,
-                   let orthogonalXCoordinate: Double = Double(words[1]),
-                   let orthogonalYCoordinate: Double = Double(words[2]),
-                   let orthogonalZCoordinate: Double = Double(words[3])
-                {
-                  let chemicalSymbol: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-                  atom.elementIdentifier = atomicNumber
-                  atom.displayName = chemicalSymbol
-                  atom.uniqueForceFieldName = chemicalSymbol
-                  atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
-                  atoms.append(atom)
-                }
-              }
+              let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
               
-              // update progress
-              currentProgressCount += 1.0
-              if( Int(currentProgressCount * percentageFinishedStep) > Int((currentProgressCount-1.0) * percentageFinishedStep))
+              
+              if let atomicNumber: Int = SKElement.atomData[words[0].capitalizeFirst]?["atomicNumber"] as? Int,
+                 let orthogonalXCoordinate: Double = Double(words[1]),
+                 let orthogonalYCoordinate: Double = Double(words[2]),
+                 let orthogonalZCoordinate: Double = Double(words[3])
               {
-                progress.completedUnitCount += 1
+                let chemicalSymbol: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+                atom.elementIdentifier = atomicNumber
+                atom.displayName = chemicalSymbol
+                atom.uniqueForceFieldName = chemicalSymbol
+                atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+                atoms.append(atom)
               }
             }
             
-            addFrameToStructure(atoms: atoms, periodic: periodic)
-            currentMovie += 1
-            
-            
+            // update progress
+            currentProgressCount += 1.0
+            if( Int(currentProgressCount * percentageFinishedStep) > Int((currentProgressCount-1.0) * percentageFinishedStep))
+            {
+              progress.completedUnitCount += 1
+            }
           }
           
-        
-          
+          addFrameToStructure(atoms: atoms, periodic: periodic)
+          currentMovie += 1
         }
       }
     }

@@ -94,7 +94,7 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
   
   public override func startParsing() throws
   {
-    var scannedLine: NSString?
+    var scannedLine: String?
         
     // update progress
     currentProgressCount += 1.0
@@ -110,8 +110,8 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
       {
         for _ in 0..<cellInformation.numberOfAtomsForElement[index]
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 3,
             let orthogonalXCoordinate: Double = Double(words[0]),
             let orthogonalYCoordinate: Double = Double(words[1]),
@@ -145,30 +145,30 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
   
   func readHeader() throws -> (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int])?
   {
-    var scannedLine: NSString?
+    var scannedLine: String?
     
-    let previousScanLocation = self.scanner.scanLocation
+    let previousScanLocation = self.scanner.currentIndex
     
     // check if 'cell-information' is printed
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
        let firstCharacter = words[0].lowercased().first,
          firstCharacter == "d"
     {
-      self.scanner.scanLocation = previousScanLocation
+      self.scanner.currentIndex = previousScanLocation
       return try readCellInformation()
     }
     
-    self.scanner.scanLocation = previousScanLocation
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+    self.scanner.currentIndex = previousScanLocation
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
         let firstCharacter = words[0].lowercased().first,
         firstCharacter == "d"
     {
@@ -205,18 +205,19 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
   
   func readCellInformation() throws -> (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int])?
   {
-    var scannedLine: NSString?
+    var scannedLine: String?
     
     // skip commentline
-    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if (scannedLine == nil)
     {
       throw SKParserError.containsNoData
     }
     
     // scan scaleFactor
     var scaleFactor: Double = 1.0
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 1, let scale = Double(words[0])
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 1, let scale = Double(words[0])
     {
       scaleFactor = scale
     }
@@ -226,8 +227,8 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
     }
     
     // read box first vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let ax = Double(words[0]), let ay = Double(words[1]), let az = Double(words[2])
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let ax = Double(words[0]), let ay = Double(words[1]), let az = Double(words[2])
     {
       a = scaleFactor *  SIMD3<Double>(ax,ay,az)
     }
@@ -237,12 +238,10 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
     }
     
     // read box second vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let bx = Double(words[0]), let by = Double(words[1]), let bz = Double(words[2])
     {
-      if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let bx = Double(words[0]), let by = Double(words[1]), let bz = Double(words[2])
-      {
-        b = scaleFactor *  SIMD3<Double>(bx,by,bz)
-      }
+      b = scaleFactor *  SIMD3<Double>(bx,by,bz)
     }
     else
     {
@@ -250,8 +249,8 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
     }
     
     // read box third vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let cx = Double(words[0]), let cy = Double(words[1]), let cz = Double(words[2])
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let cx = Double(words[0]), let cy = Double(words[1]), let cz = Double(words[2])
     {
       c = scaleFactor *  SIMD3<Double>(cx,cy,cz)
     }
@@ -262,17 +261,19 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
     
     let cell = SKCell(unitCell: double3x3(a, b, c))
     
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-    let elements: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-    scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-    let numberOfAtoms: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-    scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let elements: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
     {
-      let numberOfAtoms = numberOfAtoms.compactMap{Int($0)}
-      self.currentElements = elements
-      self.currentNumberOfAtomsForElement = numberOfAtoms
-      self.currentCell = cell
-      return (cell, elements, numberOfAtoms)
+      scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+      if let numberOfAtoms: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
+      {
+        scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+        let numberOfAtoms = numberOfAtoms.compactMap{Int($0)}
+        self.currentElements = elements
+        self.currentNumberOfAtomsForElement = numberOfAtoms
+        self.currentCell = cell
+        return (cell, elements, numberOfAtoms)
+      }
     }
     return nil
   }

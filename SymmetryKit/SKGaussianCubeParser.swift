@@ -107,21 +107,19 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
   
   public override func startParsing() throws
   {
-    var scannedLine: NSString? = ""
+    var scannedLine: String? = ""
    
     // skip commentlines
     scanner.charactersToBeSkipped = nil
 
-    scanner.scanUpTo("\n", into: &scannedLine)
-    scanner.scanLocation += 1
-    scanner.scanUpTo("\n", into: &scannedLine)
-    scanner.scanLocation += 1
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
     
     scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
     
     // read number of atoms and origin
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
        words.count >= 4, let natoms = Int(words[0]), let ox = Double(words[1]), let oy = Double(words[2]), let oz = Double(words[3])
     {
       numberOfAtoms = natoms
@@ -140,8 +138,8 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     var conversionFactor: SIMD3<Double> = SIMD3<Double>(1.0,1.0,1.0)
     
     // read box first vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
        words.count >= 4, let dx = Int32(words[0]), let ax = Double(words[1]), let ay = Double(words[2]), let az = Double(words[3])
     {
       dimensions.x = abs(dx)
@@ -154,8 +152,8 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     }
     
     // read box second vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
        words.count >= 4, let dy = Int32(words[0]), let bx = Double(words[1]), let by = Double(words[2]), let bz = Double(words[3])
     {
       dimensions.y = abs(dy)
@@ -168,8 +166,8 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     }
     
     // read box third vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-       let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
        words.count >= 4, let dz = Int32(words[0]), let cx = Double(words[1]), let cy = Double(words[2]), let cz = Double(words[3])
     {
       dimensions.z = abs(dz)
@@ -188,8 +186,8 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     
     for _ in 0..<abs(numberOfAtoms)
     {
-      if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-         let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+      scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+      if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
          words.count >= 5, let atomicNumber = Int(words[0]), let charge = Double(words[1]), let x = Double(words[2]), let y = Double(words[3]), let z = Double(words[4])
       {
         let pos: SIMD3<Double> = conversionFactor * (SIMD3<Double>(x,y,z) - origin)
@@ -228,8 +226,8 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
       {
         for z: Int32 in 0..<dimensions.z  // Z is the inner loop
         {
-          if scanner.scanUpToCharacters(from: whiteSpacesAndNewlines, into: &scannedLine),
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+          scannedLine = scanner.scanUpToCharacters(from: whiteSpacesAndNewlines)
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
             if let dataPoint: Float = Float(words[0])

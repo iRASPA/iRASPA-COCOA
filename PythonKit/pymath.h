@@ -1,7 +1,7 @@
 #ifndef Py_PYMATH_H
 #define Py_PYMATH_H
 
-#include "pyconfig.h" /* include for defines */
+#include <PythonKit/pyconfig.h> /* include for defines */
 
 /**************************************************************************
 Symbols and macros to supply platform-independent interfaces to mathematical

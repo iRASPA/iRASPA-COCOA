@@ -30,7 +30,7 @@
  *************************************************************************************************************/
 import Foundation
 
-public class FractionalNumberFormatter: NumberFormatter
+public class FractionalNumberFormatter: NumberFormatter, @unchecked Sendable
 {
   let shortFormatter: NumberFormatter
   let longFormatter: NumberFormatter

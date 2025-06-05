@@ -37,7 +37,7 @@ import Foundation
  extended readiness requirements, as well as notify many interested parties
  about interesting operation state changes
  */
-open class FKOperation: Operation, ProgressReporting
+open class FKOperation: Operation, ProgressReporting, @unchecked Sendable
 {
   open var progress: Progress = Progress()
   

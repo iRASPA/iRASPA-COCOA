@@ -4,9 +4,9 @@
 
 /* Include nearly all Python header files */
 
-#include "patchlevel.h"
-#include "pyconfig.h"
-#include "pymacconfig.h"
+#include <PythonKit/patchlevel.h>
+#include <PythonKit/pyconfig.h>
+#include <PythonKit/pymacconfig.h>
 
 #include <limits.h>
 
@@ -60,8 +60,8 @@
  */
 #include <assert.h>
 
-#include "pyport.h"
-#include "pymacro.h"
+#include <PythonKit/pyport.h>
+#include <PythonKit/pymacro.h>
 
 /* A convenient way for code to know if clang's memory sanitizer is enabled. */
 #if defined(__has_feature)
@@ -81,83 +81,83 @@
 #if defined(PYMALLOC_DEBUG) && !defined(WITH_PYMALLOC)
 #error "PYMALLOC_DEBUG requires WITH_PYMALLOC"
 #endif
-#include "pymath.h"
-#include "pytime.h"
-#include "pymem.h"
+#include <PythonKit/pymath.h>
+#include <PythonKit/pytime.h>
+#include <PythonKit/pymem.h>
 
-#include "object.h"
-#include "objimpl.h"
-#include "typeslots.h"
-#include "pyhash.h"
+#include <PythonKit/object.h>
+#include <PythonKit/objimpl.h>
+#include <PythonKit/typeslots.h>
+#include <PythonKit/pyhash.h>
 
-#include "pydebug.h"
+#include <PythonKit/pydebug.h>
 
-#include "bytearrayobject.h"
-#include "bytesobject.h"
-#include "unicodeobject.h"
-#include "longobject.h"
-#include "longintrepr.h"
-#include "boolobject.h"
-#include "floatobject.h"
-#include "complexobject.h"
-#include "rangeobject.h"
-#include "memoryobject.h"
-#include "tupleobject.h"
-#include "listobject.h"
-#include "dictobject.h"
-#include "odictobject.h"
-#include "enumobject.h"
-#include "setobject.h"
-#include "methodobject.h"
-#include "moduleobject.h"
-#include "funcobject.h"
-#include "classobject.h"
-#include "fileobject.h"
-#include "pycapsule.h"
-#include "code.h"
-#include "pyframe.h"
-#include "traceback.h"
-#include "sliceobject.h"
-#include "cellobject.h"
-#include "iterobject.h"
-#include "genobject.h"
-#include "descrobject.h"
-#include "genericaliasobject.h"
-#include "warnings.h"
-#include "weakrefobject.h"
-#include "structseq.h"
-#include "namespaceobject.h"
-#include "picklebufobject.h"
+#include <PythonKit/bytearrayobject.h>
+#include <PythonKit/bytesobject.h>
+#include <PythonKit/unicodeobject.h>
+#include <PythonKit/longobject.h>
+#include <PythonKit/longintrepr.h>
+#include <PythonKit/boolobject.h>
+#include <PythonKit/floatobject.h>
+#include <PythonKit/complexobject.h>
+#include <PythonKit/rangeobject.h>
+#include <PythonKit/memoryobject.h>
+#include <PythonKit/tupleobject.h>
+#include <PythonKit/listobject.h>
+#include <PythonKit/dictobject.h>
+#include <PythonKit/odictobject.h>
+#include <PythonKit/enumobject.h>
+#include <PythonKit/setobject.h>
+#include <PythonKit/methodobject.h>
+#include <PythonKit/moduleobject.h>
+#include <PythonKit/funcobject.h>
+#include <PythonKit/classobject.h>
+#include <PythonKit/fileobject.h>
+#include <PythonKit/pycapsule.h>
+#include <PythonKit/code.h>
+#include <PythonKit/pyframe.h>
+#include <PythonKit/traceback.h>
+#include <PythonKit/sliceobject.h>
+#include <PythonKit/cellobject.h>
+#include <PythonKit/iterobject.h>
+#include <PythonKit/genobject.h>
+#include <PythonKit/descrobject.h>
+#include <PythonKit/genericaliasobject.h>
+#include <PythonKit/warnings.h>
+#include <PythonKit/weakrefobject.h>
+#include <PythonKit/structseq.h>
+#include <PythonKit/namespaceobject.h>
+#include <PythonKit/picklebufobject.h>
 
-#include "codecs.h"
-#include "pyerrors.h"
+#include <PythonKit/codecs.h>
+#include <PythonKit/pyerrors.h>
 
-#include "cpython_initconfig.h"
-#include "pythread.h"
-#include "pystate.h"
-#include "context.h"
+#include <PythonKit/cpython_initconfig.h>
+#include <PythonKit/pythread.h>
+#include <PythonKit/pystate.h>
+#include <PythonKit/context.h>
 
-#include "pyarena.h"
-#include "modsupport.h"
-#include "compile.h"
-#include "pythonrun.h"
-#include "pylifecycle.h"
-#include "ceval.h"
-#include "sysmodule.h"
-#include "osmodule.h"
-#include "intrcheck.h"
-#include "import.h"
+#include <PythonKit/pyarena.h>
+#include <PythonKit/modsupport.h>
+#include <PythonKit/compile.h>
+#include <PythonKit/pythonrun.h>
+#include <PythonKit/pylifecycle.h>
+#include <PythonKit/ceval.h>
+#include <PythonKit/sysmodule.h>
+#include <PythonKit/osmodule.h>
+#include <PythonKit/intrcheck.h>
+#include <PythonKit/import.h>
 
-#include "abstract.h"
-#include "bltinmodule.h"
+#include <PythonKit/abstract.h>
+#include <PythonKit/bltinmodule.h>
 
-#include "eval.h"
+#include <PythonKit/eval.h>
 
-#include "pyctype.h"
-#include "pystrtod.h"
-#include "pystrcmp.h"
-#include "fileutils.h"
-#include "pyfpe.h"
-#include "tracemalloc.h"
+#include <PythonKit/pyctype.h>
+#include <PythonKit/pystrtod.h>
+#include <PythonKit/pystrcmp.h>
+#include <PythonKit/fileutils.h>
+#include <PythonKit/pyfpe.h>
+#include <PythonKit/tracemalloc.h>
 
 #endif /* !Py_PYTHON_H */

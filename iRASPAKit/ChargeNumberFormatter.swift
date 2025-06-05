@@ -31,7 +31,7 @@
 
 import Foundation
 
-public class ChargeNumberFormatter: NumberFormatter
+public class ChargeNumberFormatter: NumberFormatter, @unchecked Sendable
 {
   let shortFormatter: NumberFormatter
   let longFormatter: NumberFormatter

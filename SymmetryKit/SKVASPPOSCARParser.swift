@@ -93,7 +93,7 @@ public final class SKVASPPOSCARParser: SKParser, ProgressReporting
   {
     let periodic = true
     
-    var scannedLine: NSString?
+    var scannedLine: String?
     
     // scan line
     
@@ -105,15 +105,16 @@ public final class SKVASPPOSCARParser: SKParser, ProgressReporting
     }
     
     // skip commentline
-    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if(scannedLine == nil)
     {
       throw SKParserError.containsNoData
     }
     
     // scan scaleFactor
     var scaleFactor: Double = 1.0
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 1, let scale = Double(words[0])
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 1, let scale = Double(words[0])
     {
       scaleFactor = scale
     }
@@ -123,8 +124,8 @@ public final class SKVASPPOSCARParser: SKParser, ProgressReporting
     }
     
     // read box first vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let ax = Double(words[0]), let ay = Double(words[1]), let az = Double(words[2])
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let ax = Double(words[0]), let ay = Double(words[1]), let az = Double(words[2])
     {
       a = scaleFactor *  SIMD3<Double>(ax,ay,az)
     }
@@ -134,12 +135,10 @@ public final class SKVASPPOSCARParser: SKParser, ProgressReporting
     }
     
     // read box second vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let bx = Double(words[0]), let by = Double(words[1]), let bz = Double(words[2])
     {
-      if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let bx = Double(words[0]), let by = Double(words[1]), let bz = Double(words[2])
-      {
-        b = scaleFactor *  SIMD3<Double>(bx,by,bz)
-      }
+      b = scaleFactor *  SIMD3<Double>(bx,by,bz)
     }
     else
     {
@@ -147,8 +146,8 @@ public final class SKVASPPOSCARParser: SKParser, ProgressReporting
     }
     
     // read box third vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let cx = Double(words[0]), let cy = Double(words[1]), let cz = Double(words[2])
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let cx = Double(words[0]), let cy = Double(words[1]), let cz = Double(words[2])
     {
       c = scaleFactor *  SIMD3<Double>(cx,cy,cz)
     }
@@ -159,86 +158,88 @@ public final class SKVASPPOSCARParser: SKParser, ProgressReporting
     
     cell = SKCell(unitCell: double3x3(a, b, c))
     var atoms: [SKAsymmetricAtom] = []
-        
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let elements: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-      scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let numberOfAtoms: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
+    
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let elements: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
     {
-      let count = min(elements.count,numberOfAtoms.count)
-      
-      // check for "Selective dynamics"
-      //var selectiveDynamics: Bool = false
-      let previousScanLocation = self.scanner.scanLocation
-      if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-        let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-        words.count >= 1
+      scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+      if let numberOfAtoms: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
       {
-        if let firstCharacter = words[0].lowercased().first,
-          firstCharacter == "s"  // "Selective dynamics"
+        let count = min(elements.count,numberOfAtoms.count)
+        
+        // check for "Selective dynamics"
+        //var selectiveDynamics: Bool = false
+        let previousScanLocation = self.scanner.currentIndex
+        scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+        if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+           words.count >= 1
         {
-          //selectiveDynamics = true
-          // nothing needs to be done, line is read
-        }
-        else
-        {
-          self.scanner.scanLocation = previousScanLocation
-        }
-      }
-      
-      var fractional: Bool = true
-      if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-        let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-        words.count >= 1
-      {
-        if let firstCharacter = words[0].lowercased().first,
-          firstCharacter == "c"  // "Cartesian"
-        {
-          fractional = false
-        }
-      }
-      
-      for element in 0..<count
-      {
-        if let atomicNumber: Int = SKElement.atomData[elements[element].capitalizeFirst]?["atomicNumber"] as? Int,
-          let numberOfAtomsForElement: Int =  Int(numberOfAtoms[element])
-        {
-          for _ in 0..<numberOfAtomsForElement
+          if let firstCharacter = words[0].lowercased().first,
+             firstCharacter == "s"  // "Selective dynamics"
           {
-            if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 3,
-              let orthogonalXCoordinate: Double = Double(words[0]),
-              let orthogonalYCoordinate: Double = Double(words[1]),
-              let orthogonalZCoordinate: Double = Double(words[2])
+            //selectiveDynamics = true
+            // nothing needs to be done, line is read
+          }
+          else
+          {
+            self.scanner.currentIndex = previousScanLocation
+          }
+        }
+        
+        var fractional: Bool = true
+        scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+        if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+           words.count >= 1
+        {
+          if let firstCharacter = words[0].lowercased().first,
+             firstCharacter == "c"  // "Cartesian"
+          {
+            fractional = false
+          }
+        }
+        
+        for element in 0..<count
+        {
+          if let atomicNumber: Int = SKElement.atomData[elements[element].capitalizeFirst]?["atomicNumber"] as? Int,
+             let numberOfAtomsForElement: Int =  Int(numberOfAtoms[element])
+          {
+            for _ in 0..<numberOfAtomsForElement
             {
-              let chemicalElement: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-              let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: chemicalElement, position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
-              
-              atom.elementIdentifier = atomicNumber
-              atom.displayName = chemicalElement
-              atom.uniqueForceFieldName = chemicalElement
-              atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
-              atom.fractional = fractional
-              
-              if words.count >= 6,
-                let firstChacterX: Character = words[3].lowercased().first,
-                let firstChacterY: Character = words[4].lowercased().first,
-                let firstChacterZ: Character = words[5].lowercased().first
+              scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+              if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+                 words.count >= 3,
+                 let orthogonalXCoordinate: Double = Double(words[0]),
+                 let orthogonalYCoordinate: Double = Double(words[1]),
+                 let orthogonalZCoordinate: Double = Double(words[2])
               {
-                atom.isFixed = Bool3(firstChacterX == "f",firstChacterY == "f",firstChacterZ == "f")
+                let chemicalElement: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+                let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: chemicalElement, position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
+                
+                atom.elementIdentifier = atomicNumber
+                atom.displayName = chemicalElement
+                atom.uniqueForceFieldName = chemicalElement
+                atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+                atom.fractional = fractional
+                
+                if words.count >= 6,
+                   let firstChacterX: Character = words[3].lowercased().first,
+                   let firstChacterY: Character = words[4].lowercased().first,
+                   let firstChacterZ: Character = words[5].lowercased().first
+                {
+                  atom.isFixed = Bool3(firstChacterX == "f",firstChacterY == "f",firstChacterZ == "f")
+                }
+                
+                
+                atoms.append(atom)
               }
-              
-              
-              atoms.append(atom)
             }
           }
         }
+        
+        addFrameToStructure(atoms: atoms, periodic: periodic)
+        currentFrame += 1
+        
       }
-      
-      addFrameToStructure(atoms: atoms, periodic: periodic)
-      currentFrame += 1
-      
     }
   }
   

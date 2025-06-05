@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-#include "pystate.h"   /* _PyErr_StackItem */
+#include <PythonKit/pystate.h>   /* _PyErr_StackItem */
 
 /* _PyGenObject_HEAD defines the initial segment of generator
    and coroutine objects. */

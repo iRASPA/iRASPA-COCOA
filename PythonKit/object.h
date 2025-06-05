@@ -612,7 +612,7 @@ times.
 
 #ifndef Py_LIMITED_API
 #  define Py_CPYTHON_OBJECT_H
-#  include  "cpython_object.h"
+#  include  <PythonKit/cpython_object.h>
 #  undef Py_CPYTHON_OBJECT_H
 #endif
 

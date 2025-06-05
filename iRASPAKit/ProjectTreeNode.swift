@@ -120,7 +120,8 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     {
       do
       {
-        self.representedObjectInfo = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [String: AnyObject] ?? [:]
+        //self.representedObjectInfo = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [String: AnyObject] ?? [:]
+        self.representedObjectInfo = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSDictionary.self, from: data) as? [String: AnyObject] ?? [:]
       }
       catch let error
       {

@@ -99,7 +99,7 @@ PyAPI_FUNC(PyObject *) PyCMethod_New(PyMethodDef *, PyObject *,
 #ifndef Py_LIMITED_API
 
 #define Py_CPYTHON_METHODOBJECT_H
-#include  "cpython_methodobject.h"
+#include  <PythonKit/cpython_methodobject.h>
 #undef Py_CPYTHON_METHODOBJECT_H
 
 #endif

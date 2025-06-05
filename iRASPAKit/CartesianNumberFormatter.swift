@@ -31,7 +31,7 @@
 
 import Foundation
 
-public class CartesianNumberFormatter: NumberFormatter
+public class CartesianNumberFormatter: NumberFormatter, @unchecked Sendable
 {
   let shortFormatter: NumberFormatter
   let longFormatter: NumberFormatter
