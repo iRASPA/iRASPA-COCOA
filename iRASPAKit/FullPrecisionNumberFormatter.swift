@@ -31,7 +31,7 @@
 
 import Foundation
 
-public class FullPrecisionNumberFormatter: NumberFormatter
+public class FullPrecisionNumberFormatter: NumberFormatter, @unchecked Sendable
 {
   override public init()
   {

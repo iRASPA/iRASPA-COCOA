@@ -34,7 +34,7 @@ import LogViewKit
 import CloudKit
 import OperationKit
 
-public class RequestDiscoveryPermissionCloudUserOperation: Operation
+public class RequestDiscoveryPermissionCloudUserOperation: Operation, @unchecked Sendable
 {
   
   public override func main()

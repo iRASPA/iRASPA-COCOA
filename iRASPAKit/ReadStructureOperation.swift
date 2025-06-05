@@ -35,7 +35,7 @@ import OperationKit
 import LogViewKit
 import BinaryCodable
 
-class ReadStructureOperation: FKOperation
+class ReadStructureOperation: FKOperation, @unchecked Sendable
 {
   let url: URL
   var parser: SKParser? = nil

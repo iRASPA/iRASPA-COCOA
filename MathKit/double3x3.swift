@@ -84,7 +84,7 @@ public extension double3x3
 
 
 
-extension double3x3: Hashable
+extension double3x3: @retroactive Hashable
 {
   public func hash(into hasher: inout Hasher)
   {

@@ -35,7 +35,7 @@ import Compression
 import OperationKit
 import BinaryCodable
 
-public class SaveProjectToCloudOperation: FKGroupOperation
+public class SaveProjectToCloudOperation: FKGroupOperation, @unchecked Sendable
 {
   let maximumRetryAttempts: Int = 5
   var retryAttempts: Int = 0
@@ -59,17 +59,17 @@ public class SaveProjectToCloudOperation: FKGroupOperation
         record["type"] = 3 as CKRecordValue
         record["parent"] = CKRecord.Reference(recordID: parentNode, action: CKRecord.ReferenceAction.none)
         
-        let representedObjectInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: proxyProject.representedObjectInfo)
-        record["representedObjectInfo"] = representedObjectInfoData as CKRecordValue
-        
-        record["type"] = proxyProject.representedObject.projectType.rawValue as CKRecordValue
-          
-        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(proxyProject.representedObject.fileNameUUID)
-        
-        let data: Data = proxyProject.representedObject.projectData()
-          
         do
         {
+          let representedObjectInfoData: Data = try NSKeyedArchiver.archivedData(withRootObject: proxyProject.representedObjectInfo, requiringSecureCoding: false)
+          record["representedObjectInfo"] = representedObjectInfoData as CKRecordValue
+        
+          record["type"] = proxyProject.representedObject.projectType.rawValue as CKRecordValue
+          
+          let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(proxyProject.representedObject.fileNameUUID)
+        
+          let data: Data = proxyProject.representedObject.projectData()
+          
           try data.write(to: url, options: .atomicWrite)
           record["representedObject"] = CKAsset(fileURL: url)
         }

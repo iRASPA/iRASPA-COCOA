@@ -32,7 +32,7 @@ PyAPI_DATA(int) Py_HasFileSystemDefaultEncoding;
 
 #ifndef Py_LIMITED_API
 #  define Py_CPYTHON_FILEOBJECT_H
-#  include  "cpython_fileobject.h"
+#  include  <PythonKit/cpython_fileobject.h>
 #  undef Py_CPYTHON_FILEOBJECT_H
 #endif
 

@@ -86,7 +86,7 @@ struct CloudContainerCondition: FKOperationCondition {
  This operation asks the user for permission to use CloudKit, if necessary.
  If permission has already been granted, this operation will quickly finish.
  */
-private class CloudKitPermissionOperation: FKOperation {
+private class CloudKitPermissionOperation: FKOperation, @unchecked Sendable {
   let container: CKContainer
   let permission: CKContainer.ApplicationPermissions
   

@@ -30,7 +30,7 @@
  *************************************************************************************************************/
 import Foundation
 
-public class OccupancyNumberFormatter: NumberFormatter
+public class OccupancyNumberFormatter: NumberFormatter, @unchecked Sendable
 {
   let shortFormatter: NumberFormatter
   let longFormatter: NumberFormatter

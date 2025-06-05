@@ -33,7 +33,7 @@ import Foundation
 import CloudKit
 import OperationKit
 
-public class ImportChildNodesOfParentRecordIDOperation: FKGroupOperation
+public class ImportChildNodesOfParentRecordIDOperation: FKGroupOperation, @unchecked Sendable
 {
   public var childNodes: [ProjectTreeNode] = []
   

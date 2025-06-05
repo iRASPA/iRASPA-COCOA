@@ -144,7 +144,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
                                                       NSPasteboardTypeMovie,
                                                       NSPasteboardTypeFrame])
     self.projectOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType.fileURL])
-    self.projectOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType.filePromise])
+    //self.projectOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType.filePromise])
     
     
     self.projectOutlineView?.setDraggingSourceOperationMask(.every, forLocal: true)
@@ -1955,17 +1955,18 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           //record["parent"] = CKRecord.Reference(recordID: CKRecord.ID(recordName: parentId), action: CKRecord.Reference.Action.none)
           //record["type"] = node.representedObject.projectType.rawValue as CKRecordValue
           
-          let representedObjectInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: node.representedObjectInfo)
-          record["representedObjectInfo"] = representedObjectInfoData as CKRecordValue
-          
-          let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(node.representedObject.fileNameUUID)
-          
-          let binaryEncoder: BinaryEncoder = BinaryEncoder()
-          binaryEncoder.encode(node.representedObject, encodeRepresentedObject: true)
-          let data = Data(binaryEncoder.data).compress(withAlgorithm: .lzma)!
-          
+          //let representedObjectInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: node.representedObjectInfo)
           do
           {
+            let representedObjectInfoData: Data = try NSKeyedArchiver.archivedData(withRootObject: node.representedObjectInfo, requiringSecureCoding: false)
+            record["representedObjectInfo"] = representedObjectInfoData as CKRecordValue
+          
+            let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(node.representedObject.fileNameUUID)
+          
+            let binaryEncoder: BinaryEncoder = BinaryEncoder()
+            binaryEncoder.encode(node.representedObject, encodeRepresentedObject: true)
+            let data = Data(binaryEncoder.data).compress(withAlgorithm: .lzma)!
+          
             try data.write(to: url, options: .atomicWrite)
             record["representedObject"] = CKAsset(fileURL: url)
           }

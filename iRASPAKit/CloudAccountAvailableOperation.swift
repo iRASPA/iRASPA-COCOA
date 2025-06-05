@@ -34,7 +34,7 @@ import LogViewKit
 import CloudKit
 import OperationKit
 
-class CloudAccountAvailableOperation: Operation
+class CloudAccountAvailableOperation: Operation, @unchecked Sendable
 {
   override func main()
   {

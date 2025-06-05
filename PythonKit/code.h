@@ -10,7 +10,7 @@ typedef struct PyCodeObject PyCodeObject;
 
 #ifndef Py_LIMITED_API
 #  define Py_CPYTHON_CODE_H
-#  include  "cpython_code.h"
+#  include  <PythonKit/cpython_code.h>
 #  undef Py_CPYTHON_CODE_H
 #endif
 

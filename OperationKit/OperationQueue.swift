@@ -55,7 +55,7 @@ import Foundation
  - Extracting generated dependencies from operation conditions
  - Setting up dependencies to enforce mutual exclusivity
  */
-public class FKOperationQueue: OperationQueue
+public class FKOperationQueue: OperationQueue, @unchecked Sendable
 {
   weak var delegate: FKOperationQueueDelegate?
   

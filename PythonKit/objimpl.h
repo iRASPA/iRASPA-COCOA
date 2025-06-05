@@ -5,7 +5,7 @@
 #ifndef Py_OBJIMPL_H
 #define Py_OBJIMPL_H
 
-#include "pymem.h"
+#include <PythonKit/pymem.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -205,7 +205,7 @@ PyAPI_FUNC(int) PyObject_GC_IsFinalized(PyObject *);
 
 #ifndef Py_LIMITED_API
 #  define Py_CPYTHON_OBJIMPL_H
-#  include  "cpython_objimpl.h"
+#  include  <PythonKit/cpython_objimpl.h>
 #  undef Py_CPYTHON_OBJIMPL_H
 #endif
 

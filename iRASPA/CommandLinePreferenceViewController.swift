@@ -62,7 +62,7 @@ class CommandLinePreferences: NSViewController, NSPathControlDelegate
   
   @IBAction func readPathControlSingleClick(_ sender: NSPathControl)
   {
-    if let url: URL = readPermissionPathControl?.clickedPathComponentCell()?.url
+    if let url: URL = readPermissionPathControl?.clickedPathItem?.url
     {
       readPermissionPathControl?.url = url
     
@@ -85,7 +85,7 @@ class CommandLinePreferences: NSViewController, NSPathControlDelegate
   
   @IBAction func writePathControlSingleClick(_ sender: NSPathControl)
   {
-    if let url: URL = writePermissionPathControl?.clickedPathComponentCell()?.url
+    if let url: URL = writePermissionPathControl?.clickedPathItem?.url
     {
       writePermissionPathControl?.url = url
       

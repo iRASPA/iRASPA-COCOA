@@ -33,7 +33,7 @@ import Foundation
 import CloudKit
 import OperationKit
 
-public class FetchRecordFromCloudOperation: FKGroupOperation
+public class FetchRecordFromCloudOperation: FKGroupOperation, @unchecked Sendable
 {
   let maximumRetryAttempts: Int = 5
   var retryAttempts: Int = 0

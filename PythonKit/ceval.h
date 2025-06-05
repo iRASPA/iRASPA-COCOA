@@ -156,7 +156,7 @@ PyAPI_FUNC(void) PyEval_ReleaseThread(PyThreadState *tstate);
 
 #ifndef Py_LIMITED_API
 #  define Py_CPYTHON_CEVAL_H
-#  include  "cpython_ceval.h"
+#  include  <PythonKit/cpython_ceval.h>
 #  undef Py_CPYTHON_CEVAL_H
 #endif
 

@@ -70,11 +70,11 @@ class AtomTableRowView: NSTableRowView
       super.drawBackground(in: dirtyRect)
       if self.isEmphasized
       {
-        NSColor.alternateSelectedControlColor.withAlphaComponent(0.20).set()
+        NSColor.selectedContentBackgroundColor.withAlphaComponent(0.20).set()
       }
       else
       {
-        NSColor.secondarySelectedControlColor.withAlphaComponent(0.70).set()
+        NSColor.unemphasizedSelectedContentBackgroundColor.withAlphaComponent(0.70).set()
       }
       dirtyRect.fill()
     }
@@ -104,11 +104,11 @@ class AtomTableRowView: NSTableRowView
     let lightBlue: NSColor
     if self.isEmphasized
     {
-      lightBlue = NSColor.alternateSelectedControlColor
+      lightBlue = NSColor.selectedContentBackgroundColor
     }
     else
     {
-      lightBlue = NSColor.secondarySelectedControlColor
+      lightBlue = NSColor.unemphasizedSelectedContentBackgroundColor
     }
     lightBlue.setStroke()
     lightBlue.setFill()

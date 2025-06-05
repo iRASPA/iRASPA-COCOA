@@ -44,7 +44,7 @@ import Foundation
  subsequent operations (still within the outer `GroupOperation`) that will all
  be executed before the rest of the operations in the initial chain of operations.
  */
-open class FKGroupOperation: FKOperation
+open class FKGroupOperation: FKOperation, @unchecked Sendable
 {
   fileprivate let internalQueue = FKOperationQueue()
   fileprivate let startingOperation = BlockOperation(block: {})

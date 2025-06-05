@@ -1258,7 +1258,7 @@ public class VASPVolumetricData: Structure, VolumetricDataViewer, RKRenderAtomSo
     return VASPVolumetricData.RecomputeBondsOperation(structure: structure, windowController: windowController)
   }
   
-  public class RecomputeBondsOperation: FKOperation
+  public class RecomputeBondsOperation: FKOperation, @unchecked Sendable
   {
     let structure : Structure
     weak var windowController: NSWindowController? = nil

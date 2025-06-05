@@ -41,7 +41,7 @@ class AtomGroupStackView: NSStackView
   {
     didSet
     {
-      textField?.cell?.backgroundStyle = isSelected ? NSView.BackgroundStyle.dark : NSView.BackgroundStyle.light
+      textField?.cell?.backgroundStyle = isSelected ? NSView.BackgroundStyle.emphasized : NSView.BackgroundStyle.normal
     }
   }
   

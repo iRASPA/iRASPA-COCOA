@@ -31,7 +31,7 @@ PyAPI_FUNC(PyObject *) PySys_GetXOptions(void);
 
 #ifndef Py_LIMITED_API
 #  define Py_CPYTHON_SYSMODULE_H
-#  include  "cpython_sysmodule.h"
+#  include  <PythonKit/cpython_sysmodule.h>
 #  undef Py_CPYTHON_SYSMODULE_H
 #endif
 

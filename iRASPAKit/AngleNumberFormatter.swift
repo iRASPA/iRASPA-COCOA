@@ -31,7 +31,7 @@
 
 import Foundation
 
-public class AngleNumberFormatter: NumberFormatter
+public class AngleNumberFormatter: NumberFormatter, @unchecked Sendable
 {
   let shortFormatter: NumberFormatter
   let longFormatter: NumberFormatter

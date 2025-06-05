@@ -35,7 +35,7 @@ import SimulationKit
 import SymmetryKit
 import LogViewKit
 
-class ReadStructureGroupOperation: FKGroupOperation
+class ReadStructureGroupOperation: FKGroupOperation, @unchecked Sendable
 {
   var scenes: [Scene] = []
   unowned var projectTreeNode : ProjectTreeNode

@@ -86,13 +86,10 @@ public struct SKVASPReader
     
     var lineNumber: Int = 0
     while(!scanner.isAtEnd)
-    {
-      var scannedLine: NSString?
-      
+    {      
       // scan line
-      if (scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine))
+      if let scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)?.condensedWhitespace
       {
-        scannedLine = scannedLine?.condensedWhitespace
         lineNumber = lineNumber + 1
         
         switch(lineNumber)
@@ -102,8 +99,8 @@ public struct SKVASPReader
         case 2:
           continue
         case 3:  // first axis
-          if let splittedString: [String] = scannedLine?.components(separatedBy: " "),
-                 splittedString.count >= 3
+          let splittedString: [String] = scannedLine.components(separatedBy: " ")
+          if splittedString.count >= 3
           {
             if let firstNumber: Double = Double(splittedString[0]),
                let secondNumber: Double = Double(splittedString[1]),
@@ -113,8 +110,8 @@ public struct SKVASPReader
             }
           }
         case 4:  // second axis
-          if let splittedString: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces),
-            splittedString.count >= 3
+          let splittedString: [String] = scannedLine.components(separatedBy: CharacterSet.whitespaces)
+          if splittedString.count >= 3
           {
             if let firstNumber: Double = Double(splittedString[0]),
               let secondNumber: Double = Double(splittedString[1]),
@@ -124,8 +121,8 @@ public struct SKVASPReader
             }
           }
         case 5:  // third axis
-          if let splittedString: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces),
-            splittedString.count >= 3
+          let splittedString: [String] = scannedLine.components(separatedBy: CharacterSet.whitespaces)
+          if splittedString.count >= 3
           {
             if let firstNumber: Double = Double(splittedString[0]),
               let secondNumber: Double = Double(splittedString[1]),
@@ -135,12 +132,12 @@ public struct SKVASPReader
             }
           }
         case 6:
-          types = scannedLine?.components(separatedBy: CharacterSet.whitespaces)
+          types = scannedLine.components(separatedBy: CharacterSet.whitespaces)
         case 7:
           continue
         default: // read in positions
-          if let splittedString: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces),
-            splittedString.count >= 3
+          let splittedString: [String] = scannedLine.components(separatedBy: CharacterSet.whitespaces)
+          if splittedString.count >= 3
           {
             if let firstNumber: Double = Double(splittedString[0]),
               let secondNumber: Double = Double(splittedString[1]),

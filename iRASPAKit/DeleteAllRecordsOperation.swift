@@ -34,7 +34,7 @@ import LogViewKit
 import CloudKit
 import OperationKit
 
-public class DeleteAllRecordsOperation: FKGroupOperation
+public class DeleteAllRecordsOperation: FKGroupOperation, @unchecked Sendable
 {
   let maximumRetryAttempts: Int = 5
   var retryAttempts: Int = 0

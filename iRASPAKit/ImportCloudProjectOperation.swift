@@ -50,7 +50,7 @@ extension NSOutlineView
 }
 
 // ImportProjectFromCloud
-public class ImportProjectFromCloudOperation: FKGroupOperation
+public class ImportProjectFromCloudOperation: FKGroupOperation, @unchecked Sendable
 {
   private var progressViewKVOContext = 0
   

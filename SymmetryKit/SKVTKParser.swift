@@ -43,6 +43,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
   let whiteSpacesAndNewlines: CharacterSet
   let keywordSet: CharacterSet
   let newLineChararterSet: CharacterSet
+  let string: String
   
   var displayName: String = ""
   var dimensions: SIMD3<Int32> = SIMD3<Int32>(0,0,0)
@@ -69,6 +70,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
       throw SKParserError.failedDecoding
     }
     
+    self.string = string
     self.scanner = Scanner(string: string)
   
     self.scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
@@ -94,23 +96,25 @@ public final class SKVTKParser: SKParser, ProgressReporting
   
   public override func startParsing() throws
   {
-    var scannedLine: NSString? = ""
+    var scannedLine: String? = ""
     
     let structure: SKStructure = SKStructure()
     structure.kind = .VTKDensityVolume
     
     // skip "# vtk DataFile Version 1.0" line
-    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if(scannedLine == nil)
     {
       throw SKParserError.containsNoData
     }
-    if(scannedLine?.lowercased != "# vtk DataFile Version 1.0".lowercased())
+    if(scannedLine?.lowercased() != "# vtk DataFile Version 1.0".lowercased())
     {
       throw SKParserError.incorrectFileFormatVTK
     }
     
     // skip comment line
-    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if (scannedLine == nil)
     {
       throw SKParserError.containsNoData
     }
@@ -133,7 +137,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
     }
     
     // "ASCII" line
-    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if (scannedLine == nil)
     {
       throw SKParserError.containsNoData
     }
@@ -151,7 +156,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
     
     
     // "DATASET STRUCTURED_POINTS" line
-    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if (scannedLine == nil)
     {
       throw SKParserError.containsNoData
     }
@@ -167,13 +173,14 @@ public final class SKVTKParser: SKParser, ProgressReporting
     var headerData: [String] = []
     repeat
     {
-      if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+      scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+      if (scannedLine == nil)
       {
         throw SKParserError.containsNoData
       }
       headerData.append(String(scannedLine ?? ""))
     }
-    while (scannedLine != nil && !scannedLine!.uppercased.starts(with: "POINT_DATA"))
+    while (scannedLine != nil && !scannedLine!.uppercased().starts(with: "POINT_DATA"))
             
                 
     //parse header
@@ -226,7 +233,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
     }
     
     // "SCALARS scalars unsigned_short" line
-    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if (scannedLine == nil)
     {
       throw SKParserError.containsNoData
     }
@@ -280,7 +288,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
     }
     
     // skip "LOOKUP_TABLE default" line
-    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if (scannedLine == nil)
     {
       throw SKParserError.containsNoData
     }
@@ -288,7 +297,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
     // VTK data: X innerloop, Y middle loop, Z outerloop
     if(isBinaryData)
     {
-      let startIndex = self.data.index(self.data.startIndex, offsetBy: self.scanner.scanLocation)
+      let startIndex = self.data.index(self.data.startIndex, offsetBy: self.string.distance(from: self.string.startIndex, to: scanner.currentIndex))
       structure.gridData = data[startIndex..<self.data.endIndex]
     }
     else
@@ -299,7 +308,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
         var data = Array<UInt8>(repeating: 0, count: numberOfValues)
         for index in 0..<numberOfValues
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if scannedLine != nil,
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
@@ -314,7 +324,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
         var data = Array<Int8>(repeating: 0, count: numberOfValues)
         for index in 0..<numberOfValues
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if scannedLine != nil,
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
@@ -329,7 +340,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
         var data = Array<UInt16>(repeating: 0, count: numberOfValues)
         for index in 0..<numberOfValues
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if scannedLine != nil,
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
@@ -344,7 +356,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
         var data = Array<Int16>(repeating: 0, count: numberOfValues)
         for index in 0..<numberOfValues
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if scannedLine != nil,
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
@@ -359,7 +372,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
         var data = Array<UInt32>(repeating: 0, count: numberOfValues)
         for index in 0..<numberOfValues
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if scannedLine != nil,
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
@@ -374,7 +388,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
         var data = Array<Int32>(repeating: 0, count: numberOfValues)
         for index in 0..<numberOfValues
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if scannedLine != nil,
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
@@ -389,7 +404,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
         var data = Array<UInt64>(repeating: 0, count: numberOfValues)
         for index in 0..<numberOfValues
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if scannedLine != nil,
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
@@ -404,7 +420,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
         var data = Array<Int64>(repeating: 0, count: numberOfValues)
         for index in 0..<numberOfValues
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if scannedLine != nil,
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
@@ -419,7 +436,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
         var data = Array<Float>(repeating: 0, count: numberOfValues)
         for index in 0..<numberOfValues
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if scannedLine != nil,
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
@@ -434,7 +452,8 @@ public final class SKVTKParser: SKParser, ProgressReporting
         var data = Array<Double>(repeating: 0, count: numberOfValues)
         for index in 0..<numberOfValues
         {
-          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if scannedLine != nil,
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 1
           {
