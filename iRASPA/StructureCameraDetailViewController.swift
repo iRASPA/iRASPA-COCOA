@@ -1450,6 +1450,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode,
        let style: RKGlobalAxes.Style = RKGlobalAxes.Style(rawValue: sender.indexOfSelectedItem)
     {
+      crystalProject.renderAxes.style = style
       crystalProject.renderAxes.setStyle(style: style)
       
       self.updateOutlineView(identifiers: [self.cameraAxesCell])
