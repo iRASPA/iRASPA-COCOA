@@ -39,7 +39,6 @@ public class MetalBackgroundShader
   
   var pipeLine: MTLRenderPipelineState! = nil
   var texture: MTLTexture! = nil
-  var transparentTexture: MTLTexture! = nil
   var renderPassDescriptor: MTLRenderPassDescriptor! = nil
   
   var sceneRenderPassDescriptor: MTLRenderPassDescriptor! = nil
@@ -102,20 +101,13 @@ public class MetalBackgroundShader
   }
   
   
-  public func renderBackgroundWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, transparentBackground: Bool)
+  public func renderBackgroundWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize)
   {
     commandEncoder.label = "Background command encoder"
     commandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
     commandEncoder.setRenderPipelineState(self.pipeLine)
     commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
-    if(transparentBackground)
-    {
-      commandEncoder.setFragmentTexture(self.transparentTexture, index: 0)
-    }
-    else
-    {
-      commandEncoder.setFragmentTexture(self.texture, index: 0)
-    }
+    commandEncoder.setFragmentTexture(self.texture, index: 0)
     commandEncoder.setFragmentSamplerState(samplerState, index: 0)
     commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
     commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: 4, indexType: .uint16, indexBuffer: self.indexBuffer, indexBufferOffset: 0)
@@ -132,7 +124,6 @@ public class MetalBackgroundShader
     
     let textureLoader: MTKTextureLoader = MTKTextureLoader(device: device)
     texture = try! textureLoader.newTexture(cgImage: defaultBackGround, options: [MTKTextureLoader.Option.textureUsage:MTLTextureUsage.shaderRead.rawValue as NSObject])
-    transparentTexture = try! textureLoader.newTexture(cgImage: transparentBackGround, options: [MTKTextureLoader.Option.textureUsage:MTLTextureUsage.shaderRead.rawValue as NSObject])
   }
   
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int)

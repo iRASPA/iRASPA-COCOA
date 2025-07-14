@@ -2467,6 +2467,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             
             projectStructureNode.renderAxes.position = .none
             
+            projectStructureNode.renderBackgroundType = .color
+            projectStructureNode.renderBackgroundColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
             projectStructureNode.renderBackgroundCachedImage = projectStructureNode.drawGradientCGImage()
             camera.resetPercentage = 0.85
             camera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
@@ -2477,7 +2479,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             
             let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: projectStructureNode, camera: camera)
             
-            if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera, imageQuality: .rgb_8_bits, transparentBackground: false,   renderQuality: .picture)
+            if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera, imageQuality: .rgb_8_bits, renderQuality: .picture)
             {
               let cgImage: CGImage
             
@@ -2507,17 +2509,29 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   func generateThumbnail()
   {
     if let proxyProject: ProjectTreeNode = selectedProject,
-       let projectStructureNode: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-       let camera: RKCamera = projectStructureNode.renderCamera
+       let projectStructureNodeOriginal: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+       let camera: RKCamera = projectStructureNodeOriginal.renderCamera
     {
-      let thumbnailSize: NSSize = NSSize(width: 80, height: 70)
-      let camera: RKCamera = RKCamera(camera: camera)
-      camera.updateCameraForWindowResize(width: Double(thumbnailSize.width), height: Double(thumbnailSize.height))
-    
-      if let data: Data = self.windowController?.detailTabViewController?.renderViewController?.thumbnail(size: thumbnailSize, camera: camera)
+      // make copy so as to leave the original settings intact
+      let binaryEncoder: BinaryEncoder = BinaryEncoder()
+      binaryEncoder.encode(projectStructureNodeOriginal)
+      let data = Data(binaryEncoder.data)
+      let binaryDecoder = BinaryDecoder(data: [UInt8](data))
+      if let projectStructureNode: ProjectStructureNode = try? ProjectStructureNode(fromBinary: binaryDecoder)
       {
-        debugPrint("size: \(data.count)")
-        proxyProject.thumbnail = data
+        projectStructureNode.renderBackgroundType = .color
+        projectStructureNode.renderBackgroundColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        projectStructureNode.renderBackgroundCachedImage = projectStructureNode.drawGradientCGImage()
+        
+        let thumbnailSize: NSSize = NSSize(width: 80, height: 70)
+        let camera: RKCamera = RKCamera(camera: camera)
+        camera.updateCameraForWindowResize(width: Double(thumbnailSize.width), height: Double(thumbnailSize.height))
+        
+        if let data: Data = self.windowController?.detailTabViewController?.renderViewController?.thumbnail(size: thumbnailSize, camera: camera)
+        {
+          debugPrint("size: \(data.count)")
+          proxyProject.thumbnail = data
+        }
       }
     }
   }
