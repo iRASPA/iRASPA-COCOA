@@ -63,6 +63,9 @@ fragment half4 backgroundQuadFragment(BackgroundVertexShaderOut inFrag [[ stage_
                                       sampler quadSampler [[ sampler(0) ]])
 {
   half4 color = tex2D.sample(quadSampler, inFrag.m_TexCoord);
-  
+  //color.r = 0.0;
+  //color.g = 1.0;
+  //color.b = 0.0;
+  //color.w = 0.5;
   return color;
 }

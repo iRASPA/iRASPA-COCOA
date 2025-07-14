@@ -484,7 +484,9 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       {
         let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera)
         
-        if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera, imageQuality: .rgb_8_bits, transparentBackground: false, renderQuality: .picture)
+        // FIX to set background
+        
+        if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera, imageQuality: .rgb_8_bits, renderQuality: .picture)
         {
           let cgImage: CGImage
           
@@ -554,7 +556,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       let size: NSSize = NSMakeSize(CGFloat(width), CGFloat(height))
       
       let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera!)
-      if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera!, imageQuality: .rgb_8_bits, transparentBackground: false, renderQuality: .picture)
+      if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera!, imageQuality: .rgb_8_bits, renderQuality: .picture)
       {
         CVPixelBufferLockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
         if let destPixels: UnsafeMutablePointer<UInt8> = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: UInt8.self)
@@ -627,7 +629,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
                     
         renderer.pickingOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size)
        
-        renderer.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera, transparentBackground: false)
+        renderer.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera)
          
         if let renderPass: MTLRenderPassDescriptor = (self.view as? MTKView)?.currentRenderPassDescriptor,
            let currentDrawable = (self.view as? MTKView)?.currentDrawable

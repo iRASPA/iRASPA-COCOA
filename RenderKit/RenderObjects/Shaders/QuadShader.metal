@@ -63,7 +63,8 @@ fragment float4 texturedQuadFragment(BackgroundVertexShaderOut     inFrag    [[ 
                                     constant FrameUniforms& frameUniforms [[ buffer(0) ]],
                                     sampler           quadSampler [[ sampler(0) ]])
 {
-  float4 color = float4(tex2D.sample(quadSampler, inFrag.m_TexCoord)) + frameUniforms.bloomPulse * frameUniforms.bloomLevel * float4(blurTexture.sample(quadSampler, inFrag.m_TexCoord));
+  float4 color = float4(tex2D.sample(quadSampler, inFrag.m_TexCoord));
+  float4 glow = frameUniforms.bloomPulse * frameUniforms.bloomLevel * float4(blurTexture.sample(quadSampler, inFrag.m_TexCoord));
   
-  return color;
+  return color + float4(glow.xyz, 0.0);
 }

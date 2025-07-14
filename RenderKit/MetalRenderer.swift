@@ -793,7 +793,7 @@ public class MetalRenderer
   // MARK: Rendering
   // =====================================================================
 
-  public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, transparentBackground: Bool = false)
+  public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
   {
     let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
     commandEncoder.label = "Scene command encoder"
@@ -801,7 +801,7 @@ public class MetalRenderer
     commandEncoder.setCullMode(MTLCullMode.back)
     commandEncoder.setFrontFacing(MTLWinding.clockwise)
     
-    backgroundShader.renderBackgroundWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, transparentBackground: transparentBackground)
+    backgroundShader.renderBackgroundWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size)
     
     self.isosurfaceShader.renderOpaqueIsosurfaceWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
@@ -903,7 +903,7 @@ public class MetalRenderer
     commandEncoder.endEncoding()
   }
   
-  public func renderSceneTransparentWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, transparentBackground: Bool = false)
+  public func renderSceneTransparentWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
   {
     let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
     commandEncoder.label = "Scene transparent command encoder"
@@ -964,13 +964,13 @@ public class MetalRenderer
                                                   structureUniformBuffers: structureUniformBuffers, size: size)
   }
   
-  func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, transparentBackground: Bool)
+  func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
   {
-    renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, transparentBackground: transparentBackground)
+    renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
     
     renderSceneVolumeRenderedSurfacesWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderVolumeRenderedSurfacesPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
    
-    renderSceneTransparentWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderTransparentPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, transparentBackground: transparentBackground)
+    renderSceneTransparentWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderTransparentPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
     
     if let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor)
     {
@@ -1024,7 +1024,7 @@ public class MetalRenderer
   // MARK: Make Pictures
   
 
-  public func renderPictureData(device: MTLDevice, size: CGSize, camera: RKCamera, imageQuality: RKImageQuality, transparentBackground: Bool, renderQuality: RKRenderQuality) -> Data?
+  public func renderPictureData(device: MTLDevice, size: CGSize, camera: RKCamera, imageQuality: RKImageQuality, renderQuality: RKRenderQuality) -> Data?
   {
     if let _: RKRenderDataSource = renderDataSource,
        let commandQueue: MTLCommandQueue = device.makeCommandQueue(),
@@ -1039,7 +1039,7 @@ public class MetalRenderer
       self.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
       self.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
       
-      self.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, transparentBackground: transparentBackground)
+      self.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
       
       let pictureTextureDescriptor: MTLTextureDescriptor
       switch(imageQuality)
@@ -1112,9 +1112,9 @@ public class MetalRenderer
     return nil
   }
   
-  public func renderPicture(device: MTLDevice, size: CGSize, imagePhysicalSizeInInches: Double, camera: RKCamera, imageQuality: RKImageQuality, renderQuality: RKRenderQuality, transparentBackground: Bool = false) -> Data?
+  public func renderPicture(device: MTLDevice, size: CGSize, imagePhysicalSizeInInches: Double, camera: RKCamera, imageQuality: RKImageQuality, renderQuality: RKRenderQuality) -> Data?
   {
-    if let data: Data = self.renderPictureData(device: device, size: size, camera: camera, imageQuality: imageQuality, transparentBackground: transparentBackground, renderQuality: renderQuality)
+    if let data: Data = self.renderPictureData(device: device, size: size, camera: camera, imageQuality: imageQuality, renderQuality: renderQuality)
     {
       let cgImage: CGImage
       switch(imageQuality)

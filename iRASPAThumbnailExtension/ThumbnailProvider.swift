@@ -36,7 +36,7 @@ class ThumbnailProvider: QLThumbnailProvider
       
       let renderer: MetalRenderer = MetalRenderer(device: device, size: maximumSize, dataSource: project, camera: camera)
       
-      if let data: Data = renderer.renderPicture(device: device, size: maximumSize, imagePhysicalSizeInInches: project.renderImagePhysicalSizeInInches, camera: camera, imageQuality: .rgb_8_bits, renderQuality: .low, transparentBackground: false)
+      if let data: Data = renderer.renderPicture(device: device, size: maximumSize, imagePhysicalSizeInInches: project.renderImagePhysicalSizeInInches, camera: camera, imageQuality: .rgb_8_bits, renderQuality: .low)
       {
         image = NSImage(data: data)
           

@@ -320,6 +320,8 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     
     self.renderAxes.position = .none
       
+    renderBackgroundType = .color
+    renderBackgroundColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     renderBackgroundCachedImage = drawGradientCGImage()
     camera.resetPercentage = 0.95
     camera.resetForNewBoundingBox(renderBoundingBox)

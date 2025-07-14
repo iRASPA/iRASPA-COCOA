@@ -58,7 +58,7 @@ class PreviewViewController: NSViewController, QLPreviewingController
       project.setPreviewDefaults(camera: camera, size: size)
       
       let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: project, camera: camera)
-      if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: project.renderImagePhysicalSizeInInches, camera: camera, imageQuality: .rgb_8_bits, renderQuality: .low, transparentBackground: false)
+      if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: project.renderImagePhysicalSizeInInches, camera: camera, imageQuality: .rgb_8_bits, renderQuality: .low)
       {
         image = NSImage(data: data)
       }
