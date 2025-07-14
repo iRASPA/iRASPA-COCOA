@@ -48,6 +48,8 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
   var b: SIMD3<Double> = SIMD3<Double>(0.0,20.0,0.0)
   var c: SIMD3<Double> = SIMD3<Double>(0.0,0.0,20.0)
   
+  var fractional: Bool = true
+  
   var currentCell: SKCell = SKCell(a: 20.0, b: 20.0, c: 20.0, alpha: 90.0*Double.pi/180.0, beta: 90.0*Double.pi/180.0, gamma: 90.0*Double.pi/180.0)
   var currentElements: [String] = []
   var currentNumberOfAtomsForElement: [Int] = []
@@ -147,32 +149,97 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
   {
     var scannedLine: String?
     
-    let previousScanLocation = self.scanner.currentIndex
-    
-    // check if 'cell-information' is printed
+    // skip commentline
     scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-       let firstCharacter = words[0].lowercased().first,
-         firstCharacter == "d"
+    if(scannedLine == nil)
     {
-      self.scanner.currentIndex = previousScanLocation
-      return try readCellInformation()
+      throw SKParserError.containsNoData
     }
     
-    self.scanner.currentIndex = previousScanLocation
+    // scan scaleFactor
+    var scaleFactor: Double = 1.0
     scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-        let firstCharacter = words[0].lowercased().first,
-        firstCharacter == "d"
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 1, let scale = Double(words[0])
     {
-      return (currentCell, currentElements, currentNumberOfAtomsForElement)
+      scaleFactor = scale
+    }
+    else
+    {
+      throw SKParserError.VASPMissingScaleFactor
+    }
+    
+    // read box first vector
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let ax = Double(words[0]), let ay = Double(words[1]), let az = Double(words[2])
+    {
+      a = scaleFactor *  SIMD3<Double>(ax,ay,az)
+    }
+    else
+    {
+      throw SKParserError.MissingCellParameters
+    }
+    
+    // read box second vector
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let bx = Double(words[0]), let by = Double(words[1]), let bz = Double(words[2])
+    {
+      b = scaleFactor *  SIMD3<Double>(bx,by,bz)
+    }
+    else
+    {
+      throw SKParserError.MissingCellParameters
+    }
+    
+    // read box third vector
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let cx = Double(words[0]), let cy = Double(words[1]), let cz = Double(words[2])
+    {
+      c = scaleFactor *  SIMD3<Double>(cx,cy,cz)
+    }
+    else
+    {
+      throw SKParserError.MissingCellParameters
+    }
+    
+    let cell = SKCell(unitCell: double3x3(a, b, c))
+    
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if let elements: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
+    {
+      scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+      if let numberOfAtoms: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
+      {        
+        // check for "Selective dynamics"
+        //var selectiveDynamics: Bool = false
+        let previousScanLocation = self.scanner.currentIndex
+        scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+        if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+           words.count >= 1
+        {
+          if let firstCharacter = words[0].lowercased().first,
+             firstCharacter == "s"  // "Selective dynamics"
+          {
+            //selectiveDynamics = true
+            // nothing needs to be done, line is read
+          }
+          else
+          {
+            self.scanner.currentIndex = previousScanLocation
+          }
+        }
+        
+        scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+        if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+           words.count >= 1
+        {
+          if let firstCharacter = words[0].lowercased().first,
+             firstCharacter == "c"  // "Cartesian"
+          {
+            fractional = false
+          }
+        }
+        return (cell, elements, numberOfAtoms.compactMap{Int($0)})
+      }
     }
     
     return nil
@@ -258,7 +325,9 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
     {
       throw SKParserError.MissingCellParameters
     }
-    
+    debugPrint("a: \(a)")
+    debugPrint("b: \(b)")
+    debugPrint("c: \(c)")
     let cell = SKCell(unitCell: double3x3(a, b, c))
     
     scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
