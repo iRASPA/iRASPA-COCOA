@@ -765,8 +765,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
     return false
   }
-  
-  
+    
   func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
   {
     if let node: ProjectTreeNode  = item as? ProjectTreeNode,
@@ -776,6 +775,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     {
       view.textField?.stringValue = node.displayName
       view.textField?.isEditable = false
+            
+      // Bug: after a few drag and drops the system draws the GroupItem wrong
+      // Work around: draw like GroupItem
+      view.textField?.font = .boldSystemFont(ofSize: 10.85)
+      view.textField?.textColor = .lightGray
       return view
     }
     
