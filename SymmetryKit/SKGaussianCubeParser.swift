@@ -113,7 +113,10 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     scanner.charactersToBeSkipped = nil
 
     scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: 1)
+    
     scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: 1)
     
     scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
     
