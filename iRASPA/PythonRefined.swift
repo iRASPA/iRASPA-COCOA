@@ -35,6 +35,7 @@
 // Swift with that, what it’s going to do is remove that from the typehead inside Xcode, as well.
 
 import Foundation
+import PythonKit
 
 public typealias PyObjectPointer = UnsafeMutableRawPointer
 public typealias PyCCharPointer = UnsafePointer<Int8>

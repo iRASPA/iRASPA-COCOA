@@ -102,7 +102,6 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     // work is defined in terms of the number of lines to parse
     totalProgressCount = scanner.string.components(separatedBy: newLineChararterSet).count
     percentageFinishedStep = 10.0/Double(max(totalProgressCount - 1,1))
-    
   }
   
   public override func startParsing() throws
@@ -264,7 +263,7 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
   
   private func addFrameToStructure(atoms: [SKAsymmetricAtom], periodic: Bool)
   {
-    if (atoms.count > 0)
+    if (atoms.count >= 0)
     {
       if (currentMovie >= scene.count)
       {

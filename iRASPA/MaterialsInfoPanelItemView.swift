@@ -34,7 +34,7 @@ import Cocoa
 class MaterialsInfoPanelItemView: InfoPanelItemView
 {
   let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
-  let imageView: InfoPanelIconView = InfoPanelIconView(frame: NSRect(x: 0, y: 3, width: 20, height: 20))
+  let imageView: InfoPanelIconView = InfoPanelIconView(frame: NSRect(x: 0, y: 0, width: 20, height: 32))
   let textField: NSTextField = NSTextField()
   
   override var wantsUpdateLayer: Bool
@@ -45,8 +45,7 @@ class MaterialsInfoPanelItemView: InfoPanelItemView
   override init(image: NSImage?, message: String?)
   {
     super.init(image: image, message: message)
-    self.spacing = 2
-    self.alignment = .centerY
+    self.alignment = .bottom
     imageView.image = image
     let myAttributes = [
       NSAttributedString.Key.font: NSFont.systemFont(ofSize: 18), // font

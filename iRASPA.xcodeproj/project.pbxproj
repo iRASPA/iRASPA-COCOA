@@ -526,7 +526,6 @@
 		93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */; };
 		93C71B8626999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */; };
 		93C71B8A269C4BAC00F67DEE /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B89269C4BAC00F67DEE /* OrderedSet.swift */; };
-		93CD2A9E256BF56700E26C20 /* Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CD2A9D256BF56700E26C20 /* Python.swift */; };
 		93CD2ACC256BF72B00E26C20 /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8425680A10004D900E /* libbz2.a */; };
 		93CD2ACE256BF72B00E26C20 /* libformw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8625680A11004D900E /* libformw.a */; };
 		93CD2ACF256BF72B00E26C20 /* libgdbm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9311CE23256707140080AFA4 /* libgdbm.a */; };
@@ -696,7 +695,6 @@
 		93CD2D93256C1D7900E26C20 /* pycore_hashtable.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CD2D72256C1D7900E26C20 /* pycore_hashtable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CD2D94256C1D7900E26C20 /* pycore_dtoa.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CD2D73256C1D7900E26C20 /* pycore_dtoa.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CD2D95256C1D7900E26C20 /* pycore_interp.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CD2D74256C1D7900E26C20 /* pycore_interp.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		93CD2E69256C40C100E26C20 /* PythonRefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CD2E68256C40C100E26C20 /* PythonRefined.swift */; };
 		93CE77EE1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CE77EC1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CE77F11EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; };
 		93CE77F21EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -722,6 +720,8 @@
 		93D70F02274CF23800FBD919 /* VolumetricDataViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70F01274CF23800FBD919 /* VolumetricDataViewer.swift */; };
 		93D70F04274E3C7900FBD919 /* InfoEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70F03274E3C7900FBD919 /* InfoEditor.swift */; };
 		93D70F07274FB9A200FBD919 /* ForceFieldViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70F06274FB9A200FBD919 /* ForceFieldViewer.swift */; };
+		93D7C7932ED5E78D000DCBC5 /* Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D7C7912ED5E78D000DCBC5 /* Python.swift */; };
+		93D7C7942ED5E78D000DCBC5 /* PythonRefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D7C7922ED5E78D000DCBC5 /* PythonRefined.swift */; };
 		93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */; };
 		93DA78271F45B3A3009AE718 /* FractionalNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78261F45B3A3009AE718 /* FractionalNumberFormatter.swift */; };
 		93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */; };
@@ -761,6 +761,20 @@
 		93EACCBA2204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCB92204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift */; };
 		93EACCBC2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCBB2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift */; };
 		93EACCBE2206022B00AB8026 /* MetalCylinderShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCBD2206022B00AB8026 /* MetalCylinderShader.swift */; };
+		93EDCDCB2ED5EA1600C7EE43 /* libpython3.10.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9338251725716A6600BD7AC6 /* libpython3.10.a */; };
+		93EDCDCC2ED5EA6B00C7EE43 /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8425680A10004D900E /* libbz2.a */; };
+		93EDCDCD2ED5EA6B00C7EE43 /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9303760125723891000F641D /* libffi.a */; };
+		93EDCDCE2ED5EA6B00C7EE43 /* libformw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8625680A11004D900E /* libformw.a */; };
+		93EDCDCF2ED5EA6B00C7EE43 /* libgdbm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8925680A11004D900E /* libgdbm.a */; };
+		93EDCDD02ED5EA6B00C7EE43 /* libhistory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8025680A0F004D900E /* libhistory.a */; };
+		93EDCDD12ED5EA6B00C7EE43 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8225680A0F004D900E /* libiconv.a */; };
+		93EDCDD22ED5EA6B00C7EE43 /* libintl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA7E25680A0F004D900E /* libintl.a */; };
+		93EDCDD32ED5EA6B00C7EE43 /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8725680A11004D900E /* liblzma.a */; };
+		93EDCDD42ED5EA6B00C7EE43 /* libmenuw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA7F25680A0F004D900E /* libmenuw.a */; };
+		93EDCDD52ED5EA6B00C7EE43 /* libncursesw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9311CE24256707140080AFA4 /* libncursesw.a */; };
+		93EDCDD62ED5EA6B00C7EE43 /* libpanelw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9311CE1E256707140080AFA4 /* libpanelw.a */; };
+		93EDCDD72ED5EA6B00C7EE43 /* libreadline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9311CE28256707140080AFA4 /* libreadline.a */; };
+		93EDCDD82ED5EA6B00C7EE43 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9311CE27256707140080AFA4 /* libz.a */; };
 		93EE6F461F122F1400986876 /* ProjectSlideBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE6F451F122F1400986876 /* ProjectSlideBorderView.swift */; };
 		93EF65411F21DBD10062816E /* CloudCoREMOFDDECDatabase_v1.0.data in Resources */ = {isa = PBXBuildFile; fileRef = 93EF65401F21DBC60062816E /* CloudCoREMOFDDECDatabase_v1.0.data */; };
 		93EFDF992205FBC400BE96CD /* CylinderPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EFDF982205FBC400BE96CD /* CylinderPrimitive.swift */; };
@@ -923,6 +937,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 933FFECD243A1E23004E337F;
 			remoteInfo = PythonKit;
+		};
+		931CE7D92ED5C81D0026DCA6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93F697B32181D9C1003273A8;
+			remoteInfo = ZIPFoundation;
 		};
 		933EEF412681DDDE00067CF4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2030,7 +2051,6 @@
 		93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupChangeOfBasistests.swift; sourceTree = "<group>"; };
 		93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveUnitCellSearchTests.swift; sourceTree = "<group>"; };
 		93C71B89269C4BAC00F67DEE /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
-		93CD2A9D256BF56700E26C20 /* Python.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Python.swift; sourceTree = "<group>"; };
 		93CD2B70256C180500E26C20 /* pycapsule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pycapsule.h; sourceTree = "<group>"; };
 		93CD2B71256C180500E26C20 /* methodobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = methodobject.h; sourceTree = "<group>"; };
 		93CD2B72256C180500E26C20 /* pytime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pytime.h; sourceTree = "<group>"; };
@@ -2188,7 +2208,6 @@
 		93CD2D72256C1D7900E26C20 /* pycore_hashtable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pycore_hashtable.h; sourceTree = "<group>"; };
 		93CD2D73256C1D7900E26C20 /* pycore_dtoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pycore_dtoa.h; sourceTree = "<group>"; };
 		93CD2D74256C1D7900E26C20 /* pycore_interp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pycore_interp.h; sourceTree = "<group>"; };
-		93CD2E68256C40C100E26C20 /* PythonRefined.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonRefined.swift; sourceTree = "<group>"; };
 		93CDAA7E25680A0F004D900E /* libintl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libintl.a; sourceTree = "<group>"; };
 		93CDAA7F25680A0F004D900E /* libmenuw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmenuw.a; sourceTree = "<group>"; };
 		93CDAA8025680A0F004D900E /* libhistory.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libhistory.a; sourceTree = "<group>"; };
@@ -2286,6 +2305,8 @@
 		93D70F01274CF23800FBD919 /* VolumetricDataViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumetricDataViewer.swift; sourceTree = "<group>"; };
 		93D70F03274E3C7900FBD919 /* InfoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoEditor.swift; sourceTree = "<group>"; };
 		93D70F06274FB9A200FBD919 /* ForceFieldViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceFieldViewer.swift; sourceTree = "<group>"; };
+		93D7C7912ED5E78D000DCBC5 /* Python.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Python.swift; sourceTree = "<group>"; };
+		93D7C7922ED5E78D000DCBC5 /* PythonRefined.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonRefined.swift; sourceTree = "<group>"; };
 		93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullPrecisionNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA78261F45B3A3009AE718 /* FractionalNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionalNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeNumberFormatter.swift; sourceTree = "<group>"; };
@@ -2498,21 +2519,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93EDCDD82ED5EA6B00C7EE43 /* libz.a in Frameworks */,
+				93EDCDD02ED5EA6B00C7EE43 /* libhistory.a in Frameworks */,
 				933A8F28218CD2100073C653 /* Accelerate.framework in Frameworks */,
 				93BF25F61EE71DC200128CD4 /* OperationKit.framework in Frameworks */,
 				93F3CD311E6DD81900046552 /* Quartz.framework in Frameworks */,
 				93F3CD2F1E6DD80D00046552 /* QuartzCore.framework in Frameworks */,
 				930DD66B1E26BC2400B8FE9B /* CloudKit.framework in Frameworks */,
+				93EDCDCF2ED5EA6B00C7EE43 /* libgdbm.a in Frameworks */,
+				93EDCDD72ED5EA6B00C7EE43 /* libreadline.a in Frameworks */,
+				93EDCDCB2ED5EA1600C7EE43 /* libpython3.10.a in Frameworks */,
+				93EDCDD12ED5EA6B00C7EE43 /* libiconv.a in Frameworks */,
 				938388361E26A4FC00112FBA /* MathKit.framework in Frameworks */,
 				93F3A5A421874A15008E41A2 /* BinaryCodable.framework in Frameworks */,
 				93B5EE671FC33588009922F2 /* LogViewKit.framework in Frameworks */,
+				93EDCDD42ED5EA6B00C7EE43 /* libmenuw.a in Frameworks */,
 				930DD5271E26B2CC00B8FE9B /* RenderKit.framework in Frameworks */,
+				93EDCDD32ED5EA6B00C7EE43 /* liblzma.a in Frameworks */,
 				930DD4A01E26A80F00B8FE9B /* SimulationKit.framework in Frameworks */,
+				93EDCDD62ED5EA6B00C7EE43 /* libpanelw.a in Frameworks */,
+				93EDCDD22ED5EA6B00C7EE43 /* libintl.a in Frameworks */,
+				93EDCDCE2ED5EA6B00C7EE43 /* libformw.a in Frameworks */,
+				93EDCDD52ED5EA6B00C7EE43 /* libncursesw.a in Frameworks */,
 				93A0C3B42567ACF8002BC083 /* PythonKit.framework in Frameworks */,
 				930DD4D41E26AA0200B8FE9B /* SymmetryKit.framework in Frameworks */,
 				93CE77F11EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework in Frameworks */,
 				934983C01F4EAC5F007BE9C7 /* PowerSourceKit.framework in Frameworks */,
 				930DD6241E26B96A00B8FE9B /* iRASPAKit.framework in Frameworks */,
+				93EDCDCC2ED5EA6B00C7EE43 /* libbz2.a in Frameworks */,
+				93EDCDCD2ED5EA6B00C7EE43 /* libffi.a in Frameworks */,
 				93F697BB2181D9C1003273A8 /* ZIPFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2829,6 +2864,8 @@
 		930DD68C1E26BEB300B8FE9B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				93D7C7912ED5E78D000DCBC5 /* Python.swift */,
+				93D7C7922ED5E78D000DCBC5 /* PythonRefined.swift */,
 				93FC88A61F515B0D0009478E /* NSHorizontalSplitViewController.swift */,
 				93FC88A81F515B1C0009478E /* NSVerticalSplitViewController.swift */,
 				930DD6CC1E28064300B8FE9B /* NSInformationPanelView.swift */,
@@ -3029,8 +3066,6 @@
 			children = (
 				933FFFA2243A1E9F004E337F /* PythonKit.modulemap */,
 				933FFED0243A1E23004E337F /* PythonKit.h */,
-				93CD2A9D256BF56700E26C20 /* Python.swift */,
-				93CD2E68256C40C100E26C20 /* PythonRefined.swift */,
 				93CDAA8425680A10004D900E /* libbz2.a */,
 				93CDAA8625680A11004D900E /* libformw.a */,
 				93CDAA8925680A11004D900E /* libgdbm.a */,
@@ -4299,6 +4334,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				93F697BA2181D9C1003273A8 /* PBXTargetDependency */,
 				933FFFA4243A1ECA004E337F /* PBXTargetDependency */,
 				938388351E26A4FC00112FBA /* PBXTargetDependency */,
 				930DD49F1E26A80F00B8FE9B /* PBXTargetDependency */,
@@ -4309,7 +4345,6 @@
 				93BF25F51EE71DC200128CD4 /* PBXTargetDependency */,
 				934983BF1F4EAC5F007BE9C7 /* PBXTargetDependency */,
 				93B5EE661FC33588009922F2 /* PBXTargetDependency */,
-				93F697BA2181D9C1003273A8 /* PBXTargetDependency */,
 				93F3A5A321874A15008E41A2 /* PBXTargetDependency */,
 				9311CE072566EAC80080AFA4 /* PBXTargetDependency */,
 				93A0C3B72567ACF8002BC083 /* PBXTargetDependency */,
@@ -4433,6 +4468,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				931CE7DA2ED5C81D0026DCA6 /* PBXTargetDependency */,
 				93BDF7671FB700E00006692C /* PBXTargetDependency */,
 				93BF30CB1FB372D400FFCCB0 /* PBXTargetDependency */,
 				93BF30C91FB372D000FFCCB0 /* PBXTargetDependency */,
@@ -4541,7 +4577,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1630;
+				LastUpgradeCheck = 2610;
 				ORGANIZATIONNAME = "David Dubbeldam";
 				TargetAttributes = {
 					930DD48A1E26A80E00B8FE9B = {
@@ -5271,8 +5307,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93CD2A9E256BF56700E26C20 /* Python.swift in Sources */,
-				93CD2E69256C40C100E26C20 /* PythonRefined.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5398,6 +5432,8 @@
 				930DD6E61E28071200B8FE9B /* FrameListViewController.swift in Sources */,
 				937956971E9E7D1400802529 /* StructureInfoDetailViewController.swift in Sources */,
 				93EE6F461F122F1400986876 /* ProjectSlideBorderView.swift in Sources */,
+				93D7C7932ED5E78D000DCBC5 /* Python.swift in Sources */,
+				93D7C7942ED5E78D000DCBC5 /* PythonRefined.swift in Sources */,
 				93784AAF1E61C61700A7FF23 /* StructurePathController.swift in Sources */,
 				930C97631FCEC52A00B4611E /* AppearanceTableRowView.swift in Sources */,
 				930DD7251E2808B700B8FE9B /* AtomTableRowView.swift in Sources */,
@@ -5624,6 +5660,11 @@
 			isa = PBXTargetDependency;
 			target = 933FFECD243A1E23004E337F /* PythonKit */;
 			targetProxy = 9311CE062566EAC80080AFA4 /* PBXContainerItemProxy */;
+		};
+		931CE7DA2ED5C81D0026DCA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93F697B32181D9C1003273A8 /* ZIPFoundation */;
+			targetProxy = 931CE7D92ED5C81D0026DCA6 /* PBXContainerItemProxy */;
 		};
 		933EEF422681DDDE00067CF4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -6320,7 +6361,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6336,7 +6377,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6358,7 +6399,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6375,7 +6416,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6395,7 +6436,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6411,7 +6452,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
@@ -6431,7 +6472,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6448,7 +6489,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
@@ -6467,7 +6508,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6483,7 +6524,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6505,7 +6546,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6522,7 +6563,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6543,7 +6584,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6560,7 +6601,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
@@ -6582,7 +6623,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6599,7 +6640,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
@@ -6675,7 +6716,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6695,7 +6736,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -6724,7 +6765,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6744,7 +6785,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
@@ -6768,7 +6809,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6785,7 +6826,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
@@ -6806,7 +6847,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6823,7 +6864,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
@@ -6944,6 +6985,7 @@
 				MTL_OPTIMIZATION_LEVEL = 0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -7007,6 +7049,7 @@
 				MTL_OPTIMIZATION_LEVEL = s;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -7026,9 +7069,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readwrite;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_RESOURCE_ACCESS_PRINTING = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = iRASPA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7041,7 +7088,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7065,9 +7112,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readwrite;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_RESOURCE_ACCESS_PRINTING = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = iRASPA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7080,7 +7131,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7099,7 +7150,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7115,7 +7166,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
@@ -7135,7 +7186,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7152,7 +7203,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
@@ -7174,9 +7225,11 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAThumbnailExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7185,7 +7238,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7204,9 +7257,11 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAThumbnailExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7215,7 +7270,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7233,9 +7288,11 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAQuickLookExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7244,7 +7301,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7263,9 +7320,11 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAQuickLookExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7274,7 +7333,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7293,7 +7352,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7310,7 +7369,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
@@ -7334,7 +7393,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7351,7 +7410,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
@@ -7371,7 +7430,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7387,7 +7446,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
@@ -7408,7 +7467,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7424,7 +7483,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
@@ -7446,9 +7505,11 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "iRASPA-CLI/Info.plist";
 				INSTALL_PATH = "";
@@ -7456,7 +7517,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -7476,9 +7537,11 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "iRASPA-CLI/Info.plist";
 				INSTALL_PATH = "";
@@ -7486,7 +7549,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -7503,7 +7566,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7520,7 +7583,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
@@ -7538,7 +7601,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7556,7 +7619,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
@@ -7578,7 +7641,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7588,7 +7651,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MovieCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7611,7 +7674,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7621,7 +7684,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MovieCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -7643,7 +7706,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7653,7 +7716,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PictureCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7675,7 +7738,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7685,7 +7748,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PictureCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7707,7 +7770,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7724,7 +7787,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -7750,7 +7813,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7767,7 +7830,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
@@ -7791,7 +7854,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7808,7 +7871,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -7834,7 +7897,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7851,7 +7914,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;

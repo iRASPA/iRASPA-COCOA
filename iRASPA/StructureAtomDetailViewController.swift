@@ -339,9 +339,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           if let segmentedControl: NSLabelSegmentedControl = view?.viewWithTag(11) as? NSLabelSegmentedControl
           {
             segmentedControl.label = NSString(string: String(atomNode.tag))
-            segmentedControl.setLabel(String(atomNode.tag), forSegment: 0)
+            segmentedControl.setLabel(String(""), forSegment: 0)
             segmentedControl.setLabel(String(atomNode.tag), forSegment: 1)
-            segmentedControl.setLabel(String(atomNode.tag), forSegment: 2)
+            segmentedControl.setLabel(String(""), forSegment: 2)
             segmentedControl.setSelected(atomNode.isFixed.x, forSegment: 0)
             segmentedControl.setSelected(atomNode.isFixed.y, forSegment: 1)
             segmentedControl.setSelected(atomNode.isFixed.z, forSegment: 2)
