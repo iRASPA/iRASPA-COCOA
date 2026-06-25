@@ -120,23 +120,44 @@ extension NSBezierPath
 
 class NSInformationPanelView: NSView
 {
+  private static let panelWidth: CGFloat = 350
+  private static let panelHeight: CGFloat = 32
+  
+  override var intrinsicContentSize: NSSize
+  {
+    return NSSize(width: NSInformationPanelView.panelWidth, height: NSInformationPanelView.panelHeight)
+  }
+  
   override init(frame frameRect: NSRect) {
     super.init(frame: frameRect)
-    
-    let heightConstraint: NSLayoutConstraint = self.heightAnchor.constraint(equalToConstant: 32)
-    heightConstraint.isActive = true;
+    installSizeConstraints()
   }
   
   required init?(coder: NSCoder) {
     super.init(coder: coder)
-    
-    let heightConstraint: NSLayoutConstraint = self.heightAnchor.constraint(equalToConstant: 32)
-    heightConstraint.isActive = true;
+    installSizeConstraints()
+  }
+  
+  private func installSizeConstraints()
+  {
+    let widthConstraint = self.widthAnchor.constraint(equalToConstant: NSInformationPanelView.panelWidth)
+    let heightConstraint = self.heightAnchor.constraint(equalToConstant: NSInformationPanelView.panelHeight)
+    widthConstraint.isActive = true
+    heightConstraint.isActive = true
   }
    
   override var wantsUpdateLayer: Bool
   {
     return true
+  }
+  
+  override func layout()
+  {
+    super.layout()
+    for subview in subviews
+    {
+      subview.frame = bounds
+    }
   }
   
 
@@ -191,10 +212,11 @@ class NSInformationPanelView: NSView
   func showInfoItem(item: InfoPanelItemView)
   {
     // hide all the subviews
-    self.subviews.forEach{$0.isHidden = true}
+    self.subviews.forEach{$0.removeFromSuperview()}
     
     // show on screen
-    item.frame = self.frame
+    item.frame = self.bounds
+    item.autoresizingMask = [.width, .height]
     self.addSubview(item)
     
     Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { (time: Timer) in

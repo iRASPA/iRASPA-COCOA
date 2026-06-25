@@ -34,11 +34,11 @@ class InfoPanelIconView: NSImageView
 {
   public override var intrinsicContentSize: NSSize
   {
-    return NSSize(width: 32, height: 28)
+    return NSSize(width: 20, height: 20)
   }
   
   public override var alignmentRectInsets: NSEdgeInsets
   {
-    return NSEdgeInsets.init(top: 0, left: 0, bottom: 3, right: 0)
+    return NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
   }
 }

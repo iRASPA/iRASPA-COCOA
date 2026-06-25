@@ -889,7 +889,9 @@
                                         </connections>
                                     </button>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="5D818761-3FED-42EF-AC77-F9058F0F217B" label="" paletteLabel="" tag="-1" bordered="YES" sizingBehavior="auto" id="EiK-hi-bHy">
+                                <toolbarItem implicitItemIdentifier="5D818761-3FED-42EF-AC77-F9058F0F217B" label="" paletteLabel="" tag="-1" sizingBehavior="auto" id="EiK-hi-bHy">
+                                    <size key="minSize" width="350" height="32"/>
+                                    <size key="maxSize" width="500" height="32"/>
                                     <nil key="toolTip"/>
                                     <customView key="view" id="M5n-lM-r43" customClass="NSInformationPanelView" customModule="iRASPA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="14" width="350" height="34"/>

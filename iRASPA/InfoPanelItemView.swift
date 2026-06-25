@@ -37,6 +37,13 @@ class InfoPanelItemView: NSStackView
   init(image: NSImage?, message: String?)
   {
     super.init(frame: NSRect.init(x: 0, y: 0, width: 100, height: 32))
+    self.orientation = .horizontal
+    self.alignment = .centerY
+    self.distribution = .fill
+    self.spacing = 2
+    self.edgeInsets = NSEdgeInsets(top: 0, left: 6, bottom: 0, right: 6)
+    self.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    self.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
   }
   
   required init?(coder: NSCoder) {
