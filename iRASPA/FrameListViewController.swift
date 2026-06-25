@@ -120,6 +120,12 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     
     self.framesTableView?.setDraggingSourceOperationMask(.every, forLocal: true)
     self.framesTableView?.setDraggingSourceOperationMask(.every, forLocal: false)
+    
+    // Draw selection in FrameTableRowView; AppKit source-list highlighting no longer works
+    // reliably with layer-backed row views on recent macOS releases.
+    self.framesTableView?.selectionHighlightStyle = .none
+    self.framesTableView?.allowsEmptySelection = false
+    self.framesTableView?.applySourceListChrome()
   }
 
   
@@ -141,7 +147,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     // for a NSTableView in SourceList-style, a reloadData must be done when on-screen
     // resulting artificts from not doing this: lost selection when resigning first-responder (e.g. import file)
     self.reloadData()
-    
+    self.framesTableView?.window?.makeFirstResponder(self.framesTableView)
   }
   
   override func viewWillDisappear()
@@ -160,10 +166,156 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   
   func reloadData()
   {
-    self.framesTableView?.reloadData()
-    self.reloadSelection()
+    let storedObserveNotifications: Bool = self.observeNotifications
+    self.observeNotifications = false
     
+    if let tableView = self.framesTableView
+    {
+      let allowsEmptySelection = tableView.allowsEmptySelection
+      tableView.allowsEmptySelection = true
+      tableView.reloadData()
+      tableView.allowsEmptySelection = allowsEmptySelection
+    }
+    
+    reloadSelection()
     setDetailViewController()
+    self.observeNotifications = storedObserveNotifications
+  }
+  
+  private func primarySelectedRow(movie: Movie, tableView: NSTableView) -> Int?
+  {
+    let selectedRowIndexes = tableView.selectedRowIndexes
+    
+    if let selectedFrame = movie.selectedFrame,
+       let row = movie.frames.firstIndex(of: selectedFrame),
+       selectedRowIndexes.contains(row)
+    {
+      return row
+    }
+    
+    let anchorRow = tableView.selectedRow
+    if anchorRow >= 0, selectedRowIndexes.contains(anchorRow)
+    {
+      return anchorRow
+    }
+    
+    return selectedRowIndexes.first
+  }
+  
+  private func ensureFrameSelectionConsistency(movie: Movie, tableView: NSTableView)
+  {
+    let selectedRowIndexes = tableView.selectedRowIndexes
+    
+    movie.selectedFrames = Set(selectedRowIndexes.compactMap { row -> iRASPAObject? in
+      guard row >= 0, row < movie.frames.count else { return nil }
+      return movie.frames[row]
+    })
+    
+    if let selectedFrame = movie.selectedFrame,
+       let row = movie.frames.firstIndex(of: selectedFrame),
+       selectedRowIndexes.contains(row)
+    {
+      return
+    }
+    
+    let anchorRow = tableView.selectedRow
+    if anchorRow >= 0, selectedRowIndexes.contains(anchorRow)
+    {
+      movie.selectedFrame = movie.frames[anchorRow]
+    }
+    else if let row = selectedRowIndexes.first, row < movie.frames.count
+    {
+      movie.selectedFrame = movie.frames[row]
+    }
+    else if let frame = movie.frames.first
+    {
+      movie.selectedFrame = frame
+      movie.selectedFrames.insert(frame)
+    }
+  }
+  
+  private func ensureFrameListSelection(movie: Movie)
+  {
+    if movie.selectedFrame == nil, let frame = movie.frames.first
+    {
+      movie.selectedFrame = frame
+      movie.selectedFrames.insert(frame)
+    }
+    else if let selectedFrame = movie.selectedFrame
+    {
+      movie.selectedFrames.insert(selectedFrame)
+    }
+  }
+  
+  private func restoreFrameTableSelection(movie: Movie, tableView: NSTableView)
+  {
+    var indexSet = IndexSet()
+    for frame in movie.selectedFrames
+    {
+      if let row = movie.frames.firstIndex(of: frame)
+      {
+        indexSet.insert(row)
+      }
+    }
+    
+    if indexSet.isEmpty, let selectedFrame = movie.selectedFrame,
+       let row = movie.frames.firstIndex(of: selectedFrame)
+    {
+      indexSet.insert(row)
+    }
+    
+    tableView.selectRowIndexes(indexSet, byExtendingSelection: false)
+    
+    if let selectedFrame = movie.selectedFrame,
+       let row = movie.frames.firstIndex(of: selectedFrame)
+    {
+      tableView.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: true)
+    }
+  }
+  
+  private func syncFrameListCellBackgroundStyles()
+  {
+    self.framesTableView?.enumerateAvailableRowViews({ (rowView, row) in
+      (rowView as? SourceListStyledTableRowView)?.refreshCellBackgroundStyles()
+    })
+    
+    DispatchQueue.main.async { [weak self] in
+      self?.framesTableView?.enumerateAvailableRowViews({ (rowView, row) in
+        (rowView as? SourceListStyledTableRowView)?.refreshCellBackgroundStyles()
+      })
+    }
+  }
+  
+  private func syncFrameRowViewHighlight(_ rowView: FrameTableRowView, row: Int, movie: Movie, tableView: NSTableView)
+  {
+    guard row >= 0, row < movie.frames.count else
+    {
+      rowView.isSelected = false
+      rowView.secondaryHighlighted = false
+      rowView.needsDisplay = true
+      return
+    }
+    
+    let frame = movie.frames[row]
+    let isInTableSelection = tableView.selectedRowIndexes.contains(row)
+    let isInModelSelection = movie.selectedFrames.contains(frame)
+    
+    rowView.isSelected = isInTableSelection || isInModelSelection
+    rowView.secondaryHighlighted = (row == primarySelectedRow(movie: movie, tableView: tableView))
+    rowView.needsDisplay = true
+  }
+  
+  private func syncFrameRowViewHighlights()
+  {
+    guard let tableView = self.framesTableView,
+          let movie = self.proxyProject?.representedObject.loadedProjectStructureNode?.sceneList.selectedScene?.selectedMovie else { return }
+    
+    tableView.enumerateAvailableRowViews({ (rowView, row) in
+      if let rowView = rowView as? FrameTableRowView
+      {
+        self.syncFrameRowViewHighlight(rowView, row: row, movie: movie, tableView: tableView)
+      }
+    })
   }
   
   // MARK: adding/removing 
@@ -271,13 +423,21 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   {
     if let projectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
        let movie: Movie = projectStructureNode.sceneList.selectedScene?.selectedMovie,
-       let view: NSTableCellView = self.framesTableView?.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "frameName"), owner: self) as? NSTableCellView,
+       let view: FrameTableCellView = self.framesTableView?.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "frameName"), owner: self) as? FrameTableCellView,
        row < movie.frames.count
     {
-      view.textField?.stringValue = movie.frames[row].object.displayName
+      let frame = movie.frames[row]
+      view.textField?.stringValue = frame.object.displayName
+      (view.textField as? TableListNameTextField)?.endRenaming()
+      (view.imageView as? TableImageViewIcon)?.image = frame.infoPanelIcon
       
-      view.imageView?.image = movie.frames[row].infoPanelIcon
-      
+      let isSelectedInTable = tableView.selectedRowIndexes.contains(row)
+      let isSelectedInModel = movie.selectedFrames.contains(frame)
+      if isSelectedInTable || isSelectedInModel
+      {
+        view.backgroundStyle = .emphasized
+      }
+      view.syncSelectionAppearance(for: view.backgroundStyle)
       
       return view
     }
@@ -298,34 +458,16 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   {
     if let rowView: FrameTableRowView = self.framesTableView?.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "frameTableRowView"), owner: self) as? FrameTableRowView
     {
-      rowView.isSelected = false
-      rowView.secondaryHighlighted = false
-      
-      // during undo/redo, the NSTableRowViews were deleted. They are remade when needed, and here we set the 'secondaryHighlighted' to correct value
-      if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-         let selectedScene: Scene = project.sceneList.selectedScene,
-         let selectedMovie: Movie = selectedScene.selectedMovie
+      if let selectedMovie: Movie = self.proxyProject?.representedObject.loadedProjectStructureNode?.sceneList.selectedScene?.selectedMovie
       {
-        if selectedMovie.selectedFrames.contains(selectedMovie.frames[row])
-        {
-          rowView.isSelected = true
-        }
-        
-        if let selectedFrame = selectedMovie.selectedFrame,
-           let selectedRow: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
-        {
-          if (selectedRow == row)
-          {
-            rowView.isSelected = true
-            rowView.secondaryHighlighted = true
-          }
-          else
-          {
-            rowView.isSelected = false
-          }
-        }
+        syncFrameRowViewHighlight(rowView, row: row, movie: selectedMovie, tableView: tableView)
       }
-     
+      else
+      {
+        rowView.isSelected = false
+        rowView.secondaryHighlighted = false
+        rowView.needsDisplay = true
+      }
       return rowView
     }
     return nil
@@ -333,31 +475,10 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   
   func tableView(_ tableView: NSTableView, didAdd rowView: NSTableRowView, forRow row: Int)
   {
-    if let rowView = rowView as? FrameTableRowView
+    if let rowView = rowView as? FrameTableRowView,
+       let selectedMovie: Movie = self.proxyProject?.representedObject.loadedProjectStructureNode?.sceneList.selectedScene?.selectedMovie
     {
-      rowView.secondaryHighlighted = false
-      rowView.isSelected = false
-      
-      if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-         let selectedScene: Scene = project.sceneList.selectedScene,
-         let selectedMovie: Movie = selectedScene.selectedMovie
-      {
-        if selectedMovie.selectedFrames.contains(selectedMovie.frames[row])
-        {
-          rowView.isSelected = true
-        }
-        
-        if let selectedFrame = selectedMovie.selectedFrame,
-            let selectedRow: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
-        {
-          if (row == selectedRow)
-          {
-            rowView.secondaryHighlighted = true
-            rowView.isSelected = true
-          }
-        }
-      }
-      
+      syncFrameRowViewHighlight(rowView, row: row, movie: selectedMovie, tableView: tableView)
     }
   }
   
@@ -379,9 +500,9 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
        let clickedRow: Int = self.framesTableView?.clickedRow, clickedRow >= 0
     {
       if let view: NSTableCellView = self.framesTableView?.view(atColumn: 0, row: clickedRow, makeIfNecessary: true) as? NSTableCellView,
-         let textField: NSTextField = view.textField,
-         textField.acceptsFirstResponder
+         let textField = view.textField as? TableListNameTextField
       {
+        textField.beginRenaming()
         view.window?.makeFirstResponder(textField)
       }
     }
@@ -407,6 +528,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       if let row: Int = selectedMovie.frames.firstIndex(of: frame)
       {
         self.framesTableView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
+        self.syncFrameListCellBackgroundStyles()
       }
       
       project.isEdited = true
@@ -416,6 +538,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   
   @IBAction func changeFrameDisplayName(_ sender: NSTextField)
   {
+    defer { (sender as? TableListNameTextField)?.endRenaming() }
+    
     if let row: Int = self.framesTableView?.row(for: sender), row >= 0,
        let proxyProject = self.proxyProject, proxyProject.isEditable,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
@@ -645,48 +769,25 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     let storedObserveNotifications: Bool = self.observeNotifications
     self.observeNotifications = false
     
-    //self.framesTableView?.deselectAll(nil)
     if let proxyProject = self.proxyProject,
        let project = proxyProject.representedObject.loadedProjectStructureNode,
-       let selectedScene: Scene = project.sceneList.selectedScene,
-       let selectedMovie: Movie = selectedScene.selectedMovie
+       let selectedMovie: Movie = project.sceneList.selectedScene?.selectedMovie,
+       let tableView = self.framesTableView
     {
-      let selectedFrames = selectedMovie.selectedFrames
+      ensureFrameListSelection(movie: selectedMovie)
+      restoreFrameTableSelection(movie: selectedMovie, tableView: tableView)
+      ensureFrameSelectionConsistency(movie: selectedMovie, tableView: tableView)
       
-      self.framesTableView?.deselectAll(nil)
-      var selectedRowIndexes: IndexSet = IndexSet()
-      for frame in selectedFrames
-      {
-        if let index: Int = selectedMovie.frames.firstIndex(of: frame)
-        {
-          selectedRowIndexes.insert(index)
-        }
-      }
-      self.framesTableView?.selectRowIndexes(selectedRowIndexes, byExtendingSelection: false)
-      
-      if let selectedFrame = selectedMovie.selectedFrame,
-         let selectedRow: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
+      if let selectedFrame = selectedMovie.selectedFrame
       {
         self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: selectedFrame.infoPanelIcon, message: selectedFrame.infoPanelString))
-        
-        self.framesTableView?.enumerateAvailableRowViews({ (rowView, row) in
-          if (row == selectedRow)
-          {
-            (rowView as? FrameTableRowView)?.isSelected = true
-            (rowView as? FrameTableRowView)?.secondaryHighlighted = true
-            rowView.needsDisplay = true
-          }
-          else
-          {
-            (rowView as? FrameTableRowView)?.secondaryHighlighted = false
-            rowView.needsDisplay = true
-          }
-        })
       }
+      
+      syncFrameRowViewHighlights()
+      syncFrameListCellBackgroundStyles()
     }
     
     self.observeNotifications = storedObserveNotifications
-    
   }
   
   func tableView(_ tableView: NSTableView, selectionIndexesForProposedSelection proposedSelectionIndexes: IndexSet) -> IndexSet
@@ -694,12 +795,33 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     if let projectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
       let movie: Movie = projectStructureNode.sceneList.selectedScene?.selectedMovie
     {
-      movie.selectedFrames = []
-      
-      for row in proposedSelectionIndexes
+      if proposedSelectionIndexes.isEmpty && !movie.frames.isEmpty
       {
-        let frame = movie.frames[row]
-        movie.selectedFrames.insert(frame)
+        return tableView.selectedRowIndexes
+      }
+      
+      if self.observeNotifications
+      {
+        movie.selectedFrames = []
+        
+        for row in proposedSelectionIndexes
+        {
+          if row >= 0, row < movie.frames.count
+          {
+            movie.selectedFrames.insert(movie.frames[row])
+          }
+        }
+        
+        let oldSelectedRow = movie.selectedFrame.flatMap { movie.frames.firstIndex(of: $0) } ?? -1
+        if proposedSelectionIndexes.count == 1 || (oldSelectedRow >= 0 && !proposedSelectionIndexes.contains(oldSelectedRow))
+        {
+          let row = proposedSelectionIndexes.count == 1 ? proposedSelectionIndexes.first! : tableView.selectedRow
+          if row >= 0, row < movie.frames.count, proposedSelectionIndexes.contains(row)
+          {
+            movie.selectedFrame = movie.frames[row]
+            movie.selectedFrames.insert(movie.frames[row])
+          }
+        }
       }
     }
     return proposedSelectionIndexes
@@ -707,48 +829,43 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
 
   func tableViewSelectionDidChange(_ aNotification: Notification)
   {
-    
     if (self.observeNotifications)
     {
       if let proxyProject = self.proxyProject,
          let project = proxyProject.representedObject.loadedProjectStructureNode,
-         let selectedScene: Scene = project.sceneList.selectedScene,
-         let selectedMovie: Movie = selectedScene.selectedMovie,
-         let oldSelectedRow: Int = selectedMovie.selectedFrame != nil ? selectedMovie.frames.firstIndex(of: selectedMovie.selectedFrame!) : -1,
-         let selectedRow: Int = self.framesTableView?.selectedRow, selectedRow >= 0,
-         let selectedRows: IndexSet = self.framesTableView?.selectedRowIndexes
+         let selectedMovie: Movie = project.sceneList.selectedScene?.selectedMovie,
+         let tableView = self.framesTableView
       {
-        if ((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
+        if tableView.selectedRow < 0 || tableView.selectedRowIndexes.isEmpty,
+           !selectedMovie.frames.isEmpty
         {
-          selectedMovie.selectedFrame = selectedMovie.frames[selectedRow]
-          selectedMovie.selectedFrames.insert(selectedMovie.frames[selectedRow])
-          
-          self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: selectedMovie.selectedFrame?.infoPanelIcon, message: selectedMovie.selectedFrame?.infoPanelString))
-        
-          // set the other movies to the same movie-index
-          project.sceneList.synchronizeAllMovieFrames(to: selectedRow)
-        
-          // highlight selected index
-          self.framesTableView?.enumerateAvailableRowViews({ (rowView, row) in
-            if (row == selectedRow)
-            {
-              (rowView as? FrameTableRowView)?.secondaryHighlighted = true
-              (rowView as? FrameTableRowView)?.isSelected = true
-              rowView.needsDisplay = true
-            }
-            else
-            {
-              (rowView as? FrameTableRowView)?.secondaryHighlighted = false
-              rowView.needsDisplay = true
-            }
-          })
+          ensureFrameListSelection(movie: selectedMovie)
+          reloadSelection()
+          return
         }
-        else
+        
+        let oldSelectedRow: Int = selectedMovie.selectedFrame != nil ? selectedMovie.frames.firstIndex(of: selectedMovie.selectedFrame!) ?? -1 : -1
+        let selectedRow = tableView.selectedRow
+        let selectedRows = tableView.selectedRowIndexes
+        if selectedRow >= 0
         {
-          // since extending the selection changes the 'selectedRow' (the last selected item), set it back
-          // this will NOT change the selection, but only update the 'selectedRow'
-          // This is important when changing the selection afterwards with the 'up/down' keys, it will start from the 'selectedRow'.
-          self.framesTableView?.selectRowIndexes(IndexSet(integer: oldSelectedRow), byExtendingSelection: true)
+          if ((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
+          {
+            selectedMovie.selectedFrame = selectedMovie.frames[selectedRow]
+            selectedMovie.selectedFrames.insert(selectedMovie.frames[selectedRow])
+            
+            self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: selectedMovie.selectedFrame?.infoPanelIcon, message: selectedMovie.selectedFrame?.infoPanelString))
+          
+            project.sceneList.synchronizeAllMovieFrames(to: selectedRow)
+          }
+          else
+          {
+            tableView.selectRowIndexes(IndexSet(integer: oldSelectedRow), byExtendingSelection: true)
+          }
+          
+          ensureFrameSelectionConsistency(movie: selectedMovie, tableView: tableView)
+          syncFrameRowViewHighlights()
+          syncFrameListCellBackgroundStyles()
         }
       }
       

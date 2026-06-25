@@ -226,6 +226,7 @@
 		93584CDB2001200B005F01A7 /* Noise4D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CDA2001200B005F01A7 /* Noise4D.metal */; };
 		93584CDD2001206D005F01A7 /* PsrdNoise2D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CDC2001206D005F01A7 /* PsrdNoise2D.metal */; };
 		935D60B71FD2FB9D00B34D07 /* FrameTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935D60B61FD2FB9D00B34D07 /* FrameTableRowView.swift */; };
+		93AA00021FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA00011FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift */; };
 		935DABDF1F0E236900C1C8D0 /* DirectoryViewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 935DABE11F0E236900C1C8D0 /* DirectoryViewer.storyboard */; };
 		935DABE41F0E43EA00C1C8D0 /* DirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935DABE31F0E43EA00C1C8D0 /* DirectoryViewController.swift */; };
 		935DABE61F0E44D900C1C8D0 /* PredicateEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935DABE51F0E44D900C1C8D0 /* PredicateEditorViewController.swift */; };
@@ -496,6 +497,7 @@
 		93BF1B122609FE4500AFFCF3 /* ProjectOpenMMNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B112609FE4500AFFCF3 /* ProjectOpenMMNode.swift */; };
 		93BF1B23260A62C900AFFCF3 /* FrameTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B22260A62C900AFFCF3 /* FrameTableCellView.swift */; };
 		93BF1B8E260B5DD300AFFCF3 /* TableImageViewIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B8D260B5DD300AFFCF3 /* TableImageViewIcon.swift */; };
+		93BF1B90260B5DD400AFFCF3 /* TableListNameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B8F260B5DD400AFFCF3 /* TableListNameTextField.swift */; };
 		93BF25F31EE71DC200128CD4 /* OperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 93BF25F11EE71DC200128CD4 /* OperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93BF25F61EE71DC200128CD4 /* OperationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93BF25EF1EE71DC200128CD4 /* OperationKit.framework */; };
 		93BF25F71EE71DC200128CD4 /* OperationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93BF25EF1EE71DC200128CD4 /* OperationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1671,6 +1673,7 @@
 		93584CDC2001206D005F01A7 /* PsrdNoise2D.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PsrdNoise2D.metal; sourceTree = "<group>"; };
 		935D60B51FD2CE9900B34D07 /* ProjectDesign.key */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProjectDesign.key; sourceTree = "<group>"; };
 		935D60B61FD2FB9D00B34D07 /* FrameTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameTableRowView.swift; sourceTree = "<group>"; };
+		93AA00011FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceListStyledTableRowView.swift; sourceTree = "<group>"; };
 		935DABE01F0E236900C1C8D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/DirectoryViewer.storyboard; sourceTree = "<group>"; };
 		935DABE31F0E43EA00C1C8D0 /* DirectoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryViewController.swift; sourceTree = "<group>"; };
 		935DABE51F0E44D900C1C8D0 /* PredicateEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredicateEditorViewController.swift; sourceTree = "<group>"; };
@@ -2022,6 +2025,7 @@
 		93BF1B112609FE4500AFFCF3 /* ProjectOpenMMNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectOpenMMNode.swift; sourceTree = "<group>"; };
 		93BF1B22260A62C900AFFCF3 /* FrameTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameTableCellView.swift; sourceTree = "<group>"; };
 		93BF1B8D260B5DD300AFFCF3 /* TableImageViewIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableImageViewIcon.swift; sourceTree = "<group>"; };
+		93BF1B8F260B5DD400AFFCF3 /* TableListNameTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableListNameTextField.swift; sourceTree = "<group>"; };
 		93BF25EF1EE71DC200128CD4 /* OperationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OperationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93BF25F11EE71DC200128CD4 /* OperationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OperationKit.h; sourceTree = "<group>"; };
 		93BF25F21EE71DC200128CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2882,6 +2886,7 @@
 				93F9363C1EB912760094C509 /* ProjectTableRowView.swift */,
 				93D397A9260F2C700010BDDC /* ActionCALayer.swift */,
 				933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */,
+				93AA00011FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift */,
 				935D60B61FD2FB9D00B34D07 /* FrameTableRowView.swift */,
 				93B8BB151F286A5D0024EEC7 /* iRASPAPopUpButton.swift */,
 				93B8BB171F286F1E0024EEC7 /* iRASPAComboBox.swift */,
@@ -2895,6 +2900,7 @@
 				93FD046C1EC1B161005226F4 /* AtomNetChargeLabel.swift */,
 				93FD046E1EC1B172005226F4 /* AtomNetChargeTextField.swift */,
 				93BF1B8D260B5DD300AFFCF3 /* TableImageViewIcon.swift */,
+				93BF1B8F260B5DD400AFFCF3 /* TableListNameTextField.swift */,
 				930DD71A1E2808B700B8FE9B /* AtomTableRowView.swift */,
 				930C97621FCEC52A00B4611E /* AppearanceTableRowView.swift */,
 				930C97641FCEC69E00B4611E /* CameraTableRowView.swift */,
@@ -5428,6 +5434,7 @@
 				93B747E51F0E729400B1D8E0 /* ProjectCollectionViewItem.swift in Sources */,
 				93784AA31E61BDE000A7FF23 /* StructureAtomDetailViewPageController.swift in Sources */,
 				930C97691FCEC6C200B4611E /* ElementsTableRowView.swift in Sources */,
+				93AA00021FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift in Sources */,
 				935D60B71FD2FB9D00B34D07 /* FrameTableRowView.swift in Sources */,
 				930DD6E61E28071200B8FE9B /* FrameListViewController.swift in Sources */,
 				937956971E9E7D1400802529 /* StructureInfoDetailViewController.swift in Sources */,
@@ -5440,6 +5447,7 @@
 				9345F86D1F40B9D300181224 /* MasterTabViewController.swift in Sources */,
 				935DABE41F0E43EA00C1C8D0 /* DirectoryViewController.swift in Sources */,
 				93BF1B8E260B5DD300AFFCF3 /* TableImageViewIcon.swift in Sources */,
+				93BF1B90260B5DD400AFFCF3 /* TableListNameTextField.swift in Sources */,
 				93F9363D1EB912760094C509 /* ProjectTableRowView.swift in Sources */,
 				93B8541F260C96AE00B6408C /* InfoPanelItemView.swift in Sources */,
 				93784A931E61B5CE00A7FF23 /* StructureDetailTabViewController.swift in Sources */,

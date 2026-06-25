@@ -50,10 +50,26 @@ public class FrameTableCellView: NSTableCellView
   {
     didSet
     {
-      // forward to textField
-      self.imageView?.cell?.backgroundStyle = backgroundStyle
-      self.textField?.cell?.backgroundStyle = backgroundStyle
+      syncSelectionAppearance(for: backgroundStyle)
     }
+  }
+  
+  func syncSelectionAppearance(for style: NSView.BackgroundStyle)
+  {
+    textField?.cell?.backgroundStyle = style
+    (imageView as? TableImageViewIcon)?.applyBackgroundStyle(style)
+    imageView?.cell?.backgroundStyle = style
+    
+    if style == .emphasized
+    {
+      textField?.textColor = NSColor.alternateSelectedControlTextColor
+    }
+    else if textField?.textColor == NSColor.alternateSelectedControlTextColor
+    {
+      textField?.textColor = nil
+    }
+    
+    textField?.needsDisplay = true
   }
 }
 

@@ -149,6 +149,10 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     
     self.projectOutlineView?.setDraggingSourceOperationMask(.every, forLocal: true)
     self.projectOutlineView?.setDraggingSourceOperationMask(.every, forLocal: false)
+    
+    // Draw selection in ProjectTableRowView; outline must share the same rect as the blue fill.
+    self.projectOutlineView?.selectionHighlightStyle = .none
+    self.projectOutlineView?.allowsEmptySelection = false
 
     
     NotificationCenter.default.addObserver(self, selector: #selector(ProjectViewController.handleIdentityChanged(_:)), name: NSNotification.Name.NSUbiquityIdentityDidChange,
@@ -244,7 +248,9 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     // for a NSOutlineView in SourceList-style, a reloadData must be done when on-screen
     // resulting artificts from not doing this: lost selection when resigning first-responder (e.g. import file)
     self.reloadData()
-    
+    DispatchQueue.main.async(execute: { [weak self] in
+      self?.reloadSelection()
+    })
   }
   
   
@@ -774,7 +780,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
        document.documentData.projectData.rootNodes.contains(node)
     {
       view.textField?.stringValue = node.displayName
-      view.textField?.isEditable = false
+      (view.textField as? TableListNameTextField)?.endRenaming()
             
       // Bug: after a few drag and drops the system draws the GroupItem wrong
       // Work around: draw like GroupItem
@@ -789,10 +795,9 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       view.progressIndicator?.isHidden = true
       view.cancelButton?.isHidden = true
       
-      view.textField?.isEditable = false
-      
+      (view.textField as? TableListNameTextField)?.endRenaming()
       view.textField?.stringValue = node.displayName
-      view.imageView?.image = node.infoPanelIcon
+      (view.imageView as? TableImageViewIcon)?.image = node.infoPanelIcon
       
       if node.representedObject.lazyStatus == .loading || node.representedObject.lazyStatus == .error
       {
@@ -805,8 +810,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         view.cancelButton?.isHidden = true
       }
       
-      view.textField?.isEditable = node.isEditable
-      view.textField?.textColor = NSColor.controlTextColor
+      view.textField?.textColor = nil
       
       if let documentData: DocumentData = self.windowController?.currentDocument?.documentData,
         node.isDescendantOfNode(documentData.cloudRootNode)
@@ -821,6 +825,18 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         view.textField?.textColor = NSColor.red
       }
+      
+      let row = outlineView.row(forItem: node)
+      let isSelectedInOutline = row >= 0 && outlineView.selectedRowIndexes.contains(row)
+      let isSelectedInModel = (self.windowController?.document as? iRASPADocument).map {
+        $0.documentData.projectData.selectedTreeNodes.contains(node)
+      } ?? false
+      if isSelectedInOutline || isSelectedInModel
+      {
+        view.backgroundStyle = .emphasized
+      }
+      
+      view.syncSelectionAppearance(for: view.backgroundStyle)
       
       return view
     }
@@ -850,33 +866,13 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     if let rowView: ProjectTableRowView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "projectTableRowView"), owner: self) as? ProjectTableRowView,
       let document: iRASPADocument = windowController?.document as? iRASPADocument
     {
-      
-      // during undo/redo, the NSTableRowViews were deleted. They are remade when needed, and here we set the 'secondaryHighlighted' to correct value
       if let node = item as? ProjectTreeNode
       {
-        let projectTreeController: ProjectTreeController = document.documentData.projectData
-  
-        if let item: ProjectTreeNode = item as? ProjectTreeNode
+        rowView.isImplicitelySelected = node.isImplicitelySelected
+        let row = outlineView.row(forItem: item)
+        if row >= 0
         {
-          rowView.isImplicitelySelected = item.isImplicitelySelected
-        }
-        
-        if (node == projectTreeController.selectedTreeNode)
-        {
-          rowView.isSelected = true
-          rowView.secondaryHighlighted = true
-        }
-        else
-        {
-          if projectTreeController.selectedTreeNodes.contains(node)
-          {
-            rowView.isSelected = true
-          }
-          else
-          {
-            rowView.isSelected = false
-          }
-          rowView.secondaryHighlighted = false
+          syncProjectRowViewHighlight(rowView, row: row, outlineView: outlineView, treeController: document.documentData.projectData)
         }
       }
       return rowView
@@ -890,28 +886,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     if let rowView = rowView as? ProjectTableRowView,
        let document: iRASPADocument = windowController?.document as? iRASPADocument
     {
-      let projectTreeController: ProjectTreeController = document.documentData.projectData
-      let selectedProjectRow = projectTreeController.selectedTreeNode == nil ? -1 : self.projectOutlineView?.row(forItem: projectTreeController.selectedTreeNode)
-      
-      rowView.isSelected = false
-      rowView.secondaryHighlighted = false
-      
-      if let node: ProjectTreeNode = self.projectOutlineView?.item(atRow: row) as? ProjectTreeNode,
-          projectTreeController.selectedTreeNodes.contains(node)
-      {
-        rowView.isSelected = true
-      }
-      
-      if (row == selectedProjectRow)
-      {
-        rowView.isSelected = true
-        rowView.secondaryHighlighted = true
-      }
-      
       if let item: ProjectTreeNode = outlineView.item(atRow: row) as? ProjectTreeNode
       {
         rowView.isImplicitelySelected = item.isImplicitelySelected
       }
+      syncProjectRowViewHighlight(rowView, row: row, outlineView: outlineView, treeController: document.documentData.projectData)
     }
   }
   
@@ -931,7 +910,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   // MARK: NSOutlineView methods for adding and removing projects
   // =====================================================================
   
-  func addNode(_ treeNode: ProjectTreeNode, inItem: ProjectTreeNode?, atIndex: Int, animationOptions: NSTableView.AnimationOptions = [.slideRight])
+  func addNode(_ treeNode: ProjectTreeNode, inItem: ProjectTreeNode?, atIndex: Int, animationOptions: NSTableView.AnimationOptions = [.slideRight], reloadSelection: Bool = true)
   {
     if let document: iRASPADocument = windowController?.document as? iRASPADocument
     {
@@ -964,7 +943,10 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
          self.projectOutlineView?.insertItems(at: IndexSet(integer: atIndex), inParent: inItem, withAnimation: animationOptions)
       }
       
-      self.reloadSelection()
+      if reloadSelection
+      {
+        self.reloadSelection()
+      }
     }
     
     
@@ -1366,7 +1348,9 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       self.projectOutlineView?.beginUpdates()
       
-      for node: ProjectTreeNode in self.draggedNodes
+      let sortedDraggedNodes: [ProjectTreeNode] = self.draggedNodes.sorted { $0.indexPath < $1.indexPath }
+      
+      for node: ProjectTreeNode in sortedDraggedNodes
       {
         // Moving it from within the same parent -> account for the remove, if it is past the oldIndex
         if (self.itemsAreSiblings(node, parentItem: item))
@@ -1394,7 +1378,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             
             placeholders.append(placeholder)
             
-            self.addNode(placeholder, inItem: toItem, atIndex: childIndex, animationOptions:  [.effectGap])
+            self.addNode(placeholder, inItem: toItem, atIndex: childIndex, animationOptions:  [.effectGap], reloadSelection: false)
             
             placeholder.parentNode?.updateFilteredChildrenRecursively(predicate)
             placeholder.representedObject.isEdited = true
@@ -1419,7 +1403,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             
             placeholders.append(placeholder)
             
-            self.addNode(placeholder, inItem: toItem, atIndex: childIndex, animationOptions:  [.effectGap])
+            self.addNode(placeholder, inItem: toItem, atIndex: childIndex, animationOptions:  [.effectGap], reloadSelection: false)
             
             placeholder.parentNode?.updateFilteredChildrenRecursively(predicate)
             placeholder.representedObject.isEdited = true
@@ -1436,13 +1420,16 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         childIndex = childIndex + 1
       }
       
-      info.enumerateDraggingItems(options: [.concurrent], for: self.projectOutlineView, classes: [NSPasteboardItem.self], searchOptions: [:], using: { (draggingItem, index, stop) in
-        let node = placeholders[index]
+      var placeholderIndex: Int = 0
+      info.enumerateDraggingItems(options: [], for: self.projectOutlineView, classes: [ProjectTreeNode.self], searchOptions: [:], using: { (draggingItem, index, stop) in
+        guard placeholderIndex < placeholders.count else { return }
+        let node = placeholders[placeholderIndex]
+        placeholderIndex += 1
         if let row: Int = self.projectOutlineView?.row(forItem: node), row>=0,
            let frame: NSRect = self.projectOutlineView?.frameOfCell(atColumn: 0, row: row),
            let height: CGFloat = self.projectOutlineView?.rowHeight
         {
-          draggingItem.draggingFrame = NSMakeRect(frame.origin.x, frame.origin.y+height*(CGFloat(index)), frame.width, height)
+          draggingItem.draggingFrame = NSMakeRect(frame.origin.x, frame.origin.y+height*(CGFloat(placeholderIndex - 1)), frame.width, height)
         }
       })
       
@@ -1450,6 +1437,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       document.documentData.projectData.updateImplicitlySelected()
       
       self.projectOutlineView?.endUpdates()
+      self.reloadSelection()
       self.observeNotifications = savedObserveNotifications
     }
     return true
@@ -1485,7 +1473,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         if let item: ProjectTreeNode = draggingItem.item as? ProjectTreeNode
         {
           debugPrint("drag/drop \(item.displayName)")
-          self.addNode(item, inItem: toItem, atIndex: childIndex, animationOptions:  [.effectGap])
+          self.addNode(item, inItem: toItem, atIndex: childIndex, animationOptions:  [.effectGap], reloadSelection: false)
           
           childIndex += 1
           insertionIndex += 1
@@ -1505,6 +1493,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       document.documentData.projectData.updateImplicitlySelected()
       
       self.projectOutlineView?.endUpdates()
+      self.reloadSelection()
     }
     
     return true
@@ -2777,6 +2766,136 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   // MARK: Selection handling
   // =====================================================================
   
+  private func primarySelectedRow(in outlineView: NSOutlineView, treeController: ProjectTreeController) -> Int?
+  {
+    let selectedRowIndexes = outlineView.selectedRowIndexes
+    
+    if let selectedTreeNode = treeController.selectedTreeNode
+    {
+      let row = outlineView.row(forItem: selectedTreeNode)
+      if row >= 0, selectedRowIndexes.contains(row)
+      {
+        return row
+      }
+    }
+    
+    let anchorRow = outlineView.selectedRow
+    if anchorRow >= 0, selectedRowIndexes.contains(anchorRow)
+    {
+      return anchorRow
+    }
+    
+    return selectedRowIndexes.first
+  }
+  
+  private func syncProjectRowViewHighlight(_ rowView: ProjectTableRowView, row: Int, outlineView: NSOutlineView, treeController: ProjectTreeController)
+  {
+    guard let node = outlineView.item(atRow: row) as? ProjectTreeNode else { return }
+    
+    let isInTableSelection = outlineView.selectedRowIndexes.contains(row)
+    let isInModelSelection = treeController.selectedTreeNodes.contains(node)
+    rowView.isSelected = isInTableSelection || isInModelSelection
+    rowView.secondaryHighlighted = (row == primarySelectedRow(in: outlineView, treeController: treeController))
+    rowView.needsDisplay = true
+  }
+  
+  private func syncProjectRowViewHighlights()
+  {
+    guard let outlineView = self.projectOutlineView,
+          let document = windowController?.document as? iRASPADocument else { return }
+    
+    let treeController = document.documentData.projectData
+    outlineView.enumerateAvailableRowViews({ (rowView, row) in
+      if let rowView = rowView as? ProjectTableRowView
+      {
+        self.syncProjectRowViewHighlight(rowView, row: row, outlineView: outlineView, treeController: treeController)
+      }
+    })
+  }
+  
+  private func ensureProjectListSelection(treeController: ProjectTreeController)
+  {
+    if let selectedTreeNode = treeController.selectedTreeNode
+    {
+      treeController.selectedTreeNodes.insert(selectedTreeNode)
+    }
+    else if let firstNode = treeController.selectedNodes.first
+    {
+      treeController.selectedTreeNode = firstNode
+      treeController.selectedTreeNodes.insert(firstNode)
+    }
+  }
+  
+  private func firstSelectableProjectRow(in outlineView: NSOutlineView) -> Int?
+  {
+    guard let document = windowController?.document as? iRASPADocument else { return nil }
+    let projectData = document.documentData.projectData
+    
+    for row in 0..<outlineView.numberOfRows
+    {
+      guard let node = outlineView.item(atRow: row) as? ProjectTreeNode else { continue }
+      if projectData.rootNodes.contains(node) { continue }
+      if node.representedObject.isLoading { continue }
+      if node.isDescendantOfNode(document.documentData.cloudRootNode), !connectedToNetwork() { continue }
+      return row
+    }
+    return nil
+  }
+  
+  private func nonEmptyProjectSelection(from proposedSelectionIndexes: IndexSet, in outlineView: NSOutlineView) -> IndexSet
+  {
+    if !proposedSelectionIndexes.isEmpty
+    {
+      return proposedSelectionIndexes
+    }
+    
+    if !outlineView.selectedRowIndexes.isEmpty
+    {
+      return outlineView.selectedRowIndexes
+    }
+    
+    if let row = firstSelectableProjectRow(in: outlineView)
+    {
+      return IndexSet(integer: row)
+    }
+    
+    return proposedSelectionIndexes
+  }
+  
+  private func restoreProjectOutlineSelection(projectTreeController: ProjectTreeController, cloudKitTreeController: ProjectTreeController)
+  {
+    guard let outlineView = self.projectOutlineView else { return }
+    
+    outlineView.selectRowIndexes(IndexSet(), byExtendingSelection: false)
+    
+    for node in projectTreeController.selectedNodes
+    {
+      let row = outlineView.row(forItem: node)
+      if row >= 0
+      {
+        outlineView.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: true)
+      }
+    }
+    
+    if let selectedTreeNode = projectTreeController.selectedTreeNode
+    {
+      let row = outlineView.row(forItem: selectedTreeNode)
+      if row >= 0
+      {
+        outlineView.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: true)
+      }
+    }
+    
+    for node in cloudKitTreeController.selectedNodes
+    {
+      let row = outlineView.row(forItem: node)
+      if row >= 0
+      {
+        outlineView.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: true)
+      }
+    }
+  }
+  
   func setCurrentSelection(treeController: ProjectTreeController, newValue: (selected: ProjectTreeNode?, selection: Set<ProjectTreeNode>), oldValue: (selected: ProjectTreeNode?, selection: Set<ProjectTreeNode>))
   {
     if let document: iRASPADocument = windowController?.document as? iRASPADocument,
@@ -2805,23 +2924,15 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       }
       
       self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
-        // set the implicit selection to all the rowViews
         if let item: ProjectTreeNode = self.projectOutlineView?.item(atRow: row) as? ProjectTreeNode
         {
-          (rowView as? ProjectTableRowView)?.allowAction = true
           (rowView as? ProjectTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
-          rowView.layer?.setNeedsDisplay()
         }
       })
     
       NSAnimationContext.beginGrouping()
       
       NSAnimationContext.current.completionHandler = { () -> Void in
-        self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
-          // set the implicit selection to all the rowViews
-          (rowView as? ProjectTableRowView)?.allowAction = false
-        })
-        
         if switchToNewProject
         {
           self.switchToCurrentProject()
@@ -2835,69 +2946,48 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   }
 
   
-  func reloadSelection()
+  func syncProjectListCellBackgroundStyles()
   {
-    // clear all rowViews
     self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
-      if let rowView = rowView as? ProjectTableRowView
-      {
-        rowView.secondaryHighlighted = false
-      }
+      (rowView as? SourceListStyledTableRowView)?.refreshCellBackgroundStyles()
     })
     
-    if let document: iRASPADocument = windowController?.document as? iRASPADocument
-    {
-      let savedObserveNotifications: Bool = self.observeNotifications
-      
-      // avoid sending notification due to selection change
-      self.observeNotifications = false
-    
-      self.projectOutlineView?.selectRowIndexes(IndexSet(), byExtendingSelection: false)
-      
-      
-      let projectTreeController: ProjectTreeController = document.documentData.projectData
-      
-      if let selectedTreeNode = projectTreeController.selectedTreeNode,
-         let selectedRow: Int = self.projectOutlineView?.row(forItem: selectedTreeNode), selectedRow >= 0
-      {
-        self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
-          if let rowView = rowView as? ProjectTableRowView
-          {
-            rowView.secondaryHighlighted = (row == selectedRow)
-            rowView.layer?.setNeedsDisplay()
-            self.projectOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
-          }
-        })
-      }
-      
-      let selectedProjectNodes:[ProjectTreeNode] = projectTreeController.selectedNodes
-      for node in selectedProjectNodes
-      {
-        if let row: Int = self.projectOutlineView?.row(forItem: node), row >= 0
-        {
-          self.projectOutlineView?.selectRowIndexes(NSIndexSet(index: row) as IndexSet, byExtendingSelection: true)
-        }
-      }
-      // since extending the selection changes the 'selectedRow' (the last selected item), set it back
-      // this will NOT change the selection, but only update the 'selectedRow'
-      // This is important when changing the selection afterwards with the 'up/down' keys, it will start from the 'selectedRow'.
-      if let row: Int = self.projectOutlineView?.row(forItem: projectTreeController.selectedTreeNode), row >= 0
-      {
-        self.projectOutlineView?.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: true)
-      }
-      
-      let cloudKitTreeController: ProjectTreeController = Cloud.shared.projectData
-      let selectedCloudNodes:[ProjectTreeNode] = cloudKitTreeController.selectedNodes
-      for node in selectedCloudNodes
-      {
-        if let row: Int = self.projectOutlineView?.row(forItem: node), row >= 0
-        {
-          self.projectOutlineView?.selectRowIndexes(NSIndexSet(index: row) as IndexSet, byExtendingSelection: true)
-        }
-      }
-      
-      self.observeNotifications = savedObserveNotifications
+    DispatchQueue.main.async { [weak self] in
+      self?.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
+        (rowView as? SourceListStyledTableRowView)?.refreshCellBackgroundStyles()
+      })
     }
+  }
+  
+  func reloadSelection()
+  {
+    guard let document = windowController?.document as? iRASPADocument,
+          let outlineView = self.projectOutlineView else { return }
+    
+    let savedObserveNotifications: Bool = self.observeNotifications
+    self.observeNotifications = false
+    
+    let projectTreeController: ProjectTreeController = document.documentData.projectData
+    let cloudKitTreeController: ProjectTreeController = Cloud.shared.projectData
+    
+    ensureProjectListSelection(treeController: projectTreeController)
+    ensureProjectListSelection(treeController: cloudKitTreeController)
+    
+    restoreProjectOutlineSelection(projectTreeController: projectTreeController, cloudKitTreeController: cloudKitTreeController)
+    
+    if let selectedTreeNode = projectTreeController.selectedTreeNode
+    {
+      let selectedRow = outlineView.row(forItem: selectedTreeNode)
+      if selectedRow >= 0
+      {
+        outlineView.reloadData(forRowIndexes: IndexSet(integer: selectedRow), columnIndexes: IndexSet(integer: 0))
+      }
+    }
+    
+    syncProjectRowViewHighlights()
+    syncProjectListCellBackgroundStyles()
+    
+    self.observeNotifications = savedObserveNotifications
   }
   
 
@@ -2976,6 +3066,9 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       self.projectOutlineView?.selectRowIndexes(updatedSelectedIndex as IndexSet, byExtendingSelection: false)
       
+      self.syncProjectRowViewHighlights()
+      self.syncProjectListCellBackgroundStyles()
+      
       self.observeNotifications = savedObserveNotifications
     }
   }
@@ -3041,6 +3134,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         self.projectOutlineView?.scrollRowToVisible(row)
         self.projectOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
+        self.syncProjectListCellBackgroundStyles()
       }
     
       do
@@ -3197,7 +3291,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       }
     }
     
-    return allowedSelection as IndexSet
+    return nonEmptyProjectSelection(from: allowedSelection as IndexSet, in: outlineView)
   }
 
   
@@ -3208,13 +3302,21 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       if let projectOutlineView = self.projectOutlineView,
          let document = windowController?.document as? iRASPADocument
       {
+        let projectTreeController: ProjectTreeController = document.documentData.projectData
+        
+        if projectOutlineView.selectedRowIndexes.isEmpty,
+           projectOutlineView.numberOfRows > 0
+        {
+          ensureProjectListSelection(treeController: projectTreeController)
+          reloadSelection()
+          return
+        }
+        
         var projectSelectedTreeNode: ProjectTreeNode? = document.documentData.projectData.selectedTreeNode
         if let oldSelectedRow: Int = self.projectOutlineView?.row(forItem: projectSelectedTreeNode),
            let selectedRows: IndexSet = self.projectOutlineView?.selectedRowIndexes,
            let selectedRow: Int = self.projectOutlineView?.selectedRow, selectedRow >= 0
         {
-          let projectTreeController: ProjectTreeController = document.documentData.projectData
-            
           var projectSelectedTreeNodes: Set<ProjectTreeNode> = []
             
           if((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
@@ -3222,16 +3324,14 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             if let projectTreeNode: ProjectTreeNode = self.projectOutlineView?.item(atRow: selectedRow) as? ProjectTreeNode
             {
               projectSelectedTreeNode = projectTreeNode
-              // selection set in 'selectionIndexesForProposedSelection', make sure that the selected project is included in that set
               projectSelectedTreeNodes.insert(projectTreeNode)
             }
           }
           else
           {
-            // since extending the selection changes the 'selectedRow' (the last selected item), set it back
-            // this will NOT change the selection, but only update the 'selectedRow'
-            // This is important when changing the selection afterwards with the 'up/down' keys, it will start from the 'selectedRow'.
             self.projectOutlineView?.selectRowIndexes(IndexSet(integer: oldSelectedRow), byExtendingSelection: true)
+            syncProjectRowViewHighlights()
+            syncProjectListCellBackgroundStyles()
           }
             
           for row in projectOutlineView.selectedRowIndexes
@@ -3420,9 +3520,9 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
        let projectTreeNode: ProjectTreeNode = self.projectOutlineView?.item(atRow: clickedRow) as? ProjectTreeNode, projectTreeNode.isEditable
     {
       if let view: NSTableCellView = self.projectOutlineView?.view(atColumn: 0, row: clickedRow, makeIfNecessary: true) as? NSTableCellView,
-         let textField: NSTextField = view.textField,
-         textField.acceptsFirstResponder
+         let textField = view.textField as? TableListNameTextField
       {
+        textField.beginRenaming()
         view.window?.makeFirstResponder(textField)
       }
     }
@@ -3462,6 +3562,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
   @IBAction func changeProjectDisplayName(_ sender: NSTextField)
   {
+    defer { (sender as? TableListNameTextField)?.endRenaming() }
+    
     let newValue: String = sender.stringValue
     
     if let row: Int = self.projectOutlineView?.selectedRow, row >= 0
@@ -3529,7 +3631,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
               }
             }
             
-            self.addNode(projectTreeNode, inItem: toItem, atIndex: insertionIndex, animationOptions:  [.effectGap])
+            self.addNode(projectTreeNode, inItem: toItem, atIndex: insertionIndex, animationOptions:  [.effectGap], reloadSelection: false)
             insertionIndex += 1
           }
           else
@@ -3540,6 +3642,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         document.documentData.projectData.updateFilteredNodes()
         document.documentData.projectData.updateImplicitlySelected()
         self.projectOutlineView?.endUpdates()
+        self.reloadSelection()
       }
     }
   }

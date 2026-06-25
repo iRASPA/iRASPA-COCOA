@@ -104,6 +104,11 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
     
     self.movieOutlineView?.setDraggingSourceOperationMask(.every, forLocal: true)
     self.movieOutlineView?.setDraggingSourceOperationMask(.every, forLocal: false)
+    
+    // Draw selection in StructureTableRowView; AppKit source-list highlighting no longer works
+    // reliably with layer-backed row views on recent macOS releases.
+    self.movieOutlineView?.selectionHighlightStyle = .none
+    self.movieOutlineView?.allowsEmptySelection = false
   }
   
   override func awakeFromNib()
@@ -137,7 +142,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
     // for a NSOutlineView in SourceList-style, a reloadData must be done when on-screen
     // resulting artificts from not doing this: lost selection when resigning first-responder (e.g. import file)
     self.reloadData()
-    
+    self.movieOutlineView?.window?.makeFirstResponder(self.movieOutlineView)
   }
   
   override func viewWillDisappear()
@@ -156,7 +161,9 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
   // reload the structureViewOutlineView and the selection
   func reloadData()
   {
+    let storedObserveNotifications: Bool = self.observeNotifications
     self.observeNotifications = false
+    
     if let _: ProjectTreeNode = self.proxyProject
     {
       self.movieOutlineView?.reloadItem(nil)
@@ -165,12 +172,238 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       self.movieOutlineView?.expandItem(nil, expandChildren: true)
       NSAnimationContext.endGrouping()
       
-      self.movieOutlineView?.reloadData()
-      self.reloadSelection()
+      if let outlineView = self.movieOutlineView
+      {
+        let allowsEmptySelection = outlineView.allowsEmptySelection
+        outlineView.allowsEmptySelection = true
+        outlineView.reloadData()
+        outlineView.allowsEmptySelection = allowsEmptySelection
+      }
     }
-    self.observeNotifications = true
     
+    reloadSelection()
     setDetailViewController()
+    self.observeNotifications = storedObserveNotifications
+  }
+  
+  private func primarySelectedRow(in outlineView: NSOutlineView, project: ProjectStructureNode) -> Int?
+  {
+    let selectedRowIndexes = outlineView.selectedRowIndexes
+    
+    if let selectedMovie = project.sceneList.selectedScene?.selectedMovie
+    {
+      let row = outlineView.row(forItem: selectedMovie)
+      if row >= 0, selectedRowIndexes.contains(row)
+      {
+        return row
+      }
+    }
+    
+    let anchorRow = outlineView.selectedRow
+    if anchorRow >= 0, selectedRowIndexes.contains(anchorRow)
+    {
+      return anchorRow
+    }
+    
+    return selectedRowIndexes.first
+  }
+  
+  private func syncStructureRowViewHighlight(_ rowView: StructureTableRowView, row: Int, outlineView: NSOutlineView, project: ProjectStructureNode)
+  {
+    rowView.isGroupRowStyle = outlineView.item(atRow: row) is Scene
+    
+    guard let movie = outlineView.item(atRow: row) as? Movie else
+    {
+      rowView.isSelected = false
+      rowView.secondaryHighlighted = false
+      rowView.needsDisplay = true
+      return
+    }
+    
+    let isInTableSelection = outlineView.selectedRowIndexes.contains(row)
+    var isInModelSelection = false
+    if let indexPath = project.sceneList.indexPath(movie)
+    {
+      let scene = project.sceneList.scenes[indexPath[0]]
+      isInModelSelection = scene.selectedMovies.contains(movie)
+    }
+    
+    rowView.isSelected = isInTableSelection || isInModelSelection
+    rowView.secondaryHighlighted = (row == primarySelectedRow(in: outlineView, project: project))
+    rowView.needsDisplay = true
+  }
+  
+  private func ensureMovieSelectionConsistency(in project: ProjectStructureNode, outlineView: NSOutlineView)
+  {
+    let selectedRowIndexes = outlineView.selectedRowIndexes
+    var selectedMovies: Set<Movie> = []
+    
+    for row in selectedRowIndexes
+    {
+      if let movie = outlineView.item(atRow: row) as? Movie
+      {
+        selectedMovies.insert(movie)
+      }
+    }
+    
+    if !selectedMovies.isEmpty
+    {
+      for scene in project.sceneList.scenes
+      {
+        scene.selectedMovies = Set(scene.movies.filter { selectedMovies.contains($0) })
+      }
+    }
+    
+    if let selectedMovie = project.sceneList.selectedScene?.selectedMovie
+    {
+      let row = outlineView.row(forItem: selectedMovie)
+      if row >= 0, selectedRowIndexes.contains(row)
+      {
+        return
+      }
+    }
+    
+    let anchorRow = outlineView.selectedRow
+    if anchorRow >= 0, selectedRowIndexes.contains(anchorRow),
+       let movie = outlineView.item(atRow: anchorRow) as? Movie,
+       let scene = outlineView.parent(forItem: movie) as? Scene
+    {
+      project.sceneList.selectedScene = scene
+      scene.selectedMovie = movie
+      scene.selectedMovies.insert(movie)
+    }
+    else if let row = selectedRowIndexes.first,
+            let movie = outlineView.item(atRow: row) as? Movie,
+            let scene = outlineView.parent(forItem: movie) as? Scene
+    {
+      project.sceneList.selectedScene = scene
+      scene.selectedMovie = movie
+      scene.selectedMovies.insert(movie)
+    }
+  }
+  
+  private func restoreMovieOutlineSelection(project: ProjectStructureNode)
+  {
+    guard let outlineView = self.movieOutlineView else { return }
+    
+    var indexSet = IndexSet()
+    for scene in project.sceneList.scenes
+    {
+      for movie in scene.selectedMovies
+      {
+        let row = outlineView.row(forItem: movie)
+        if row >= 0
+        {
+          indexSet.insert(row)
+        }
+      }
+    }
+    
+    if indexSet.isEmpty, let selectedMovie = project.sceneList.selectedScene?.selectedMovie
+    {
+      let row = outlineView.row(forItem: selectedMovie)
+      if row >= 0
+      {
+        indexSet.insert(row)
+      }
+    }
+    
+    outlineView.selectRowIndexes(indexSet, byExtendingSelection: false)
+    
+    if let selectedMovie = project.sceneList.selectedScene?.selectedMovie
+    {
+      let row = outlineView.row(forItem: selectedMovie)
+      if row >= 0
+      {
+        outlineView.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: true)
+      }
+    }
+  }
+  
+  private func syncMovieListCellBackgroundStyles()
+  {
+    self.movieOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
+      (rowView as? SourceListStyledTableRowView)?.refreshCellBackgroundStyles()
+    })
+    
+    DispatchQueue.main.async { [weak self] in
+      self?.movieOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
+        (rowView as? SourceListStyledTableRowView)?.refreshCellBackgroundStyles()
+      })
+    }
+  }
+  
+  private func syncStructureRowViewHighlights()
+  {
+    guard let outlineView = self.movieOutlineView,
+          let project = self.proxyProject?.representedObject.loadedProjectStructureNode else { return }
+    
+    outlineView.enumerateAvailableRowViews({ (rowView, row) in
+      if let rowView = rowView as? StructureTableRowView
+      {
+        self.syncStructureRowViewHighlight(rowView, row: row, outlineView: outlineView, project: project)
+      }
+    })
+  }
+  
+  private func ensureMovieListSelection(in project: ProjectStructureNode)
+  {
+    if project.sceneList.selectedScene == nil
+    {
+      project.sceneList.selectedScene = project.sceneList.scenes.first
+    }
+    
+    if let scene = project.sceneList.selectedScene
+    {
+      if scene.selectedMovie == nil
+      {
+        scene.selectedMovie = scene.movies.first
+      }
+      if let selectedMovie = scene.selectedMovie
+      {
+        scene.selectedMovies.insert(selectedMovie)
+      }
+    }
+    else if let firstScene = project.sceneList.scenes.first,
+            let firstMovie = firstScene.movies.first
+    {
+      project.sceneList.selectedScene = firstScene
+      firstScene.selectedMovie = firstMovie
+      firstScene.selectedMovies.insert(firstMovie)
+    }
+  }
+  
+  private func firstMovieRow(in outlineView: NSOutlineView, project: ProjectStructureNode) -> Int?
+  {
+    for scene in project.sceneList.scenes
+    {
+      if let movie = scene.movies.first
+      {
+        let row = outlineView.row(forItem: movie)
+        if row >= 0 { return row }
+      }
+    }
+    return nil
+  }
+  
+  private func nonEmptyMovieSelection(from proposedSelectionIndexes: IndexSet, in outlineView: NSOutlineView, project: ProjectStructureNode) -> IndexSet
+  {
+    if !proposedSelectionIndexes.isEmpty
+    {
+      return proposedSelectionIndexes
+    }
+    
+    if let rowIndexes = self.movieOutlineView?.selectedRowIndexes, !rowIndexes.isEmpty
+    {
+      return rowIndexes
+    }
+    
+    if let row = firstMovieRow(in: outlineView, project: project)
+    {
+      return IndexSet(integer: row)
+    }
+    
+    return proposedSelectionIndexes
   }
   
   // MARK: keyboard handling
@@ -1268,6 +1501,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       if let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "sceneView"), owner: self) as? NSTableCellView
       {
         view.textField!.stringValue = (item as? Scene)?.displayName.uppercased() ?? "unknown"
+        (view.textField as? TableListNameTextField)?.endRenaming()
         view.imageView?.isHidden = true
         return view
       }
@@ -1284,12 +1518,14 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
           if let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "movieView"), owner: self) as? NSTableCellView
           {
             view.textField!.stringValue = (item as? Scene)?.displayName.uppercased() ?? ""
+            (view.textField as? TableListNameTextField)?.endRenaming()
             return view
           }
         case let movie as Movie:
           if let view: MovieTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "movieView"), owner: self) as? MovieTableCellView
           {
             view.textField?.stringValue = movie.displayName
+            (view.textField as? TableListNameTextField)?.endRenaming()
             view.progressIndicator?.isHidden = !movie.isLoading
             view.cancelButton?.isHidden = !movie.isLoading
           
@@ -1298,7 +1534,21 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
               button.state =  movie.isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
             }
             
-            view.imageView?.image = movie.infoPanelIcon
+            (view.imageView as? TableImageViewIcon)?.image = movie.infoPanelIcon
+            
+            let row = outlineView.row(forItem: movie)
+            let isSelectedInOutline = row >= 0 && outlineView.selectedRowIndexes.contains(row)
+            var isSelectedInModel = false
+            if let project = self.proxyProject?.representedObject.loadedProjectStructureNode,
+               let indexPath = project.sceneList.indexPath(movie)
+            {
+              isSelectedInModel = project.sceneList.scenes[indexPath[0]].selectedMovies.contains(movie)
+            }
+            if isSelectedInOutline || isSelectedInModel
+            {
+              view.backgroundStyle = .emphasized
+            }
+            view.syncSelectionAppearance(for: view.backgroundStyle)
             
             return view
           }
@@ -1322,24 +1572,12 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
     if let rowView: StructureTableRowView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "structureTableRowView"), owner: self) as? StructureTableRowView,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-      rowView.secondaryHighlighted = false
-      rowView.isSelected = false
-      
       rowView.isGroupRowStyle = item is Scene
       
-      if let movie = item as? Movie
+      let row = outlineView.row(forItem: item)
+      if row >= 0
       {
-        if movie === project.sceneList.selectedScene?.selectedMovie
-        {
-          rowView.secondaryHighlighted = true
-          rowView.isSelected = true
-        }
-        
-        let selectedMovies: [Movie] = project.sceneList.scenes.flatMap{$0.selectedMovies}
-        if  selectedMovies.contains(movie)
-        {
-          rowView.isSelected = true
-        }
+        syncStructureRowViewHighlight(rowView, row: row, outlineView: outlineView, project: project)
       }
     
       return rowView
@@ -1352,40 +1590,11 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
   // They will show up first as "rowViewForItem" and next as "didAddRowView"
   func outlineView(_ outlineView: NSOutlineView, didAdd rowView: NSTableRowView, forRow row: Int)
   {
-    if let rowView = rowView as? StructureTableRowView
+    if let rowView = rowView as? StructureTableRowView,
+       let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let outlineView = self.movieOutlineView
     {
-      rowView.secondaryHighlighted = false
-      rowView.isSelected = false
-      
-      if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
-      {
-        let selectedMovies: [Movie] = project.sceneList.scenes.flatMap{$0.selectedMovies}
-        
-        if let _: Scene = self.movieOutlineView?.item(atRow: row) as? Scene
-        {
-          rowView.isGroupRowStyle = true
-        }
-        else
-        {
-          rowView.isGroupRowStyle = false
-        }
-        
-        if let movie: Movie = self.movieOutlineView?.item(atRow: row) as? Movie,
-           selectedMovies.contains(movie)
-        {
-          rowView.isSelected = true
-        }
-        
-        if let selectedMovie: Movie = project.sceneList.selectedScene?.selectedMovie,
-           let selectedRow = self.movieOutlineView?.row(forItem: selectedMovie)
-        {
-          if (row == selectedRow)
-          {
-            rowView.secondaryHighlighted = true
-            rowView.isSelected = true
-          }
-        }
-      }
+      syncStructureRowViewHighlight(rowView, row: row, outlineView: outlineView, project: project)
     }
   }
   
@@ -1408,9 +1617,9 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
        let clickedRow: Int = self.movieOutlineView?.clickedRow, clickedRow >= 0
     {
       if let view: NSTableCellView = self.movieOutlineView?.view(atColumn: 0, row: clickedRow, makeIfNecessary: true) as? NSTableCellView,
-         let textField: NSTextField = view.textField,
-         textField.acceptsFirstResponder
+         let textField = view.textField as? TableListNameTextField
       {
+        textField.beginRenaming()
         view.window?.makeFirstResponder(textField)
       }
     }
@@ -1436,6 +1645,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       if let row: Int = self.movieOutlineView?.row(forItem: movie), row >= 0
       {
         self.movieOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
+        self.syncMovieListCellBackgroundStyles()
       }
 
       project.isEdited = true
@@ -1445,6 +1655,8 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
   
   @IBAction func changeMovieDisplayName(_ sender: NSTextField)
   {
+    defer { (sender as? TableListNameTextField)?.endRenaming() }
+    
     if let proxyProject = self.proxyProject, proxyProject.isEditable
     {
       let newValue: String = sender.stringValue
@@ -1485,6 +1697,8 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
   
   @IBAction func changeSceneDisplayName(_ sender: NSTextField)
   {
+    defer { (sender as? TableListNameTextField)?.endRenaming() }
+    
     if let proxyProject = self.proxyProject, proxyProject.isEditable
     {
       let newValue: String = sender.stringValue
@@ -2055,55 +2269,32 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
   
   func reloadSelection()
   {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let outlineView = self.movieOutlineView
     {
       let observeNotificationsStored: Bool = self.observeNotifications
-      
-      // avoid sending notification due to selection change
       self.observeNotifications = false
       
-      let selectedNodes: Set< Movie > = Set(project.sceneList.scenes.flatMap{$0.selectedMovies})
+      ensureMovieListSelection(in: project)
+      restoreMovieOutlineSelection(project: project)
+      ensureMovieSelectionConsistency(in: project, outlineView: outlineView)
       
-     
-      self.movieOutlineView?.deselectAll(nil)
-      
-      var indexSet: IndexSet = IndexSet()
-      for node in selectedNodes
+      if let selectedMovie = project.sceneList.selectedScene?.selectedMovie
       {
-        if let row: Int = self.movieOutlineView?.row(forItem: node) , row >= 0
+        let selectedRow = outlineView.row(forItem: selectedMovie)
+        if selectedRow >= 0
         {
-          indexSet.insert(row)
+          outlineView.reloadData(forRowIndexes: IndexSet(integer: selectedRow), columnIndexes: IndexSet(integer: 0))
         }
+        
+        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: selectedMovie.infoPanelIcon, message: selectedMovie.infoPanelString))
       }
-      self.movieOutlineView?.selectRowIndexes(indexSet, byExtendingSelection: false)
       
-     
-      if let selectedItem: Movie = project.sceneList.selectedScene?.selectedMovie
-      {
-        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: selectedItem.infoPanelIcon, message: selectedItem.infoPanelString))
-        
-        if let selectedRow: Int = self.movieOutlineView?.row(forItem: selectedItem)
-        {
-          self.movieOutlineView?.selectRowIndexes(NSIndexSet(index: selectedRow) as IndexSet, byExtendingSelection: true)
-          self.movieOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
-        
-            if (row == selectedRow)
-            {
-              (rowView as? StructureTableRowView)?.secondaryHighlighted = true
-              (rowView as? StructureTableRowView)?.isSelected = true
-            }
-            else
-            {
-              (rowView as? StructureTableRowView)?.secondaryHighlighted = false
-            }
-          })
-        }
-      }
+      syncStructureRowViewHighlights()
+      syncMovieListCellBackgroundStyles()
       
       self.observeNotifications = observeNotificationsStored
     }
-    
-    
   }
   
   
@@ -2164,6 +2355,8 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
+      let proposedSelectionIndexes = nonEmptyMovieSelection(from: proposedSelectionIndexes, in: outlineView, project: project)
+      
       let allowedSelection: NSMutableIndexSet = NSMutableIndexSet()
       var selectedScenes: [Scene] = []
       var selectedMovies: [Movie] = []
@@ -2210,6 +2403,27 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
             scene.selectedMovies.insert(movie)
           }
         }
+        
+        let oldSelectedRow = outlineView.row(forItem: project.sceneList.selectedScene?.selectedMovie)
+        if proposedSelectionIndexes.count == 1 || (oldSelectedRow >= 0 && !proposedSelectionIndexes.contains(oldSelectedRow))
+        {
+          let row = proposedSelectionIndexes.count == 1 ? proposedSelectionIndexes.first! : outlineView.selectedRow
+          if row >= 0,
+             let movie = outlineView.item(atRow: row) as? Movie,
+             let scene = outlineView.parent(forItem: movie) as? Scene,
+             proposedSelectionIndexes.contains(row)
+          {
+            project.sceneList.selectedScene = scene
+            scene.selectedMovie = movie
+            scene.selectedMovies.insert(movie)
+          }
+        }
+      }
+      
+      if allowedSelection.count == 0,
+         !project.sceneList.scenes.flatMap({ $0.movies }).isEmpty
+      {
+        return nonEmptyMovieSelection(from: allowedSelection as IndexSet, in: outlineView, project: project)
       }
       
       return allowedSelection as IndexSet
@@ -2226,6 +2440,15 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
     {
       if (self.observeNotifications && !undoManager.isUndoing && !undoManager.isRedoing)
       {
+        if let outlineView = self.movieOutlineView,
+           outlineView.selectedRow < 0 || outlineView.selectedRowIndexes.isEmpty,
+           !project.sceneList.scenes.flatMap({ $0.movies }).isEmpty
+        {
+          ensureMovieListSelection(in: project)
+          reloadSelection()
+          return
+        }
+        
         // get selected rows and the main selected row (the last selected one)
         // Note: using the arrow-keys continues from the main selected row
         
@@ -2238,39 +2461,27 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
         {
           if((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
           {
-            self.movieOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
-              if (row == selectedRow)
-              {
-                (rowView as? StructureTableRowView)?.secondaryHighlighted = true
-                (rowView as? StructureTableRowView)?.isSelected = true
-              
-                // needed to force a draw of the secondary-highlight
-                rowView.needsDisplay = true
-              }
-              else
-              {
-                (rowView as? StructureTableRowView)?.secondaryHighlighted = false
-                rowView.needsDisplay = true
-              }
-            })
-          
-            // set the selected scene and movie
             if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
                let scene = self.movieOutlineView?.parent(forItem: movie) as? Scene
             {
               project.sceneList.selectedScene = scene
               scene.selectedMovie = movie
+              scene.selectedMovies.insert(movie)
               
               self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: movie.infoPanelIcon, message: movie.infoPanelString))
             }
           }
           else
           {
-            // since extending the selection changes the 'selectedRow' (the last selected item), set it back
-            // this will NOT change the selection, but only update the 'selectedRow'
-            // This is important when changing the selection afterwards with the 'up/down' keys, it will start from the 'selectedRow'.
             self.movieOutlineView?.selectRowIndexes(IndexSet(integer: oldSelectedRow), byExtendingSelection: true)
           }
+          
+          if let outlineView = self.movieOutlineView
+          {
+            ensureMovieSelectionConsistency(in: project, outlineView: outlineView)
+          }
+          syncStructureRowViewHighlights()
+          syncMovieListCellBackgroundStyles()
         }
         
         self.updateDetailViewController()

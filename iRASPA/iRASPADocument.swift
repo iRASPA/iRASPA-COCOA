@@ -352,7 +352,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         // make sure to run this on the main thread
         DispatchQueue.main.async
           {
-            projectTreeNode.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+            self.documentData.projectData.insertNode(projectTreeNode, inItem: self.documentData.projectLocalRootNode, atIndex: 0)
             
             if #available(OSX 11.0, *)
             {
@@ -399,7 +399,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          self.documentData.projectData.insertNode(proxyProject, inItem: self.documentData.projectLocalRootNode, atIndex: 0)
           
           if #available(OSX 11.0, *)
           {
@@ -439,7 +439,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-           proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+           self.documentData.projectData.insertNode(proxyProject, inItem: self.documentData.projectLocalRootNode, atIndex: 0)
           
           if #available(OSX 11.0, *)
           {
@@ -479,7 +479,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          self.documentData.projectData.insertNode(proxyProject, inItem: self.documentData.projectLocalRootNode, atIndex: 0)
           
           if #available(OSX 11.0, *)
           {
@@ -519,7 +519,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          self.documentData.projectData.insertNode(proxyProject, inItem: self.documentData.projectLocalRootNode, atIndex: 0)
           
           if #available(OSX 11.0, *)
           {
@@ -559,7 +559,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          self.documentData.projectData.insertNode(proxyProject, inItem: self.documentData.projectLocalRootNode, atIndex: 0)
           
           if #available(OSX 11.0, *)
           {
@@ -599,7 +599,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          self.documentData.projectData.insertNode(proxyProject, inItem: self.documentData.projectLocalRootNode, atIndex: 0)
           
           if #available(OSX 11.0, *)
           {
@@ -639,7 +639,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          self.documentData.projectData.insertNode(proxyProject, inItem: self.documentData.projectLocalRootNode, atIndex: 0)
           
           if #available(OSX 11.0, *)
           {
@@ -679,7 +679,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          self.documentData.projectData.insertNode(proxyProject, inItem: self.documentData.projectLocalRootNode, atIndex: 0)
           
           if #available(OSX 11.0, *)
           {
@@ -719,7 +719,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
+          self.documentData.projectData.insertNode(proxyProject, inItem: self.documentData.projectLocalRootNode, atIndex: 0)
           
           if #available(OSX 11.0, *)
           {

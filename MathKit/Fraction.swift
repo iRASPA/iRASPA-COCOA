@@ -78,22 +78,50 @@ public struct Fraction {
         self.init(num: n, den: 1)
     }
     public init(_ n: Double) {
-        let nArr = "\(n)".split(separator: ".")
-        let decimal = (pre: Int(nArr[0])!, post: Int(nArr[1])!)
-        
-        let sign = n < 0.0 ? -1 : 1
-        
-        guard decimal.post != 0 else {
-            self.init(num: sign * decimal.pre, den: 1)
-            return
-        }
-        
-        let den = Int(pow(10.0, Double(nArr[1].count)))
-        self.init(num: sign * (decimal.post + abs(decimal.pre) * den), den: den)
-        
+        let components = Fraction.rationalComponents(from: n)
+        self.init(num: components.numerator, den: components.denominator)
     }
     public init(_ n: Float) {
         self.init(Double(n))
+    }
+    
+    private static func rationalComponents(from value: Double) -> (numerator: Int, denominator: Int)
+    {
+        if value == 0 || value.isNaN
+        {
+            return (0, 1)
+        }
+        precondition(value.isFinite, "Cannot convert non-finite Double to Fraction")
+        
+        let sign = value < 0 ? -1 : 1
+        let absValue = abs(value)
+        
+        var intPart: Double = 0
+        let fractionalPart = modf(absValue, &intPart)
+        
+        if fractionalPart == 0, let integerValue = Int(exactly: intPart)
+        {
+            return (sign * integerValue, 1)
+        }
+        
+        let scale = 1_000_000_000.0
+        var numerator = Int(round(absValue * scale))
+        var denominator = Int(scale)
+        let divisor = gcd(numerator, denominator)
+        numerator /= divisor
+        denominator /= divisor
+        return (sign * numerator, denominator)
+    }
+    
+    private static func gcd(_ a: Int, _ b: Int) -> Int
+    {
+        var a = abs(a)
+        var b = abs(b)
+        while b != 0
+        {
+            (a, b) = (b, a % b)
+        }
+        return a
     }
     
     // Constants
@@ -192,7 +220,8 @@ extension Fraction: ExpressibleByFloatLiteral {
     public typealias FloatLiteralType = Double
     
     public init(floatLiteral value: Double) {
-        self.init(value)
+        let components = Fraction.rationalComponents(from: value)
+        self.init(num: components.numerator, den: components.denominator)
     }
     
 }

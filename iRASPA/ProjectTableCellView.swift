@@ -53,12 +53,28 @@ public class ProjectTableCellView: NSTableCellView, ProgressIndicator
   {
     didSet
     {
-      // forward to textField
-      self.textField?.cell?.backgroundStyle = backgroundStyle
-      self.imageView?.cell?.backgroundStyle = backgroundStyle
-      self.progressIndicator?.backgroundStyle = backgroundStyle
-      self.cancelButton?.cell?.backgroundStyle = backgroundStyle
+      syncSelectionAppearance(for: backgroundStyle)
     }
+  }
+  
+  func syncSelectionAppearance(for style: NSView.BackgroundStyle)
+  {
+    textField?.cell?.backgroundStyle = style
+    (imageView as? TableImageViewIcon)?.applyBackgroundStyle(style)
+    imageView?.cell?.backgroundStyle = style
+    progressIndicator?.backgroundStyle = style
+    cancelButton?.cell?.backgroundStyle = style
+    
+    if style == .emphasized
+    {
+      textField?.textColor = NSColor.alternateSelectedControlTextColor
+    }
+    else if textField?.textColor == NSColor.alternateSelectedControlTextColor
+    {
+      textField?.textColor = nil
+    }
+    
+    textField?.needsDisplay = true
   }
 }
 

@@ -149,7 +149,7 @@
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qXV-RW-9pQ">
                                                                     <rect key="frame" x="0.0" y="0.0" width="200" height="16"/>
                                                                     <subviews>
-                                                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="N6O-8n-MXp">
+                                                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="N6O-8n-MXp" customClass="TableListNameTextField" customModule="iRASPA" customModuleProvider="target">
                                                                             <rect key="frame" x="-2" y="0.0" width="96" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="J49-HP-IXW">
                                                                                 <font key="font" usesAppearanceFont="YES"/>
@@ -187,7 +187,7 @@
                                                                             <rect key="frame" x="0.0" y="1" width="20" height="20"/>
                                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="tg4-ah-Nep"/>
                                                                         </imageView>
-                                                                        <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pKy-u3-mQq">
+                                                                        <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pKy-u3-mQq" customClass="TableListNameTextField" customModule="iRASPA" customModuleProvider="target">
                                                                             <rect key="frame" x="22" y="2" width="129" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="rpD-Za-uPb">
                                                                                 <font key="font" metaFont="system"/>
@@ -466,7 +466,7 @@
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zUf-wC-ePn">
                                                                     <rect key="frame" x="0.0" y="0.0" width="202" height="16"/>
                                                                     <subviews>
-                                                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Yvh-dC-Syw">
+                                                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Yvh-dC-Syw" customClass="TableListNameTextField" customModule="iRASPA" customModuleProvider="target">
                                                                             <rect key="frame" x="-2" y="0.0" width="96" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="Dl8-Oq-8Mi">
                                                                                 <font key="font" usesAppearanceFont="YES"/>
@@ -517,7 +517,7 @@
                                                                             <rect key="frame" x="20" y="-1" width="20" height="20"/>
                                                                             <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="NSActionTemplate" id="HVg-Rw-Y2H"/>
                                                                         </imageView>
-                                                                        <textField focusRingType="none" horizontalHuggingPriority="240" verticalHuggingPriority="750" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="yFf-MP-s27">
+                                                                        <textField focusRingType="none" horizontalHuggingPriority="240" verticalHuggingPriority="750" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="yFf-MP-s27" customClass="TableListNameTextField" customModule="iRASPA" customModuleProvider="target">
                                                                             <rect key="frame" x="42" y="1" width="169" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="sxb-xU-PUp">
                                                                                 <font key="font" metaFont="system"/>
@@ -743,14 +743,14 @@
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="18" horizontalPageScroll="10" verticalLineScroll="18" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAD-27-31V">
                                 <rect key="frame" x="0.0" y="24" width="238" height="837"/>
-                                <clipView key="contentView" drawsBackground="NO" id="n3u-Gs-TV3">
+                                <clipView key="contentView" drawsBackground="NO" id="n3u-Gs-TV3" customClass="MyNSClipView" customModule="iRASPAKit">
                                     <rect key="frame" x="1" y="1" width="236" height="835"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="sourceList" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" id="q7L-dU-acz" userLabel="Frame Table View" customClass="FrameListTableView" customModule="iRASPA" customModuleProvider="target">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" id="q7L-dU-acz" userLabel="Frame Table View" customClass="FrameListTableView" customModule="iRASPA" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="236" height="835"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <size key="intercellSpacing" width="17" height="0.0"/>
+                                            <size key="intercellSpacing" width="3" height="0.0"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
@@ -777,7 +777,7 @@
                                                                             <rect key="frame" x="0.0" y="-1" width="20" height="20"/>
                                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="1Wq-7h-KmM"/>
                                                                         </imageView>
-                                                                        <textField focusRingType="none" horizontalHuggingPriority="240" verticalHuggingPriority="750" horizontalCompressionResistancePriority="740" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XS2-c7-scl">
+                                                                        <textField focusRingType="none" horizontalHuggingPriority="240" verticalHuggingPriority="750" horizontalCompressionResistancePriority="740" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XS2-c7-scl" customClass="TableListNameTextField" customModule="iRASPA" customModuleProvider="target">
                                                                             <rect key="frame" x="25" y="1" width="176" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="A2b-v0-dYs">
                                                                                 <font key="font" metaFont="system"/>
@@ -810,7 +810,7 @@
                                                                 <outlet property="textField" destination="XS2-c7-scl" id="72i-nK-Idm"/>
                                                             </connections>
                                                         </tableCellView>
-                                                        <customView identifier="frameTableRowView" wantsLayer="YES" id="qOt-Ok-HOM" customClass="FrameTableRowView" customModule="iRASPA" customModuleProvider="target">
+                                                        <customView identifier="frameTableRowView" id="qOt-Ok-HOM" customClass="FrameTableRowView" customModule="iRASPA" customModuleProvider="target">
                                                             <rect key="frame" x="18" y="17" width="199" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         </customView>

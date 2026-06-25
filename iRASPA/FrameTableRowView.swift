@@ -32,105 +32,13 @@
 import Cocoa
 
 
-// View-based table-views: row drawing customization should be done by subclassing NSTableRowView.
-
-public class FrameTableRowView: NSTableRowView, CALayerDelegate
+public class FrameTableRowView: SourceListStyledTableRowView
 {
-  public var secondaryHighlighted: Bool = false
+  override public var isOpaque: Bool { true }
   
-  var shapeLayer: CAShapeLayer? = nil
-  var path: CGPath = CGMutablePath()
-    
-  override public var isOpaque: Bool { return false }
-  
-  override init(frame frameRect: NSRect)
+  override public func drawBackground(in dirtyRect: NSRect)
   {
-    super.init(frame: frameRect)
-    wantsLayer = true
-    
-    // Optimzing Drawing and scrolling, 2013 session 215
-    self.canDrawSubviewsIntoLayer = true
-    
-    self.autoresizesSubviews = true
-  }
-  
-  required public init?(coder: NSCoder)
-  {
-    super.init(coder: coder)
-    wantsLayer = true
-    
-    // Optimzing Drawing and scrolling, 2013 session 215
-    self.canDrawSubviewsIntoLayer = true
-    
-    self.autoresizesSubviews = true
-  }
-  
-  public override func makeBackingLayer() -> CALayer
-  {
-    let layer = super.makeBackingLayer()
-    let shapeLayer =  CAShapeLayer()
-    shapeLayer.fillColor = nil
-    
-    // Make sure to draw 'on top'
-    shapeLayer.zPosition = 1.0
-    layer.addSublayer(shapeLayer)
-    self.shapeLayer = shapeLayer
-    return layer
-  }
-  
-  override public var wantsUpdateLayer: Bool
-  {
-    return true
-  }
-  
-  deinit
-  {
-    self.shapeLayer = nil
-  }
-  
-  public override func updateLayer()
-  {
-    if secondaryHighlighted
-    {
-      if let shapeLayer = shapeLayer
-      {
-        var leftBoundary: CGFloat = self.frame.minX
-        var width: CGFloat = self.frame.width
-        if let visualEffectView = self.subviews.filter({$0.isKind(of: NSVisualEffectView.self)}).first
-        {
-          leftBoundary = visualEffectView.frame.minX
-          width = visualEffectView.frame.width
-        }
-        
-        let cornerHeight: CGFloat = 6.0
-        let cornerWidth: CGFloat = 6.0
-        let rect: CGRect = CGRect(x: leftBoundary, y: 0.0, width: width, height: max(12,self.bounds.height))
-      
-        // Assertion: (corner_height >= 0 && 2 * corner_height <= CGRectGetHeight(rect))
-        if ((cornerHeight >= 0) && (2.0 * cornerHeight <= rect.height ))
-        {
-          self.path = CGPath(roundedRect: rect, cornerWidth: cornerWidth, cornerHeight: cornerHeight, transform: nil)
-        }
-      
-        shapeLayer.path = self.path
-      
-        if (isEmphasized)
-        {
-          shapeLayer.strokeColor = NSColor.white.cgColor
-          shapeLayer.lineWidth = 2.0
-        }
-        else
-        {
-          shapeLayer.strokeColor = NSColor.systemGray.cgColor
-          shapeLayer.lineWidth = 2.0
-        }
-      }
-    }
-    else
-    {
-      self.shapeLayer?.path = nil
-    }
+    fillListBackground(in: bounds)
+    super.drawBackground(in: dirtyRect)
   }
 }
-
-

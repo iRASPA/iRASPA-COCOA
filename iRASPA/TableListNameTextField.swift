@@ -31,80 +31,56 @@
 
 import Cocoa
 
-class FrameListTableView: NSTableView
+/// Name field for source-list rows: single click selects the row;
+/// double-click calls `beginRenaming()` to enable editing.
+class TableListNameTextField: NSTextField
 {
-  static func sourceListBackgroundColor() -> NSColor
-  {
-    NSColor(named: "_sourceListBackgroundColor") ?? NSColor.textBackgroundColor
-  }
-  
-  override var isOpaque: Bool
-  {
-    return true
-  }
-  
-  override func awakeFromNib()
-  {
-    super.awakeFromNib()
-    applySourceListChrome()
-  }
-  
-  func applySourceListChrome()
-  {
-    if #available(macOS 11.0, *)
-    {
-      style = .plain
-    }
-    
-    backgroundColor = Self.sourceListBackgroundColor()
-    
-    guard let scrollView = enclosingScrollView else { return }
-    
-    scrollView.drawsBackground = true
-    scrollView.backgroundColor = backgroundColor
-    scrollView.contentView.drawsBackground = true
-    scrollView.contentView.backgroundColor = backgroundColor
-  }
-  
-  override func drawBackground(inClipRect clipRect: NSRect)
-  {
-    backgroundColor.setFill()
-    clipRect.fill()
-  }
+  private(set) var allowsRenaming: Bool = false
   
   override var acceptsFirstResponder: Bool
   {
-    return true
+    return allowsRenaming && super.acceptsFirstResponder
   }
   
-  override func becomeFirstResponder() -> Bool
+  override func mouseDown(with event: NSEvent)
   {
-    self.enumerateAvailableRowViews({ (rowView, row) in
-      rowView.isEmphasized = true
-      rowView.needsDisplay = true
-    })
-    return true
-  }
-  
-  override func resignFirstResponder() -> Bool
-  {
-    self.enumerateAvailableRowViews({ (rowView, row) in
-      rowView.isEmphasized = false
-      rowView.needsDisplay = true
-    })
-    return true
-  }
-  
-  public override func resize(withOldSuperviewSize oldSize: NSSize)
-  {
-    super.resizeSubviews(withOldSize: oldSize)
-    self.enumerateAvailableRowViews { (rowView, index) in
-      rowView.needsDisplay = true
+    if allowsRenaming
+    {
+      super.mouseDown(with: event)
+      return
+    }
+    
+    if let listView = enclosingListView()
+    {
+      listView.mouseDown(with: event)
+    }
+    else
+    {
+      super.mouseDown(with: event)
     }
   }
   
-  public func reloadSelection()
+  func beginRenaming()
   {
-    (self.delegate as? Reloadable)?.reloadData()
+    allowsRenaming = true
+    isEditable = true
+  }
+  
+  func endRenaming()
+  {
+    allowsRenaming = false
+    isEditable = false
+  }
+  
+  private func enclosingListView() -> NSView?
+  {
+    var view: NSView? = superview
+    while let current = view
+    {
+      if current is NSOutlineView || current is NSTableView { return current }
+      view = current.superview
+    }
+    return nil
   }
 }
+

@@ -70,14 +70,17 @@ class DecodePasteboardItem: FKOperation
       DispatchQueue.main.async(execute: {
         self.placeholder.displayName = readObject.displayName
         self.placeholder.representedObject = readObject.representedObject
-        self.placeholder.childNodes = readObject.childNodes
         //self.placeholder.renderCamera = readObject.renderCamera
-        for child in self.placeholder.childNodes
+        let projectData = self.document.documentData.projectData
+        for child in Array(self.placeholder.childNodes)
         {
-          child.parentNode = self.placeholder
+          projectData.removeNode(child)
         }
-        let predicate = self.document.documentData.projectData.filterPredicate
-        self.placeholder.updateFilteredChildrenRecursively(predicate)
+        for (index, child) in readObject.childNodes.enumerated()
+        {
+          projectData.insertNode(child, inItem: self.placeholder, atIndex: index)
+        }
+        projectData.updateFilteredNodes()
         self.placeholder.representedObject.isEdited = true
         if let row: Int = self.outlineView?.row(forItem: self.placeholder)
         {

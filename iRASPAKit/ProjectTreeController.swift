@@ -229,12 +229,13 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     {
       let node: ProjectTreeNode = parentNode.filteredAndSortedNodes[index]
       
-      return parentNode.childNodes.firstIndex(of: node)!
+      if let childIndex = parentNode.childNodes.firstIndex(of: node)
+      {
+        return childIndex
+      }
     }
-    else // return last index to add a new item
-    {
-      return parentNode.childNodes.count
-    }
+    
+    return parentNode.childNodes.count
   }
   
   public func isSameNode(_ item: ProjectTreeNode?, index: Int, node: ProjectTreeNode) -> Bool
@@ -603,11 +604,11 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     
     let node: ProjectTreeNode = try decoder.decode(ProjectTreeNode.self)
     let projectLocalRootNode: ProjectTreeNode = rootNodes[1].childNodes[0]
-    projectLocalRootNode.childNodes = node.childNodes
-    for child in projectLocalRootNode.childNodes
+    for (index, child) in node.childNodes.enumerated()
     {
-      child.parentNode = projectLocalRootNode
+      insertNode(child, inItem: projectLocalRootNode, atIndex: index)
     }
+    updateFilteredNodes()
   }
   
 }

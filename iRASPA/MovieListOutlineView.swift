@@ -45,11 +45,19 @@ class MovieListOutlineView: NSOutlineView
   
   override func becomeFirstResponder() -> Bool
   {
+    self.enumerateAvailableRowViews({ (rowView,row) in
+      rowView.isEmphasized = true
+      rowView.needsDisplay = true
+    })
     return true
   }
   
   override func resignFirstResponder() -> Bool
   {
+    self.enumerateAvailableRowViews({ (rowView,row) in
+      rowView.isEmphasized = false
+      rowView.needsDisplay = true
+    })
     return true
   }
   
@@ -57,7 +65,7 @@ class MovieListOutlineView: NSOutlineView
   {
     super.resizeSubviews(withOldSize: oldSize)
     self.enumerateAvailableRowViews { (rowView, index) in
-      rowView.layer?.setNeedsDisplay()
+      rowView.needsDisplay = true
     }
   }
   

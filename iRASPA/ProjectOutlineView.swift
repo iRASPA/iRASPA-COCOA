@@ -56,7 +56,7 @@ class ProjectOutlineView: NSOutlineView
   {
     self.enumerateAvailableRowViews({ (rowView,row) in
       rowView.isEmphasized = true
-      rowView.layer?.setNeedsDisplay()
+      rowView.needsDisplay = true
     })
     return true
   }
@@ -65,7 +65,7 @@ class ProjectOutlineView: NSOutlineView
   {
     self.enumerateAvailableRowViews({ (rowView,row) in
       rowView.isEmphasized = false
-      rowView.layer?.setNeedsDisplay()
+      rowView.needsDisplay = true
     })
     return true
   }
@@ -74,7 +74,7 @@ class ProjectOutlineView: NSOutlineView
   {
     super.resizeSubviews(withOldSize: oldSize)
     self.enumerateAvailableRowViews { (rowView, index) in
-      rowView.layer?.setNeedsDisplay()
+      rowView.needsDisplay = true
     }
   }
   

@@ -32,142 +32,27 @@
 import Cocoa
 
 
-// View-based table-views: row drawing customization should be done by subclassing NSTableRowView.
-public class ProjectTableRowView: NSTableRowView, CALayerDelegate
+public class ProjectTableRowView: SourceListStyledTableRowView
 {
-  public var secondaryHighlighted: Bool = false
-  
   var isImplicitelySelected: Bool = false
-  
-  var shapeLayer: CAShapeLayer? = nil
-  var implicitelySelectedLayer:ActionCALayer?
-  var path: CGPath = CGMutablePath()
-  
-  override public var isOpaque: Bool { return false }
-  
-  override init(frame frameRect: NSRect)
   {
-    super.init(frame: frameRect)
-    
-    self.wantsLayer = true
-    
-    // Optimzing Drawing and scrolling, 2013 session 215
-    self.canDrawSubviewsIntoLayer = true
-  }
-  
-  required public init?(coder: NSCoder)
-  {
-    super.init(coder: coder)
-    
-    self.wantsLayer = true
-    
-    // Optimzing Drawing and scrolling, 2013 session 215
-    self.canDrawSubviewsIntoLayer = true
-  }
-  
-  public override func makeBackingLayer() -> CALayer
-  {
-    let layer = super.makeBackingLayer()
-    
-    
-    let shapeLayer =  CAShapeLayer()
-    shapeLayer.fillColor = nil
-    
-    // Make sure to draw 'on top'
-    shapeLayer.zPosition = 1.0
-    layer.addSublayer(shapeLayer)
-    
-    self.shapeLayer = shapeLayer
-    
-    let maskLayer = ActionCALayer()
-    maskLayer.allowActions = false
-    layer.addSublayer(maskLayer)
-    self.implicitelySelectedLayer = maskLayer
-    
-    return layer
-  }
-  
-  override public var wantsUpdateLayer: Bool
-  {
-    return true
-  }
-  
-  deinit
-  {
-    self.shapeLayer = nil
-  }
-  
-  public var allowAction: Bool
-  {
-    get
+    didSet
     {
-      return self.implicitelySelectedLayer?.allowActions ?? false
-    }
-    set(newValue)
-    {
-      self.implicitelySelectedLayer?.allowActions = newValue
+      guard oldValue != isImplicitelySelected else { return }
+      needsDisplay = true
     }
   }
   
-  public override func updateLayer()
+  override public func selectionRect() -> NSRect
   {
-    if isImplicitelySelected && !secondaryHighlighted
+    NSRect(x: 0.0, y: 0.0, width: listRowContentWidth(), height: max(12.0, bounds.height))
+  }
+  
+  override public func drawAdditionalBackground(in rect: NSRect)
+  {
+    if isImplicitelySelected && !secondaryHighlighted && !isSelected
     {
-      implicitelySelectedLayer?.frame = (self.layer?.bounds ?? CGRect()).insetBy(dx: 10, dy: 0)
-      if self.isEmphasized
-      {
-        implicitelySelectedLayer?.backgroundColor = NSColor.selectedContentBackgroundColor.withAlphaComponent(0.20).cgColor
-      }
-      else
-      {
-        implicitelySelectedLayer?.backgroundColor = NSColor.systemGray.withAlphaComponent(0.2).cgColor
-      }
+      drawImplicitSelectionBackground(in: rect, emphasized: emphasizesSelection)
     }
-    else
-    {
-      self.implicitelySelectedLayer?.backgroundColor = CGColor.init(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.0)
-    }
-    
-    if secondaryHighlighted
-    {
-      if let shapeLayer = shapeLayer
-      {
-        var leftBoundary: CGFloat = self.frame.minX
-        var width: CGFloat = self.frame.width
-        if let visualEffectView = self.subviews.filter({$0.isKind(of: NSVisualEffectView.self)}).first
-        {
-          leftBoundary = visualEffectView.frame.minX
-          width = visualEffectView.frame.width
-        }
-        
-        let cornerHeight: CGFloat = 6.0
-        let cornerWidth: CGFloat = 6.0
-        let rect: CGRect = CGRect(x: leftBoundary, y: 0.0, width: width, height: max(12, self.bounds.height))
-      
-        // Assertion: (corner_height >= 0 && 2 * corner_height <= CGRectGetHeight(rect))
-        if ((cornerHeight >= 0) && (2.0 * cornerHeight <= rect.height ))
-        {
-          self.path = CGPath(roundedRect: rect, cornerWidth: cornerWidth, cornerHeight: cornerHeight, transform: nil)
-        }
-      
-        shapeLayer.path = self.path
-      
-        if (isEmphasized)
-        {
-          shapeLayer.strokeColor = NSColor.white.cgColor
-          shapeLayer.lineWidth = 2.0
-        }
-        else
-        {
-          shapeLayer.strokeColor = NSColor.systemGray.cgColor
-          shapeLayer.lineWidth = 2.0
-        }
-      }
-    }
-    else
-    {
-      shapeLayer?.path = nil
-    }    
   }
 }
-

@@ -97,7 +97,7 @@ extension ProjectViewController
           
           for (index, child) in documentDataGallery.projectLocalRootNode.childNodes.enumerated()
           {
-            child.insert(inParent: documentData.galleryLocalRootNode, atIndex: index)
+            documentData.projectData.insertNode(child, inItem: documentData.galleryLocalRootNode, atIndex: index)
           }
           
           documentData.galleryLocalRootNode.flattenedNodes().forEach{$0.isEditable = false}
@@ -146,7 +146,7 @@ extension ProjectViewController
               documentData.cloudCoREMOFRootNode.representedObject.fileNameUUID = cloudProjectTreeNode.representedObject.fileNameUUID
               for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.insert(inParent: documentData.cloudCoREMOFRootNode, atIndex: index)
+                documentData.projectData.insertNode(child, inItem: documentData.cloudCoREMOFRootNode, atIndex: index)
               }
               
               documentData.cloudCoREMOFRootNode.flattenedNodes().forEach{$0.isEditable = false}
@@ -204,7 +204,7 @@ extension ProjectViewController
               documentData.cloudCoREMOFDDECRootNode.representedObject.fileNameUUID = cloudProjectTreeNode.representedObject.fileNameUUID
               for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.insert(inParent: documentData.cloudCoREMOFDDECRootNode, atIndex: index)
+                documentData.projectData.insertNode(child, inItem: documentData.cloudCoREMOFDDECRootNode, atIndex: index)
               }
               
               documentData.cloudCoREMOFDDECRootNode.flattenedNodes().forEach{$0.isEditable = false}
@@ -262,7 +262,7 @@ extension ProjectViewController
               documentData.cloudCoREMOFASR2019RootNode.representedObject.fileNameUUID = cloudProjectTreeNode.representedObject.fileNameUUID
               for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.insert(inParent: documentData.cloudCoREMOFASR2019RootNode, atIndex: index)
+                documentData.projectData.insertNode(child, inItem: documentData.cloudCoREMOFASR2019RootNode, atIndex: index)
               }
               
               documentData.cloudCoREMOFASR2019RootNode.flattenedNodes().forEach{$0.isEditable = false}
@@ -320,7 +320,7 @@ extension ProjectViewController
               documentData.cloudCoREMOFFSR2019RootNode.representedObject.fileNameUUID = cloudProjectTreeNode.representedObject.fileNameUUID
               for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.insert(inParent: documentData.cloudCoREMOFFSR2019RootNode, atIndex: index)
+                documentData.projectData.insertNode(child, inItem: documentData.cloudCoREMOFFSR2019RootNode, atIndex: index)
               }
               
               documentData.cloudCoREMOFFSR2019RootNode.flattenedNodes().forEach{$0.isEditable = false}
@@ -378,7 +378,7 @@ extension ProjectViewController
               documentData.cloudIZARootNode.representedObject.fileNameUUID = cloudProjectTreeNode.representedObject.fileNameUUID
               for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.insert(inParent: documentData.cloudIZARootNode, atIndex: index)
+                documentData.projectData.insertNode(child, inItem: documentData.cloudIZARootNode, atIndex: index)
               }
               
               documentData.projectData.updateFilteredNodes()
