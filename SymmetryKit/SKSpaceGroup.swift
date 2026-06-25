@@ -84,6 +84,8 @@ extension String
 public struct SKSpacegroup
 {
   public var spaceGroupSetting: SKSpaceGroupSetting
+  /// When set, symmetry expansion uses the CIF `_symmetry_equiv_pos_as_xyz` operations instead of the database encoding.
+  public var cifSymmetryOperations: [SKSeitzIntegerMatrix]? = nil
   var angleTolerance: Double = -1.0
   
   
@@ -227,10 +229,11 @@ public struct SKSpacegroup
     self.init(Hall: "\' P 1\'")!
   }
   
-  public init(HallNumber: Int)
+  public init(HallNumber: Int, cifSymmetryOperations: [SKSeitzIntegerMatrix]? = nil)
   {
     assert(HallNumber >= 0 && HallNumber <= 530)
     self.spaceGroupSetting = SKSpacegroup.spaceGroupData[HallNumber]
+    self.cifSymmetryOperations = cifSymmetryOperations
   }
   
   public init?(number: Int)
@@ -309,7 +312,15 @@ public struct SKSpacegroup
   
   public func listOfSymmetricPositions(_ pos: SIMD3<Double>) -> [SIMD3<Double>]
   {
-    let seitzMatrices = self.spaceGroupSetting.fullSeitzMatrices
+    let seitzMatrices: SKIntegerSymmetryOperationSet
+    if let cifSymmetryOperations = self.cifSymmetryOperations
+    {
+      seitzMatrices = SKIntegerSymmetryOperationSet(operations: cifSymmetryOperations)
+    }
+    else
+    {
+      seitzMatrices = self.spaceGroupSetting.fullSeitzMatrices
+    }
     let m: Int = seitzMatrices.operations.count
     
     var positions: [SIMD3<Double>] = [SIMD3<Double>](repeating: SIMD3<Double>(), count: m)

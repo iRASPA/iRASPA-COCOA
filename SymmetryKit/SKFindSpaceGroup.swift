@@ -346,6 +346,16 @@ extension SKSpacegroup
     let dataBaseSpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
     var dataBaseSpaceGroupGenerators = SKSeitzIntegerMatrix.SeitzMatrices(generatorEncoding: dataBaseSpaceGroup.spaceGroupSetting.encodedGenerators)
     
+    // P 1 and P -1 have no Hall generators; origin is arbitrary at zero.
+    if dataBaseSpaceGroup.spaceGroupSetting.encodedGenerators.isEmpty
+    {
+      if centering != dataBaseSpaceGroup.spaceGroupSetting.centring
+      {
+        return nil
+      }
+      return SIMD3<Double>(0, 0, 0)
+    }
+    
     // apply change-of-basis to generators
     for i in 0..<dataBaseSpaceGroupGenerators.count
     {

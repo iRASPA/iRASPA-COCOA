@@ -286,7 +286,9 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
 
   public static func SeitzMatrices(generatorEncoding encoding: [UInt8]) -> [SKSeitzIntegerMatrix]
   {
-    let m: Int = encoding.count/3
+    // Origin-shift matching uses three Hall generators (9x3 Smith normal form).
+    // Always return three matrices; unused slots are identity (padding required by getOriginShift).
+    let m: Int = min(encoding.count / 3, 3)
     
     var matrices: [SKSeitzIntegerMatrix] = [SKSeitzIntegerMatrix](repeating: SKSeitzIntegerMatrix(rotation: SKRotationMatrix.identity, translation: SIMD3<Int32>(0,0,0)), count: 3)
     

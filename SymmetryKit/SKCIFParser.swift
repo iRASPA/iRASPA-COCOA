@@ -63,10 +63,14 @@ public final class SKCIFParser: SKParser, ProgressReporting
     case HallSymbolFound = 1
     case HMSymbolFound = 2
     case NumberFound = 3
+    case CIFSymmetryOperationsFound = 4
   }
   
   var spaceGroupFound: SpaceGroupStatus = .notFound
   var spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
+  var spaceGroupITNumber: Int = 0
+  var cifSymmetryOperationStrings: [String] = []
+  var cifSymmetryOperations: [SKSeitzIntegerMatrix] = []
   
   var name: String = ""
   
@@ -179,6 +183,8 @@ public final class SKCIFParser: SKParser, ProgressReporting
     // post-reading
     //=============
     
+    resolveSpaceGroupFromCIFSymmetryOperations()
+    
     scene.append([SKStructure()])
     
     let cell: SKCell = SKCell(a: a, b: b, c: c, alpha: alpha*Double.pi/180.0, beta: beta*Double.pi/180.0, gamma: gamma*Double.pi/180.0)
@@ -195,6 +201,8 @@ public final class SKCIFParser: SKParser, ProgressReporting
       scene[currentMovie][currentFrame].drawUnitCell = true
       scene[currentMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
     }
+    
+    scene[currentMovie][currentFrame].cifSymmetryOperations = self.cifSymmetryOperations.isEmpty ? nil : self.cifSymmetryOperations
     
     scene[currentMovie][currentFrame].displayName = self.name
     
@@ -230,6 +238,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
         scene[currentSolventMovie][currentFrame].kind = .crystalSolvent
         scene[currentSolventMovie][currentFrame].drawUnitCell = true
         scene[currentSolventMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
+      scene[currentSolventMovie][currentFrame].cifSymmetryOperations = self.cifSymmetryOperations.isEmpty ? nil : self.cifSymmetryOperations
       }
     
       scene[currentSolventMovie][currentFrame].displayName = self.name
@@ -352,6 +361,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
       {
         self.spaceGroup = spaceGroup
         spaceGroupFound = .HallSymbolFound
+        self.spaceGroupITNumber = spaceGroup.spaceGroupSetting.spaceGroupNumber
       }
     case "_space_group_name_H-M_alt",
          "_symmetry_space_group_name_H-M",
@@ -363,6 +373,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
         {
           self.spaceGroup = spaceGroup
           spaceGroupFound = .HMSymbolFound
+          self.spaceGroupITNumber = spaceGroup.spaceGroupSetting.spaceGroupNumber
         }
       }
     case "_space_group_IT_number",
@@ -371,11 +382,22 @@ public final class SKCIFParser: SKParser, ProgressReporting
       if (spaceGroupFound == .notFound)
       {
         let number: Int = scanInteger()
+        self.spaceGroupITNumber = number
         if let spaceGroup = SKSpacegroup(number: number)
         {
           self.spaceGroup = spaceGroup
           spaceGroupFound = .NumberFound
         }
+      }
+      else
+      {
+        self.spaceGroupITNumber = scanInteger()
+      }
+    case "_symmetry_equiv_pos_as_xyz",
+         "_space_group_symop_operation_xyz":
+      if let string: String = scanString()
+      {
+        parseSymmetryEquivPos(string)
       }
     default:
       break
@@ -512,6 +534,50 @@ public final class SKCIFParser: SKParser, ProgressReporting
   // <Tag> = '_'{ <NonBlankChar>}+                                         [case insensitive]
   // <Value> = { '.' | '?' | <Numeric> | <CharString> | <TextField> }      [case sensitive]
   
+  func parseSymmetryEquivPos(_ xyz: String)
+  {
+    let trimmed: String = xyz.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+    guard !trimmed.isEmpty, trimmed != "?", trimmed != "." else { return }
+    cifSymmetryOperationStrings.append(trimmed)
+  }
+  
+  func resolveSpaceGroupFromCIFSymmetryOperations()
+  {
+    guard !cifSymmetryOperationStrings.isEmpty else { return }
+    
+    do
+    {
+      cifSymmetryOperations = try SKCIFSymmetryOperationParser.parseOperations(cifSymmetryOperationStrings)
+    }
+    catch
+    {
+      LogQueue.shared.warning(destination: nil, message: "\(name): failed to parse CIF symmetry operations (\(error))")
+      cifSymmetryOperations = []
+      return
+    }
+    
+    let declaredHallNumber: Int? = spaceGroupFound == .HallSymbolFound ? spaceGroup.spaceGroupSetting.number : nil
+    let declaredHMSymbol: String? = (spaceGroupFound == .HMSymbolFound || spaceGroupFound == .HallSymbolFound) ? spaceGroup.spaceGroupSetting.HM : nil
+    let candidates: [Int] = SKSpacegroup.candidateHallNumbers(spaceGroupITNumber: spaceGroupITNumber, declaredHallNumber: declaredHallNumber, declaredHMSymbol: declaredHMSymbol)
+    
+    guard let identifiedHallNumber: Int = SKSpacegroup.identifyHallNumber(fromCIFSymmetryOperations: cifSymmetryOperations, candidateHallNumbers: candidates) else
+    {
+      LogQueue.shared.warning(destination: nil, message: "\(name): CIF symmetry operations did not match any Hall setting; using operations from CIF for expansion")
+      spaceGroup = SKSpacegroup(HallNumber: spaceGroup.spaceGroupSetting.number, cifSymmetryOperations: cifSymmetryOperations)
+      spaceGroupFound = .CIFSymmetryOperationsFound
+      return
+    }
+    
+    if spaceGroupFound == .HallSymbolFound && identifiedHallNumber != spaceGroup.spaceGroupSetting.number
+    {
+      LogQueue.shared.warning(destination: nil, message: "\(name): CIF symmetry operations identify Hall \(identifiedHallNumber) instead of declared Hall \(spaceGroup.spaceGroupSetting.number)")
+    }
+    
+    spaceGroup = SKSpacegroup(HallNumber: identifiedHallNumber, cifSymmetryOperations: cifSymmetryOperations)
+    spaceGroupFound = .CIFSymmetryOperationsFound
+  }
+  
+  
   func parseLoop()
   {
     var previousScanLocation: String.Index
@@ -556,7 +622,11 @@ public final class SKCIFParser: SKParser, ProgressReporting
       
       if (value != nil)
       {
-        if let chemicalSymbol: String = dictionary["_atom_site_type_symbol"]?.lowercased().capitalizeFirst
+        if let symmetryXYZ: String = dictionary["_symmetry_equiv_pos_as_xyz"] ?? dictionary["_space_group_symop_operation_xyz"]
+        {
+          parseSymmetryEquivPos(symmetryXYZ)
+        }
+        else if let chemicalSymbol: String = dictionary["_atom_site_type_symbol"]?.lowercased().capitalizeFirst
         {
           let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
           

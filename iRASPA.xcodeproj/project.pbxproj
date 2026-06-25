@@ -731,6 +731,9 @@
 		93DE92D1207E2BB00084D303 /* NSPasteboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */; };
 		93E20F8326A5C59100473702 /* FindPointGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8226A5C59100473702 /* FindPointGroupTests.swift */; };
 		93E20F8526A5F3B200473702 /* SpaceGroupCIFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */; };
+		A1C2E3F42680D7A900D47402 /* SKCIFSymmetryOperationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */; };
+		A1C2E3F42680D7A900D47404 /* SKCIFSpaceGroupIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */; };
+		A1C2E3F42680D7A900D47406 /* SKCIFSymmetryOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */; };
 		93E20F8726A603F000473702 /* DelaunayReductionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8626A603F000473702 /* DelaunayReductionTests.swift */; };
 		93E20F8926A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8826A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift */; };
 		93E20F8B26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8A26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift */; };
@@ -2318,6 +2321,9 @@
 		93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPasteboardItem.swift; sourceTree = "<group>"; };
 		93E20F8226A5C59100473702 /* FindPointGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPointGroupTests.swift; sourceTree = "<group>"; };
 		93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupCIFTests.swift; sourceTree = "<group>"; };
+		A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationParser.swift; sourceTree = "<group>"; };
+		A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSpaceGroupIdentification.swift; sourceTree = "<group>"; };
+		A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationTests.swift; sourceTree = "<group>"; };
 		93E20F8626A603F000473702 /* DelaunayReductionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelaunayReductionTests.swift; sourceTree = "<group>"; };
 		93E20F8826A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift; sourceTree = "<group>"; };
 		93E20F8A26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupSpglibNoPartialOccupanciesTests.swift; sourceTree = "<group>"; };
@@ -2743,6 +2749,7 @@
 				93E20F9026A99A5800473702 /* SKAsymmetricUnit.swift */,
 				933700C91EDC610800DD5961 /* SKSpaceGroupSetting.swift */,
 				930DD4DE1E26AA5200B8FE9B /* SKFindSpaceGroup.swift */,
+				A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */,
 				930DD4E31E26AA5200B8FE9B /* SKIntegerSymmetryOperationSet.swift */,
 				93E37F95268C754300AD5DA3 /* SKSymmetryOperationSet.swift */,
 				930DD4E51E26AA5200B8FE9B /* SKVASPReader.swift */,
@@ -3302,6 +3309,7 @@
 				937737F12680D7F600D47499 /* SpaceGroupSpglibTests.swift */,
 				93E20F8A26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift */,
 				93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */,
+				A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */,
 				936E776726B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift */,
 				93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */,
 				931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */,
@@ -3841,6 +3849,7 @@
 				9364BAEC275A287100A78FC6 /* SKParserError.swift */,
 				93EAABA91ED978E200FE61D8 /* SKParser.swift */,
 				93EAABA71ED9787D00FE61D8 /* SKCIFParser.swift */,
+				A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */,
 				93EAABAE1EDACDEE00FE61D8 /* SKPDBParser.swift */,
 				93159FDD1F54235200D8700E /* SKXYZParser.swift */,
 				93518DE026FC8112009A7B8D /* SKVTKParser.swift */,
@@ -4996,6 +5005,8 @@
 				930DD4E61E26AA5200B8FE9B /* SKCell.swift in Sources */,
 				93C5E24223F1A264002BA929 /* SKAsymmetricBond.swift in Sources */,
 				930DD4E81E26AA5200B8FE9B /* SKFindSpaceGroup.swift in Sources */,
+				A1C2E3F42680D7A900D47402 /* SKCIFSymmetryOperationParser.swift in Sources */,
+				A1C2E3F42680D7A900D47404 /* SKCIFSpaceGroupIdentification.swift in Sources */,
 				93FDA72F20554DDB000C4AD7 /* SKVASPWriter.swift in Sources */,
 				93E37F96268C754300AD5DA3 /* SKSymmetryOperationSet.swift in Sources */,
 				93F1E7FF20244A220050ECAC /* SKXYZWriter.swift in Sources */,
@@ -5330,6 +5341,7 @@
 			files = (
 				93E20F8326A5C59100473702 /* FindPointGroupTests.swift in Sources */,
 				93E20F8526A5F3B200473702 /* SpaceGroupCIFTests.swift in Sources */,
+				A1C2E3F42680D7A900D47406 /* SKCIFSymmetryOperationTests.swift in Sources */,
 				93E20F8926A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift in Sources */,
 				93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */,
 				933D79C126905E290023EB94 /* ConventionalCellTests.swift in Sources */,

@@ -129,7 +129,7 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
       for frame in movies
       {
         let spaceGroupHallNumber: Int = frame.spaceGroupHallNumber ?? 1
-        let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: spaceGroupHallNumber)
+        let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: spaceGroupHallNumber, cifSymmetryOperations: frame.cifSymmetryOperations)
         
         let atoms: [SKAsymmetricAtom] = frame.atoms
         let cell: SKCell = frame.cell ?? SKCell(a: 20.0, b: 20.0, c: 20.0, alpha: 90.0*Double.pi/180.0, beta: 90.0*Double.pi/180.0, gamma: 90.0*Double.pi/180.0)

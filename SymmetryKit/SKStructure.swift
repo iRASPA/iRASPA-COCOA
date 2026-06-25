@@ -77,6 +77,7 @@ public class SKStructure
   
   public var cell: SKCell?
   public var spaceGroupHallNumber: Int?
+  public var cifSymmetryOperations: [SKSeitzIntegerMatrix]?
   public var drawUnitCell: Bool? = true
   public var periodic: Bool? = true
   
