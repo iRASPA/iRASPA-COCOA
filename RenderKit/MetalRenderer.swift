@@ -946,7 +946,7 @@ public class MetalRenderer
     commandEncoder.endEncoding()
   }
   
-  func pickingOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize)
+  func pickingOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
   {
     pickingShader.renderPickingTextureWithEncoder(commandBuffer,
                                                   renderPassDescriptor: pickingShader.renderPassDescriptor,
@@ -961,7 +961,10 @@ public class MetalRenderer
                                                   crystalPolygonalPrismPrimitiveShader: metalCrystalPolygonalPrismShader,
                                                   polygonalPrismPrimitiveShader: metalPolygonalPrismShader,
                                                   frameUniformBuffer: frameUniformBuffer,
-                                                  structureUniformBuffers: structureUniformBuffers, size: size)
+                                                  structureUniformBuffers: structureUniformBuffers,
+                                                  size: size,
+                                                  renderQuality: renderQuality,
+                                                  camera: camera)
   }
   
   func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)

@@ -43,7 +43,9 @@ class MetalPickingShader
   var depthState: MTLDepthStencilState! = nil
   var samplerState: MTLSamplerState! = nil
   
-  var atomPipeLine: MTLRenderPipelineState! = nil
+  var atomOrthographicPipeLine: MTLRenderPipelineState! = nil
+  var atomPerspectivePipeLine: MTLRenderPipelineState! = nil
+  var atomMeshPipeLine: MTLRenderPipelineState! = nil
   var internalBondPipeLine: MTLRenderPipelineState! = nil
   var externalBondPipeLine: MTLRenderPipelineState! = nil
   var polygonalPrismPrimitivePipeLine: MTLRenderPipelineState! = nil
@@ -75,21 +77,55 @@ class MetalPickingShader
     }
     samplerState = device.makeSamplerState(descriptor: pSamplerDescriptor!)
     
-    let atomPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    atomPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba32Uint
-    atomPipelineDescriptor.vertexFunction = library.makeFunction(name: "AtomSpherePickingVertexShader")!
-    atomPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
-    atomPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
-    atomPipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSpherePickingFragmentShader")!
-    atomPipelineDescriptor.vertexDescriptor = vertexDescriptor
+    let atomOrthographicPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    atomOrthographicPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba32Uint
+    atomOrthographicPipelineDescriptor.vertexFunction = library.makeFunction(name: "AtomSpherePickingVertexShader")!
+    atomOrthographicPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
+    atomOrthographicPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    atomOrthographicPipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSpherePickingFragmentShader")!
+    atomOrthographicPipelineDescriptor.vertexDescriptor = vertexDescriptor
     
     do
     {
-      self.atomPipeLine = try device.makeRenderPipelineState(descriptor: atomPipelineDescriptor)
+      self.atomOrthographicPipeLine = try device.makeRenderPipelineState(descriptor: atomOrthographicPipelineDescriptor)
     }
     catch
     {
       fatalError("Error occurred when creating atom-picking render pipeline state \(error)")
+    }
+    
+    let atomPerspectivePipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    atomPerspectivePipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba32Uint
+    atomPerspectivePipelineDescriptor.vertexFunction = library.makeFunction(name: "AtomSpherePickingPerspectiveVertexShader")!
+    atomPerspectivePipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
+    atomPerspectivePipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    atomPerspectivePipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSpherePickingPerspectiveFragmentShader")!
+    atomPerspectivePipelineDescriptor.vertexDescriptor = vertexDescriptor
+    
+    do
+    {
+      self.atomPerspectivePipeLine = try device.makeRenderPipelineState(descriptor: atomPerspectivePipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating atom-perspective-picking render pipeline state \(error)")
+    }
+    
+    let atomMeshPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    atomMeshPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba32Uint
+    atomMeshPipelineDescriptor.vertexFunction = library.makeFunction(name: "AtomSphereMeshPickingVertexShader")!
+    atomMeshPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
+    atomMeshPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    atomMeshPipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSphereMeshPickingFragmentShader")!
+    atomMeshPipelineDescriptor.vertexDescriptor = vertexDescriptor
+    
+    do
+    {
+      self.atomMeshPipeLine = try device.makeRenderPipelineState(descriptor: atomMeshPipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating atom-mesh-picking render pipeline state \(error)")
     }
     
     let internalBondPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -183,7 +219,7 @@ class MetalPickingShader
         let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()
       {
         blitEncoder.label = "Picking texture blit command encoder"
-        blitEncoder.copy(from: texture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(Int(point.x),Int(point.y), 0), sourceSize: MTLSizeMake(1, 1, 1), to: textureBuffer, destinationOffset: 0, destinationBytesPerRow: MemoryLayout<Int32>.stride * 4, destinationBytesPerImage: 0)
+        blitEncoder.copy(from: texture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(Int(round(point.x)), Int(round(point.y)), 0), sourceSize: MTLSizeMake(1, 1, 1), to: textureBuffer, destinationOffset: 0, destinationBytesPerRow: MemoryLayout<Int32>.stride * 4, destinationBytesPerImage: 0)
         blitEncoder.synchronize(resource: textureBuffer)
         blitEncoder.endEncoding()
         commandBuffer.commit()
@@ -206,10 +242,10 @@ class MetalPickingShader
         let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()
       {
         blitEncoder.label = "Picking texture blit command encoder"
-        blitEncoder.copy(from: texture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(Int(point.x),Int(point.y), 0), sourceSize: MTLSizeMake(1, 1, 1), to: textureBuffer, destinationOffset: 0, destinationBytesPerRow: MemoryLayout<Int32>.stride * 4, destinationBytesPerImage: 0)
+        blitEncoder.copy(from: texture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(Int(round(point.x)), Int(round(point.y)), 0), sourceSize: MTLSizeMake(1, 1, 1), to: textureBuffer, destinationOffset: 0, destinationBytesPerRow: MemoryLayout<Int32>.stride * 4, destinationBytesPerImage: 0)
         
         blitEncoder.label = "Picking texture blit command encoder"
-        blitEncoder.copy(from: depthTexture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(Int(point.x),Int(point.y), 0), sourceSize: MTLSizeMake(1, 1, 1), to: textureBufferDepth, destinationOffset: 0, destinationBytesPerRow: MemoryLayout<Float>.stride, destinationBytesPerImage: 0)
+        blitEncoder.copy(from: depthTexture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(Int(round(point.x)), Int(round(point.y)), 0), sourceSize: MTLSizeMake(1, 1, 1), to: textureBufferDepth, destinationOffset: 0, destinationBytesPerRow: MemoryLayout<Float>.stride, destinationBytesPerImage: 0)
         
         blitEncoder.synchronize(resource: textureBuffer)
         blitEncoder.synchronize(resource: textureBufferDepth)
@@ -244,7 +280,9 @@ class MetalPickingShader
                                               polygonalPrismPrimitiveShader: MetalPolygonalPrismShader,
                                               frameUniformBuffer: MTLBuffer,
                                               structureUniformBuffers: MTLBuffer?,
-                                              size: CGSize)
+                                              size: CGSize,
+                                              renderQuality: RKRenderQuality,
+                                              camera: RKCamera?)
   {
     if let _: RKRenderDataSource = renderDataSource
     {
@@ -255,8 +293,30 @@ class MetalPickingShader
       commandEncoder.setCullMode(MTLCullMode.back)
       commandEncoder.setFrontFacing(MTLWinding.clockwise)
       
+      let atomVertexBuffer: MTLBuffer
+      let atomIndexBuffer: MTLBuffer
+      let atomPipeline: MTLRenderPipelineState
       
-      commandEncoder.setVertexBuffer(atomOrthographicImposterShader.vertexBuffer, offset: 0, index: 0)
+      switch renderQuality
+      {
+      case .high, .picture:
+        atomVertexBuffer = atomShader.vertexBuffer
+        atomIndexBuffer = atomShader.indexBuffer
+        atomPipeline = atomMeshPipeLine
+      case .medium, .low:
+        atomVertexBuffer = atomOrthographicImposterShader.vertexBuffer
+        atomIndexBuffer = atomOrthographicImposterShader.indexBuffer
+        if let camera: RKCamera = camera, camera.frustrumType == .perspective
+        {
+          atomPipeline = atomPerspectivePipeLine
+        }
+        else
+        {
+          atomPipeline = atomOrthographicPipeLine
+        }
+      }
+      
+      commandEncoder.setVertexBuffer(atomVertexBuffer, offset: 0, index: 0)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
@@ -276,11 +336,11 @@ class MetalPickingShader
             let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
             if (structure.drawAtoms && structure.isVisible &&  (instanceCount > 0) )
             {
-              commandEncoder.setRenderPipelineState(atomPipeLine)
+              commandEncoder.setRenderPipelineState(atomPipeline)
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: atomOrthographicImposterShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: atomOrthographicImposterShader.indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
+              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: atomIndexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: atomIndexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
             }
           }
           

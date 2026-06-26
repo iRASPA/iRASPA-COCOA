@@ -62,12 +62,12 @@ vertex PickingVertexShaderOut AtomSpherePickingVertexShader(const device InPerVe
   PickingVertexShaderOut vert;
   
   vert.instanceId = positions[iid].tag;
-  float4 scale = structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   
   vert.eye_position = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
   
   vert.texcoords = vertices[vid].position.xy;
-  vert.sphere_radius = structureUniforms.atomScaleFactor * positions[iid].scale;
+  vert.sphere_radius = scale;
   float4 pos2 = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
   pos2.xy += scale.xy * float2(vertices[vid].position.x,vertices[vid].position.y);
   
@@ -103,6 +103,89 @@ fragment PickingFragOutput AtomSpherePickingFragmentShader(PickingVertexShaderOu
   
   return output;
 
+}
+
+struct PickingMeshVertexShaderOut
+{
+  float4 position [[position]];
+  int instanceId [[ flat ]];
+};
+
+vertex PickingVertexShaderOut AtomSpherePickingPerspectiveVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+                                                    const device InPerInstanceAttributes *positions [[buffer(1)]],
+                                                    constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                    constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                    uint vid [[vertex_id]],
+                                                    uint iid [[instance_id]])
+{
+  PickingVertexShaderOut vert;
+  
+  vert.instanceId = positions[iid].tag;
+  float4 scale = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
+  
+  vert.frag_center = (frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position).xyz;
+  vert.texcoords = vertices[vid].position.xy;
+  vert.sphere_radius = scale;
+  
+  float4 pos2 = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
+  pos2.xy += 1.5 * scale.xy * float2(vertices[vid].position.x, vertices[vid].position.y);
+  vert.frag_pos = pos2.xyz;
+  vert.position = frameUniforms.projectionMatrix * pos2;
+  
+  return vert;
+}
+
+fragment PickingFragOutput AtomSpherePickingPerspectiveFragmentShader(PickingVertexShaderOut vert [[stage_in]],
+                                                              constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                              constant StructureUniforms& structureUniforms [[buffer(1)]])
+{
+  PickingFragOutput output;
+  
+  float3 rij = -vert.frag_center;
+  float3 vij = vert.frag_pos;
+  
+  float A = dot(vij, vij);
+  float B = 2.0 * dot(rij, vij);
+  float C = dot(rij, rij) - vert.sphere_radius.z * vert.sphere_radius.z;
+  float argument = B * B - 4.0 * A * C;
+  if (argument < 0.0)
+    discard_fragment();
+  float t = 0.5 * (-B - sqrt(argument)) / A;
+  
+  float3 hit = t * vij;
+  float4 screen_pos = frameUniforms.projectionMatrix * float4(hit, 1.0);
+  output.depth = screen_pos.z / screen_pos.w;
+  output.albedo = uint4(1,0,structureUniforms.structureIdentifier, vert.instanceId);
+  
+  return output;
+}
+
+vertex PickingMeshVertexShaderOut AtomSphereMeshPickingVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+                                                    const device InPerInstanceAttributes *positions [[buffer(1)]],
+                                                    constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                    constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                    uint vid [[vertex_id]],
+                                                    uint iid [[instance_id]])
+{
+  PickingMeshVertexShaderOut vert;
+  
+  vert.instanceId = positions[iid].tag;
+  float4 scale = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 pos = scale * vertices[vid].position + positions[iid].position;
+  vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * pos;
+  
+  return vert;
+}
+
+fragment PickingFragOutput AtomSphereMeshPickingFragmentShader(PickingMeshVertexShaderOut vert [[stage_in]],
+                                                      constant StructureUniforms& structureUniforms [[buffer(1)]])
+{
+  PickingFragOutput output;
+  
+  output.depth = vert.position.z / vert.position.w;
+  output.albedo = uint4(1,0,structureUniforms.structureIdentifier, vert.instanceId);
+  
+  return output;
 }
 
 

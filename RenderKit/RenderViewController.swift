@@ -571,24 +571,36 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   // MARK: -
   // MARK: Picking
   
+  /// `point` must be in MetalView coordinates (origin bottom-left).
+  private func pickingTexturePoint(forMetalViewPoint point: NSPoint) -> NSPoint?
+  {
+    guard let metalView = self.view as? MTKView else { return nil }
+    
+    let bounds: NSRect = metalView.bounds
+    guard bounds.width > 0.0, bounds.height > 0.0, bounds.contains(point) else { return nil }
+    
+    let flippedPoint: NSPoint = NSPoint(x: point.x, y: bounds.height - point.y)
+    return metalView.convertToBacking(flippedPoint)
+  }
+  
   public func pickPoint(_ point: NSPoint) ->  [Int32]
   {
     if let device = self.device,
-       let commandQueue: MTLCommandQueue = self.renderCommandQueue
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue,
+       let texturePoint = pickingTexturePoint(forMetalViewPoint: point)
     {
-      let convertedPoint: NSPoint = self.view.convertToBacking(NSPoint(x: point.x, y: self.view.frame.size.height - point.y))
-      return self.renderer.pickingShader.pickTextureAtPoint(device: device, commandQueue, point: convertedPoint)
+      return self.renderer.pickingShader.pickTextureAtPoint(device: device, commandQueue, point: texturePoint)
     }
-    return []
+    return [0, 0, 0, 0]
   }
   
   public func pickDepth(_ point: NSPoint) ->  Float?
   {
     if let device = self.device,
-       let commandQueue: MTLCommandQueue = self.renderCommandQueue
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue,
+       let texturePoint = pickingTexturePoint(forMetalViewPoint: point)
     {
-      let convertedPoint: NSPoint = self.view.convertToBacking(NSPoint(x: point.x, y: self.view.frame.size.height - point.y))
-      return self.renderer.pickingShader.pickDepthTextureAtPoint(device: device, commandQueue, point: convertedPoint)
+      return self.renderer.pickingShader.pickDepthTextureAtPoint(device: device, commandQueue, point: texturePoint)
     }
     return nil
   }
@@ -627,7 +639,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       {
         commandBuffer.addCompletedHandler{(_) in self._inflightSemaphore.signal()}
                     
-        renderer.pickingOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size)
+        renderer.pickingOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera)
        
         renderer.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera)
          

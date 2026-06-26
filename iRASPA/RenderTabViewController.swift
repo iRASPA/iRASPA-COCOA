@@ -1015,6 +1015,13 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource
     {
       let objectType: Int = Int(pick[0])
+      
+      if objectType == 0
+      {
+        clearSelection()
+        return
+      }
+      
       let structureIdentifier: Int = Int(pick[2])
       let pickedObject: Int = Int(pick[3])
                            
@@ -1023,17 +1030,18 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       if structureIdentifier>=0, structureIdentifier < structures.count,
          let selectedStructure: Object = structures[structureIdentifier] as? Object
       {
+        // Plain click replaces the entire selection; only command/shift modify it.
+        for structure in crystalProjectData.renderStructures.compactMap({ $0 as? Object }) where structure !== selectedStructure
+        {
+          self.setSelectionFor(object: structure, atomIndexSet: [], bondIndexSet: [], byExtendingSelection: false)
+        }
+        
         let numberOfReplicas: Int = selectedStructure.cell.totalNumberOfReplicas
         let nodes: [SKAtomTreeNode] = (selectedStructure as? AtomViewer)?.atomTreeController.flattenedLeafNodes() ?? []
         let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
                 
         switch(objectType)
         {
-        case 0:
-          for structure in crystalProjectData.renderStructures.compactMap({$0 as? Object})
-          {
-            self.setSelectionFor(object: structure, atomIndexSet: [], bondIndexSet: [], byExtendingSelection: false)
-          }
         case 1:
           let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
           let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
@@ -1792,8 +1800,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   @objc func view(_ view: NSView, stringForToolTip tag: NSView.ToolTipTag, point: NSPoint, userData data: UnsafeMutableRawPointer?) -> String
   {
-    
-    let pick: [Int32] =  self.renderViewController.pickPoint(point)
+    let pick: [Int32] = pickPoint(locationInWindow: view.convert(point, to: nil))
     
     if (pick[0] == 1)
     {
@@ -1960,26 +1967,52 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  func pickPoint(_ point: NSPoint) ->  [Int32]
+  private func renderViewControllerForPicking() -> RenderViewController?
   {
-    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
-    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
-    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewItemIndex]
+    return tabViewItem.viewController as? RenderViewController
+  }
+  
+  /// Convert a window-space click to a pick from the picking texture.
+  func pickPoint(locationInWindow: NSPoint) -> [Int32]
+  {
+    if let renderController: RenderViewController = renderViewControllerForPicking()
     {
-      return renderController.pickPoint(point)
+      let pointInMetalView: NSPoint = renderController.view.convert(locationInWindow, from: nil)
+      return renderController.pickPoint(pointInMetalView)
     }
-    return [0,0,0,0]
+    return [0, 0, 0, 0]
+  }
+  
+  func pickPoint(_ pointInTabView: NSPoint) -> [Int32]
+  {
+    guard let window = view.window else { return [0, 0, 0, 0] }
+    return pickPoint(locationInWindow: view.convert(pointInTabView, to: nil))
   }
    
-  func pickDepth(_ point: NSPoint) ->  Float?
+  func pickDepth(locationInWindow: NSPoint) -> Float?
   {
-    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
-    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
-    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
+    if let renderController: RenderViewController = renderViewControllerForPicking()
     {
-      return renderController.pickDepth(point)
+      let pointInMetalView: NSPoint = renderController.view.convert(locationInWindow, from: nil)
+      return renderController.pickDepth(pointInMetalView)
     }
     return nil
+  }
+  
+  func pickDepth(_ pointInTabView: NSPoint) -> Float?
+  {
+    guard let window = view.window else { return nil }
+    return pickDepth(locationInWindow: view.convert(pointInTabView, to: nil))
+  }
+  
+  private static let clickDragThresholdSquared: CGFloat = 5.0 * 5.0
+  
+  private func isClick(notDragFrom start: NSPoint, to end: NSPoint) -> Bool
+  {
+    let dx = end.x - start.x
+    let dy = end.y - start.y
+    return dx * dx + dy * dy <= Self.clickDragThresholdSquared
   }
   
   override func mouseUp(with theEvent: NSEvent)
@@ -2043,10 +2076,10 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           }
         }
       default:
-        if (tracking == .mouseClickWithoutKeyModifiers)
+        if tracking == .mouseClickWithoutKeyModifiers ||
+           (tracking == .draggedWithoutKeyModifiers && startPoint.map({ isClick(notDragFrom: $0, to: point) }) == true)
         {
-          let pick: [Int32] = pickPoint(point)
-          setObjectToSelection(pick)
+          setObjectToSelection(pickPoint(point))
         }
       }
     
