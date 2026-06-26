@@ -43,6 +43,16 @@ class MovieListOutlineView: NSOutlineView
     return true
   }
   
+  override func viewDidMoveToWindow()
+  {
+    super.viewDidMoveToWindow()
+    sourceList_installWindowKeyObservation()
+    if window != nil
+    {
+      sourceList_refreshSelectionEmphasis()
+    }
+  }
+  
   override func becomeFirstResponder() -> Bool
   {
     self.enumerateAvailableRowViews({ (rowView,row) in

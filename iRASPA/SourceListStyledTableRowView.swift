@@ -30,6 +30,7 @@
  *************************************************************************************************************/
 
 import Cocoa
+import ObjectiveC
 
 
 // View-based table-views: row drawing customization should be done by subclassing NSTableRowView.
@@ -77,6 +78,7 @@ open class SourceListStyledTableRowView: NSTableRowView
     didSet
     {
       guard oldValue != isSelected else { return }
+      resetSyncedCellEmphasis()
       updateCellBackgroundStyles()
       needsDisplay = true
     }
@@ -87,6 +89,7 @@ open class SourceListStyledTableRowView: NSTableRowView
     didSet
     {
       guard oldValue != isEmphasized else { return }
+      resetSyncedCellEmphasis()
       updateCellBackgroundStyles()
       needsDisplay = true
     }
@@ -95,18 +98,42 @@ open class SourceListStyledTableRowView: NSTableRowView
   override open func didAddSubview(_ subview: NSView)
   {
     super.didAddSubview(subview)
+    resetSyncedCellEmphasis()
     updateCellBackgroundStyles()
   }
   
-  override open func layout()
+  private var lastSyncedCellEmphasis: Bool?
+  
+  private func updateCellBackgroundStyles()
   {
-    super.layout()
-    updateCellBackgroundStyles()
+    let emphasized = isSelected && emphasizesSelection
+    if lastSyncedCellEmphasis == emphasized
+    {
+      return
+    }
+    lastSyncedCellEmphasis = emphasized
+    
+    let style: NSView.BackgroundStyle = emphasized ? .emphasized : .normal
+    
+    for case let cellView as NSTableCellView in subviews
+    {
+      if cellView.backgroundStyle != style
+      {
+        cellView.backgroundStyle = style
+      }
+      else
+      {
+        (cellView as? ProjectTableCellView)?.syncSelectionAppearance(for: style)
+        (cellView as? MovieTableCellView)?.syncSelectionAppearance(for: style)
+        (cellView as? FrameTableCellView)?.syncSelectionAppearance(for: style)
+        (cellView.imageView as? TableImageViewIcon)?.applyBackgroundStyle(style)
+      }
+    }
   }
   
-  open func refreshCellBackgroundStyles()
+  private func resetSyncedCellEmphasis()
   {
-    updateCellBackgroundStyles()
+    lastSyncedCellEmphasis = nil
   }
   
   open func listRowContentWidth() -> CGFloat
@@ -124,11 +151,16 @@ open class SourceListStyledTableRowView: NSTableRowView
   {
   }
   
-  /// AppKit uses the accent blue when the list is first responder; grey otherwise.
+  /// AppKit uses the accent blue when the window is key and the list is first responder; grey otherwise.
   open var emphasizesSelection: Bool
   {
-    if let listView = enclosingListView,
-       listView.window?.firstResponder === listView
+    guard let listView = enclosingListView,
+          let window = listView.window,
+          window.isKeyWindow else
+    {
+      return false
+    }
+    if window.firstResponder === listView
     {
       return true
     }
@@ -172,18 +204,10 @@ open class SourceListStyledTableRowView: NSTableRowView
     return enclosingListView?.backgroundColor ?? FrameListTableView.sourceListBackgroundColor()
   }
   
-  private func updateCellBackgroundStyles()
+  open func refreshCellBackgroundStyles()
   {
-    let style: NSView.BackgroundStyle = isSelected ? .emphasized : .normal
-    
-    for case let cellView as NSTableCellView in subviews
-    {
-      cellView.backgroundStyle = style
-      (cellView.imageView as? TableImageViewIcon)?.applyBackgroundStyle(style)
-      (cellView as? ProjectTableCellView)?.syncSelectionAppearance(for: style)
-      (cellView as? MovieTableCellView)?.syncSelectionAppearance(for: style)
-      (cellView as? FrameTableCellView)?.syncSelectionAppearance(for: style)
-    }
+    resetSyncedCellEmphasis()
+    updateCellBackgroundStyles()
   }
   
   private func sourceListSelectionFillColor() -> NSColor
@@ -229,6 +253,8 @@ open class SourceListStyledTableRowView: NSTableRowView
     
     if isSelected
     {
+      resetSyncedCellEmphasis()
+      updateCellBackgroundStyles()
       drawRoundedFill(in: rect, fill: sourceListSelectionFillColor())
     }
     
@@ -244,5 +270,44 @@ open class SourceListStyledTableRowView: NSTableRowView
       ? NSColor.selectedContentBackgroundColor.withAlphaComponent(0.20)
       : NSColor.systemGray.withAlphaComponent(0.2)
     drawRoundedFill(in: rect, fill: fillColor)
+  }
+}
+
+private var sourceListWindowKeyObserversKey: UInt8 = 0
+
+extension NSTableView
+{
+  func sourceList_refreshSelectionEmphasis()
+  {
+    enumerateAvailableRowViews { rowView, _ in
+      (rowView as? SourceListStyledTableRowView)?.refreshCellBackgroundStyles()
+      rowView.needsDisplay = true
+    }
+  }
+  
+  func sourceList_installWindowKeyObservation()
+  {
+    sourceList_removeWindowKeyObservation()
+    guard let window = window else { return }
+    
+    let center = NotificationCenter.default
+    let tokens = [NSWindow.didBecomeKeyNotification, NSWindow.didResignKeyNotification].map { name in
+      center.addObserver(forName: name, object: window, queue: .main) { [weak self] _ in
+        // Defer so window key state and first responder are settled before syncing.
+        DispatchQueue.main.async {
+          self?.sourceList_refreshSelectionEmphasis()
+        }
+      }
+    }
+    objc_setAssociatedObject(self, &sourceListWindowKeyObserversKey, tokens, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+  }
+  
+  func sourceList_removeWindowKeyObservation()
+  {
+    if let tokens = objc_getAssociatedObject(self, &sourceListWindowKeyObserversKey) as? [NSObjectProtocol]
+    {
+      tokens.forEach { NotificationCenter.default.removeObserver($0) }
+      objc_setAssociatedObject(self, &sourceListWindowKeyObserversKey, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
   }
 }
