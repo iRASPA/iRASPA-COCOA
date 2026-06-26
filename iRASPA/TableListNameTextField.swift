@@ -64,12 +64,56 @@ class TableListNameTextField: NSTextField
   {
     allowsRenaming = true
     isEditable = true
+    applyEditingAppearance()
   }
   
   func endRenaming()
   {
     allowsRenaming = false
     isEditable = false
+    drawsBackground = false
+    backgroundColor = nil
+    textColor = nil
+    if let cell = cell as? NSTextFieldCell
+    {
+      cell.backgroundStyle = .normal
+    }
+  }
+  
+  override func becomeFirstResponder() -> Bool
+  {
+    let becameFirstResponder = super.becomeFirstResponder()
+    if becameFirstResponder && allowsRenaming
+    {
+      applyEditingAppearance()
+      configureFieldEditor()
+    }
+    return becameFirstResponder
+  }
+  
+  private func applyEditingAppearance()
+  {
+    drawsBackground = true
+    backgroundColor = .textBackgroundColor
+    textColor = .labelColor
+    if let cell = cell as? NSTextFieldCell
+    {
+      cell.backgroundStyle = .normal
+      cell.textColor = .labelColor
+      cell.backgroundColor = .textBackgroundColor
+    }
+  }
+  
+  private func configureFieldEditor()
+  {
+    guard let textView = currentEditor() as? NSTextView else { return }
+    textView.drawsBackground = true
+    textView.backgroundColor = .textBackgroundColor
+    textView.insertionPointColor = .labelColor
+    textView.selectedTextAttributes = [
+      .foregroundColor: NSColor.labelColor,
+      .backgroundColor: NSColor.selectedTextBackgroundColor
+    ]
   }
   
   private func enclosingListView() -> NSView?
