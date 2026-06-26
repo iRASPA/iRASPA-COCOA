@@ -608,7 +608,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
           if atomName.count >= 2
           {
             let atomNameString = String(atomName.prefix(2)).trimmingCharacters(in: CharacterSet.whitespaces) as String
-            if let atomicNumber: Int = SKElement.atomData[atomNameString.capitalizeFirst]?["atomicNumber"] as? Int
+            if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: atomNameString)
             {
               atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
               atom.elementIdentifier = atomicNumber
@@ -617,7 +617,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
             {
               let letters = CharacterSet.letters
               let atomNameString = String(atomName.unicodeScalars.filter { letters.contains($0)})
-              if let atomicNumber: Int = SKElement.atomData[atomNameString.capitalizeFirst]?["atomicNumber"] as? Int, atomicNumber>0
+              if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: atomNameString), atomicNumber>0
               {
                 atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
                 atom.elementIdentifier = atomicNumber
@@ -640,12 +640,11 @@ public final class SKPDBParser: SKParser, ProgressReporting
           atom.residueName = residueName as String
         
         
-          if let residueData: Dictionary<String,Any> = SKElement.residueDefinitions[residueName.uppercased() + "+" + atomDisplayName.uppercased()]
+          if let residueData: SKResidueAtomDefinition = SKElement.residueDefinitions[residueName.uppercased() + "+" + atomDisplayName.uppercased()]
           {
             numberOfAminoAcidAtoms += 1
-            if let name: String = residueData["Element"] as? String,
-              let atomicNumber: Int = SKElement.atomData[name.capitalizeFirst]?["atomicNumber"] as? Int,
-              atomicNumber>0
+            if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: residueData.element),
+                                       atomicNumber>0
             {
               atom.elementIdentifier = atomicNumber
               atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
@@ -753,7 +752,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
         
           let elementSymbol: String = scannedLine.substring(with: NSRange(location: 76, length: 2))
           let elementSymbolString: String = elementSymbol.trimmingCharacters(in: CharacterSet.whitespaces)
-          if let atomicNumber: Int = SKElement.atomData[elementSymbolString.capitalizeFirst]?["atomicNumber"] as? Int, atomicNumber>0
+          if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: elementSymbolString), atomicNumber>0
           {
             atom.elementIdentifier = atomicNumber
             atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol

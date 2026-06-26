@@ -466,7 +466,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       let forceFieldData: SKForceFieldSet = document.forceFieldSets[selectedForceFieldSetIndex]
       let uniqueForceFieldName = forceFieldData.atomTypeList[row].forceFieldStringIdentifier
       
-      guard let atomicNumber: Int = SKElement.atomData[chemicalElement]?["atomicNumber"] as? Int else
+      guard let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalElement) else
       {
         let oldAtomicNumber: Int  = forceFieldData.atomTypeList[row].atomicNumber
         sender.stringValue = PredefinedElements.sharedInstance.elementSet[oldAtomicNumber].chemicalSymbol

@@ -138,6 +138,8 @@
 		93274E812205A813004031BA /* PolygonalPrismShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93274E802205A813004031BA /* PolygonalPrismShader.metal */; };
 		93274E832205AA13004031BA /* EllipsoidPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93274E822205AA13004031BA /* EllipsoidPrimitive.swift */; };
 		93274E852205AA54004031BA /* PolygonalPrismPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */; };
+		93281D9B2FEF08370008F9A1 /* SKElementAminoAcidAtomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281D9A2FEF08220008F9A1 /* SKElementAminoAcidAtomTypes.swift */; };
+		93281D9D2FEF084A0008F9A1 /* SKElementResidueDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281D9C2FEF08460008F9A1 /* SKElementResidueDefinitions.swift */; };
 		932A1C941F967D62000A0037 /* AngleNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A1C931F967D62000A0037 /* AngleNumberFormatter.swift */; };
 		932A49561E537EF400F71AE7 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A49551E537EF400F71AE7 /* LogViewController.swift */; };
 		932A495C1E544FDA00F71AE7 /* LogToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A495B1E544FDA00F71AE7 /* LogToolBar.swift */; };
@@ -226,7 +228,6 @@
 		93584CDB2001200B005F01A7 /* Noise4D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CDA2001200B005F01A7 /* Noise4D.metal */; };
 		93584CDD2001206D005F01A7 /* PsrdNoise2D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CDC2001206D005F01A7 /* PsrdNoise2D.metal */; };
 		935D60B71FD2FB9D00B34D07 /* FrameTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935D60B61FD2FB9D00B34D07 /* FrameTableRowView.swift */; };
-		93AA00021FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA00011FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift */; };
 		935DABDF1F0E236900C1C8D0 /* DirectoryViewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 935DABE11F0E236900C1C8D0 /* DirectoryViewer.storyboard */; };
 		935DABE41F0E43EA00C1C8D0 /* DirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935DABE31F0E43EA00C1C8D0 /* DirectoryViewController.swift */; };
 		935DABE61F0E44D900C1C8D0 /* PredicateEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935DABE51F0E44D900C1C8D0 /* PredicateEditorViewController.swift */; };
@@ -440,6 +441,7 @@
 		93A31C9F1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C9E1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift */; };
 		93A31CA11EB5F75E0010101B /* ImportProjectOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31CA01EB5F75E0010101B /* ImportProjectOperation.swift */; };
 		93A576842606742D00B09DD6 /* Archive+MemoryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A576832606742D00B09DD6 /* Archive+MemoryFile.swift */; };
+		93AA00021FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA00011FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift */; };
 		93ACDD451FBF266900D6527C /* CommandLinePreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */; };
 		93B0BF1D1E2BCEB40089D292 /* iRASPAHelp.help in Resources */ = {isa = PBXBuildFile; fileRef = 930DD75C1E280F1300B8FE9B /* iRASPAHelp.help */; };
 		93B1ECAF261E0FAF002E9069 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 93B1ECB1261E0FAF002E9069 /* Localizable.strings */; };
@@ -731,9 +733,6 @@
 		93DE92D1207E2BB00084D303 /* NSPasteboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */; };
 		93E20F8326A5C59100473702 /* FindPointGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8226A5C59100473702 /* FindPointGroupTests.swift */; };
 		93E20F8526A5F3B200473702 /* SpaceGroupCIFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */; };
-		A1C2E3F42680D7A900D47402 /* SKCIFSymmetryOperationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */; };
-		A1C2E3F42680D7A900D47404 /* SKCIFSpaceGroupIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */; };
-		A1C2E3F42680D7A900D47406 /* SKCIFSymmetryOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */; };
 		93E20F8726A603F000473702 /* DelaunayReductionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8626A603F000473702 /* DelaunayReductionTests.swift */; };
 		93E20F8926A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8826A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift */; };
 		93E20F8B26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8A26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift */; };
@@ -852,6 +851,9 @@
 		93FDA73120554DF6000C4AD7 /* SKVASPPOSCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FDA73020554DF6000C4AD7 /* SKVASPPOSCARParser.swift */; };
 		93FFF0B2203B6DA800DB696A /* ExportPictureAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FFF0B1203B6DA800DB696A /* ExportPictureAccessoryViewController.xib */; };
 		93FFF0B4203B6DBC00DB696A /* ExportPictureAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFF0B3203B6DBC00DB696A /* ExportPictureAccessoryViewController.swift */; };
+		A1C2E3F42680D7A900D47402 /* SKCIFSymmetryOperationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */; };
+		A1C2E3F42680D7A900D47404 /* SKCIFSpaceGroupIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */; };
+		A1C2E3F42680D7A900D47406 /* SKCIFSymmetryOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1555,6 +1557,8 @@
 		93274E802205A813004031BA /* PolygonalPrismShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PolygonalPrismShader.metal; sourceTree = "<group>"; };
 		93274E822205AA13004031BA /* EllipsoidPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipsoidPrimitive.swift; sourceTree = "<group>"; };
 		93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonalPrismPrimitive.swift; sourceTree = "<group>"; };
+		93281D9A2FEF08220008F9A1 /* SKElementAminoAcidAtomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKElementAminoAcidAtomTypes.swift; sourceTree = "<group>"; };
+		93281D9C2FEF08460008F9A1 /* SKElementResidueDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKElementResidueDefinitions.swift; sourceTree = "<group>"; };
 		932A1C931F967D62000A0037 /* AngleNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleNumberFormatter.swift; sourceTree = "<group>"; };
 		932A49551E537EF400F71AE7 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		932A495B1E544FDA00F71AE7 /* LogToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogToolBar.swift; sourceTree = "<group>"; };
@@ -1676,7 +1680,6 @@
 		93584CDC2001206D005F01A7 /* PsrdNoise2D.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PsrdNoise2D.metal; sourceTree = "<group>"; };
 		935D60B51FD2CE9900B34D07 /* ProjectDesign.key */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProjectDesign.key; sourceTree = "<group>"; };
 		935D60B61FD2FB9D00B34D07 /* FrameTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameTableRowView.swift; sourceTree = "<group>"; };
-		93AA00011FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceListStyledTableRowView.swift; sourceTree = "<group>"; };
 		935DABE01F0E236900C1C8D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/DirectoryViewer.storyboard; sourceTree = "<group>"; };
 		935DABE31F0E43EA00C1C8D0 /* DirectoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryViewController.swift; sourceTree = "<group>"; };
 		935DABE51F0E44D900C1C8D0 /* PredicateEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredicateEditorViewController.swift; sourceTree = "<group>"; };
@@ -1932,6 +1935,7 @@
 		93A31C9E1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComputeBondsGroupOperation.swift; sourceTree = "<group>"; };
 		93A31CA01EB5F75E0010101B /* ImportProjectOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportProjectOperation.swift; sourceTree = "<group>"; };
 		93A576832606742D00B09DD6 /* Archive+MemoryFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Archive+MemoryFile.swift"; sourceTree = "<group>"; };
+		93AA00011FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceListStyledTableRowView.swift; sourceTree = "<group>"; };
 		93ACDD431FBB5DC200D6527C /* iRASPA-CLI.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "iRASPA-CLI.entitlements"; sourceTree = "<group>"; };
 		93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandLinePreferenceViewController.swift; sourceTree = "<group>"; };
 		93B1EC72261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/AboutWindow.strings; sourceTree = "<group>"; };
@@ -2321,9 +2325,6 @@
 		93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPasteboardItem.swift; sourceTree = "<group>"; };
 		93E20F8226A5C59100473702 /* FindPointGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPointGroupTests.swift; sourceTree = "<group>"; };
 		93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupCIFTests.swift; sourceTree = "<group>"; };
-		A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationParser.swift; sourceTree = "<group>"; };
-		A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSpaceGroupIdentification.swift; sourceTree = "<group>"; };
-		A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationTests.swift; sourceTree = "<group>"; };
 		93E20F8626A603F000473702 /* DelaunayReductionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelaunayReductionTests.swift; sourceTree = "<group>"; };
 		93E20F8826A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift; sourceTree = "<group>"; };
 		93E20F8A26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupSpglibNoPartialOccupanciesTests.swift; sourceTree = "<group>"; };
@@ -2428,6 +2429,9 @@
 		93FDA73020554DF6000C4AD7 /* SKVASPPOSCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVASPPOSCARParser.swift; sourceTree = "<group>"; };
 		93FFF0B1203B6DA800DB696A /* ExportPictureAccessoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExportPictureAccessoryViewController.xib; sourceTree = "<group>"; };
 		93FFF0B3203B6DBC00DB696A /* ExportPictureAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportPictureAccessoryViewController.swift; sourceTree = "<group>"; };
+		A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationParser.swift; sourceTree = "<group>"; };
+		A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSpaceGroupIdentification.swift; sourceTree = "<group>"; };
+		A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2721,6 +2725,8 @@
 		930DD4C01E26AA0100B8FE9B /* SymmetryKit */ = {
 			isa = PBXGroup;
 			children = (
+				93281D9C2FEF08460008F9A1 /* SKElementResidueDefinitions.swift */,
+				93281D9A2FEF08220008F9A1 /* SKElementAminoAcidAtomTypes.swift */,
 				930DD4C11E26AA0100B8FE9B /* SymmetryKit.h */,
 				93B1ECB1261E0FAF002E9069 /* Localizable.strings */,
 				93F3A5902187399E008E41A2 /* SKAtomTreeController.swift */,
@@ -5019,6 +5025,7 @@
 				937807D721C5847000EC4466 /* OrderedDictionary.swift in Sources */,
 				93F3A59721873A1D008E41A2 /* SKBondNode.swift in Sources */,
 				93F3A5912187399E008E41A2 /* SKAtomTreeController.swift in Sources */,
+				93281D9B2FEF08370008F9A1 /* SKElementAminoAcidAtomTypes.swift in Sources */,
 				93EAABAD1ED9847700FE61D8 /* SKElement.swift in Sources */,
 				93FDA73120554DF6000C4AD7 /* SKVASPPOSCARParser.swift in Sources */,
 				9374794D1FB9EAFC008C4411 /* SKSymmetryCell.swift in Sources */,
@@ -5045,6 +5052,7 @@
 				93B56CD2202F1D8D0044057C /* SKmmCIFWriter.swift in Sources */,
 				9374794F1FB9EB51008C4411 /* SKBoundingBox.swift in Sources */,
 				93506970268B71580071B4CC /* SKIntegerChangeOfBasis.swift in Sources */,
+				93281D9D2FEF084A0008F9A1 /* SKElementResidueDefinitions.swift in Sources */,
 				930DD4E91E26AA5200B8FE9B /* SKPointGroup.swift in Sources */,
 				93F3A58F218738C4008E41A2 /* SKBondSetController.swift in Sources */,
 				93B777341FA47AB700A5DF86 /* SKColorSet.swift in Sources */,

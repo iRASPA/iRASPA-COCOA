@@ -206,7 +206,7 @@ public final class SKVASPCHGCARParser: SKParser, ProgressReporting
         
         for element in 0..<count
         {
-          if let atomicNumber: Int = SKElement.atomData[elements[element].capitalizeFirst]?["atomicNumber"] as? Int,
+          if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: elements[element]),
              let numberOfAtomsForElement: Int =  Int(numberOfAtoms[element])
           {
             for _ in 0..<numberOfAtomsForElement

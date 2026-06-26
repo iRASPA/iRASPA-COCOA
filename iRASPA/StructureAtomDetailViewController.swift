@@ -2849,7 +2849,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
        let atomTreeNode: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
     {
-      if let atomicNumber: Int = SKElement.atomData[elementName.capitalizeFirst]?["atomicNumber"] as? Int
+      if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: elementName)
       {
         setAtomElement(atomTreeNode, to: atomicNumber)
       }

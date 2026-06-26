@@ -118,7 +118,7 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
             let orthogonalXCoordinate: Double = Double(words[0]),
             let orthogonalYCoordinate: Double = Double(words[1]),
             let orthogonalZCoordinate: Double = Double(words[2]),
-            let atomicNumber: Int = SKElement.atomData[chemicalElement.lowercased().capitalizeFirst]?["atomicNumber"] as? Int
+            let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalElement)
           {
             let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: chemicalElement, elementId: 0, uniqueForceFieldName: chemicalElement, position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
               

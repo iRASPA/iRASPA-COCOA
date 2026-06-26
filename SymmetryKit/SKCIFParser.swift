@@ -672,7 +672,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
           }
           
           
-          if let atomicNumber: Int = SKElement.atomData[chemicalSymbol]?["atomicNumber"] as? Int
+          if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalSymbol)
           {
             atom.elementIdentifier = atomicNumber
             atom.uniqueForceFieldName = dictionary["_atom_site_forcefield_label"] ?? chemicalSymbol
@@ -683,7 +683,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
           {
             let chemicalElement: String = chemicalSymbol.trimmingCharacters(in: CharacterSet(charactersIn: "01234567890.+-"))
             
-            if let atomicNumber: Int = SKElement.atomData[chemicalElement]?["atomicNumber"] as? Int
+            if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalSymbol)
             {
               atom.elementIdentifier = atomicNumber
               atom.uniqueForceFieldName = dictionary["_atom_site_forcefield_label"] ?? chemicalSymbol
@@ -732,7 +732,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
           {
             atom.residueName = residueName
             
-            if let _ = SKElement.aminoAcidData[residueName.uppercased()]
+            if SKElement.knownAminoAcidResidueCodes.contains(residueName.uppercased())
             {
               numberOfAminoAcidAtoms += 1
             }
@@ -787,7 +787,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
             atom.charge = charge
           }
           
-          if let atomicNumber: Int = SKElement.atomData[chemicalSymbol]?["atomicNumber"] as? Int
+          if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalSymbol)
           {
             atom.elementIdentifier = atomicNumber
             atom.uniqueForceFieldName = dictionary["_atom_site.forcefield_label"] ?? chemicalSymbol
@@ -805,7 +805,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
           {
             let chemicalElement: String = chemicalSymbol.trimmingCharacters(in: CharacterSet(charactersIn: "01234567890.+-"))
             
-            if let atomicNumber: Int = SKElement.atomData[chemicalElement]?["atomicNumber"] as? Int
+            if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalSymbol)
             {
               atom.elementIdentifier = atomicNumber
               atom.uniqueForceFieldName = dictionary["_atom_site.forcefield_label"] ?? chemicalSymbol
