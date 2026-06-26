@@ -47,6 +47,11 @@ class StructureMasterViewController: NSViewController, WindowControllerConsumer,
     
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
+    
+    if let segmentedControl = segmentedControl as? StructureListSegmentedControl
+    {
+      segmentedControl.applyStructureListStyle()
+    }
   }
   
   func reloadData()
@@ -118,6 +123,37 @@ class StructureMasterViewController: NSViewController, WindowControllerConsumer,
     {
       tabViewController.selectedTabViewItemIndex = sender.selectedSegment
     }
+  }
+}
+
+/// Project / movie / frame picker at the top of the structure sidebar.
+class StructureListSegmentedControl: NSSegmentedControl
+{
+  static let segmentWidth: CGFloat = 40
+  
+  func applyStructureListStyle()
+  {
+    controlSize = .large
+    
+    if #available(macOS 12.0, *)
+    {
+      segmentStyle = .separated
+    }
+    else
+    {
+      segmentStyle = .rounded
+    }
+    
+    for segment in 0..<segmentCount
+    {
+      setWidth(Self.segmentWidth, forSegment: segment)
+    }
+  }
+  
+  override func awakeFromNib()
+  {
+    super.awakeFromNib()
+    applyStructureListStyle()
   }
 }
 

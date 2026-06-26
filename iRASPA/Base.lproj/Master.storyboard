@@ -37,18 +37,21 @@
         <scene sceneID="HV5-Ur-33K">
             <objects>
                 <viewController id="CXJ-F7-tAH" customClass="StructureMasterViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
+                    <connections>
+                        <outlet property="segmentedControl" destination="d93-uq-sdF" id="mKp-3d-Lst"/>
+                    </connections>
                     <stackView key="view" distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" id="kpO-cQ-7MI">
                         <rect key="frame" x="0.0" y="0.0" width="200" height="741"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d93-uq-sdF">
-                                <rect key="frame" x="0.0" y="713" width="98" height="28"/>
-                                <segmentedCell key="cell" controlSize="large" borderStyle="border" alignment="left" style="smallSquare" trackingMode="selectOne" id="yPT-Id-LjR">
+                            <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d93-uq-sdF" customClass="StructureListSegmentedControl" customModule="iRASPA" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="713" width="124" height="28"/>
+                                <segmentedCell key="cell" controlSize="large" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="yPT-Id-LjR">
                                     <font key="font" metaFont="system"/>
                                     <segments>
-                                        <segment image="ProjectListController" width="32" selected="YES"/>
-                                        <segment image="MovieListController" width="32" tag="1"/>
-                                        <segment image="FrameListController" width="32" tag="2"/>
+                                        <segment image="ProjectListController" width="40" selected="YES"/>
+                                        <segment image="MovieListController" width="40" tag="1"/>
+                                        <segment image="FrameListController" width="40" tag="2"/>
                                     </segments>
                                 </segmentedCell>
                                 <connections>
