@@ -1285,7 +1285,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       // reload the selection in the renderere
       self.windowController?.detailTabViewController?.renderViewController?.reloadRenderDataSelectedAtoms()
       
-      self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: atomViewer.atomTreeController.selectedTreeNodes.isEmpty,newSelectionEmpty: atomSelection.isEmpty)
+      self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: previousAtomSelection.isEmpty,newSelectionEmpty: atomSelection.isEmpty)
       
       // set the basis for the selected atoms once the selection is set and use that for subsequent translations and rotations
       atomViewer.recomputeSelectionBodyFixedBasis(index: -1)
@@ -1472,7 +1472,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
       
-      self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
+      self.windowController?.detailTabViewController?.renderViewController?.syncTransformationPanelToSelection(animated: true)
     
       self.updateNetChargeTextField()
     
@@ -1565,7 +1565,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.updateNetChargeTextField()
-      self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
+      self.windowController?.detailTabViewController?.renderViewController?.syncTransformationPanelToSelection(animated: true)
       
       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: object)
     }
@@ -2002,7 +2002,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
         
-        self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
+        self.windowController?.detailTabViewController?.renderViewController?.syncTransformationPanelToSelection(animated: true)
       
       self.updateNetChargeTextField()
     }
@@ -2096,7 +2096,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
         
-        self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
+        self.windowController?.detailTabViewController?.renderViewController?.syncTransformationPanelToSelection(animated: true)
       
       self.updateNetChargeTextField()
     }

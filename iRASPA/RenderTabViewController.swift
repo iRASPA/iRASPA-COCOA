@@ -51,6 +51,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBOutlet var transformationPanel: NSTabView?
   var transformationPanelLeftLayoutConstraint : NSLayoutConstraint?
   var transformationPanelTopLayoutConstraint : NSLayoutConstraint?
+  private var transformationPanelVisibilityGeneration: UInt = 0
 
   
   enum Tracking {
@@ -258,10 +259,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         transformationPanel.layer?.opacity = 0.0
       }
       
-      if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+      if proxyProject?.representedObject.loadedProjectStructureNode != nil
       {
-        let selectionEmpty: Bool = !project.allObjects.compactMap({$0 as? AtomViewer}).map{$0.atomTreeController.selectedTreeNodes.isEmpty}.contains(false)
-        showTransformationPanel(oldSelectionEmpty: selectionEmpty, newSelectionEmpty: selectionEmpty)
+        syncTransformationPanelToSelection(animated: false)
       }
     }
   }
@@ -295,10 +295,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         self.renderDataSource = project
         
-        let selectionEmpty: Bool = !project.allObjects.compactMap({$0 as? AtomViewer}).map{$0.atomTreeController.selectedTreeNodes.isEmpty}.contains(false)
-        showTransformationPanel(oldSelectionEmpty: selectionEmpty, newSelectionEmpty: selectionEmpty)
-        
-        // all renders need to have the current project: for exmaple: select metal, rch project, switch to openGL
+        syncTransformationPanelToSelection(animated: false)
         for tabViewItem in self.tabViewItems
         {
           if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController
@@ -321,7 +318,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         renderViewController.renderDataSource = nil
         renderViewController.renderCameraSource = nil
-        showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
+        syncTransformationPanelToSelection(animated: false)
       }
     }
   }
@@ -848,12 +845,50 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
+  func projectHasAtomSelection() -> Bool
+  {
+    guard let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode else { return false }
+    return project.allObjects.compactMap({ $0 as? AtomViewer }).contains {
+      !$0.atomTreeController.selectedTreeNodes.isEmpty || $0.atomTreeController.selectedTreeNode != nil
+    }
+  }
+  
+  func syncTransformationPanelToSelection(animated: Bool = true)
+  {
+    let hasSelection: Bool = projectHasAtomSelection()
+    let isPanelVisible: Bool = !(transformationPanel?.isHidden ?? true)
+    
+    if hasSelection
+    {
+      if animated && !isPanelVisible
+      {
+        showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
+      }
+      else
+      {
+        showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: false)
+      }
+    }
+    else
+    {
+      if animated && isPanelVisible
+      {
+        showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
+      }
+      else
+      {
+        showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: true)
+      }
+    }
+  }
+  
   func showTransformationPanel(oldSelectionEmpty: Bool, newSelectionEmpty: Bool)
   {
     switch(oldSelectionEmpty,newSelectionEmpty)
     {
     case (true,false):
       // show view
+      transformationPanelVisibilityGeneration += 1
       self.transformationPanel?.isHidden = false
       self.transformationPanel?.layer?.opacity = 0.0
       self.transformationPanelLeftLayoutConstraint?.constant = -20
@@ -866,6 +901,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       }) {}
     case (false,true):
       // hide view
+      transformationPanelVisibilityGeneration += 1
+      let generation: UInt = transformationPanelVisibilityGeneration
       transformationPanelLeftLayoutConstraint?.constant = ancherDistance
       NSAnimationContext.runAnimationGroup ({ [weak self] (context: NSAnimationContext) in
         context.timingFunction = CAMediaTimingFunction(name: .easeIn)
@@ -874,17 +911,27 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         self?.transformationPanel?.animator().layer?.opacity = 0.0
         self?.transformationPanelLeftLayoutConstraint?.animator().constant = -20
         })
-      {
-        self.transformationPanel?.isHidden = true
-        self.transformationPanel?.layer?.opacity = 0.0
+      { [weak self] in
+        guard let self = self, generation == self.transformationPanelVisibilityGeneration else { return }
+        if self.projectHasAtomSelection()
+        {
+          self.showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: false)
+        }
+        else
+        {
+          self.transformationPanel?.isHidden = true
+          self.transformationPanel?.layer?.opacity = 0.0
+        }
       }
     case (true,true):
       // hide view
+      transformationPanelVisibilityGeneration += 1
       self.transformationPanel?.isHidden = true
       self.transformationPanel?.layer?.opacity = 0.0
       self.transformationPanelLeftLayoutConstraint?.constant = -20
     case (false,false):
       // show view
+      transformationPanelVisibilityGeneration += 1
       self.transformationPanel?.layer?.opacity = 1.0
       self.transformationPanel?.isHidden = false
       self.transformationPanelLeftLayoutConstraint?.constant = ancherDistance
@@ -1054,6 +1101,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       }
       
       self.reloadRenderDataSelectedAtoms()
+      syncTransformationPanelToSelection(animated: true)
       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
     }
   }
@@ -1242,9 +1290,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
          
         project.isEdited = true
          
-        showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
-         
-        self.invalidateIsosurface(cachedIsosurfaces: [data.object])
+        syncTransformationPanelToSelection(animated: true)
         self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [data.object])
          
         NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: data.object)
@@ -1292,7 +1338,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           bondViewer.bondSetController.tag()
         }
         
-        showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
+        syncTransformationPanelToSelection(animated: true)
        
         self.proxyProject?.representedObject.isEdited = true
        

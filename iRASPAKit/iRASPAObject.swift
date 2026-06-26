@@ -421,8 +421,11 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
   
   public var hasSelectedObjects: Bool
   {
-    return false;
-    //return structure.hasSelectedObjects
+    if let structure = object as? Structure
+    {
+      return structure.hasSelectedObjects
+    }
+    return false
   }
   
   // MARK: -
