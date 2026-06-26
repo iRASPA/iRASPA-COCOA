@@ -135,27 +135,24 @@ class MetalView: MTKView
     self.renderCameraSource?.renderCamera?.trackBallRotation = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
      
     startPoint = self.convert(theEvent.locationInWindow, from: nil)
-     
-    if (theEvent.modifierFlags.contains(NSEvent.ModifierFlags.shift))
+    
+    let modifiers: NSEvent.ModifierFlags = theEvent.modifierFlags.intersection(.deviceIndependentFlagsMask)
+    if modifiers.contains(NSEvent.ModifierFlags.shift)
     {
       tracking = .newSelection
     }
-    //else if theEvent.modifierFlags.contains(.option)
-    // {
-       //tracking = .panning
-    // }
-    else if theEvent.modifierFlags.contains(NSEvent.ModifierFlags.command) &&
-            !theEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
+    else if modifiers.contains(NSEvent.ModifierFlags.command) &&
+            !modifiers.contains(NSEvent.ModifierFlags.option)
     {
       tracking = .addToSelection
     }
-    else if theEvent.modifierFlags.contains(NSEvent.ModifierFlags.option) &&
-            theEvent.modifierFlags.contains(NSEvent.ModifierFlags.command)
+    else if modifiers.contains(NSEvent.ModifierFlags.option) &&
+            modifiers.contains(NSEvent.ModifierFlags.command)
     {
       tracking = .translateSelection
     }
-    else if theEvent.modifierFlags.contains(NSEvent.ModifierFlags.option) &&
-            !theEvent.modifierFlags.contains(NSEvent.ModifierFlags.command)
+    else if modifiers.contains(NSEvent.ModifierFlags.option) &&
+            !modifiers.contains(NSEvent.ModifierFlags.command)
     {
       tracking = .measurement
       trackball.start(x: startPoint!.x, y: startPoint!.y, originX: 0.0, originY: 0.0, width: self.bounds.size.width, height: self.bounds.size.height)
@@ -168,6 +165,7 @@ class MetalView: MTKView
      
     self.renderQuality = RKRenderQuality.medium
     self.layer?.setNeedsDisplay()
+    nextResponder?.mouseDown(with: theEvent)
   }
    
   override public func rightMouseDragged(with event: NSEvent)
@@ -237,6 +235,7 @@ class MetalView: MTKView
        
       self.layer?.setNeedsDisplay()
     }
+    nextResponder?.mouseDragged(with: theEvent)
   }
   
   override public func mouseUp(with theEvent: NSEvent)
@@ -282,6 +281,7 @@ class MetalView: MTKView
     self.renderQuality = RKRenderQuality.high
     
     self.layer?.setNeedsDisplay()
+    nextResponder?.mouseUp(with: theEvent)
   }
   
   var timer: DispatchSourceTimer?

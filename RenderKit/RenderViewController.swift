@@ -577,10 +577,14 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     guard let metalView = self.view as? MTKView else { return nil }
     
     let bounds: NSRect = metalView.bounds
-    guard bounds.width > 0.0, bounds.height > 0.0, bounds.contains(point) else { return nil }
+    let drawableSize: CGSize = metalView.drawableSize
+    guard bounds.width > 0.0, bounds.height > 0.0,
+          drawableSize.width > 0.0, drawableSize.height > 0.0,
+          bounds.contains(point) else { return nil }
     
-    let flippedPoint: NSPoint = NSPoint(x: point.x, y: bounds.height - point.y)
-    return metalView.convertToBacking(flippedPoint)
+    let x: CGFloat = point.x * drawableSize.width / bounds.width
+    let y: CGFloat = (bounds.height - point.y) * drawableSize.height / bounds.height
+    return NSPoint(x: x, y: y)
   }
   
   public func pickPoint(_ point: NSPoint) ->  [Int32]

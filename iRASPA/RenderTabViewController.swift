@@ -1889,20 +1889,43 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     startTime = mach_absolute_time()
     
     startPoint = self.view.convert(event.locationInWindow, from: nil)
+    
+    let modifiers: NSEvent.ModifierFlags = deviceIndependentModifierFlags(for: event)
+    if modifiers.contains(NSEvent.ModifierFlags.shift)
+    {
+      tracking = .newSelection
+    }
+    else if modifiers.contains(NSEvent.ModifierFlags.command) &&
+            !modifiers.contains(NSEvent.ModifierFlags.option)
+    {
+      tracking = .addToSelection
+    }
+    else if modifiers.contains(NSEvent.ModifierFlags.option) &&
+            modifiers.contains(NSEvent.ModifierFlags.command)
+    {
+      tracking = .translateSelection
+      pickedDepth = pickDepth(startPoint!)
+    }
+    else if modifiers.contains(NSEvent.ModifierFlags.option) &&
+            !modifiers.contains(NSEvent.ModifierFlags.command)
+    {
+      tracking = .measurement
+    }
+    else
+    {
+      tracking = .mouseClickWithoutKeyModifiers
+    }
+    
     if let view: RenderTabView = self.view as? RenderTabView,
        let layer: CALayer = view.layer
     {
-      if (event.modifierFlags.contains(NSEvent.ModifierFlags.shift))
+      if tracking == .newSelection
       {
-        tracking = .newSelection
         view.shapeLayerNewSelection.path = CGMutablePath()
         layer.addSublayer(view.shapeLayerNewSelection)
       }
-      else if event.modifierFlags.contains(NSEvent.ModifierFlags.command) &&
-             !event.modifierFlags.contains(NSEvent.ModifierFlags.option)
+      else if tracking == .addToSelection
       {
-        tracking = .addToSelection
-      
         view.shapeLayerAddSelection.path = CGMutablePath()
         layer.addSublayer(view.shapeLayerAddSelection)
       
@@ -1913,21 +1936,6 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         dashAnimation.duration = 0.75
         dashAnimation.repeatCount = Float.infinity
         view.shapeLayerAddSelection.add(dashAnimation, forKey:"linePhase")
-      }
-      else if event.modifierFlags.contains(NSEvent.ModifierFlags.option) &&
-              event.modifierFlags.contains(NSEvent.ModifierFlags.command)
-      {
-        tracking = .translateSelection
-        pickedDepth = pickDepth(startPoint!)
-      }
-      else if event.modifierFlags.contains(NSEvent.ModifierFlags.option) &&
-            !event.modifierFlags.contains(NSEvent.ModifierFlags.command)
-      {
-        tracking = .measurement
-      }
-      else
-      {
-        tracking = .mouseClickWithoutKeyModifiers
       }
     }
   }
@@ -1940,9 +1948,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       switch(tracking)
       {
       case .newSelection:
-        tracking = .draggedNewSelection
+        if let start = startPoint, !isClick(notDragFrom: start, to: location)
+        {
+          tracking = .draggedNewSelection
+        }
       case .addToSelection:
-        tracking = .draggedAddToSelection
+        if let start = startPoint, !isClick(notDragFrom: start, to: location)
+        {
+          tracking = .draggedAddToSelection
+        }
       case .draggedNewSelection:
         tracking = .draggedNewSelection
         if let startPoint = startPoint
@@ -2052,7 +2066,12 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     return pickDepth(locationInWindow: view.convert(pointInTabView, to: nil))
   }
   
-  private static let clickDragThresholdSquared: CGFloat = 5.0 * 5.0
+  private static let clickDragThresholdSquared: CGFloat = 8.0 * 8.0
+  
+  private func deviceIndependentModifierFlags(for event: NSEvent) -> NSEvent.ModifierFlags
+  {
+    return event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+  }
   
   private func isClick(notDragFrom start: NSPoint, to end: NSPoint) -> Bool
   {
@@ -2061,47 +2080,59 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     return dx * dx + dy * dy <= Self.clickDragThresholdSquared
   }
   
+  /// For point picks, use the mouse-down location when the gesture is a click (avoids release drift).
+  private func pickPointForMouseUp(releasePoint: NSPoint) -> [Int32]
+  {
+    let pickLocation: NSPoint
+    if let start = startPoint, isClick(notDragFrom: start, to: releasePoint)
+    {
+      pickLocation = start
+    }
+    else
+    {
+      pickLocation = releasePoint
+    }
+    return pickPoint(pickLocation)
+  }
+  
   override func mouseUp(with theEvent: NSEvent)
   {
     let point: NSPoint = view.convert(theEvent.locationInWindow, from: nil)
     
-    if let view: RenderTabView = self.view as? RenderTabView,
-       let layer: CALayer = view.layer
+    if let view: RenderTabView = self.view as? RenderTabView
     {
       switch(tracking)
       {
-      case .newSelection:      // shift-click
+      case .newSelection, .draggedNewSelection:      // shift-click / small shift-drag treated as click
         view.shapeLayerNewSelection.removeFromSuperlayer()
-        clearSelection()
-      
-        if let _: RKRenderDataSource = renderDataSource
+        if tracking == .newSelection || startPoint.map({ isClick(notDragFrom: $0, to: point) }) == true
         {
-          let pick: [Int32] = pickPoint(point)
-          setObjectToSelection(pick)
+          clearSelection()
+          if let _: RKRenderDataSource = renderDataSource
+          {
+            setObjectToSelection(pickPointForMouseUp(releasePoint: point))
+          }
         }
-      case .addToSelection:      // command-click
-        view.shapeLayerAddSelection.removeAnimation(forKey: "linePhase")
-        view.shapeLayerAddSelection.removeFromSuperlayer()
-      
-        if let _: RKRenderDataSource = renderDataSource
-        {
-          let pick: [Int32] = pickPoint(point)
-          toggleSelection(pick)
-        }
-      case .draggedNewSelection:      // shift-drag
-        if let startPoint = startPoint
+        else if let startPoint = startPoint,
+                let layer: CALayer = view.layer
         {
           selectInRectangle(NSMakeRect(startPoint.x,startPoint.y,point.x-startPoint.x,point.y-startPoint.y), inViewPort: layer.bounds, byExtendingSelection: false)
         }
-        view.shapeLayerNewSelection.removeFromSuperlayer()
-      case .draggedAddToSelection:      // command-drag
-        if let startPoint = startPoint
+      case .addToSelection, .draggedAddToSelection:      // command-click / small command-drag treated as click
+        view.shapeLayerAddSelection.removeAnimation(forKey: "linePhase")
+        view.shapeLayerAddSelection.removeFromSuperlayer()
+        if tracking == .addToSelection || startPoint.map({ isClick(notDragFrom: $0, to: point) }) == true
+        {
+          if let _: RKRenderDataSource = renderDataSource
+          {
+            toggleSelection(pickPointForMouseUp(releasePoint: point))
+          }
+        }
+        else if let startPoint = startPoint,
+                let layer: CALayer = view.layer
         {
           selectInRectangle(NSMakeRect(startPoint.x,startPoint.y,point.x-startPoint.x,point.y-startPoint.y), inViewPort: layer.bounds, byExtendingSelection: true)
         }
-      
-        view.shapeLayerAddSelection.removeAnimation(forKey: "linePhase")
-        view.shapeLayerAddSelection.removeFromSuperlayer()
       case .translateSelection:      // option-command-drag
         if let startPoint = startPoint,
            let pickedDepth = pickedDepth
@@ -2111,7 +2142,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       case .measurement:      // option-drag
         if let _: RKRenderDataSource = renderDataSource
         {
-          let pick: [Int32] = pickPoint(point)
+          let pick: [Int32] = pickPointForMouseUp(releasePoint: point)
           if (pick[0] == 1)
           {
             addAtomToMeasurement(pick)
@@ -2125,7 +2156,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if tracking == .mouseClickWithoutKeyModifiers ||
            (tracking == .draggedWithoutKeyModifiers && startPoint.map({ isClick(notDragFrom: $0, to: point) }) == true)
         {
-          setObjectToSelection(pickPoint(point))
+          setObjectToSelection(pickPointForMouseUp(releasePoint: point))
         }
       }
     
