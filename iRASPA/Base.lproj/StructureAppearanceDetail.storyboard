@@ -1740,13 +1740,13 @@
                                                                                 <gridCell row="Rbn-Rp-St0" column="9xt-ak-DD6" id="Rbn-Rp-PopCell">
                                                                                     <popUpButton key="contentView" tag="1" horizontalHuggingPriority="210" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Rbn-Rp-Pop" userLabel="Representation Style" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
                                                                                         <rect key="frame" x="156" y="39" width="311" height="24"/>
-                                                                                        <popUpButtonCell key="cell" type="push" title="Fancy" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Rbn-Rp-Fcy" id="Rbn-Rp-PopCellInner">
+                                                                                        <popUpButtonCell key="cell" type="push" title="Default" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Rbn-Rp-Def" id="Rbn-Rp-PopCellInner">
                                                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                                             <font key="font" metaFont="message"/>
                                                                                             <menu key="menu" id="Rbn-Rp-Menu">
                                                                                                 <items>
-                                                                                                    <menuItem title="Default" id="Rbn-Rp-Def"/>
-                                                                                                    <menuItem title="Fancy" state="on" id="Rbn-Rp-Fcy"/>
+                                                                                                    <menuItem title="Default" state="on" id="Rbn-Rp-Def"/>
+                                                                                                    <menuItem title="Fancy" id="Rbn-Rp-Fcy"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>
@@ -2656,13 +2656,13 @@
                                                                                 <gridCell row="Ttk-u3-aJh" column="X1o-RE-25O" id="Qfa-Bh-h18">
                                                                                     <popUpButton key="contentView" tag="1" horizontalHuggingPriority="210" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="WvT-sn-1uJ" userLabel="Representation Style" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
                                                                                         <rect key="frame" x="156" y="39" width="311" height="24"/>
-                                                                                        <popUpButtonCell key="cell" type="push" title="Fancy" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="xHM-ax-0K0" id="BEE-25-lab">
+                                                                                        <popUpButtonCell key="cell" type="push" title="Default" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="K4d-7p-KV4" id="BEE-25-lab">
                                                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                                             <font key="font" metaFont="message"/>
                                                                                             <menu key="menu" id="9G9-JE-6qU">
                                                                                                 <items>
-                                                                                                    <menuItem title="Default" id="K4d-7p-KV4"/>
-                                                                                                    <menuItem title="Fancy" state="on" id="xHM-ax-0K0"/>
+                                                                                                    <menuItem title="Default" state="on" id="K4d-7p-KV4"/>
+                                                                                                    <menuItem title="Fancy" id="xHM-ax-0K0"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>

@@ -54,10 +54,11 @@ fileprivate func ribbonFloatEqual(_ left: Double, _ right: Double) -> Bool
 
 fileprivate func ribbonColorIsWhite(_ color: NSColor) -> Bool
 {
-  return ((color.redComponent - 1.0).magnitude < 1e-3) &&
-         ((color.greenComponent - 1.0).magnitude < 1e-3) &&
-         ((color.blueComponent - 1.0).magnitude < 1e-3) &&
-         ((color.alphaComponent - 1.0).magnitude < 1e-3)
+  guard let rgb: NSColor = color.usingColorSpace(.deviceRGB) else {return false}
+  return ((rgb.redComponent - 1.0).magnitude < 1e-3) &&
+         ((rgb.greenComponent - 1.0).magnitude < 1e-3) &&
+         ((rgb.blueComponent - 1.0).magnitude < 1e-3) &&
+         ((rgb.alphaComponent - 1.0).magnitude < 1e-3)
 }
 
 extension ProteinRibbonStructureEditor
@@ -121,6 +122,7 @@ extension ProteinRibbonStructureEditor
     ribbonDiffuseIntensity = 1.0
     ribbonSpecularIntensity = 1.0
     ribbonShininess = 6.0
+    ribbonRepresentationStyle = .default
   }
   
   public func applyFancyRibbonAppearance()

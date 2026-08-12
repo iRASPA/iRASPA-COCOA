@@ -1541,7 +1541,13 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
     }
     
     try super.init(fromBinary: decoder)
-    self.recheckRibbonRepresentationStyle()
+    // Trust the archived representation style (v6+). Rechecking here can
+    // overwrite Default/Fancy when lighting floats/colors don't match exactly,
+    // and the Appearance popup then shows the wrong style.
+    if readVersionNumber < 6
+    {
+      self.recheckRibbonRepresentationStyle()
+    }
     _ = ProteinAtomTreeBuilder.applyHierarchyIfNeeded(to: self.atomTreeController,
                                                       secondaryStructureMethod: self.ribbonSecondaryStructureMethod)
     rebuildBackbone()

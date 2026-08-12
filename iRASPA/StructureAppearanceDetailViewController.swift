@@ -1308,10 +1308,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpButtonRepresentationStyle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
         popUpButtonRepresentationStyle.isEditable = false
-        if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        if !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
         {
-          popUpButtonRepresentationStyle.isEditable = enabled
+          let canEdit: Bool = (proxyProject?.isEditable ?? false) && enabled
+          popUpButtonRepresentationStyle.isEditable = canEdit
           if let representationStyle = self.getRibbonRepresentationStyle()
           {
             popUpButtonRepresentationStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
