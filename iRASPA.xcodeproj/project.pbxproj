@@ -76,40 +76,6 @@
 		930DD6471E26BA5D00B8FE9B /* MolecularCrystal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6401E26BA5D00B8FE9B /* MolecularCrystal.swift */; };
 		930DD6481E26BA5D00B8FE9B /* Molecule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6411E26BA5D00B8FE9B /* Molecule.swift */; };
 		930DD6491E26BA5D00B8FE9B /* Protein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6421E26BA5D00B8FE9B /* Protein.swift */; };
-		93C0CA021F00000100BACK01 /* ProteinBackbone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA011F00000100BACK01 /* ProteinBackbone.swift */; };
-		93C0CA041F00000200BACK01 /* ProteinBSpline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA031F00000200BACK01 /* ProteinBSpline.swift */; };
-		93C0CA061F00000300BACK01 /* ProteinRibbonMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA051F00000300BACK01 /* ProteinRibbonMesh.swift */; };
-		93C0CA0C1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA0B1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift */; };
-		93C0CA161F00002000BACK01 /* ProteinRibbonColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA151F00002000BACK01 /* ProteinRibbonColorSet.swift */; };
-		93C0CA201F00003000BACK01 /* ProteinRibbonSplineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA1F1F00003000BACK01 /* ProteinRibbonSplineType.swift */; };
-		93C0CA301F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA2F1F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift */; };
-		93C0CA281F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA271F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift */; };
-		93C0CA221F00003000BACK01 /* ProteinRibbonMeshParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA211F00003000BACK01 /* ProteinRibbonMeshParameters.swift */; };
-		93C0CA241F00003000BACK01 /* ProteinRibbonCenterlinePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA231F00003000BACK01 /* ProteinRibbonCenterlinePath.swift */; };
-		93C0CA261F00003000BACK01 /* ProteinCatmullRomSpline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA251F00003000BACK01 /* ProteinCatmullRomSpline.swift */; };
-		93C0CA181F00002100BACK01 /* ProteinRibbonStructureEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA171F00002100BACK01 /* ProteinRibbonStructureEditor.swift */; };
-		93C0CA3A1F00005700DNA001 /* DNARibbonStructureEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA391F00005700DNA001 /* DNARibbonStructureEditor.swift */; };
-		93C0CA3C1F00005800DNA002 /* DNABackbone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA3B1F00005800DNA002 /* DNABackbone.swift */; };
-		93C0CA551F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA541F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift */; };
-		93C0CA531F00006100DNA011 /* ProteinNucleicAcidMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA521F00006100DNA011 /* ProteinNucleicAcidMesh.swift */; };
-		93C0CA511F00006000DNA010 /* DNANucleotideGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA501F00006000DNA010 /* DNANucleotideGeometry.swift */; };
-		93C0CA3E1F00005900DNA003 /* DNAAtomTreeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA3D1F00005900DNA003 /* DNAAtomTreeBuilder.swift */; };
-		93C0CA401F00005A00DNA004 /* DNA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA3F1F00005A00DNA004 /* DNA.swift */; };
-		93C0CA421F00005B00DNA005 /* DNACrystal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA411F00005B00DNA005 /* DNACrystal.swift */; };
-		93C0CA0E1F00000800BACK01 /* ProteinAtomTreeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA0D1F00000800BACK01 /* ProteinAtomTreeBuilder.swift */; };
-		93C0CA101F00000900BACK01 /* ProteinRibbonSegmentSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA0F1F00000900BACK01 /* ProteinRibbonSegmentSupport.swift */; };
-		93C0CA2A1F00005000STRD01 /* SKStrideRamachandranMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA291F00005000STRD01 /* SKStrideRamachandranMaps.swift */; };
-		93C0CA2C1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA2B1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift */; };
-		93C0CA2E1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA2D1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift */; };
-		93C0CA321F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA311F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift */; };
-		93C0CA341F00005400GEOM1 /* SKSecondaryStructureGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA331F00005400GEOM1 /* SKSecondaryStructureGeometry.swift */; };
-		93C0CA361F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA351F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift */; };
-		93C0CA381F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA371F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift */; };
-		93C0CA3A1F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA391F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift */; };
-		93C0CA081F00000400RIBN01 /* RibbonShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA071F00000400RIBN01 /* RibbonShader.metal */; };
-		93C0CA0A1F00000500RIBN01 /* MetalRibbonShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA091F00000500RIBN01 /* MetalRibbonShader.swift */; };
-		93C0CA121F00001700RIBN01 /* MetalRibbonSelectionShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA111F00001600RIBN01 /* MetalRibbonSelectionShader.swift */; };
-		93C0CA141F00001900RIBN01 /* RibbonSelectionShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA131F00001800RIBN01 /* RibbonSelectionShader.metal */; };
 		930DD64A1E26BA5D00B8FE9B /* ProteinCrystal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6431E26BA5D00B8FE9B /* ProteinCrystal.swift */; };
 		930DD64B1E26BA5D00B8FE9B /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6441E26BA5D00B8FE9B /* Structure.swift */; };
 		930DD6581E26BAAD00B8FE9B /* ProjectGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6541E26BAAD00B8FE9B /* ProjectGroup.swift */; };
@@ -174,10 +140,6 @@
 		93274E852205AA54004031BA /* PolygonalPrismPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */; };
 		93281D9B2FEF08370008F9A1 /* SKElementAminoAcidAtomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281D9A2FEF08220008F9A1 /* SKElementAminoAcidAtomTypes.swift */; };
 		93281D9D2FEF084A0008F9A1 /* SKElementResidueDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281D9C2FEF08460008F9A1 /* SKElementResidueDefinitions.swift */; };
-		93C0CA441F00005C00DNA006 /* SKNucleotide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA431F00005C00DNA006 /* SKNucleotide.swift */; };
-		93C0CA461F00005C00DNA007 /* SKNucleotideBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA451F00005C00DNA007 /* SKNucleotideBase.swift */; };
-		93AA00012F02000100AA001 /* SKAminoAcidIdealGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA00022F02000100AA001 /* SKAminoAcidIdealGeometry.swift */; };
-		93AA00032F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA00042F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift */; };
 		932A1C941F967D62000A0037 /* AngleNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A1C931F967D62000A0037 /* AngleNumberFormatter.swift */; };
 		932A49561E537EF400F71AE7 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A49551E537EF400F71AE7 /* LogViewController.swift */; };
 		932A495C1E544FDA00F71AE7 /* LogToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A495B1E544FDA00F71AE7 /* LogToolBar.swift */; };
@@ -325,8 +287,6 @@
 		93784A971E61B81500A7FF23 /* StructureElementDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A961E61B81500A7FF23 /* StructureElementDetailViewController.swift */; };
 		93784A9B1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A9A1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift */; };
 		93784A9D1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A9C1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift */; };
-		A1B2C3D41E70DNA100000001 /* AppearanceRibbonHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D31E70DNA000000001 /* AppearanceRibbonHelpers.swift */; };
-		A1B2C3D41E70DNA200000001 /* StructureAppearanceDNARibbonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D31E70DNA100000001 /* StructureAppearanceDNARibbonExtension.swift */; };
 		93784A9F1E61BC9700A7FF23 /* StructureCellDetailViewPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A9E1E61BC9700A7FF23 /* StructureCellDetailViewPageController.swift */; };
 		93784AA11E61BCE500A7FF23 /* StructureCellDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784AA01E61BCE500A7FF23 /* StructureCellDetailViewController.swift */; };
 		93784AA31E61BDE000A7FF23 /* StructureAtomDetailViewPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784AA21E61BDE000A7FF23 /* StructureAtomDetailViewPageController.swift */; };
@@ -375,9 +335,6 @@
 		93793B2521CA85DB004CAD9C /* MetalBlurVerticalPictureShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2421CA85DB004CAD9C /* MetalBlurVerticalPictureShader.swift */; };
 		93793B2721D7FE59004CAD9C /* SKStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2621D7FE59004CAD9C /* SKStructure.swift */; };
 		93793B2921D943CC004CAD9C /* RKVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2821D943CB004CAD9C /* RKVertex.swift */; };
-		93C0CB051F00001000A001 /* RKRibbonMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CB041F00001000A001 /* RKRibbonMesh.swift */; };
-		93C0CB071F00001000A002 /* RibbonAOLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CB061F00001000A002 /* RibbonAOLayout.swift */; };
-		93C0CB091F00001000A003 /* RibbonAOTexturePostProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CB081F00001000A003 /* RibbonAOTexturePostProcess.swift */; };
 		93793B2B21D943F1004CAD9C /* RKTextVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2A21D943F1004CAD9C /* RKTextVertex.swift */; };
 		93793B2D21D94421004CAD9C /* RKBondVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2C21D94421004CAD9C /* RKBondVertex.swift */; };
 		93793B2F21D94462004CAD9C /* RKInPerInstanceAttributesText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2E21D94462004CAD9C /* RKInPerInstanceAttributesText.swift */; };
@@ -484,7 +441,9 @@
 		93A31C9F1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C9E1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift */; };
 		93A31CA11EB5F75E0010101B /* ImportProjectOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31CA01EB5F75E0010101B /* ImportProjectOperation.swift */; };
 		93A576842606742D00B09DD6 /* Archive+MemoryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A576832606742D00B09DD6 /* Archive+MemoryFile.swift */; };
+		93AA00012F02000100AA001 /* SKAminoAcidIdealGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA00022F02000100AA001 /* SKAminoAcidIdealGeometry.swift */; };
 		93AA00021FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA00011FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift */; };
+		93AA00032F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA00042F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift */; };
 		93ACDD451FBF266900D6527C /* CommandLinePreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */; };
 		93B0BF1D1E2BCEB40089D292 /* iRASPAHelp.help in Resources */ = {isa = PBXBuildFile; fileRef = 930DD75C1E280F1300B8FE9B /* iRASPAHelp.help */; };
 		93B1ECAF261E0FAF002E9069 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 93B1ECB1261E0FAF002E9069 /* Localizable.strings */; };
@@ -568,6 +527,45 @@
 		93BF30C01FB3705C00FFCCB0 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F4F171FADF4D000753D08 /* main.swift */; };
 		93BF30C21FB3706500FFCCB0 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF2D2C1FB306C300FFCCB0 /* Project.swift */; };
 		93BF30C31FB3707B00FFCCB0 /* iRASPA-CLI.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 93BF30BA1FB3704500FFCCB0 /* iRASPA-CLI.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		93C0CA021F00000100BACK01 /* ProteinBackbone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA011F00000100BACK01 /* ProteinBackbone.swift */; };
+		93C0CA041F00000200BACK01 /* ProteinBSpline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA031F00000200BACK01 /* ProteinBSpline.swift */; };
+		93C0CA061F00000300BACK01 /* ProteinRibbonMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA051F00000300BACK01 /* ProteinRibbonMesh.swift */; };
+		93C0CA081F00000400RIBN01 /* RibbonShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA071F00000400RIBN01 /* RibbonShader.metal */; };
+		93C0CA0A1F00000500RIBN01 /* MetalRibbonShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA091F00000500RIBN01 /* MetalRibbonShader.swift */; };
+		93C0CA0C1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA0B1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift */; };
+		93C0CA0E1F00000800BACK01 /* ProteinAtomTreeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA0D1F00000800BACK01 /* ProteinAtomTreeBuilder.swift */; };
+		93C0CA101F00000900BACK01 /* ProteinRibbonSegmentSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA0F1F00000900BACK01 /* ProteinRibbonSegmentSupport.swift */; };
+		93C0CA121F00001700RIBN01 /* MetalRibbonSelectionShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA111F00001600RIBN01 /* MetalRibbonSelectionShader.swift */; };
+		93C0CA141F00001900RIBN01 /* RibbonSelectionShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA131F00001800RIBN01 /* RibbonSelectionShader.metal */; };
+		93C0CA161F00002000BACK01 /* ProteinRibbonColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA151F00002000BACK01 /* ProteinRibbonColorSet.swift */; };
+		93C0CA181F00002100BACK01 /* ProteinRibbonStructureEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA171F00002100BACK01 /* ProteinRibbonStructureEditor.swift */; };
+		93C0CA201F00003000BACK01 /* ProteinRibbonSplineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA1F1F00003000BACK01 /* ProteinRibbonSplineType.swift */; };
+		93C0CA221F00003000BACK01 /* ProteinRibbonMeshParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA211F00003000BACK01 /* ProteinRibbonMeshParameters.swift */; };
+		93C0CA241F00003000BACK01 /* ProteinRibbonCenterlinePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA231F00003000BACK01 /* ProteinRibbonCenterlinePath.swift */; };
+		93C0CA261F00003000BACK01 /* ProteinCatmullRomSpline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA251F00003000BACK01 /* ProteinCatmullRomSpline.swift */; };
+		93C0CA281F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA271F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift */; };
+		93C0CA2A1F00005000STRD01 /* SKStrideRamachandranMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA291F00005000STRD01 /* SKStrideRamachandranMaps.swift */; };
+		93C0CA2C1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA2B1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift */; };
+		93C0CA2E1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA2D1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift */; };
+		93C0CA301F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA2F1F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift */; };
+		93C0CA321F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA311F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift */; };
+		93C0CA341F00005400GEOM1 /* SKSecondaryStructureGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA331F00005400GEOM1 /* SKSecondaryStructureGeometry.swift */; };
+		93C0CA361F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA351F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift */; };
+		93C0CA381F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA371F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift */; };
+		93C0CA3A1F00005700DNA001 /* DNARibbonStructureEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA391F00005700DNA001 /* DNARibbonStructureEditor.swift */; };
+		93C0CA3A1F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA391F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift */; };
+		93C0CA3C1F00005800DNA002 /* DNABackbone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA3B1F00005800DNA002 /* DNABackbone.swift */; };
+		93C0CA3E1F00005900DNA003 /* DNAAtomTreeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA3D1F00005900DNA003 /* DNAAtomTreeBuilder.swift */; };
+		93C0CA401F00005A00DNA004 /* DNA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA3F1F00005A00DNA004 /* DNA.swift */; };
+		93C0CA421F00005B00DNA005 /* DNACrystal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA411F00005B00DNA005 /* DNACrystal.swift */; };
+		93C0CA441F00005C00DNA006 /* SKNucleotide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA431F00005C00DNA006 /* SKNucleotide.swift */; };
+		93C0CA461F00005C00DNA007 /* SKNucleotideBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA451F00005C00DNA007 /* SKNucleotideBase.swift */; };
+		93C0CA511F00006000DNA010 /* DNANucleotideGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA501F00006000DNA010 /* DNANucleotideGeometry.swift */; };
+		93C0CA531F00006100DNA011 /* ProteinNucleicAcidMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA521F00006100DNA011 /* ProteinNucleicAcidMesh.swift */; };
+		93C0CA551F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA541F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift */; };
+		93C0CB051F00001000A001 /* RKRibbonMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CB041F00001000A001 /* RKRibbonMesh.swift */; };
+		93C0CB071F00001000A002 /* RibbonAOLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CB061F00001000A002 /* RibbonAOLayout.swift */; };
+		93C0CB091F00001000A003 /* RibbonAOTexturePostProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CB081F00001000A003 /* RibbonAOTexturePostProcess.swift */; };
 		93C5E24023EEB1D8002BA929 /* CopyingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */; };
 		93C5E24223F1A264002BA929 /* SKAsymmetricBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */; };
 		93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */; };
@@ -894,6 +892,8 @@
 		93FDA73120554DF6000C4AD7 /* SKVASPPOSCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FDA73020554DF6000C4AD7 /* SKVASPPOSCARParser.swift */; };
 		93FFF0B2203B6DA800DB696A /* ExportPictureAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FFF0B1203B6DA800DB696A /* ExportPictureAccessoryViewController.xib */; };
 		93FFF0B4203B6DBC00DB696A /* ExportPictureAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFF0B3203B6DBC00DB696A /* ExportPictureAccessoryViewController.swift */; };
+		A1B2C3D41E70DNA100000001 /* AppearanceRibbonHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D31E70DNA000000001 /* AppearanceRibbonHelpers.swift */; };
+		A1B2C3D41E70DNA200000001 /* StructureAppearanceDNARibbonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D31E70DNA100000001 /* StructureAppearanceDNARibbonExtension.swift */; };
 		A1C2E3F42680D7A900D47402 /* SKCIFSymmetryOperationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */; };
 		A1C2E3F42680D7A900D47404 /* SKCIFSpaceGroupIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */; };
 		A1C2E3F42680D7A900D47406 /* SKCIFSymmetryOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */; };
@@ -1491,40 +1491,6 @@
 		930DD6401E26BA5D00B8FE9B /* MolecularCrystal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolecularCrystal.swift; sourceTree = "<group>"; };
 		930DD6411E26BA5D00B8FE9B /* Molecule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Molecule.swift; sourceTree = "<group>"; };
 		930DD6421E26BA5D00B8FE9B /* Protein.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protein.swift; sourceTree = "<group>"; };
-		93C0CA011F00000100BACK01 /* ProteinBackbone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinBackbone.swift; sourceTree = "<group>"; };
-		93C0CA031F00000200BACK01 /* ProteinBSpline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinBSpline.swift; sourceTree = "<group>"; };
-		93C0CA051F00000300BACK01 /* ProteinRibbonMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonMesh.swift; sourceTree = "<group>"; };
-		93C0CA0B1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSecondaryStructure.swift; sourceTree = "<group>"; };
-		93C0CA151F00002000BACK01 /* ProteinRibbonColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonColorSet.swift; sourceTree = "<group>"; };
-		93C0CA1F1F00003000BACK01 /* ProteinRibbonSplineType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSplineType.swift; sourceTree = "<group>"; };
-		93C0CA2F1F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSecondaryStructureMethod.swift; sourceTree = "<group>"; };
-		93C0CA271F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonRepresentationStyle.swift; sourceTree = "<group>"; };
-		93C0CA211F00003000BACK01 /* ProteinRibbonMeshParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonMeshParameters.swift; sourceTree = "<group>"; };
-		93C0CA231F00003000BACK01 /* ProteinRibbonCenterlinePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonCenterlinePath.swift; sourceTree = "<group>"; };
-		93C0CA251F00003000BACK01 /* ProteinCatmullRomSpline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinCatmullRomSpline.swift; sourceTree = "<group>"; };
-		93C0CA171F00002100BACK01 /* ProteinRibbonStructureEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonStructureEditor.swift; sourceTree = "<group>"; };
-		93C0CA391F00005700DNA001 /* DNARibbonStructureEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNARibbonStructureEditor.swift; sourceTree = "<group>"; };
-		93C0CA3B1F00005800DNA002 /* DNABackbone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNABackbone.swift; sourceTree = "<group>"; };
-		93C0CA541F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinNucleicAcidRibbonMesh.swift; sourceTree = "<group>"; };
-		93C0CA521F00006100DNA011 /* ProteinNucleicAcidMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinNucleicAcidMesh.swift; sourceTree = "<group>"; };
-		93C0CA501F00006000DNA010 /* DNANucleotideGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNANucleotideGeometry.swift; sourceTree = "<group>"; };
-		93C0CA3D1F00005900DNA003 /* DNAAtomTreeBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNAAtomTreeBuilder.swift; sourceTree = "<group>"; };
-		93C0CA3F1F00005A00DNA004 /* DNA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNA.swift; sourceTree = "<group>"; };
-		93C0CA411F00005B00DNA005 /* DNACrystal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNACrystal.swift; sourceTree = "<group>"; };
-		93C0CA0D1F00000800BACK01 /* ProteinAtomTreeBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinAtomTreeBuilder.swift; sourceTree = "<group>"; };
-		93C0CA0F1F00000900BACK01 /* ProteinRibbonSegmentSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSegmentSupport.swift; sourceTree = "<group>"; };
-		93C0CA291F00005000STRD01 /* SKStrideRamachandranMaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStrideRamachandranMaps.swift; sourceTree = "<group>"; };
-		93C0CA2B1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStrideSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
-		93C0CA2D1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDssSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
-		93C0CA311F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDsspSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
-		93C0CA331F00005400GEOM1 /* SKSecondaryStructureGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSecondaryStructureGeometry.swift; sourceTree = "<group>"; };
-		93C0CA351F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPSeaSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
-		93C0CA371F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSequoiaSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
-		93C0CA391F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSegnoSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
-		93C0CA071F00000400RIBN01 /* RibbonShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = RibbonShader.metal; sourceTree = "<group>"; };
-		93C0CA091F00000500RIBN01 /* MetalRibbonShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRibbonShader.swift; sourceTree = "<group>"; };
-		93C0CA111F00001600RIBN01 /* MetalRibbonSelectionShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRibbonSelectionShader.swift; sourceTree = "<group>"; };
-		93C0CA131F00001800RIBN01 /* RibbonSelectionShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = RibbonSelectionShader.metal; sourceTree = "<group>"; };
 		930DD6431E26BA5D00B8FE9B /* ProteinCrystal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProteinCrystal.swift; sourceTree = "<group>"; };
 		930DD6441E26BA5D00B8FE9B /* Structure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Structure.swift; sourceTree = "<group>"; };
 		930DD6541E26BAAD00B8FE9B /* ProjectGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectGroup.swift; sourceTree = "<group>"; };
@@ -1637,10 +1603,6 @@
 		93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonalPrismPrimitive.swift; sourceTree = "<group>"; };
 		93281D9A2FEF08220008F9A1 /* SKElementAminoAcidAtomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKElementAminoAcidAtomTypes.swift; sourceTree = "<group>"; };
 		93281D9C2FEF08460008F9A1 /* SKElementResidueDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKElementResidueDefinitions.swift; sourceTree = "<group>"; };
-		93C0CA431F00005C00DNA006 /* SKNucleotide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNucleotide.swift; sourceTree = "<group>"; };
-		93C0CA451F00005C00DNA007 /* SKNucleotideBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNucleotideBase.swift; sourceTree = "<group>"; };
-		93AA00022F02000100AA001 /* SKAminoAcidIdealGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAminoAcidIdealGeometry.swift; sourceTree = "<group>"; };
-		93AA00042F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinAminoAcidResidueReplacer.swift; sourceTree = "<group>"; };
 		932A1C931F967D62000A0037 /* AngleNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleNumberFormatter.swift; sourceTree = "<group>"; };
 		932A49551E537EF400F71AE7 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		932A495B1E544FDA00F71AE7 /* LogToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogToolBar.swift; sourceTree = "<group>"; };
@@ -1822,8 +1784,6 @@
 		93784A961E61B81500A7FF23 /* StructureElementDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureElementDetailViewController.swift; sourceTree = "<group>"; };
 		93784A9A1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureAppearanceDetailViewPageController.swift; sourceTree = "<group>"; };
 		93784A9C1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureAppearanceDetailViewController.swift; sourceTree = "<group>"; };
-		A1B2C3D31E70DNA000000001 /* AppearanceRibbonHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppearanceRibbonHelpers.swift; sourceTree = "<group>"; };
-		A1B2C3D31E70DNA100000001 /* StructureAppearanceDNARibbonExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureAppearanceDNARibbonExtension.swift; sourceTree = "<group>"; };
 		93784A9E1E61BC9700A7FF23 /* StructureCellDetailViewPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureCellDetailViewPageController.swift; sourceTree = "<group>"; };
 		93784AA01E61BCE500A7FF23 /* StructureCellDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureCellDetailViewController.swift; sourceTree = "<group>"; };
 		93784AA21E61BDE000A7FF23 /* StructureAtomDetailViewPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureAtomDetailViewPageController.swift; sourceTree = "<group>"; };
@@ -1872,9 +1832,6 @@
 		93793B2421CA85DB004CAD9C /* MetalBlurVerticalPictureShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalBlurVerticalPictureShader.swift; sourceTree = "<group>"; };
 		93793B2621D7FE59004CAD9C /* SKStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStructure.swift; sourceTree = "<group>"; };
 		93793B2821D943CB004CAD9C /* RKVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKVertex.swift; sourceTree = "<group>"; };
-		93C0CB041F00001000A001 /* RKRibbonMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKRibbonMesh.swift; sourceTree = "<group>"; };
-		93C0CB061F00001000A002 /* RibbonAOLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonAOLayout.swift; sourceTree = "<group>"; };
-		93C0CB081F00001000A003 /* RibbonAOTexturePostProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonAOTexturePostProcess.swift; sourceTree = "<group>"; };
 		93793B2A21D943F1004CAD9C /* RKTextVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKTextVertex.swift; sourceTree = "<group>"; };
 		93793B2C21D94421004CAD9C /* RKBondVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKBondVertex.swift; sourceTree = "<group>"; };
 		93793B2E21D94462004CAD9C /* RKInPerInstanceAttributesText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKInPerInstanceAttributesText.swift; sourceTree = "<group>"; };
@@ -2023,6 +1980,8 @@
 		93A31CA01EB5F75E0010101B /* ImportProjectOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportProjectOperation.swift; sourceTree = "<group>"; };
 		93A576832606742D00B09DD6 /* Archive+MemoryFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Archive+MemoryFile.swift"; sourceTree = "<group>"; };
 		93AA00011FD2FB9D00B34D07 /* SourceListStyledTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceListStyledTableRowView.swift; sourceTree = "<group>"; };
+		93AA00022F02000100AA001 /* SKAminoAcidIdealGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAminoAcidIdealGeometry.swift; sourceTree = "<group>"; };
+		93AA00042F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinAminoAcidResidueReplacer.swift; sourceTree = "<group>"; };
 		93ACDD431FBB5DC200D6527C /* iRASPA-CLI.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "iRASPA-CLI.entitlements"; sourceTree = "<group>"; };
 		93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandLinePreferenceViewController.swift; sourceTree = "<group>"; };
 		93B1EC72261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/AboutWindow.strings; sourceTree = "<group>"; };
@@ -2144,6 +2103,45 @@
 		93BF260D1EE71E4E00128CD4 /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutObserver.swift; sourceTree = "<group>"; };
 		93BF2D2C1FB306C300FFCCB0 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		93BF30BA1FB3704500FFCCB0 /* iRASPA-CLI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iRASPA-CLI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		93C0CA011F00000100BACK01 /* ProteinBackbone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinBackbone.swift; sourceTree = "<group>"; };
+		93C0CA031F00000200BACK01 /* ProteinBSpline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinBSpline.swift; sourceTree = "<group>"; };
+		93C0CA051F00000300BACK01 /* ProteinRibbonMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonMesh.swift; sourceTree = "<group>"; };
+		93C0CA071F00000400RIBN01 /* RibbonShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = RibbonShader.metal; sourceTree = "<group>"; };
+		93C0CA091F00000500RIBN01 /* MetalRibbonShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRibbonShader.swift; sourceTree = "<group>"; };
+		93C0CA0B1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSecondaryStructure.swift; sourceTree = "<group>"; };
+		93C0CA0D1F00000800BACK01 /* ProteinAtomTreeBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinAtomTreeBuilder.swift; sourceTree = "<group>"; };
+		93C0CA0F1F00000900BACK01 /* ProteinRibbonSegmentSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSegmentSupport.swift; sourceTree = "<group>"; };
+		93C0CA111F00001600RIBN01 /* MetalRibbonSelectionShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRibbonSelectionShader.swift; sourceTree = "<group>"; };
+		93C0CA131F00001800RIBN01 /* RibbonSelectionShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = RibbonSelectionShader.metal; sourceTree = "<group>"; };
+		93C0CA151F00002000BACK01 /* ProteinRibbonColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonColorSet.swift; sourceTree = "<group>"; };
+		93C0CA171F00002100BACK01 /* ProteinRibbonStructureEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonStructureEditor.swift; sourceTree = "<group>"; };
+		93C0CA1F1F00003000BACK01 /* ProteinRibbonSplineType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSplineType.swift; sourceTree = "<group>"; };
+		93C0CA211F00003000BACK01 /* ProteinRibbonMeshParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonMeshParameters.swift; sourceTree = "<group>"; };
+		93C0CA231F00003000BACK01 /* ProteinRibbonCenterlinePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonCenterlinePath.swift; sourceTree = "<group>"; };
+		93C0CA251F00003000BACK01 /* ProteinCatmullRomSpline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinCatmullRomSpline.swift; sourceTree = "<group>"; };
+		93C0CA271F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonRepresentationStyle.swift; sourceTree = "<group>"; };
+		93C0CA291F00005000STRD01 /* SKStrideRamachandranMaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStrideRamachandranMaps.swift; sourceTree = "<group>"; };
+		93C0CA2B1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStrideSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA2D1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDssSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA2F1F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSecondaryStructureMethod.swift; sourceTree = "<group>"; };
+		93C0CA311F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDsspSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA331F00005400GEOM1 /* SKSecondaryStructureGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSecondaryStructureGeometry.swift; sourceTree = "<group>"; };
+		93C0CA351F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPSeaSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA371F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSequoiaSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA391F00005700DNA001 /* DNARibbonStructureEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNARibbonStructureEditor.swift; sourceTree = "<group>"; };
+		93C0CA391F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSegnoSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA3B1F00005800DNA002 /* DNABackbone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNABackbone.swift; sourceTree = "<group>"; };
+		93C0CA3D1F00005900DNA003 /* DNAAtomTreeBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNAAtomTreeBuilder.swift; sourceTree = "<group>"; };
+		93C0CA3F1F00005A00DNA004 /* DNA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNA.swift; sourceTree = "<group>"; };
+		93C0CA411F00005B00DNA005 /* DNACrystal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNACrystal.swift; sourceTree = "<group>"; };
+		93C0CA431F00005C00DNA006 /* SKNucleotide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNucleotide.swift; sourceTree = "<group>"; };
+		93C0CA451F00005C00DNA007 /* SKNucleotideBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNucleotideBase.swift; sourceTree = "<group>"; };
+		93C0CA501F00006000DNA010 /* DNANucleotideGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNANucleotideGeometry.swift; sourceTree = "<group>"; };
+		93C0CA521F00006100DNA011 /* ProteinNucleicAcidMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinNucleicAcidMesh.swift; sourceTree = "<group>"; };
+		93C0CA541F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinNucleicAcidRibbonMesh.swift; sourceTree = "<group>"; };
+		93C0CB041F00001000A001 /* RKRibbonMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKRibbonMesh.swift; sourceTree = "<group>"; };
+		93C0CB061F00001000A002 /* RibbonAOLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonAOLayout.swift; sourceTree = "<group>"; };
+		93C0CB081F00001000A003 /* RibbonAOTexturePostProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonAOTexturePostProcess.swift; sourceTree = "<group>"; };
 		93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyingProtocol.swift; sourceTree = "<group>"; };
 		93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAsymmetricBond.swift; sourceTree = "<group>"; };
 		93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupChangeOfBasistests.swift; sourceTree = "<group>"; };
@@ -2516,6 +2514,8 @@
 		93FDA73020554DF6000C4AD7 /* SKVASPPOSCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVASPPOSCARParser.swift; sourceTree = "<group>"; };
 		93FFF0B1203B6DA800DB696A /* ExportPictureAccessoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExportPictureAccessoryViewController.xib; sourceTree = "<group>"; };
 		93FFF0B3203B6DBC00DB696A /* ExportPictureAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportPictureAccessoryViewController.swift; sourceTree = "<group>"; };
+		A1B2C3D31E70DNA000000001 /* AppearanceRibbonHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppearanceRibbonHelpers.swift; sourceTree = "<group>"; };
+		A1B2C3D31E70DNA100000001 /* StructureAppearanceDNARibbonExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureAppearanceDNARibbonExtension.swift; sourceTree = "<group>"; };
 		A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationParser.swift; sourceTree = "<group>"; };
 		A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSpaceGroupIdentification.swift; sourceTree = "<group>"; };
 		A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationTests.swift; sourceTree = "<group>"; };
@@ -6565,7 +6565,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6581,7 +6581,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6603,7 +6603,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6620,7 +6620,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6640,7 +6640,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6656,7 +6656,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
@@ -6676,7 +6676,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6693,7 +6693,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
@@ -6712,7 +6712,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6728,7 +6728,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6750,7 +6750,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6767,7 +6767,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
@@ -6788,7 +6788,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6805,7 +6805,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
@@ -6827,7 +6827,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6844,7 +6844,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
@@ -6920,7 +6920,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6940,7 +6940,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -6969,7 +6969,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6989,7 +6989,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
@@ -7013,7 +7013,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7030,7 +7030,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
@@ -7051,7 +7051,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7068,7 +7068,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
@@ -7273,7 +7273,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 148;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readwrite;
@@ -7292,7 +7292,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7316,7 +7316,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 148;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readwrite;
@@ -7335,7 +7335,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7354,7 +7354,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7370,7 +7370,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
@@ -7390,7 +7390,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7407,7 +7407,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
@@ -7429,7 +7429,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 148;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7442,7 +7442,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7461,7 +7461,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 148;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7474,7 +7474,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7492,7 +7492,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7505,7 +7505,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7524,7 +7524,7 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7537,7 +7537,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7556,7 +7556,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7573,7 +7573,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
@@ -7597,7 +7597,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7614,7 +7614,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
@@ -7634,7 +7634,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7650,7 +7650,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
@@ -7671,7 +7671,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7687,7 +7687,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
@@ -7709,7 +7709,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7721,7 +7721,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -7741,7 +7741,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -7753,7 +7753,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -7770,7 +7770,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7787,7 +7787,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
@@ -7805,7 +7805,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7823,7 +7823,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
@@ -7845,7 +7845,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7855,7 +7855,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MovieCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7878,7 +7878,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7888,7 +7888,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MovieCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -7910,7 +7910,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7920,7 +7920,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PictureCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7942,7 +7942,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7952,7 +7952,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 David Dubbeldam. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PictureCreationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7974,7 +7974,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7991,7 +7991,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -8017,7 +8017,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -8034,7 +8034,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
@@ -8058,7 +8058,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -8075,7 +8075,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -8101,7 +8101,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -8118,7 +8118,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.3.6;
+				MARKETING_VERSION = 2.3.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
