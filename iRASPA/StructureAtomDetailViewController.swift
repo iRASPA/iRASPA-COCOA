@@ -38,11 +38,14 @@ import SymmetryKit
 import SimulationKit
 import MathKit
 
-class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation, WindowControllerConsumer, NSOutlineViewDataSource, NSOutlineViewDelegate, ProjectConsumer, Reloadable
+class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation, NSMenuDelegate, WindowControllerConsumer, NSOutlineViewDataSource, NSOutlineViewDelegate, ProjectConsumer, Reloadable
 {
   @IBOutlet private weak var atomOutlineView: AtomOutlineView?
   @IBOutlet private weak var atomNetChargeTextField: AtomNetChargeTextField?
   @IBOutlet private var atomContextMenu: NSMenu?
+  @IBOutlet private weak var replaceAminoAcidMenuItem: NSMenuItem?
+  
+  private var replaceAminoAcidSubmenu: NSMenu?
   
   weak var windowController: iRASPAWindowController?
   
@@ -123,12 +126,15 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     self.atomOutlineView?.dataSource = self
     self.atomOutlineView?.delegate = self
     
+    self.setupReplaceAminoAcidMenuIfNeeded()
     self.reloadData()
   }
   
   override func viewDidAppear()
   {
     super.viewDidAppear()
+    
+    self.setupReplaceAminoAcidMenuIfNeeded()
     
     NotificationCenter.default.addObserver(self, selector: #selector(StructureAtomDetailViewController.setSelectionFromExternalSource), name: NSNotification.Name(rawValue: NotificationStrings.RendererSelectionDidChangeNotification), object: (self.representedObject as? iRASPAObject)?.object)
     
@@ -206,18 +212,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       
       
-      let updatedSelectedIndex: NSMutableIndexSet = NSMutableIndexSet()
-      
-      for node in treeController.selectedNodes
-      {
-        if let row: Int = self.atomOutlineView?.row(forItem: node), row >= 0
-        {
-          updatedSelectedIndex.add(row)
-        }
-      }
-      
-      self.atomOutlineView?.selectRowIndexes(updatedSelectedIndex as IndexSet, byExtendingSelection: false)
-      
+      self.syncOutlineSelectionFromModel()
+
       self.observeNotifications = true
     }
     else
@@ -307,19 +303,37 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         // group-row
         if tableColumn == nil
         {
+          let isRibbonGroup: Bool = ProteinRibbonSegmentSupport.isRibbonHierarchyGroupNode(node)
           if let checkBox: NSButton = localview?.viewWithTag(10) as? NSButton
           {
+            checkBox.isHidden = isRibbonGroup
             checkBox.state = atomNode.isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
             checkBox.isEnabled = atomNode.isVisibleEnabled && proxyProject.isEnabled
-            
+            checkBox.toolTip = isRibbonGroup ? nil : "Show this group and everything under it"
+          }
+          if let ribbonControl: NSSegmentedControl = localview?.viewWithTag(12) as? NSSegmentedControl
+          {
+            ribbonControl.isHidden = !isRibbonGroup
+            if isRibbonGroup
+            {
+              let atomsVisible: Bool? = ProteinRibbonSegmentSupport.groupAtomsVisibilityState(node)
+              ribbonControl.setSelected(atomsVisible == true, forSegment: 0)
+              ribbonControl.setSelected(atomNode.isVisible, forSegment: 1)
+              ribbonControl.setEnabled(atomNode.isVisibleEnabled && proxyProject.isEnabled, forSegment: 0)
+              ribbonControl.setEnabled(atomNode.isVisibleEnabled && proxyProject.isEnabled, forSegment: 1)
+              ribbonControl.setToolTip("Show the atoms of this group", forSegment: 0)
+              ribbonControl.setToolTip("Show the ribbon of this group", forSegment: 1)
+            }
           }
           if let textField: NSTextField = localview?.viewWithTag(11) as? NSTextField
           {
             textField.isBezeled = false
             textField.drawsBackground = false
             textField.stringValue = atomNode.displayName
+            textField.alignment = .left
             textField.isEditable = proxyProject.isEnabled && isAtomEditor
           }
+          (localview as? AtomGroupStackView)?.configureHorizontalLayout()
           return localview
         }
       }
@@ -1153,23 +1167,66 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   // =====================================================================
   
   
+  private func expandAncestors(of node: SKAtomTreeNode, in outlineView: NSOutlineView)
+  {
+    var parent: SKAtomTreeNode? = node.parentNode
+    while let item: SKAtomTreeNode = parent, item.parentNode != nil
+    {
+      if !outlineView.isItemExpanded(item)
+      {
+        outlineView.expandItem(item)
+      }
+      parent = item.parentNode
+    }
+  }
+  
+  private func rowIndexes(for selectedNodes: Set<SKAtomTreeNode>, in outlineView: NSOutlineView) -> IndexSet
+  {
+    var rows: IndexSet = IndexSet()
+    for node in selectedNodes
+    {
+      expandAncestors(of: node, in: outlineView)
+      let row: Int = outlineView.row(forItem: node)
+      if row >= 0
+      {
+        rows.insert(row)
+      }
+    }
+    return rows
+  }
+  
+  func syncOutlineSelectionFromModel()
+  {
+    if let atomViewer: AtomViewer = (self.representedObject as? iRASPAObject)?.object as? AtomViewer,
+       let outlineView: NSOutlineView = self.atomOutlineView
+    {
+      let rows: IndexSet = rowIndexes(for: atomViewer.atomTreeController.selectedTreeNodes, in: outlineView)
+      outlineView.selectRowIndexes(rows, byExtendingSelection: false)
+      
+      atomViewer.atomTreeController.flattenedNodes().forEach({$0.isImplicitelySelected = false})
+      atomViewer.atomTreeController.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
+      
+      atomViewer.recomputeSelectionBodyFixedBasis(index: -1)
+      
+      outlineView.enumerateAvailableRowViews({ (rowView, row) in
+        if let item: SKAtomTreeNode = outlineView.item(atRow: row) as? SKAtomTreeNode
+        {
+          (rowView as? AtomTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
+          rowView.needsDisplay = true
+        }
+      })
+    }
+  }
+  
   func restoreSelectedItems(_ parent: SKAtomTreeNode)
   {
     if let object: Object = (self.representedObject as? iRASPAObject)?.object,
-       let structure: Structure = object as? Structure
+       let structure: Structure = object as? Structure,
+       let outlineView: NSOutlineView = self.atomOutlineView
     {
-      let updatedSelectedIndex: NSMutableIndexSet = NSMutableIndexSet()
-      for node in parent.childNodes
-      {
-        if structure.atomTreeController.selectedTreeNodes.contains(node)
-        {
-          if let index: Int = self.atomOutlineView?.row(forItem: node)
-          {
-            updatedSelectedIndex.add(index)
-          }
-        }
-      }
-      self.atomOutlineView?.selectRowIndexes(updatedSelectedIndex as IndexSet, byExtendingSelection: true)
+      let selectedChildren: Set<SKAtomTreeNode> = Set(parent.childNodes.filter { structure.atomTreeController.selectedTreeNodes.contains($0) })
+      let rows: IndexSet = rowIndexes(for: selectedChildren, in: outlineView)
+      outlineView.selectRowIndexes(rows, byExtendingSelection: true)
     }
   }
   
@@ -1220,51 +1277,19 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     let observeNotificationsStored: Bool = self.observeNotifications
     self.observeNotifications = false
     
-    self.reloadData()
+    self.syncOutlineSelectionFromModel()
     
     self.observeNotifications = observeNotificationsStored
   }
   
   func programmaticallySetSelection()
   {
-    if let atomViewer: AtomViewer = (self.representedObject as? iRASPAObject)?.object as? AtomViewer
-    {
-      // avoid sending notification due to selection change
-      let observeNotificationsStored: Bool = self.observeNotifications
-      self.observeNotifications = false
-      
-      let selectedNodes:[SKAtomTreeNode] = atomViewer.atomTreeController.selectedNodes
-      
-      self.atomOutlineView?.selectRowIndexes(IndexSet(), byExtendingSelection: false)
-      
-      for node in selectedNodes
-      {
-        if let index: Int = self.atomOutlineView?.row(forItem: node)
-        {
-          if (index>=0)
-          {
-            self.atomOutlineView?.selectRowIndexes(NSIndexSet(index: index) as IndexSet, byExtendingSelection: true)
-          }
-        }
-      }
-      
-      atomViewer.atomTreeController.flattenedNodes().forEach({$0.isImplicitelySelected = false})
-      atomViewer.atomTreeController.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
-      
-      // set the basis for the selected atoms once the selection is set and use that for subsequent translations and rotations
-      atomViewer.recomputeSelectionBodyFixedBasis(index: -1)
-      
-      self.atomOutlineView?.enumerateAvailableRowViews({ (rowView,row) in
-        if let item: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
-        {
-          (rowView as? AtomTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
-          rowView.needsDisplay = true
-        }
-      })
-
-      
-      self.observeNotifications = observeNotificationsStored
-    }
+    let observeNotificationsStored: Bool = self.observeNotifications
+    self.observeNotifications = false
+    
+    self.syncOutlineSelectionFromModel()
+    
+    self.observeNotifications = observeNotificationsStored
   }
   
   func setCurrentSelection(object: Object, atomSelection: Set<SKAtomTreeNode>, previousAtomSelection: Set<SKAtomTreeNode>, bondSelection: IndexSet, previousBondSelection: IndexSet)
@@ -1613,11 +1638,180 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   // MARK: Context Menu
   // =====================================================================
   
+  private func setupReplaceAminoAcidMenuIfNeeded()
+  {
+    let replaceMenuItem: NSMenuItem? = self.replaceAminoAcidMenuItem ?? self.atomContextMenu?.items.first(where: {$0.title == "Replace Amino Acid"})
+    guard let replaceMenuItem: NSMenuItem = replaceMenuItem,
+          let submenu: NSMenu = replaceMenuItem.submenu else {return}
+    
+    self.replaceAminoAcidSubmenu = submenu
+    submenu.delegate = self
+    
+    guard submenu.items.isEmpty else {return}
+    
+    for residueCode in SKAminoAcidIdealGeometry.replaceableResidueCodes
+    {
+      let menuItem: NSMenuItem = NSMenuItem(title: residueCode, action: #selector(replaceAminoAcid(_:)), keyEquivalent: "")
+      menuItem.target = self
+      submenu.addItem(menuItem)
+    }
+  }
+  
+  private func contextMenuClickedNode() -> SKAtomTreeNode?
+  {
+    guard let outlineView: AtomOutlineView = self.atomOutlineView else {return nil}
+    
+    var row: Int = outlineView.clickedRow
+    if row < 0
+    {
+      row = outlineView.selectedRow
+    }
+    guard row >= 0 else {return nil}
+    return outlineView.item(atRow: row) as? SKAtomTreeNode
+  }
+  
+  private func updateReplaceAminoAcidMenu(for menu: NSMenu)
+  {
+    self.setupReplaceAminoAcidMenuIfNeeded()
+    
+    guard let contextMenu: NSMenu = self.atomContextMenu,
+          menu == contextMenu || menu == self.replaceAminoAcidSubmenu,
+          let replaceMenuItem: NSMenuItem = self.replaceAminoAcidMenuItem ?? contextMenu.items.first(where: {$0.title == "Replace Amino Acid"}),
+          let submenu: NSMenu = replaceMenuItem.submenu else {return}
+    
+    var context: (residueNode: SKAtomTreeNode?, atomNodes: [SKAtomTreeNode])? = nil
+    var currentCode: String? = nil
+    
+    if let clickedNode: SKAtomTreeNode = self.contextMenuClickedNode(),
+       let structure: Structure = (self.representedObject as? iRASPAObject)?.object as? Structure,
+       ProteinAminoAcidResidueReplacer.isProteinStructure(structure)
+    {
+      context = ProteinAminoAcidResidueReplacer.residueContext(for: clickedNode, in: structure.atomTreeController)
+      if let context: (residueNode: SKAtomTreeNode?, atomNodes: [SKAtomTreeNode]) = context
+      {
+        currentCode = ProteinAminoAcidResidueReplacer.currentResidueCode(for: context.atomNodes)
+      }
+    }
+    
+    let showMenu: Bool = context != nil && currentCode != nil
+    replaceMenuItem.isHidden = !showMenu
+    replaceMenuItem.isEnabled = showMenu
+    
+    for menuItem in submenu.items
+    {
+      let residueCode: String = menuItem.title
+      guard SKAminoAcidIdealGeometry.idealCoordinates(for: residueCode) != nil else {continue}
+      
+      if let context: (residueNode: SKAtomTreeNode?, atomNodes: [SKAtomTreeNode]) = context,
+         let currentCode: String = currentCode
+      {
+        menuItem.representedObject = ReplaceAminoAcidContext(residueNode: context.residueNode,
+                                                             atomNodes: context.atomNodes,
+                                                             newResidueCode: residueCode)
+        menuItem.state = (residueCode == currentCode) ? .on : .off
+        menuItem.isEnabled = residueCode != currentCode
+      }
+      else
+      {
+        menuItem.representedObject = nil
+        menuItem.state = .off
+        menuItem.isEnabled = false
+      }
+    }
+  }
+  
   func menuNeedsUpdate(_ menu: NSMenu)
   {
     self.atomOutlineView?.window?.makeFirstResponder(self.atomOutlineView)
+    self.updateReplaceAminoAcidMenu(for: menu)
   }
   
+  private final class ReplaceAminoAcidContext: NSObject
+  {
+    let residueNode: SKAtomTreeNode?
+    let atomNodes: [SKAtomTreeNode]
+    let newResidueCode: String
+    
+    init(residueNode: SKAtomTreeNode?, atomNodes: [SKAtomTreeNode], newResidueCode: String)
+    {
+      self.residueNode = residueNode
+      self.atomNodes = atomNodes
+      self.newResidueCode = newResidueCode
+      super.init()
+    }
+  }
+  
+  
+  // undo for large-changes: completely replace all atoms and bonds by new ones
+  func setAtomBondState(atomTreeController: SKAtomTreeController, bondController: SKBondSetController)
+  {
+    if let document: iRASPADocument = self.windowController?.currentDocument,
+       let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let structure: Structure = (representedObject as? iRASPAObject)?.object as? Structure
+    {
+      guard let oldState: (atoms: SKAtomTreeController, bonds: SKBondSetController) = ProteinAminoAcidResidueReplacer.snapshotAtomBondState(for: structure) else {return}
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.setAtomBondState(atomTreeController: oldState.atoms, bondController: oldState.bonds)})
+      
+      structure.atomTreeController = atomTreeController
+      structure.bondSetController = bondController
+      
+      structure.reComputeBoundingBox()
+      project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      
+      structure.setRepresentationColorScheme(scheme: structure.atomColorSchemeIdentifier, colorSets: document.colorSets)
+      structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)
+      
+      if let ribbonEditor: ProteinRibbonStructureEditor = structure as? ProteinRibbonStructureEditor
+      {
+        ribbonEditor.rebuildBackbone()
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.reloadData()
+      
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.AtomsShouldReloadNotification), object: structure)
+    }
+  }
+  
+  @IBAction func replaceAminoAcid(_ sender: NSMenuItem)
+  {
+    guard let context: ReplaceAminoAcidContext = sender.representedObject as? ReplaceAminoAcidContext,
+          let document: iRASPADocument = self.windowController?.currentDocument,
+          let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+          let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+          let structure: Structure = (self.representedObject as? iRASPAObject)?.object as? Structure,
+          let oldState: (atoms: SKAtomTreeController, bonds: SKBondSetController) = ProteinAminoAcidResidueReplacer.snapshotAtomBondState(for: structure) else {return}
+    
+    project.undoManager.setActionName(NSLocalizedString("Replace Amino Acid", comment: ""))
+    
+    guard ProteinAminoAcidResidueReplacer.replaceResidue(in: structure,
+                                                           residueNode: context.residueNode,
+                                                           atomNodes: context.atomNodes,
+                                                           with: context.newResidueCode,
+                                                           colorSets: document.colorSets,
+                                                           forceFieldSets: document.forceFieldSets) else {return}
+    
+    project.undoManager.registerUndo(withTarget: self, handler: {$0.setAtomBondState(atomTreeController: oldState.atoms, bondController: oldState.bonds)})
+    
+    project.isEdited = true
+    self.windowController?.currentDocument?.updateChangeCount(.changeDone)
+    
+    self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
+    self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+    self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
+    self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
+    
+    self.reloadData()
+    
+    NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+    NotificationCenter.default.post(name: Notification.Name(NotificationStrings.AtomsShouldReloadNotification), object: structure)
+  }
   
   // undo for large-changes: completely replace all atoms and bonds by new ones
   func setStructureState(cell: SKCell, spaceGroup: SKSpacegroup, atomTreeController: SKAtomTreeController, bondController: SKBondSetController)
@@ -1878,6 +2072,18 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if (menuItem.action == #selector(makeSuperCell))
     {
       return (((self.representedObject as? iRASPAObject)?.object as? SpaceGroupEditor) != nil)
+    }
+    
+    if (menuItem.action == #selector(replaceAminoAcid(_:)))
+    {
+      if let clickedNode: SKAtomTreeNode = self.contextMenuClickedNode(),
+         let structure: Structure = (self.representedObject as? iRASPAObject)?.object as? Structure,
+         ProteinAminoAcidResidueReplacer.isProteinStructure(structure),
+         ProteinAminoAcidResidueReplacer.residueContext(for: clickedNode, in: structure.atomTreeController) != nil
+      {
+        return menuItem.isEnabled
+      }
+      return false
     }
     
     if (menuItem.action == #selector(RemoveSymmetry))
@@ -2205,7 +2411,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let structure: Structure = object as? Structure
     {
       let toggledState: Bool = sender.state == NSControl.StateValue.on
-      if NSEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
+      if NSEvent.modifierFlags.contains(.option)
       {
         let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
         asymmetricAtoms.forEach{$0.isVisible = toggledState}
@@ -2214,8 +2420,14 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       {
         if let treeNode: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
         {
-          let atom: SKAsymmetricAtom = treeNode.representedObject
-          atom.isVisible = toggledState
+          if treeNode.isGroup
+          {
+            ProteinRibbonSegmentSupport.setGroupVisibility(treeNode, isVisible: toggledState)
+          }
+          else
+          {
+            treeNode.representedObject.isVisible = toggledState
+          }
           self.atomOutlineView?.reloadItem(treeNode, reloadChildren: true)
         }
       }
@@ -2227,6 +2439,39 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let savedObserveNotifications = observeNotifications
       observeNotifications = false
       
+      self.atomOutlineView?.reloadData()
+      observeNotifications = savedObserveNotifications
+    }
+  }
+  
+  @IBAction func ribbonGroupVisibilityAction(_ sender: NSSegmentedControl)
+  {
+    if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let row: Int = self.atomOutlineView?.row(for: sender),
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure,
+       let treeNode: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
+    {
+      let atomsWereVisible: Bool = ProteinRibbonSegmentSupport.groupAtomsVisibilityState(treeNode) == true
+      let ribbonWasVisible: Bool = treeNode.representedObject.isVisible
+      let atomsNowSelected: Bool = sender.isSelected(forSegment: 0)
+      let ribbonNowSelected: Bool = sender.isSelected(forSegment: 1)
+      
+      if atomsNowSelected != atomsWereVisible
+      {
+        ProteinRibbonSegmentSupport.setGroupAtomsVisibility(treeNode, isVisible: atomsNowSelected)
+      }
+      if ribbonNowSelected != ribbonWasVisible
+      {
+        ProteinRibbonSegmentSupport.setGroupRibbonVisibility(treeNode, isVisible: ribbonNowSelected)
+      }
+      
+      structure.atomTreeController.tag()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadVisibility()
+      
+      let savedObserveNotifications = observeNotifications
+      observeNotifications = false
       self.atomOutlineView?.reloadData()
       observeNotifications = savedObserveNotifications
     }
@@ -2680,7 +2925,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       if let atomNode: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
       {
         let isFixed: Bool3
-        if NSEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
+        if NSEvent.modifierFlags.contains(.option)
         {
           isFixed = Bool3(sender.isSelected(forSegment: 0),sender.isSelected(forSegment: 1),sender.isSelected(forSegment: 2))
         }

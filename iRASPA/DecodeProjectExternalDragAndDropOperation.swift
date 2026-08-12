@@ -82,11 +82,7 @@ class DecodePasteboardItem: FKOperation
         }
         projectData.updateFilteredNodes()
         self.placeholder.representedObject.isEdited = true
-        if let row: Int = self.outlineView?.row(forItem: self.placeholder)
-        {
-          // 10.11 El Capitan: reloadItem (etc) just reloads the outline view item properties, not the table cell at that item
-          self.outlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
-        }
+        self.placeholder.finishImportProgressUI(in: self.outlineView)
       })
     }
     else
@@ -96,13 +92,7 @@ class DecodePasteboardItem: FKOperation
         //{
         let iraspaproject: iRASPAProject = iRASPAProject.init(projectType: .structure, fileName: self.placeholder.representedObject.fileNameUUID, nodeType: self.placeholder.representedObject.nodeType, storageType: self.placeholder.representedObject.storageType, lazyStatus: .loading)
        self.placeholder.representedObject = iraspaproject
-        //iRASPAProject.projectProjectLazy(iRASPAProject.ProjectStatus(fileWrapper: nil, fileName: projectStatus.fileName, nodeType: projectStatus.nodeType, storageType: projectStatus.storageType, lazyStatus: .error, projectType: projectStatus.projectType))
-        //}
-        if let row: Int = self.outlineView?.row(forItem: self.placeholder)
-        {
-          // 10.11 El Capitan: reloadItem (etc) just reloads the outline view item properties, not the table cell at that item
-          self.outlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
-        }
+        self.placeholder.finishImportProgressUI(in: self.outlineView)
       })
       LogQueue.shared.error(destination: self.windowController, message: "Drop-data of project \(placeholder.displayName) overwritten by new drag from another application (manually delete project and retry original drag/drop)")
     }

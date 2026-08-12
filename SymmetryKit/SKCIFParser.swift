@@ -37,6 +37,12 @@ import LogViewKit
 public final class SKCIFParser: SKParser, ProgressReporting
 {
   var onlyAsymmetricUnit: Bool
+  /// When true, treat biomolecular models as non-periodic molecules/proteins.
+  var asMolecule: Bool
+  /// When true (default for protein import), prefer `.protein` over `.proteinCrystal`.
+  var asProtein: Bool
+  /// Kept for API parity with the PDB reader; CIF/mmCIF has no TER records.
+  var separatePolymerChains: Bool
   var a: Double = 0.0
   var b: Double = 0.0
   var c: Double = 0.0
@@ -44,6 +50,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
   var beta: Double = 90.0
   var gamma: Double = 90.0
   var cellFormulaUnitsZ: Int = 0
+  var cellLengthsDefined: Bool = false
   var scanner: Scanner
   let letterSet: CharacterSet
   let nonLetterSet: CharacterSet
@@ -54,8 +61,37 @@ public final class SKCIFParser: SKParser, ProgressReporting
   let digits = CharacterSet.decimalDigits
   
   var atoms: [SKAsymmetricAtom] = []
-  var solvent: [SKAsymmetricAtom] = []
   var numberOfAminoAcidAtoms: Int = 0
+  var numberOfNucleicAcidAtoms: Int = 0
+  var numberOfAtoms: Int = 0
+  var proteinDetected: Bool = false
+  var dnaDetected: Bool = false
+  
+  private struct ResidueKey: Hashable
+  {
+    let chain: Character
+    let sequence: Int
+  }
+  
+  private struct ResidueRecord
+  {
+    var name: String = ""
+    var hasNitrogen: Bool = false
+    var hasAlphaCarbon: Bool = false
+    var hasCarbonyl: Bool = false
+    var water: Bool = false
+    var nucleotide: Bool = false
+    var nitrogen: SIMD3<Double> = .zero
+    var carbonyl: SIMD3<Double> = .zero
+  }
+  
+  private var polymerChains: Set<Character> = []
+  private var modifiedResidues: Set<String> = []
+  private var residues: [ResidueKey: ResidueRecord] = [:]
+  /// Maps `_struct_asym.id` → `_struct_asym.entity_id` for polymer-chain discovery.
+  private var asymToEntity: [String: String] = [:]
+  /// Entity ids whose `_entity_poly.type` is a polypeptide or nucleic acid.
+  private var polymerEntityIds: Set<String> = []
   
   enum SpaceGroupStatus: Int
   {
@@ -88,8 +124,6 @@ public final class SKCIFParser: SKParser, ProgressReporting
   var Dif: Double?
  
   var currentMovie: Int = 0
-  var currentSolventMovie: Int = 1
-  
   var currentFrame: Int = 0
   
   public var progress: Progress
@@ -100,10 +134,18 @@ public final class SKCIFParser: SKParser, ProgressReporting
     return true
   }
   
-  public init(displayName: String, data: Data, onlyAsymmetricUnit: Bool = false) throws
+  public init(displayName: String,
+              data: Data,
+              onlyAsymmetricUnit: Bool = false,
+              asMolecule: Bool = false,
+              asProtein: Bool = true,
+              separatePolymerChains: Bool = false) throws
   {
     self.name = displayName
     self.onlyAsymmetricUnit = onlyAsymmetricUnit
+    self.asMolecule = asMolecule
+    self.asProtein = asProtein
+    self.separatePolymerChains = separatePolymerChains
     
     guard let string: String = String(data: data, encoding: String.Encoding.utf8) ?? String(data: data, encoding: String.Encoding.ascii) else
     {
@@ -163,6 +205,10 @@ public final class SKCIFParser: SKParser, ProgressReporting
         {
           parseSymmetry(keyword)
         }
+        else if (keyword.hasPrefix("_pdbx_struct_mod_residue"))
+        {
+          parseModResidue(keyword)
+        }
         else if (keyword.hasPrefix("data_"))
         {
           parseName(keyword)
@@ -177,6 +223,11 @@ public final class SKCIFParser: SKParser, ProgressReporting
           self.scanner.currentIndex = previousScanLocation
           skipComment()
         }
+        else if tempstring.hasPrefix("_")
+        {
+          // Unknown CIF/mmCIF data item: consume the value so the scanner stays aligned.
+          _ = parseValue()
+        }
       }
     }
     
@@ -184,22 +235,32 @@ public final class SKCIFParser: SKParser, ProgressReporting
     //=============
     
     resolveSpaceGroupFromCIFSymmetryOperations()
+    resolvePolymerChainsFromEntityTables()
     
     scene.append([SKStructure()])
     
-    let cell: SKCell = SKCell(a: a, b: b, c: c, alpha: alpha*Double.pi/180.0, beta: beta*Double.pi/180.0, gamma: gamma*Double.pi/180.0)
+    let cellA: Double = (a > 1e-6) ? a : 20.0
+    let cellB: Double = (b > 1e-6) ? b : 20.0
+    let cellC: Double = (c > 1e-6) ? c : 20.0
+    let cell: SKCell = SKCell(a: cellA, b: cellB, c: cellC, alpha: alpha*Double.pi/180.0, beta: beta*Double.pi/180.0, gamma: gamma*Double.pi/180.0)
     
-    if (Double(numberOfAminoAcidAtoms)/(Double)(atoms.count)) > 0.5
+    let kind: SKStructure.Kind = kindOfCurrentPart()
+    scene[currentMovie][currentFrame].kind = kind
+    
+    switch kind
     {
-      scene[currentMovie][currentFrame].kind = .proteinCrystal
+    case .protein, .dna:
+      scene[currentMovie][currentFrame].drawUnitCell = false
+      scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
+      scene[currentMovie][currentFrame].periodic = false
+    case .proteinCrystal, .dnaCrystal, .proteinCrystalSolvent:
       scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnit
       scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnit ? 1 : self.spaceGroup.spaceGroupSetting.number
-    }
-    else
-    {
-      scene[currentMovie][currentFrame].kind = .crystal
+      scene[currentMovie][currentFrame].periodic = true
+    default:
       scene[currentMovie][currentFrame].drawUnitCell = true
       scene[currentMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
+      scene[currentMovie][currentFrame].periodic = true
     }
     
     scene[currentMovie][currentFrame].cifSymmetryOperations = self.cifSymmetryOperations.isEmpty ? nil : self.cifSymmetryOperations
@@ -207,7 +268,6 @@ public final class SKCIFParser: SKParser, ProgressReporting
     scene[currentMovie][currentFrame].displayName = self.name
     
     scene[currentMovie][currentFrame].cell = cell
-    scene[currentMovie][currentFrame].periodic = true
     scene[currentMovie][currentFrame].atoms = self.atoms
     scene[currentMovie][currentFrame].creationDate = self.creationDate
     scene[currentMovie][currentFrame].creationMethod = self.creationMethod
@@ -222,45 +282,6 @@ public final class SKCIFParser: SKParser, ProgressReporting
     scene[currentMovie][currentFrame].Df = self.Df
     scene[currentMovie][currentFrame].Dif = self.Dif
     
-    // write possible solvent atoms to a second movie
-    if solvent.count > 0
-    {
-      scene.append([SKStructure()])
-      
-      if (Double(numberOfAminoAcidAtoms)/(Double)(atoms.count)) > 0.5
-      {
-        scene[currentSolventMovie][currentFrame].kind = .proteinCrystalSolvent
-        scene[currentSolventMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnit
-        scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnit ? 1 : self.spaceGroup.spaceGroupSetting.number
-      }
-      else
-      {
-        scene[currentSolventMovie][currentFrame].kind = .crystalSolvent
-        scene[currentSolventMovie][currentFrame].drawUnitCell = true
-        scene[currentSolventMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
-      scene[currentSolventMovie][currentFrame].cifSymmetryOperations = self.cifSymmetryOperations.isEmpty ? nil : self.cifSymmetryOperations
-      }
-    
-      scene[currentSolventMovie][currentFrame].displayName = self.name
-      
-      scene[currentSolventMovie][currentFrame].cell = cell
-      scene[currentSolventMovie][currentFrame].periodic = true
-      scene[currentSolventMovie][currentFrame].atoms = self.solvent
-      scene[currentSolventMovie][currentFrame].creationDate = self.creationDate
-      scene[currentSolventMovie][currentFrame].creationMethod = self.creationMethod
-      scene[currentSolventMovie][currentFrame].chemicalFormulaSum = self.chemicalFormulaSum
-      scene[currentSolventMovie][currentFrame].chemicalFormulaStructural = self.chemicalFormulaStructural
-      scene[currentSolventMovie][currentFrame].cellFormulaUnitsZ = self.cellFormulaUnitsZ
-    
-    
-      scene[currentSolventMovie][currentFrame].numberOfChannels = self.numberOfChannels
-      scene[currentSolventMovie][currentFrame].numberOfPockets = self.numberOfPockets
-      scene[currentSolventMovie][currentFrame].dimensionality = self.dimensionality
-      scene[currentSolventMovie][currentFrame].Di = self.Di
-      scene[currentSolventMovie][currentFrame].Df = self.Df
-      scene[currentSolventMovie][currentFrame].Dif = self.Dif
-    }
-    
     progress.completedUnitCount = 1
   }
   
@@ -271,45 +292,20 @@ public final class SKCIFParser: SKParser, ProgressReporting
   
   func scanInteger() -> Int
   {
-    let previousScanLocation: String.Index = scanner.currentIndex
-    
-    if let value = self.scanner.scanInt()
-    {
-      return value;
-    }
-    
-    scanner.currentIndex = previousScanLocation
-    if let string: String = scanner.scanCharacters(from: keywordSet)
-    {
-      return (string.trimmingCharacters(in: CharacterSet.punctuationCharacters) as NSString).integerValue
-    }
-    return 0
+    guard let string: String = parseValue() else {return 0}
+    let cleaned: String = string.split(separator: "(").first.map(String.init) ?? string
+    return (cleaned as NSString).integerValue
   }
   
   func scanDouble() -> Double
   {
-    let previousScanLocation: String.Index = scanner.currentIndex
-    
-    if let value = self.scanner.scanDouble()
-    {
-      return value
-    }
-    
-    scanner.currentIndex = previousScanLocation
-    if let string: String = scanner.scanCharacters(from: keywordSet)
-    {
-      return (string.trimmingCharacters(in: CharacterSet.punctuationCharacters) as NSString).doubleValue
-    }
-    return 0.0
+    guard let string: String = parseValue() else {return 0.0}
+    return parseCIFDouble(string) ?? 0.0
   }
   
   func scanString() -> String?
   {
-    if let string = self.scanner.scanUpToCharacters(from: CharacterSet.newlines)
-    {
-      return string
-    }
-    return nil
+    return parseValue()
   }
   
   func parseName(_ keyword: CaseInsensitiveString)
@@ -342,7 +338,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
       let value: Double = scanDouble()
       self.Dif = value
     default:
-      break
+      _ = parseValue()
     }
   }
   
@@ -352,11 +348,11 @@ public final class SKCIFParser: SKParser, ProgressReporting
     switch(keyword)
     {
     case "_symmetry_cell_setting":
-      break
+      _ = parseValue()
     case "_space_group_name_Hall",
          "_symmetry_space_group_name_Hall",
          "_symmetry.space_group_name_Hall":
-      if let string: String = scanString(),
+      if let string: String = parseValue(),
          let spaceGroup = SKSpacegroup(Hall: string)
       {
         self.spaceGroup = spaceGroup
@@ -368,13 +364,17 @@ public final class SKCIFParser: SKParser, ProgressReporting
          "_symmetry.pdbx_full_space_group_name_H-M":
       if (spaceGroupFound != .HallSymbolFound)
       {
-        if let string: String = scanString(),
+        if let string: String = parseValue(),
            let spaceGroup = SKSpacegroup(H_M: string)
         {
           self.spaceGroup = spaceGroup
           spaceGroupFound = .HMSymbolFound
           self.spaceGroupITNumber = spaceGroup.spaceGroupSetting.spaceGroupNumber
         }
+      }
+      else
+      {
+        _ = parseValue()
       }
     case "_space_group_IT_number",
          "_symmetry_Int_Tables_number",
@@ -395,12 +395,12 @@ public final class SKCIFParser: SKParser, ProgressReporting
       }
     case "_symmetry_equiv_pos_as_xyz",
          "_space_group_symop_operation_xyz":
-      if let string: String = scanString()
+      if let string: String = parseValue()
       {
         parseSymmetryEquivPos(string)
       }
     default:
-      break
+      _ = parseValue()
     }
   }
   
@@ -412,27 +412,30 @@ public final class SKCIFParser: SKParser, ProgressReporting
       switch(keyword)
       {
       case .chemical_formula_analytical:
-        break
+        _ = parseValue()
       case .chemical_formula_iupac:
-        break
+        _ = parseValue()
       case .chemical_formula_moiety:
-        break
+        _ = parseValue()
       case .chemical_formula_structural:
-        if let string: String = scanString()
+        if let string: String = parseValue()
         {
           self.chemicalFormulaStructural = string
         }
       case .chemical_formula_sum:
-        if let string: String = scanString()
+        if let string: String = parseValue()
         {
           self.chemicalFormulaSum = string
-          //self.chemicalFormulaSum = String(String(string.dropFirst()).dropLast())
         }
       case .chemical_formula_weight:
-        break
+        _ = parseValue()
       case .chemical_formula_weight_meas:
-        break
+        _ = parseValue()
       }
+    }
+    else
+    {
+      _ = parseValue()
     }
   }
   
@@ -441,17 +444,17 @@ public final class SKCIFParser: SKParser, ProgressReporting
     switch(keyword)
     {
     case "_audit_creation_date":
-      if let string: String = scanString()
+      if let string: String = parseValue()
       {
         self.creationDate = string
       }
     case "_audit_creation_method":
-      if let string: String = scanString()
+      if let string: String = parseValue()
       {
         self.creationMethod = string
       }
     default:
-      break
+      _ = parseValue()
     }
   }
   
@@ -461,12 +464,15 @@ public final class SKCIFParser: SKParser, ProgressReporting
     {
     case "_cell_length_a","_cell.length_a":
       a = scanDouble()
+      cellLengthsDefined = true
     // assign a to cell-data
     case "_cell_length_b","_cell.length_b":
       b = scanDouble()
+      cellLengthsDefined = true
     // assign b to cell-data
     case "_cell_length_c","_cell.length_c":
       c = scanDouble()
+      cellLengthsDefined = true
     // assign c to cell-data
     case "_cell_angle_alpha","_cell.angle_alpha":
       alpha = scanDouble()
@@ -478,50 +484,151 @@ public final class SKCIFParser: SKParser, ProgressReporting
       gamma = scanDouble()
     // assign gamma to cell-data
     case "_cell_volume":
-      //let volume: Double = scanDouble()
-      break
+      _ = parseValue()
     case "_cell_formula_units_Z","_cell.Z_PDB":
       cellFormulaUnitsZ = scanInteger()
       break
     default:
-      print("cell-keyword \(keyword) not recognized")
+      // Ignore unrecognized mmCIF/coreCIF cell tags (e.g. _cell.entry_id, *_esd).
+      _ = parseValue()
+    }
+  }
+  
+  func parseModResidue(_ keyword: CaseInsensitiveString)
+  {
+    guard let value: String = parseValue() else {return}
+    switch keyword
+    {
+    case "_pdbx_struct_mod_residue.label_comp_id",
+         "_pdbx_struct_mod_residue.auth_comp_id":
+      let trimmed: String = value.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+      if !trimmed.isEmpty && trimmed != "?" && trimmed != "."
+      {
+        modifiedResidues.insert(trimmed)
+      }
+    default:
+      break
     }
   }
   
   func parseValue() -> String?
   {
-    var previousScanLocation: String.Index=self.scanner.currentIndex
-    
     if self.scanner.isAtEnd
     {
       return nil
     }
     
-    previousScanLocation = self.scanner.currentIndex
+    skipWhitespaceAndComments()
+    guard !self.scanner.isAtEnd else {return nil}
     
-    while let tempString = self.scanner.scanCharacters(from: keywordSet), tempString.hasPrefix("#")
+    let previousScanLocation: String.Index = self.scanner.currentIndex
+    let source: String = self.scanner.string
+    let first: Character = source[self.scanner.currentIndex]
+    
+    // CIF text field: semicolon at start of a line
+    if first == ";"
     {
-      skipComment()
-      previousScanLocation = self.scanner.currentIndex
+      var index: String.Index = source.index(after: self.scanner.currentIndex)
+      var content: String = ""
+      while index < source.endIndex && source[index] != "\n" && source[index] != "\r"
+      {
+        content.append(source[index])
+        index = source.index(after: index)
+      }
+      while index < source.endIndex && (source[index] == "\n" || source[index] == "\r")
+      {
+        index = source.index(after: index)
+      }
+      
+      while index < source.endIndex
+      {
+        if source[index] == ";"
+        {
+          index = source.index(after: index)
+          self.scanner.currentIndex = index
+          return content
+        }
+        if !content.isEmpty {content += "\n"}
+        while index < source.endIndex && source[index] != "\n" && source[index] != "\r"
+        {
+          content.append(source[index])
+          index = source.index(after: index)
+        }
+        while index < source.endIndex && (source[index] == "\n" || source[index] == "\r")
+        {
+          index = source.index(after: index)
+        }
+      }
+      self.scanner.currentIndex = index
+      return content
     }
     
-    self.scanner.currentIndex = previousScanLocation
+    // Single- or double-quoted char strings (CIF allows '' / "" escapes)
+    if first == "'" || first == "\""
+    {
+      let quote: Character = first
+      var index: String.Index = source.index(after: self.scanner.currentIndex)
+      var content: String = ""
+      while index < source.endIndex
+      {
+        let character: Character = source[index]
+        index = source.index(after: index)
+        if character == quote
+        {
+          if index < source.endIndex && source[index] == quote
+          {
+            content.append(quote)
+            index = source.index(after: index)
+            continue
+          }
+          self.scanner.currentIndex = index
+          return content
+        }
+        content.append(character)
+      }
+      self.scanner.currentIndex = index
+      return content
+    }
+    
+    // Temporarily disable whitespace skipping so we can restore precisely on loop terminators.
+    let previousSkipped: CharacterSet? = self.scanner.charactersToBeSkipped
+    self.scanner.charactersToBeSkipped = nil
+    defer { self.scanner.charactersToBeSkipped = previousSkipped }
+    
     if let string: String = self.scanner.scanCharacters(from: keywordSet)
     {
-      // detect end of loop
-      if (string.hasPrefix("_") || string.hasPrefix("loop_"))
+      let lower: String = string.lowercased()
+      if string.hasPrefix("_") || lower.hasPrefix("loop_") || lower.hasPrefix("data_") || lower.hasPrefix("save_")
       {
-        // set scanner back to before parsing the value
         self.scanner.currentIndex = previousScanLocation
         return nil
       }
-        
-      else // must be a value
-      {
-        return string
-      }
+      return string
     }
+    
     return nil
+  }
+  
+  private func skipWhitespaceAndComments()
+  {
+    let source: String = self.scanner.string
+    let whitespace: CharacterSet = CharacterSet.whitespacesAndNewlines
+    while !self.scanner.isAtEnd
+    {
+      while !self.scanner.isAtEnd,
+            let scalar = source[self.scanner.currentIndex].unicodeScalars.first,
+            whitespace.contains(scalar)
+      {
+        self.scanner.currentIndex = source.index(after: self.scanner.currentIndex)
+      }
+      if !self.scanner.isAtEnd && source[self.scanner.currentIndex] == "#"
+      {
+        skipComment()
+        // skipComment uses scanUpTo which may leave us on newline; continue loop
+        continue
+      }
+      break
+    }
   }
   
   
@@ -626,199 +733,31 @@ public final class SKCIFParser: SKParser, ProgressReporting
         {
           parseSymmetryEquivPos(symmetryXYZ)
         }
-        else if let chemicalSymbol: String = dictionary["_atom_site_type_symbol"]?.lowercased().capitalizeFirst
+        else if let chemicalSymbol: String = normalizedChemicalElement(dictionaryValue(dictionary, "_atom_site_type_symbol", "_atom_site.type_symbol"))
         {
-          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
-          
-          if let label: String = dictionary["_atom_site_label"]
+          appendAtomSite(from: dictionary, chemicalSymbol: chemicalSymbol)
+        }
+        else if let monId: String = dictionaryValue(dictionary, "_entity_poly_seq.mon_id")
+        {
+          recordEntityPolySeq(dictionary: dictionary, monId: monId)
+        }
+        else if let modRes: String = dictionaryValue(dictionary, "_pdbx_struct_mod_residue.label_comp_id", "_pdbx_struct_mod_residue.auth_comp_id")
+        {
+          let trimmed: String = modRes.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+          if !trimmed.isEmpty
           {
-            atom.displayName = label
-          }
-          
-          if let stringFractionalX = dictionary["_atom_site_fract_x"],
-             let stringFractionalY = dictionary["_atom_site_fract_y"],
-             let stringFractionalZ = dictionary["_atom_site_fract_z"]
-          {
-            let x: Double = NSString(string: stringFractionalX).doubleValue
-            let y: Double = NSString(string: stringFractionalY).doubleValue
-            let z: Double = NSString(string: stringFractionalZ).doubleValue
-            atom.position = SIMD3<Double>(x: x, y: y, z: z)
-            atom.fractional = true
-          }
-          
-          if let stringCartesianX = dictionary["_atom_site_Cartn_x"],
-             let stringCartesianY = dictionary["_atom_site_Cartn_y"],
-             let stringCartesianZ = dictionary["_atom_site_Cartn_z"]
-          {
-            let x: Double = NSString(string: stringCartesianX).doubleValue
-            let y: Double = NSString(string: stringCartesianY).doubleValue
-            let z: Double = NSString(string: stringCartesianZ).doubleValue
-            atom.position = SIMD3<Double>(x: x, y: y, z: z)
-            atom.fractional = false
-          }
-          
-          var charge: Double = 1.0
-          if let chargeString: String = dictionary["_atom_site_charge"]
-          {
-            charge = NSString(string: chargeString).doubleValue
-            atom.charge = charge
-          }
-          
-          var occupancy: Double = 1.0
-          if let occupancyString: String = dictionary["_atom_site_occupancy"]
-          {
-            occupancy = NSString(string: occupancyString).doubleValue
-            atom.occupancy = occupancy
-          }
-          
-          
-          if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalSymbol)
-          {
-            atom.elementIdentifier = atomicNumber
-            atom.uniqueForceFieldName = dictionary["_atom_site_forcefield_label"] ?? chemicalSymbol
-            
-            atoms.append(atom)
-          }
-          else
-          {
-            let chemicalElement: String = chemicalSymbol.trimmingCharacters(in: CharacterSet(charactersIn: "01234567890.+-"))
-            
-            if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalSymbol)
-            {
-              atom.elementIdentifier = atomicNumber
-              atom.uniqueForceFieldName = dictionary["_atom_site_forcefield_label"] ?? chemicalSymbol
-              atoms.append(atom)
-            }
+            modifiedResidues.insert(trimmed)
           }
         }
-        else if let chemicalSymbol: String = dictionary["_atom_site.type_symbol"]?.lowercased().capitalizeFirst
+        else if let asymId: String = dictionaryValue(dictionary, "_struct_asym.id"),
+                let entityId: String = dictionaryValue(dictionary, "_struct_asym.entity_id")
         {
-          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
-          
-          if let label: String = dictionary["_atom_site.id"]
-          {
-            atom.displayName = label
-          }
-          
-          if let label: String = dictionary["_atom_site.label_atom_id"]  // e.g. OG1
-          {
-            if label.hasPrefix(chemicalSymbol)
-            {
-              let secondPart = String(label.dropFirst(chemicalSymbol.count))
-              
-              if let firstChar: Character = secondPart.first
-              {
-                atom.remotenessIndicator = firstChar
-              
-                if let secondChar: Character = secondPart.dropFirst(1).first
-                {
-                  atom.branchDesignator = secondChar
-                }
-              }
-              
-            }
-          }
-          
-          if let label: String = dictionary["_atom_site.group_PDB"]
-          {
-            atom.solvent = false
-            if label.uppercased() == "HETATM"
-            {
-              atom.solvent = true
-            }
-          }
-         
-          if let residueName: String = dictionary["_atom_site.label_comp_id"]  // e.g. "THR"
-          {
-            atom.residueName = residueName
-            
-            if SKElement.knownAminoAcidResidueCodes.contains(residueName.uppercased())
-            {
-              numberOfAminoAcidAtoms += 1
-            }
-          }
-          
-          if let asymmetricID: String = dictionary["_atom_site.label_asym_id"]
-          {
-            atom.asymetricID = Int(asymmetricID) ?? 0
-          }
-          
-          if let labelEntityID: String = dictionary["_atom_site.label_entity_id"]
-          {
-            atom.chainIdentifier = labelEntityID.first ?? "?"
-          }
-          
-          if let sequenceID: String = dictionary["_atom_site.label_seq_id"]
-          {
-            atom.residueSequenceNumber = Int(sequenceID) ?? 0
-          }
-          
-          if let insertionCode: String = dictionary["_atom_site.pdbx_PDB_ins_code"]
-          {
-            atom.codeForInsertionOfResidues = insertionCode.first ?? " "
-          }
-          
-          if let stringFractionalX = dictionary["_atom_site.fract_x"],
-             let stringFractionalY = dictionary["_atom_site.fract_y"],
-             let stringFractionalZ = dictionary["_atom_site.fract_z"]
-          {
-            let x: Double = NSString(string: stringFractionalX).doubleValue
-            let y: Double = NSString(string: stringFractionalY).doubleValue
-            let z: Double = NSString(string: stringFractionalZ).doubleValue
-            atom.position = SIMD3<Double>(x: x, y: y, z: z)
-            atom.fractional = true
-          }
-          
-          if let stringCartesianX = dictionary["_atom_site.Cartn_x"],
-             let stringCartesianY = dictionary["_atom_site.Cartn_y"],
-             let stringCartesianZ = dictionary["_atom_site.Cartn_z"]
-          {
-            let x: Double = NSString(string: stringCartesianX).doubleValue
-            let y: Double = NSString(string: stringCartesianY).doubleValue
-            let z: Double = NSString(string: stringCartesianZ).doubleValue
-            atom.position = SIMD3<Double>(x: x, y: y, z: z)
-            atom.fractional = false
-          }
-          
-          var charge: Double = 1.0
-          if let chargeString: String = dictionary["_atom_site.charge"]
-          {
-            charge = NSString(string: chargeString).doubleValue
-            atom.charge = charge
-          }
-          
-          if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalSymbol)
-          {
-            atom.elementIdentifier = atomicNumber
-            atom.uniqueForceFieldName = dictionary["_atom_site.forcefield_label"] ?? chemicalSymbol
-            
-            if atom.solvent
-            {
-              solvent.append(atom)
-            }
-            else
-            {
-              atoms.append(atom)
-            }
-          }
-          else
-          {
-            let chemicalElement: String = chemicalSymbol.trimmingCharacters(in: CharacterSet(charactersIn: "01234567890.+-"))
-            
-            if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalSymbol)
-            {
-              atom.elementIdentifier = atomicNumber
-              atom.uniqueForceFieldName = dictionary["_atom_site.forcefield_label"] ?? chemicalSymbol
-              if atom.solvent
-              {
-                solvent.append(atom)
-              }
-              else
-              {
-                atoms.append(atom)
-              }
-            }
-          }
+          asymToEntity[asymId] = entityId
+        }
+        else if let entityId: String = dictionaryValue(dictionary, "_entity_poly.entity_id"),
+                let polyType: String = dictionaryValue(dictionary, "_entity_poly.type")
+        {
+          recordEntityPolyType(entityId: entityId, polyType: polyType)
         }
         else
         {
@@ -827,6 +766,419 @@ public final class SKCIFParser: SKParser, ProgressReporting
       }
     } while (value != nil)
     // Note: scanner-location is restored to first word after the 'loop'
+  }
+  
+  private func dictionaryValue(_ dictionary: Dictionary<CaseInsensitiveString, String>, _ keys: String...) -> String?
+  {
+    for key in keys
+    {
+      if let value: String = dictionary[CaseInsensitiveString(stringLiteral: key)]
+      {
+        let trimmed: String = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmed.isEmpty && trimmed != "?" && trimmed != "."
+        {
+          return trimmed
+        }
+      }
+    }
+    return nil
+  }
+  
+  private func normalizedChemicalElement(_ symbol: String?) -> String?
+  {
+    guard var chemicalElement: String = symbol?.trimmingCharacters(in: .whitespacesAndNewlines), !chemicalElement.isEmpty else {return nil}
+    chemicalElement = chemicalElement.trimmingCharacters(in: CharacterSet(charactersIn: "01234567890.+-"))
+    guard !chemicalElement.isEmpty else {return nil}
+    return chemicalElement.lowercased().capitalizeFirst
+  }
+  
+  private func parseCIFDouble(_ string: String?) -> Double?
+  {
+    guard let string, !string.isEmpty else {return nil}
+    let cleaned: String = string.split(separator: "(").first.map(String.init) ?? string
+    let value: Double = (cleaned as NSString).doubleValue
+    return value
+  }
+  
+  private func appendAtomSite(from dictionary: Dictionary<CaseInsensitiveString, String>, chemicalSymbol: String)
+  {
+    numberOfAtoms += 1
+    let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
+    
+    if let groupPDB: String = dictionaryValue(dictionary, "_atom_site.group_PDB", "_atom_site.group_pdb")
+    {
+      atom.solvent = groupPDB.uppercased() == "HETATM"
+    }
+    
+    if let serial: String = dictionaryValue(dictionary, "_atom_site.id")
+    {
+      atom.serialNumber = Int(serial) ?? 0
+    }
+    
+    let atomName: String = dictionaryValue(dictionary, "_atom_site.label_atom_id", "_atom_site.auth_atom_id", "_atom_site_label", "_atom_site.id")
+      ?? chemicalSymbol
+    atom.displayName = atomName
+    if atomName.count >= 3
+    {
+      let third: String.Index = atomName.index(atomName.startIndex, offsetBy: 2)
+      atom.remotenessIndicator = atomName[third]
+    }
+    if atomName.count >= 4
+    {
+      let fourth: String.Index = atomName.index(atomName.startIndex, offsetBy: 3)
+      atom.branchDesignator = atomName[fourth]
+    }
+    
+    let residueName: String = (dictionaryValue(dictionary, "_atom_site.label_comp_id", "_atom_site.auth_comp_id") ?? "").uppercased()
+    atom.residueName = residueName
+    
+    if let residueData: SKResidueAtomDefinition = SKElement.residueDefinitions[residueName + "+" + atomName.uppercased()]
+    {
+      numberOfAminoAcidAtoms += 1
+      atom.backBoneAtom = SKElement.isBackboneAtomType(residueData.type)
+      if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: residueData.element), atomicNumber > 0
+      {
+        atom.elementIdentifier = atomicNumber
+        atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+      }
+    }
+    else if SKNucleotide.isNucleotideResidueName(residueName)
+    {
+      numberOfNucleicAcidAtoms += 1
+    }
+    else if SKElement.knownAminoAcidResidueCodes.contains(residueName)
+    {
+      numberOfAminoAcidAtoms += 1
+    }
+    
+    if let chainString: String = dictionaryValue(dictionary, "_atom_site.label_asym_id", "_atom_site.auth_asym_id", "_atom_site.label_entity_id"),
+       let chainChar: Character = chainString.first
+    {
+      atom.chainIdentifier = chainChar
+    }
+    
+    if let sequenceID: String = dictionaryValue(dictionary, "_atom_site.label_seq_id", "_atom_site.auth_seq_id")
+    {
+      atom.residueSequenceNumber = Int(sequenceID) ?? 0
+    }
+    
+    if let insertionCode: String = dictionaryValue(dictionary, "_atom_site.pdbx_PDB_ins_code", "_atom_site.pdbx_pdb_ins_code"),
+       let first: Character = insertionCode.first
+    {
+      atom.codeForInsertionOfResidues = first
+    }
+    
+    // Prefer fractional for materials/crystals; Cartesian for biomolecular mmCIF sites.
+    let looksLikeProteinSite: Bool = dictionaryValue(dictionary,
+                                                     "_atom_site.group_PDB",
+                                                     "_atom_site.group_pdb",
+                                                     "_atom_site.label_comp_id",
+                                                     "_atom_site.auth_comp_id") != nil
+    
+    let cartnX = parseCIFDouble(dictionaryValue(dictionary, "_atom_site.Cartn_x", "_atom_site.cartn_x", "_atom_site_Cartn_x"))
+    let cartnY = parseCIFDouble(dictionaryValue(dictionary, "_atom_site.Cartn_y", "_atom_site.cartn_y", "_atom_site_Cartn_y"))
+    let cartnZ = parseCIFDouble(dictionaryValue(dictionary, "_atom_site.Cartn_z", "_atom_site.cartn_z", "_atom_site_Cartn_z"))
+    let fractX = parseCIFDouble(dictionaryValue(dictionary, "_atom_site.fract_x", "_atom_site_fract_x"))
+    let fractY = parseCIFDouble(dictionaryValue(dictionary, "_atom_site.fract_y", "_atom_site_fract_y"))
+    let fractZ = parseCIFDouble(dictionaryValue(dictionary, "_atom_site.fract_z", "_atom_site_fract_z"))
+    
+    if looksLikeProteinSite
+    {
+      if let x = cartnX, let y = cartnY, let z = cartnZ
+      {
+        atom.position = SIMD3<Double>(x: x, y: y, z: z)
+        atom.fractional = false
+      }
+      else if let x = fractX, let y = fractY, let z = fractZ
+      {
+        atom.position = SIMD3<Double>(x: x, y: y, z: z)
+        atom.fractional = true
+      }
+    }
+    else
+    {
+      if let x = fractX, let y = fractY, let z = fractZ
+      {
+        atom.position = SIMD3<Double>(x: x, y: y, z: z)
+        atom.fractional = true
+      }
+      else if let x = cartnX, let y = cartnY, let z = cartnZ
+      {
+        atom.position = SIMD3<Double>(x: x, y: y, z: z)
+        atom.fractional = false
+      }
+    }
+    
+    if let charge = parseCIFDouble(dictionaryValue(dictionary, "_atom_site.charge", "_atom_site_charge", "_atom_site.pdbx_formal_charge"))
+    {
+      atom.charge = charge
+    }
+    
+    if let occupancy = parseCIFDouble(dictionaryValue(dictionary, "_atom_site.occupancy", "_atom_site_occupancy"))
+    {
+      atom.occupancy = occupancy
+    }
+    
+    if let temperature = parseCIFDouble(dictionaryValue(dictionary,
+                                                        "_atom_site.B_iso_or_equiv",
+                                                        "_atom_site_B_iso_or_equiv",
+                                                        "_atom_site.U_iso_or_equiv",
+                                                        "_atom_site_U_iso_or_equiv"))
+    {
+      atom.temperaturefactor = temperature
+    }
+    
+    if atom.elementIdentifier == 0
+    {
+      if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: chemicalSymbol)
+      {
+        atom.elementIdentifier = atomicNumber
+      }
+      else
+      {
+        let stripped: String = chemicalSymbol.trimmingCharacters(in: CharacterSet(charactersIn: "01234567890.+-"))
+        if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: stripped)
+        {
+          atom.elementIdentifier = atomicNumber
+        }
+      }
+    }
+    
+    // Materials CIF often stores the site label as both name and force-field type.
+    if !looksLikeProteinSite
+    {
+      if let label: String = dictionaryValue(dictionary, "_atom_site_label", "_atom_site.label")
+      {
+        atom.displayName = label
+      }
+      atom.uniqueForceFieldName = dictionaryValue(dictionary, "_atom_site_forcefield_label", "_atom_site.forcefield_label")
+        ?? atom.displayName
+    }
+    else
+    {
+      atom.uniqueForceFieldName = dictionaryValue(dictionary, "_atom_site.forcefield_label", "_atom_site_forcefield_label")
+        ?? ((atom.elementIdentifier > 0) ? PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol : chemicalSymbol)
+    }
+    
+    guard atom.elementIdentifier > 0 else {return}
+    
+    if SKElement.knownAminoAcidResidueCodes.contains(residueName) ||
+       SKNucleotide.isNucleotideResidueName(residueName) ||
+       modifiedResidues.contains(residueName)
+    {
+      polymerChains.insert(atom.chainIdentifier)
+    }
+    
+    noteResidueAtom(atom)
+    atoms.append(atom)
+  }
+  
+  private func recordEntityPolySeq(dictionary: Dictionary<CaseInsensitiveString, String>, monId: String)
+  {
+    let residueName: String = monId.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+    guard !residueName.isEmpty, residueName != "?", residueName != "." else {return}
+    guard SKElement.knownAminoAcidResidueCodes.contains(residueName) ||
+          SKNucleotide.isNucleotideResidueName(residueName) ||
+          modifiedResidues.contains(residueName) else {return}
+    
+    if let entityId: String = dictionaryValue(dictionary, "_entity_poly_seq.entity_id")
+    {
+      polymerEntityIds.insert(entityId)
+      for (asym, entity) in asymToEntity where entity == entityId
+      {
+        if let chain: Character = asym.first
+        {
+          polymerChains.insert(chain)
+        }
+      }
+    }
+  }
+  
+  private func recordEntityPolyType(entityId: String, polyType: String)
+  {
+    let entity: String = entityId.trimmingCharacters(in: .whitespacesAndNewlines)
+    let type: String = polyType.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    guard !entity.isEmpty else {return}
+    if type.contains("polypeptide") || type.contains("polydeoxyribonucleotide") || type.contains("polyribonucleotide") || type.contains("nucleotide")
+    {
+      polymerEntityIds.insert(entity)
+      for (asym, mappedEntity) in asymToEntity where mappedEntity == entity
+      {
+        if let chain: Character = asym.first
+        {
+          polymerChains.insert(chain)
+        }
+      }
+    }
+  }
+  
+  private func resolvePolymerChainsFromEntityTables()
+  {
+    for (asym, entity) in asymToEntity where polymerEntityIds.contains(entity)
+    {
+      if let chain: Character = asym.first
+      {
+        polymerChains.insert(chain)
+      }
+    }
+  }
+  
+  private func noteResidueAtom(_ atom: SKAsymmetricAtom)
+  {
+    let residueName: String = atom.residueName.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+    guard !residueName.isEmpty else {return}
+    
+    let key: ResidueKey = ResidueKey(chain: atom.chainIdentifier, sequence: atom.residueSequenceNumber)
+    var record: ResidueRecord = residues[key] ?? ResidueRecord()
+    record.name = residueName
+    if Self.isWaterResidue(residueName) {record.water = true}
+    if SKNucleotide.isNucleotideResidueName(residueName) {record.nucleotide = true}
+    
+    let atomName: String = atom.displayName.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+    if atomName == "N"
+    {
+      record.hasNitrogen = true
+      record.nitrogen = atom.position
+    }
+    else if atomName == "CA"
+    {
+      record.hasAlphaCarbon = true
+    }
+    else if atomName == "C"
+    {
+      record.hasCarbonyl = true
+      record.carbonyl = atom.position
+    }
+    residues[key] = record
+  }
+  
+  private static func isWaterResidue(_ residueName: String) -> Bool
+  {
+    switch residueName
+    {
+    case "HOH", "DOD", "WAT", "H2O": return true
+    default: return false
+    }
+  }
+  
+  private static func isSolventAgentResidue(_ residueName: String) -> Bool
+  {
+    let agents: Set<String> = [
+      "SO4", "PO4", "GOL", "EDO", "MPD", "PEG", "PG4", "ACT", "ACY", "DMS",
+      "TRS", "MES", "EPE", "IMD", "FMT", "NA", "K", "MG", "CA", "ZN",
+      "MN", "FE", "NI", "CU", "CD", "CL", "BR", "IOD", "F", "CO"
+    ]
+    return agents.contains(residueName)
+  }
+  
+  private func kindOfCurrentPart() -> SKStructure.Kind
+  {
+    var peptideResidues = 0
+    var nucleicResidues = 0
+    var waterResidues = 0
+    var otherResidues = 0
+    
+    let sortedResidues = residues.sorted
+    {
+      if $0.key.chain != $1.key.chain {return $0.key.chain < $1.key.chain}
+      return $0.key.sequence < $1.key.sequence
+    }
+    
+    for (key, residue) in sortedResidues
+    {
+      let declaredPolymer = polymerChains.contains(key.chain) &&
+        (modifiedResidues.contains(residue.name) ||
+         SKElement.knownAminoAcidResidueCodes.contains(residue.name) ||
+         SKNucleotide.isNucleotideResidueName(residue.name))
+      
+      if residue.water
+      {
+        waterResidues += 1
+      }
+      else if residue.nucleotide || (declaredPolymer && SKNucleotide.isNucleotideResidueName(residue.name))
+      {
+        nucleicResidues += 1
+      }
+      else if (residue.hasNitrogen && residue.hasAlphaCarbon && residue.hasCarbonyl) ||
+              (declaredPolymer && !Self.isWaterResidue(residue.name) && !SKNucleotide.isNucleotideResidueName(residue.name))
+      {
+        peptideResidues += 1
+      }
+      else
+      {
+        otherResidues += 1
+      }
+    }
+    
+    var peptideBonds = 0
+    var previous: ResidueRecord?
+    var previousChain: Character?
+    for (key, residue) in sortedResidues
+    {
+      if let previous, let previousChain, key.chain == previousChain,
+         previous.hasCarbonyl, residue.hasNitrogen
+      {
+        if simd_length(previous.carbonyl - residue.nitrogen) < 2.0
+        {
+          peptideBonds += 1
+        }
+      }
+      previous = residue
+      previousChain = key.chain
+    }
+    
+    let periodic: Bool = cellLengthsDefined && a > 1e-6 && b > 1e-6 && c > 1e-6 && !asMolecule
+    
+    let isProtein = peptideResidues >= 2 && peptideBonds >= 1 && peptideResidues > otherResidues
+    if isProtein
+    {
+      proteinDetected = true
+      return (periodic && !asProtein) ? .proteinCrystal : .protein
+    }
+    
+    let isDNA = nucleicResidues >= 2 && nucleicResidues > otherResidues && nucleicResidues >= peptideResidues
+    if isDNA
+    {
+      dnaDetected = true
+      return (periodic && !asMolecule) ? .dnaCrystal : .dna
+    }
+    
+    if numberOfAtoms > 0
+    {
+      if Double(numberOfAminoAcidAtoms) / Double(numberOfAtoms) > 0.5
+      {
+        proteinDetected = true
+        return (periodic && !asProtein) ? .proteinCrystal : .protein
+      }
+      if Double(numberOfNucleicAcidAtoms) / Double(numberOfAtoms) > 0.5
+      {
+        dnaDetected = true
+        return (periodic && !asMolecule) ? .dnaCrystal : .dna
+      }
+    }
+    
+    var onlySolvent = waterResidues > 0 && peptideResidues == 0 && nucleicResidues == 0
+    if onlySolvent
+    {
+      for (_, residue) in residues
+      {
+        if !residue.water && !Self.isSolventAgentResidue(residue.name)
+        {
+          onlySolvent = false
+          break
+        }
+      }
+    }
+    if onlySolvent
+    {
+      return .proteinCrystalSolvent
+    }
+    
+    if asMolecule
+    {
+      return .molecule
+    }
+    return .crystal
   }
   
 }

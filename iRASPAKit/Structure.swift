@@ -346,7 +346,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var primitiveSaturation: Double = 1.0
   public var primitiveValue: Double = 1.0
   
-  public var primitiveSelectionStyle: RKSelectionStyle = .striped
+  public var primitiveSelectionStyle: RKSelectionStyle = .WorleyNoise3D
   public var primitiveSelectionScaling: Double = 1.0
   public var primitiveSelectionStripesDensity: Double = 0.25
   public var primitiveSelectionStripesFrequency: Double = 12.0
@@ -1582,6 +1582,29 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   }
   
   
+  public func containsOnlySolventAtoms() -> Bool
+  {
+    var anyAtom: Bool = false
+    for node in atomTreeController.flattenedLeafNodes()
+    {
+      if !node.representedObject.solvent {return false}
+      anyAtom = true
+    }
+    return anyAtom
+  }
+  
+  public func setBondScaleFactor(_ value: Double)
+  {
+    bondScaleFactor = value
+    if atomRepresentationType == .unity
+    {
+      for node in atomTreeController.flattenedLeafNodes()
+      {
+        node.representedObject.drawRadius = value
+      }
+    }
+  }
+  
   public func setRepresentationForceFieldOrder(order: SKForceFieldSets.ForceFieldOrder?, forceFieldSets: SKForceFieldSets)
   {
     if let order = order
@@ -1618,18 +1641,39 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.setRepresentationStyle(style: atomRepresentationStyle, for: asymmetricAtoms)
   }
   
+  /// Fancy-style lighting and AO settings used for VDW atoms, without changing draw flags or representation type.
+  public func applyFancyAmbientOcclusionLighting()
+  {
+    atomRepresentationStyle = .fancy
+    atomAmbientOcclusion = true
+    atomHDR = false
+    atomHue = 1.0
+    atomSaturation = 0.5
+    atomValue = 1.0
+    atomAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    atomSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    atomAmbientIntensity = 1.0
+    atomDiffuseIntensity = 0.0
+    atomSpecularIntensity = 0.2
+    atomShininess = 4.0
+  }
+  
   public func setRepresentationStyle(style: Structure.RepresentationStyle?, for asymmetricAtoms: [SKAsymmetricAtom])
   {
     if let style = style
     {
       atomRepresentationStyle = style
+      let preserveAtomBondVisibility: Bool = self is Protein || self is ProteinCrystal
       
       switch(atomRepresentationStyle)
       {
       case .custom:
         break
       case .default:
-        self.drawAtoms = true
+        if !preserveAtomBondVisibility
+        {
+          self.drawAtoms = true
+        }
         self.atomAmbientOcclusion = false
         self.atomScaleFactor = 0.7
         self.atomHue = 1.0
@@ -1647,7 +1691,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
         self.atomColorSchemeOrder = .elementOnly
         
-        self.drawBonds = true
+        if !preserveAtomBondVisibility
+        {
+          self.drawBonds = true
+        }
         self.bondAmbientOcclusion = false
         self.bondColorMode = .uniform
         self.bondScaleFactor = 0.15
@@ -1664,13 +1711,13 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.bondSaturation = 1.0
         self.bondValue = 1.0
         
-        self.atomSelectionStyle = .striped
+        self.atomSelectionStyle = .WorleyNoise3D
         self.atomSelectionScaling = 1.0
         self.atomSelectionIntensity = 0.7
         self.atomSelectionStripesDensity = 0.25
         self.atomSelectionStripesFrequency = 12.0
         
-        self.bondSelectionStyle = .striped
+        self.bondSelectionStyle = .WorleyNoise3D
         self.bondSelectionScaling = 1.0
         self.bondSelectionIntensity = 0.7
         self.bondSelectionStripesDensity = 0.25
@@ -1678,7 +1725,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         
         self.setRepresentationType(type: .sticks_and_balls)
       case .fancy:
-        self.drawAtoms = true
+        if !preserveAtomBondVisibility
+        {
+          self.drawAtoms = true
+        }
         self.atomAmbientOcclusion = true
         self.atomHue = 1.0
         self.atomScaleFactor = 1.0
@@ -1696,16 +1746,19 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.rasmol.rawValue
         self.atomColorSchemeOrder = .elementOnly
         
-        self.drawBonds = false
+        if !preserveAtomBondVisibility
+        {
+          self.drawBonds = false
+        }
         self.bondAmbientOcclusion = false
         
-        self.atomSelectionStyle = .striped
+        self.atomSelectionStyle = .WorleyNoise3D
         self.atomSelectionScaling = 1.0
         self.atomSelectionIntensity = 0.4
         self.atomSelectionStripesDensity = 0.25
         self.atomSelectionStripesFrequency = 12.0
         
-        self.bondSelectionStyle = .striped
+        self.bondSelectionStyle = .WorleyNoise3D
         self.bondSelectionScaling = 1.0
         self.bondSelectionIntensity = 0.4
         self.bondSelectionStripesDensity = 0.25
@@ -1713,7 +1766,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         
         self.setRepresentationType(type: .vdw)
       case .licorice:
-        self.drawAtoms = true
+        if !preserveAtomBondVisibility
+        {
+          self.drawAtoms = true
+        }
         self.atomAmbientOcclusion = false
         self.atomHue = 1.0
         self.atomSaturation = 1.0
@@ -1731,7 +1787,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
         self.atomColorSchemeOrder = .elementOnly
         
-        self.drawBonds = true
+        if !preserveAtomBondVisibility
+        {
+          self.drawBonds = true
+        }
         self.bondAmbientOcclusion = false
         self.bondColorMode = .split
         self.bondScaleFactor = 0.25
@@ -1749,13 +1808,13 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.bondSaturation = 1.0
         self.bondValue = 1.0
         
-        self.atomSelectionStyle = .striped
+        self.atomSelectionStyle = .WorleyNoise3D
         self.atomSelectionScaling = 1.0
         self.atomSelectionIntensity = 0.8
         self.atomSelectionStripesDensity = 0.25
         self.atomSelectionStripesFrequency = 12.0
-               
-        self.bondSelectionStyle = .striped
+        
+        self.bondSelectionStyle = .WorleyNoise3D
         self.bondSelectionScaling = 1.0
         self.bondSelectionIntensity = 0.8
         self.bondSelectionStripesDensity = 0.25
@@ -1769,7 +1828,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         atomDiffuseIntensity = 0.6
         atomSpecularIntensity = 0.1
         atomShininess = 4.0
-        drawAtoms = true
+        if !preserveAtomBondVisibility
+        {
+          drawAtoms = true
+        }
         atomScaleFactor = 1.0
         atomForceFieldIdentifier = "Default"
         atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
@@ -1868,12 +1930,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
        (self.bondHue ==~  1.0) &&
        (self.bondSaturation ==~  1.0) &&
        (self.bondValue ==~  1.0)  &&
-      self.atomSelectionStyle == .striped &&
+      self.atomSelectionStyle == .WorleyNoise3D &&
       (self.atomSelectionScaling ==~ 1.0)  &&
       (self.atomSelectionIntensity ==~ 0.7)  &&
       (self.atomSelectionStripesDensity ==~ 0.25) &&
       (self.atomSelectionStripesFrequency ==~ 12.0) &&
-      self.bondSelectionStyle == .striped &&
+      self.bondSelectionStyle == .WorleyNoise3D &&
       (self.bondSelectionScaling ==~ 1.0) &&
       (self.bondSelectionIntensity ==~ 0.7) &&
       (self.bondSelectionStripesDensity ==~ 0.25) &&
@@ -1906,12 +1968,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
        self.atomForceFieldIdentifier == "Default" &&
        self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.rasmol.rawValue &&
        self.atomColorSchemeOrder == .elementOnly &&
-      self.atomSelectionStyle == .striped &&
+      self.atomSelectionStyle == .WorleyNoise3D &&
       (self.atomSelectionScaling ==~ 1.0)  &&
       (self.atomSelectionIntensity ==~ 0.4)  &&
       (self.atomSelectionStripesDensity ==~ 0.25) &&
       (self.atomSelectionStripesFrequency ==~ 12.0) &&
-      self.bondSelectionStyle == .striped &&
+      self.bondSelectionStyle == .WorleyNoise3D &&
       (self.bondSelectionScaling ==~ 1.0) &&
       (self.bondSelectionIntensity ==~ 0.4) &&
       (self.bondSelectionStripesDensity ==~ 0.25) &&
@@ -1960,12 +2022,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       (self.bondHue ==~  1.0) &&
       (self.bondSaturation ==~  1.0) &&
       (self.bondValue ==~  1.0) &&
-      self.atomSelectionStyle == .striped &&
+      self.atomSelectionStyle == .WorleyNoise3D &&
       (self.atomSelectionScaling ==~ 1.0)  &&
       (self.atomSelectionIntensity ==~ 0.8)  &&
       (self.atomSelectionStripesDensity ==~ 0.25) &&
       (self.atomSelectionStripesFrequency ==~ 12.0) &&
-      self.bondSelectionStyle == .striped &&
+      self.bondSelectionStyle == .WorleyNoise3D &&
       (self.bondSelectionScaling ==~ 1.0) &&
       (self.bondSelectionIntensity ==~ 0.8) &&
       (self.atomSelectionStripesDensity ==~ 0.25) &&

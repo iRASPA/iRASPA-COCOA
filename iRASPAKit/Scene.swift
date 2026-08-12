@@ -167,6 +167,20 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
               atoms[i].position = newposition
             }
           }
+        case .dna:
+          let dna = DNA(name: displayName)
+          dna.cell = cell
+          dna.drawUnitCell = false
+          iRASPAstructure = iRASPAObject(dna: dna)
+          for i in 0..<atoms.count
+          {
+            if atoms[i].fractional
+            {
+              atoms[i].fractional = false
+              let newposition = cell.fullCell * atoms[i].position
+              atoms[i].position = newposition
+            }
+          }
         case .crystal:
           let crystal = Crystal(name: displayName)
           crystal.cell = cell
@@ -203,6 +217,21 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           proteinCrystal.spaceGroup = spaceGroup
           proteinCrystal.drawUnitCell = true
           iRASPAstructure = iRASPAObject(proteinCrystal: proteinCrystal)
+          for i in 0..<atoms.count
+          {
+            if atoms[i].fractional
+            {
+              atoms[i].fractional = false
+              let newposition = cell.fullCell * atoms[i].position
+              atoms[i].position = newposition
+            }
+          }
+        case .dnaCrystal:
+          let dnaCrystal = DNACrystal(name: displayName)
+          dnaCrystal.cell = cell
+          dnaCrystal.spaceGroup = spaceGroup
+          dnaCrystal.drawUnitCell = true
+          iRASPAstructure = iRASPAObject(dnaCrystal: dnaCrystal)
           for i in 0..<atoms.count
           {
             if atoms[i].fractional
@@ -283,7 +312,7 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           LogQueue.shared.warning(destination: nil, message: "\(displayName): unknown chemical element of atom-name \(unknownAtom)")
         }
         
-        var atomTreeNodes: [SKAtomTreeNode] = []
+        var structureAtoms: [SKAsymmetricAtom] = []
         for atom in atoms
         {
           let atomicNumber: Int = atom.elementIdentifier
@@ -293,15 +322,31 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           let bondDistanceCriteria: Double = defaultForceField[displayName]?.userDefinedRadius ?? 1.0
           
           let structureAtom: SKAsymmetricAtom = SKAsymmetricAtom(modelAtom: atom, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
-          
-          let node = SKAtomTreeNode(representedObject: structureAtom)
-          atomTreeNodes.append(node)
+          structureAtoms.append(structureAtom)
+        }
+        
+        let useProteinHierarchy: Bool = iRASPAstructure.object is Protein || iRASPAstructure.object is ProteinCrystal
+        let useDnaHierarchy: Bool = iRASPAstructure.object is DNA || iRASPAstructure.object is DNACrystal
+        let atomTreeNodes: [SKAtomTreeNode]
+        if useProteinHierarchy
+        {
+          atomTreeNodes = ProteinAtomTreeBuilder.build(from: structureAtoms)
+        }
+        else if useDnaHierarchy
+        {
+          atomTreeNodes = DNAAtomTreeBuilder.build(from: structureAtoms)
+        }
+        else
+        {
+          atomTreeNodes = structureAtoms.map{SKAtomTreeNode(representedObject: $0)}
         }
         
         if let atomViewer = iRASPAstructure.object as? AtomViewer
         {
           atomViewer.atomTreeController.rootNodes = atomTreeNodes
         }
+        
+        rebuildImportedRibbonBackbone(iRASPAstructure.object)
         
         if let structureViewer = iRASPAstructure.object as? Structure
         {
@@ -359,6 +404,8 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           //structureViewer.bondSetController.tag()
         }
         
+        applyImportedRibbonDefaults(iRASPAstructure.object)
+        
         // compute the bounding-box of the atoms
         iRASPAstructure.object.reComputeBoundingBox()
         
@@ -367,7 +414,9 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           atomViewer.atomTreeController.tag()
         }
         
-        if let bondViewer = iRASPAstructure.object as? BondViewer
+        if let bondViewer = iRASPAstructure.object as? BondViewer,
+           let structure: Structure = iRASPAstructure.object as? Structure,
+           structure.drawBonds
         {
           bondViewer.bondSetController.tag()
           bondViewer.reComputeBonds()
@@ -698,6 +747,175 @@ extension Scene: CellViewer
     return self.movies.flatMap{$0.cellViewerObjects}
   }
 }*/
+
+fileprivate protocol ProteinRibbonImportTarget: AnyObject
+{
+  var drawRibbon: Bool {get set}
+  var drawAtoms: Bool {get set}
+  var drawBonds: Bool {get set}
+  var bondDiffuseColor: NSColor {get set}
+  var bondAmbientColor: NSColor {get set}
+  var bondSpecularColor: NSColor {get set}
+  var bondAmbientIntensity: Double {get set}
+  var bondDiffuseIntensity: Double {get set}
+  var bondSpecularIntensity: Double {get set}
+  func rebuildBackboneStructure()
+  func rebuildRibbonMesh()
+  func rebuildBackbone()
+}
+
+extension Protein: ProteinRibbonImportTarget {}
+extension ProteinCrystal: ProteinRibbonImportTarget {}
+extension DNA: DNARibbonImportTarget
+{
+  var nucleotideResidueCount: Int {backbone.nucleotideResidueCount}
+}
+extension DNACrystal: DNARibbonImportTarget
+{
+  var nucleotideResidueCount: Int {backbone.nucleotideResidueCount}
+}
+
+fileprivate func rebuildImportedProteinBackbone(_ object: Object)
+{
+  (object as? ProteinRibbonImportTarget)?.rebuildBackboneStructure()
+}
+
+fileprivate func rebuildImportedRibbonBackbone(_ object: Object)
+{
+  (object as? DNARibbonImportTarget)?.rebuildBackboneStructure()
+  (object as? ProteinRibbonImportTarget)?.rebuildBackboneStructure()
+}
+
+fileprivate protocol DNARibbonImportTarget: AnyObject
+{
+  var drawRibbon: Bool {get set}
+  var drawAtoms: Bool {get set}
+  var drawBonds: Bool {get set}
+  var nucleotideResidueCount: Int {get}
+  var bondDiffuseColor: NSColor {get set}
+  var bondAmbientColor: NSColor {get set}
+  var bondSpecularColor: NSColor {get set}
+  var bondAmbientIntensity: Double {get set}
+  var bondDiffuseIntensity: Double {get set}
+  var bondSpecularIntensity: Double {get set}
+  func rebuildBackboneStructure()
+  func rebuildRibbonMesh()
+  func rebuildBackbone()
+}
+
+fileprivate func applyImportedStructureRibbonSelectionDefaults(_ structure: Structure)
+{
+  structure.atomSelectionStyle = .WorleyNoise3D
+  structure.bondSelectionStyle = .WorleyNoise3D
+}
+
+fileprivate func hideAtomsBehindImportedRibbon(_ object: Object, residueCount: Int)
+{
+  // Leaves only. Group placeholders carry ribbon visibility; hiding those would hide the ribbon.
+  guard residueCount > 0,
+        let atomViewer: AtomViewer = object as? AtomViewer else {return}
+  for node in atomViewer.atomTreeController.flattenedLeafNodes()
+  {
+    node.representedObject.isVisible = false
+  }
+}
+
+/// Imported proteins open as a ribbon with licorice atoms (hidden behind the ribbon) and Default
+/// ribbon lighting.
+fileprivate func applyImportedProteinRibbonDefaults(_ object: Object)
+{
+  guard let target: ProteinRibbonImportTarget = object as? ProteinRibbonImportTarget else {return}
+  
+  // Solvent-only protein crystals have no backbone to sweep; keeping atoms avoids an empty view.
+  if let structure: Structure = object as? Structure, structure.containsOnlySolventAtoms()
+  {
+    return
+  }
+  
+  if let structure: Structure = object as? Structure
+  {
+    structure.setRepresentationStyle(style: .licorice)
+    // Thinner than stock licorice 0.25: with a ribbon drawn, thick sticks bury the backbone.
+    structure.setBondScaleFactor(0.1)
+    structure.drawUnitCell = false
+    applyImportedStructureRibbonSelectionDefaults(structure)
+  }
+  
+  target.drawRibbon = true
+  // Licorice leaves drawAtoms/drawBonds on so any atom can be brought back over the ribbon.
+  target.drawAtoms = true
+  target.drawBonds = true
+  
+  let atomCount: Int = (object as? AtomViewer)?.atomTreeController.flattenedLeafNodes().count ?? 0
+  let residueCount: Int = (object as? Protein)?.backbone.alphaCarbonResidueCount
+    ?? (object as? ProteinCrystal)?.backbone.alphaCarbonResidueCount
+    ?? atomCount
+  
+  if let ribbonEditor: ProteinRibbonStructureEditor = object as? ProteinRibbonStructureEditor
+  {
+    ribbonEditor.ribbonMeshParameters = ProteinRibbonMeshParameters.forImportedStructure(atomCount: atomCount, residueCount: residueCount)
+    ribbonEditor.applyRibbonRepresentationStyle(.default)
+  }
+  
+  hideAtomsBehindImportedRibbon(object, residueCount: residueCount)
+  target.rebuildBackbone()
+}
+
+fileprivate func applyImportedDNARibbonDefaults(_ object: Object)
+{
+  guard let target: DNARibbonImportTarget = object as? DNARibbonImportTarget else {return}
+  
+  if let structure: Structure = object as? Structure
+  {
+    structure.drawUnitCell = false
+  }
+  
+  target.drawRibbon = true
+  target.drawAtoms = false
+  target.drawBonds = false
+  
+  if let ribbonEditor: DNARibbonStructureEditor = object as? DNARibbonStructureEditor
+  {
+    let atomCount: Int = (object as? AtomViewer)?.atomTreeController.flattenedLeafNodes().count ?? 0
+    let residueCount: Int = target.nucleotideResidueCount > 0 ? target.nucleotideResidueCount : atomCount
+    ribbonEditor.dnaRibbonMeshParameters = ProteinRibbonMeshParameters.forImportedStructure(atomCount: atomCount, residueCount: residueCount)
+    ribbonEditor.applyFancyDnaRibbonAppearanceDefault()
+    ribbonEditor.ribbonScaleFactor = 1.0
+    ribbonEditor.nucleicAcidBackboneStyle = .oval
+    ribbonEditor.nucleicAcidTraceMode = .phosphateMode4
+    ribbonEditor.nucleicAcidRingMode = .filledPlanes
+    ribbonEditor.nucleicAcidLadderMode = .rungs
+    ribbonEditor.nucleicAcidOvalLength = 1.35
+    ribbonEditor.nucleicAcidOvalWidth = 0.25
+    ribbonEditor.nucleicAcidRingWidth = 0.1
+    ribbonEditor.nucleicAcidLadderRadius = 0.15
+  }
+  
+  if let structure: Structure = object as? Structure
+  {
+    applyImportedStructureRibbonSelectionDefaults(structure)
+  }
+  
+  target.bondDiffuseColor = NSColor(calibratedRed: 0.2, green: 0.45, blue: 0.85, alpha: 1.0)
+  target.bondAmbientColor = NSColor(calibratedRed: 0.35, green: 0.35, blue: 0.35, alpha: 1.0)
+  target.bondSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  target.bondAmbientIntensity = 0.35
+  target.bondDiffuseIntensity = 0.85
+  target.bondSpecularIntensity = 0.25
+  target.rebuildBackbone()
+}
+
+fileprivate func applyImportedRibbonDefaults(_ object: Object)
+{
+  if object is DNARibbonStructureEditor
+  {
+    applyImportedDNARibbonDefaults(object)
+  }
+  else if object is ProteinRibbonStructureEditor
+  {
+    applyImportedProteinRibbonDefaults(object)
+  }
+}
 
 
 

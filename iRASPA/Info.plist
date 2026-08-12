@@ -57,6 +57,7 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>cif</string>
+				<string>mmcif</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>CrystalProject</string>
@@ -295,6 +296,7 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>cif</string>
+					<string>mmcif</string>
 				</array>
 				<key>public.mime-type</key>
 				<array>

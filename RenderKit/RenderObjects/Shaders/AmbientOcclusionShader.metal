@@ -197,3 +197,177 @@ fragment half AmbientOcclusionFragmentShader(AmbientOcclusionVertexShaderOut ver
 }
 
 
+struct RibbonAODebugUniforms
+{
+  int mode;
+  int textureWidth;
+  int textureHeight;
+  int patchNumber;
+  float patchSize;
+  float inverseTextureSize;
+  float pad;
+};
+
+
+struct RibbonAOPatchUniforms
+{
+  int patchNumber;
+  float patchSize;
+  float inverseTextureSize;
+  int pad;
+};
+
+
+struct RibbonAmbientOcclusionVertexShaderOut
+{
+  float4 position [[position]];
+  float3 worldPosition;
+  float3 worldNormal;
+};
+
+
+vertex RibbonAmbientOcclusionVertexShaderOut RibbonAmbientOcclusionVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+                                                                                constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                                                uint vid [[vertex_id]])
+{
+  RibbonAmbientOcclusionVertexShaderOut vert;
+  float2 atlasUV = vertices[vid].st;
+  float2 clipPos = atlasUV * 2.0 - 1.0;
+  vert.position = float4(clipPos.x, -clipPos.y, 0.0, 1.0);
+  
+  float4 localPosition = vertices[vid].position;
+  vert.worldPosition = (structureUniforms.modelMatrix * localPosition).xyz;
+  float3 localNormal = vertices[vid].normal.xyz;
+  vert.worldNormal = normalize((structureUniforms.modelMatrix * float4(localNormal, 0.0)).xyz);
+  return vert;
+}
+
+
+fragment half RibbonAmbientOcclusionFragmentShader(RibbonAmbientOcclusionVertexShaderOut vert [[stage_in]],
+                                                   constant ShadowUniforms& shadowUniforms [[buffer(0)]],
+                                                   constant float& weight [[buffer(1)]],
+                                                   depth2d<float> shadowMap [[texture(0)]],
+                                                   sampler shadowMapSampler [[sampler(0)]])
+{
+  float3 pos = vert.worldPosition;
+  float3 worldNormal = normalize(vert.worldNormal);
+  
+  float4 shadowCoordinate = shadowUniforms.shadowMatrix * float4(pos, 1.0);
+  shadowCoordinate.y = 1.0 - shadowCoordinate.y;
+  float4 shadowPos = shadowCoordinate / shadowCoordinate.w;
+  
+  float4 viewNormal = shadowUniforms.viewMatrix * float4(worldNormal, 0.0);
+  float normalWeight = max(viewNormal.z, 0.0);
+  if (normalWeight < 1.0e-4)
+  {
+    return 0.0;
+  }
+  
+  if (shadowMap.sample(shadowMapSampler, shadowPos.xy) >= shadowPos.z)
+  {
+    return weight * normalWeight;
+  }
+  return 0.0;
+}
+
+
+struct RibbonShadowMapVertexShaderOut
+{
+  float4 position [[position]];
+  float4 eyePosition;
+};
+
+
+vertex RibbonShadowMapVertexShaderOut RibbonShadowMapVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+                                                                 constant ShadowUniforms& shadowUniforms [[buffer(1)]],
+                                                                 constant StructureUniforms& structureUniforms [[buffer(2)]],
+                                                                 uint vid [[vertex_id]])
+{
+  RibbonShadowMapVertexShaderOut vert;
+  float4 localPosition = vertices[vid].position;
+  vert.eyePosition = shadowUniforms.viewMatrix * structureUniforms.modelMatrix * localPosition;
+  vert.position = shadowUniforms.projectionMatrix * vert.eyePosition;
+  return vert;
+}
+
+
+fragment ShadowMapOutput RibbonShadowMapFragmentShader(RibbonShadowMapVertexShaderOut vert [[stage_in]])
+{
+  ShadowMapOutput output;
+  output.depth = vert.position.z / vert.position.w;
+  return output;
+}
+
+
+struct RibbonAOBlurUniforms
+{
+  float2 inverseTextureSize;
+};
+
+
+struct RibbonAOBlurVertexOut
+{
+  float4 position [[position]];
+  float2 texCoord;
+};
+
+
+vertex RibbonAOBlurVertexOut ribbonAOBlurVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+                                                       uint vid [[vertex_id]])
+{
+  RibbonAOBlurVertexOut vert;
+  float4 position = float4(vertices[vid].position.xyz, 1.0);
+  vert.position = position;
+  // Match blurHorizontalVertexShader: fullscreen quad st is unset; derive UV from clip position.
+  vert.texCoord = position.xy * float2(0.5) + float2(0.5);
+  return vert;
+}
+
+
+fragment half ribbonAOBlurHorizontalFragmentShader(RibbonAOBlurVertexOut vert [[stage_in]],
+                                                   constant RibbonAOBlurUniforms& blurUniforms [[buffer(0)]],
+                                                   texture2d<half, access::sample> sourceTexture [[texture(0)]],
+                                                   sampler sourceSampler [[sampler(0)]])
+{
+  float2 texCoord = vert.texCoord;
+  float2 du = float2(blurUniforms.inverseTextureSize.x, 0.0);
+  const float weights[8] = {
+    0.159576912161, 0.147308056121, 0.115876621105, 0.0776744219933,
+    0.0443683338718, 0.0215963866053, 0.00895781211794, 0.0044299121055113265
+  };
+  const float steps[7] = {8.0, 16.0, 24.0, 32.0, 40.0, 48.0, 56.0};
+  
+  float sum = float(sourceTexture.sample(sourceSampler, texCoord).r) * weights[0];
+  for (int i = 0; i < 7; i++)
+  {
+    float2 offset = du * steps[i];
+    sum += float(sourceTexture.sample(sourceSampler, texCoord - offset).r) * weights[i + 1];
+    sum += float(sourceTexture.sample(sourceSampler, texCoord + offset).r) * weights[i + 1];
+  }
+  return half(sum);
+}
+
+
+fragment half ribbonAOBlurVerticalFragmentShader(RibbonAOBlurVertexOut vert [[stage_in]],
+                                                  constant RibbonAOBlurUniforms& blurUniforms [[buffer(0)]],
+                                                  texture2d<half, access::sample> sourceTexture [[texture(0)]],
+                                                  sampler sourceSampler [[sampler(0)]])
+{
+  float2 texCoord = vert.texCoord;
+  float2 dv = float2(0.0, blurUniforms.inverseTextureSize.y);
+  const float weights[8] = {
+    0.159576912161, 0.147308056121, 0.115876621105, 0.0776744219933,
+    0.0443683338718, 0.0215963866053, 0.00895781211794, 0.0044299121055113265
+  };
+  const float steps[7] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0};
+  
+  float sum = float(sourceTexture.sample(sourceSampler, texCoord).r) * weights[0];
+  for (int i = 0; i < 7; i++)
+  {
+    float2 offset = dv * steps[i];
+    sum += float(sourceTexture.sample(sourceSampler, texCoord - offset).r) * weights[i + 1];
+    sum += float(sourceTexture.sample(sourceSampler, texCoord + offset).r) * weights[i + 1];
+  }
+  return half(sum);
+}
+

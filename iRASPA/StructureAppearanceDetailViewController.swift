@@ -56,7 +56,7 @@ import LogViewKit
 
 class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDelegate, WindowControllerConsumer, ProjectConsumer
 {
-  @IBOutlet private weak var appearanceOutlineView: NSStaticViewBasedOutlineView?
+  @IBOutlet weak var appearanceOutlineView: NSStaticViewBasedOutlineView?
   
   weak var windowController: iRASPAWindowController?
   
@@ -76,6 +76,18 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   let primitiveHSVPropertiesCell: OutlineViewItem = OutlineViewItem("PrimitiveHSVPropertiesCell")
   let primitiveFrontPropertiesCell: OutlineViewItem = OutlineViewItem("PrimitiveFrontPropertiesCell")
   let primitiveBackPropertiesCell: OutlineViewItem = OutlineViewItem("PrimitiveBackPropertiesCell")
+  
+  let ribbonsScalingCell: OutlineViewItem = OutlineViewItem("ProteinRibbonsScalingCell")
+  let ribbonsRepresentationStyleCell: OutlineViewItem = OutlineViewItem("ProteinRibbonsRepresentationCell")
+  let ribbonsSelectionCell: OutlineViewItem = OutlineViewItem("ProteinRibbonsSelectionCell")
+  let ribbonsHDRCell: OutlineViewItem = OutlineViewItem("ProteinRibbonsHDRCell")
+  let ribbonsLightingCell: OutlineViewItem = OutlineViewItem("ProteinRibbonsLightingCell")
+  
+  let ribbonsDNAScalingCell: OutlineViewItem = OutlineViewItem("DNARibbonsScalingCell")
+  let ribbonsDNACartoonCell: OutlineViewItem = OutlineViewItem("DNARibbonsRepresentationCell")
+  let ribbonsDNASelectionCell: OutlineViewItem = OutlineViewItem("DNARibbonsSelectionCell")
+  let ribbonsDNAHDRCell: OutlineViewItem = OutlineViewItem("DNARibbonsHDRCell")
+  let ribbonsDNALightingCell: OutlineViewItem = OutlineViewItem("DNARibbonsLightingCell")
   
   let atomsScalingCell: OutlineViewItem = OutlineViewItem("AtomsScalingCell")
   let atomsRepresentationStyleCell: OutlineViewItem = OutlineViewItem("AtomsRepresentationCell")
@@ -98,6 +110,16 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   let adsorptionBackSurfaceCell: OutlineViewItem = OutlineViewItem("AdsorptionBackSurfaceCell")
   
   let annotationVisualAppearanceCell: OutlineViewItem = OutlineViewItem("AnnotationVisualAppearanceCell")
+  
+  lazy var primitiveVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "PrimitiveVisualAppearanceGroup", children: [primitiveOrientationPropertiesCell, primitiveTransformationPropertiesCell, primitiveOpacityPropertiesCell, primitiveSelectionPropertiesCell, primitiveHSVPropertiesCell, primitiveFrontPropertiesCell, primitiveBackPropertiesCell])
+  lazy var ribbonsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "ProteinRibbonsVisualAppearanceGroup", children: [ribbonsScalingCell, ribbonsRepresentationStyleCell, ribbonsSelectionCell, ribbonsHDRCell, ribbonsLightingCell])
+  lazy var ribbonsDNAVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "DNARibbonsVisualAppearanceGroup", children: [ribbonsDNAScalingCell, ribbonsDNACartoonCell, ribbonsDNASelectionCell, ribbonsDNAHDRCell, ribbonsDNALightingCell])
+  lazy var atomsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AtomsVisualAppearanceGroup", children: [atomsScalingCell, atomsRepresentationStyleCell, atomsSelectionCell, atomsHDRCell, atomsLightingCell])
+  lazy var bondsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "BondsVisualAppearanceGroup", children: [bondsScalingCell, bondsSelectionCell, bondsHDRCell, bondsLightingCell])
+  lazy var unitCellVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "UnitCellVisualAppearanceGroup", children: [unitCellScalingCell])
+  lazy var localAxesAppearanceItem: OutlineViewItem = OutlineViewItem(title: "LocalAxesVisualAppearanceGroup", children: [localAxesCell])
+  lazy var adsorptionVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AdsorptionVisualAppearanceGroup", children: [adsorptionPropertiesCell, adsorptionHSVCell, adsorptionFrontSurfaceCell, adsorptionBackSurfaceCell])
+  lazy var annotationVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AnnotationVisualAppearanceGroup", children: [annotationVisualAppearanceCell])
   
   
   var surfaceUpdateBlock: () -> () = {}
@@ -139,17 +161,27 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
-    let primitiveVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "PrimitiveVisualAppearanceGroup", children: [primitiveOrientationPropertiesCell, primitiveTransformationPropertiesCell, primitiveOpacityPropertiesCell, primitiveSelectionPropertiesCell, primitiveHSVPropertiesCell, primitiveFrontPropertiesCell, primitiveBackPropertiesCell])
-    let atomsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AtomsVisualAppearanceGroup", children: [atomsScalingCell, atomsRepresentationStyleCell, atomsSelectionCell, atomsHDRCell, atomsLightingCell])
-    let bondsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "BondsVisualAppearanceGroup", children: [bondsScalingCell, bondsSelectionCell, bondsHDRCell, bondsLightingCell])
-    let unitCellVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "UnitCellVisualAppearanceGroup", children: [unitCellScalingCell])
-    let localAxesAppearanceItem: OutlineViewItem = OutlineViewItem(title: "LocalAxesVisualAppearanceGroup", children: [localAxesCell])
-    let adsorptionVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AdsorptionVisualAppearanceGroup", children: [adsorptionPropertiesCell, adsorptionHSVCell, adsorptionFrontSurfaceCell, adsorptionBackSurfaceCell])
-    let annotationVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AnnotationVisualAppearanceGroup", children: [annotationVisualAppearanceCell])
+    rebuildAppearanceOutlineItems()
     
-    
-    self.appearanceOutlineView?.items = [primitiveVisualAppearanceItem, atomsVisualAppearanceItem, bondsVisualAppearanceItem, unitCellVisualAppearanceItem, localAxesAppearanceItem, adsorptionVisualAppearanceItem, annotationVisualAppearanceItem]
-    
+  }
+  
+  func rebuildAppearanceOutlineItems()
+  {
+    var items: [OutlineViewItem] = []
+    if hasPrimitiveStructure(in: iRASPAObjects)
+    {
+      items.append(primitiveVisualAppearanceItem)
+    }
+    if hasProteinRibbonStructure(in: iRASPAObjects)
+    {
+      items.append(ribbonsVisualAppearanceItem)
+    }
+    if hasDNARibbonStructure(in: iRASPAObjects)
+    {
+      items.append(ribbonsDNAVisualAppearanceItem)
+    }
+    items.append(contentsOf: [atomsVisualAppearanceItem, bondsVisualAppearanceItem, unitCellVisualAppearanceItem, localAxesAppearanceItem, adsorptionVisualAppearanceItem, annotationVisualAppearanceItem])
+    self.appearanceOutlineView?.items = items
   }
   
   override func viewWillAppear()
@@ -169,16 +201,17 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     super.viewWillDisappear()
   }
   
-  var expandedItems: [Bool] = [false,false, false,false,false,false,false,false]
+  var expandedGroupTitles: Set<String> = []
   
   func storeExpandedItems()
   {
     if let outlineView = self.appearanceOutlineView
     {
-      for i in 0..<outlineView.items.count
-      {
-        self.expandedItems[i] = outlineView.isItemExpanded(outlineView.items[i])
-      }
+      expandedGroupTitles = Set(outlineView.items.compactMap { item in
+        guard let title = (item as? OutlineViewItem)?.title,
+              outlineView.isItemExpanded(item) else { return nil }
+        return title
+      })
     }
   }
   
@@ -186,6 +219,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     assert(Thread.isMainThread)
     
+    storeExpandedItems()
+    rebuildAppearanceOutlineItems()
     self.appearanceOutlineView?.reloadData()
     
     NSAnimationContext.runAnimationGroup({context in
@@ -193,15 +228,16 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       if let outlineView = self.appearanceOutlineView
       {
-        for i in 0..<outlineView.items.count
+        for item in outlineView.items
         {
-          if (self.expandedItems[i])
+          if let title = (item as? OutlineViewItem)?.title,
+             expandedGroupTitles.contains(title)
           {
-            self.appearanceOutlineView?.expandItem(outlineView.items[i])
+            self.appearanceOutlineView?.expandItem(item)
           }
           else
           {
-            self.appearanceOutlineView?.collapseItem(outlineView.items[i])
+            self.appearanceOutlineView?.collapseItem(item)
           }
         }
       }
@@ -239,6 +275,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       let enabled: Bool = proxyProject?.isEnabled ?? false
       
       setPropertiesPrimitiveTableCells(on: view, identifier: string, enabled: enabled)
+      setPropertiesRibbonTableCells(on: view, identifier: string, enabled: enabled)
+      setPropertiesDNARibbonTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesAtomTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesBondTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesUnitCellTableCells(on: view, identifier: string, enabled: enabled)
@@ -1221,6 +1259,761 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
     default:
       break
+    }
+  }
+  
+  func setPropertiesRibbonTableCells(on view: NSTableCellView, identifier: String, enabled: Bool)
+  {
+    switch identifier
+    {
+    case "ProteinRibbonsRepresentationCell":
+      if let popUpButtonSecondaryStructure: iRASPAPopUpButton = view.viewWithTag(5) as? iRASPAPopUpButton
+      {
+        popUpButtonSecondaryStructure.isEditable = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          popUpButtonSecondaryStructure.isEditable = enabled
+          if let secondaryStructureMethod = self.getRibbonSecondaryStructureMethod()
+          {
+            popUpButtonSecondaryStructure.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpButtonSecondaryStructure.selectItem(withTitle: secondaryStructureMethod.displayName)
+          }
+          else
+          {
+            popUpButtonSecondaryStructure.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
+      
+      if let popUpButtonSpline: iRASPAPopUpButton = view.viewWithTag(4) as? iRASPAPopUpButton
+      {
+        popUpButtonSpline.isEditable = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          popUpButtonSpline.isEditable = enabled
+          if let splineType = self.getRibbonSplineType()
+          {
+            popUpButtonSpline.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpButtonSpline.selectItem(withTitle: splineType.displayName)
+          }
+          else
+          {
+            popUpButtonSpline.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
+      
+      if let popUpButtonRepresentationStyle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
+      {
+        popUpButtonRepresentationStyle.isEditable = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          popUpButtonRepresentationStyle.isEditable = enabled
+          if let representationStyle = self.getRibbonRepresentationStyle()
+          {
+            popUpButtonRepresentationStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpButtonRepresentationStyle.removeItem(withTitle: "Custom")
+            
+            if representationStyle == .custom
+            {
+              popUpButtonRepresentationStyle.setTitle("Custom")
+            }
+            else
+            {
+              popUpButtonRepresentationStyle.selectItem(withTitle: representationStyle.displayName)
+            }
+          }
+          else
+          {
+            popUpButtonRepresentationStyle.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
+      
+      if let popUpButtonColorSet: iRASPAPopUpButton = view.viewWithTag(2) as? iRASPAPopUpButton
+      {
+        popUpButtonColorSet.isEditable = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          popUpButtonColorSet.isEditable = enabled
+          
+          if let colorSet = self.getRibbonColorSet()
+          {
+            popUpButtonColorSet.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpButtonColorSet.selectItem(withTitle: colorSet.displayName)
+          }
+          else
+          {
+            popUpButtonColorSet.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
+    case "ProteinRibbonsScalingCell":
+      if let checkDrawRibbonsButton: NSButton = view.viewWithTag(1) as? NSButton
+      {
+        checkDrawRibbonsButton.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          checkDrawRibbonsButton.isEnabled = enabled
+          if let renderDrawRibbon: Bool = self.renderDrawRibbon
+          {
+            checkDrawRibbonsButton.allowsMixedState = false
+            checkDrawRibbonsButton.state = renderDrawRibbon ? NSControl.StateValue.on : NSControl.StateValue.off
+          }
+          else
+          {
+            checkDrawRibbonsButton.allowsMixedState = true
+            checkDrawRibbonsButton.state = NSControl.StateValue.mixed
+          }
+        }
+      }
+
+      if let textFieldRibbonScaling: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        textFieldRibbonScaling.isEditable = false
+        textFieldRibbonScaling.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          textFieldRibbonScaling.isEditable = enabled
+          if let renderRibbonScaleFactor: Double = self.renderRibbonScaleFactor
+          {
+            textFieldRibbonScaling.doubleValue = renderRibbonScaleFactor
+          }
+          else
+          {
+            textFieldRibbonScaling.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      
+      if let sliderRibbonScaling: NSSlider = view.viewWithTag(3) as? NSSlider
+      {
+        sliderRibbonScaling.isEnabled = false
+        sliderRibbonScaling.minValue = 0.1
+        sliderRibbonScaling.maxValue = 2.0
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderRibbonScaling.isEnabled = enabled
+          if let renderRibbonScaleFactor: Double = self.renderRibbonScaleFactor
+          {
+            sliderRibbonScaling.doubleValue = renderRibbonScaleFactor
+          }
+        }
+      }
+    case "ProteinRibbonsSelectionCell":
+      if let popUpbuttonSelectionStyle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton,
+         let textFieldSelectionFrequency: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let textFieldSelectionDensity: NSTextField = view.viewWithTag(3) as? NSTextField
+      {
+        popUpbuttonSelectionStyle.isEditable = false
+        textFieldSelectionFrequency.isEditable = false
+        textFieldSelectionFrequency.stringValue = ""
+        textFieldSelectionDensity.isEditable = false
+        textFieldSelectionDensity.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          popUpbuttonSelectionStyle.isEditable = enabled
+          textFieldSelectionFrequency.isEditable = enabled
+          textFieldSelectionDensity.isEditable = enabled
+          
+          if let selectionStyle: RKSelectionStyle = self.renderRibbonSelectionStyle
+          {
+            popUpbuttonSelectionStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpbuttonSelectionStyle.selectItem(at: selectionStyle.rawValue)
+            
+            if selectionStyle == .glow
+            {
+              textFieldSelectionFrequency.isEditable = false
+              textFieldSelectionDensity.isEditable = false
+            }
+          }
+          else
+          {
+            popUpbuttonSelectionStyle.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+            textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+          
+          if let renderSelectionFrequency: Double = self.renderRibbonSelectionFrequency
+          {
+            textFieldSelectionFrequency.doubleValue = renderSelectionFrequency
+          }
+          else
+          {
+            textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+          
+          if let renderSelectionDensity: Double = self.renderRibbonSelectionDensity
+          {
+            textFieldSelectionDensity.doubleValue = renderSelectionDensity
+          }
+          else
+          {
+            textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      
+      if let textFieldRibbonSelectionIntensityLevel: NSTextField = view.viewWithTag(4) as? NSTextField
+      {
+        textFieldRibbonSelectionIntensityLevel.isEditable = false
+        textFieldRibbonSelectionIntensityLevel.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          textFieldRibbonSelectionIntensityLevel.isEditable = enabled
+          if let renderRibbonSelectionIntensityLevel: Double = self.renderRibbonSelectionIntensity
+          {
+            textFieldRibbonSelectionIntensityLevel.doubleValue = renderRibbonSelectionIntensityLevel
+          }
+          else
+          {
+            textFieldRibbonSelectionIntensityLevel.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      
+      if let sliderRibbonSelectionIntensityLevel: NSSlider = view.viewWithTag(5) as? NSSlider
+      {
+        sliderRibbonSelectionIntensityLevel.isEnabled = false
+        sliderRibbonSelectionIntensityLevel.minValue = 0.0
+        sliderRibbonSelectionIntensityLevel.maxValue = 1.0
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderRibbonSelectionIntensityLevel.isEnabled = enabled
+          if let renderRibbonSelectionIntensityLevel: Double = self.renderRibbonSelectionIntensity
+          {
+            sliderRibbonSelectionIntensityLevel.doubleValue = renderRibbonSelectionIntensityLevel
+          }
+        }
+      }
+      
+      if let textFieldSelectionScaling: NSTextField = view.viewWithTag(6) as? NSTextField
+      {
+        textFieldSelectionScaling.isEditable = false
+        textFieldSelectionScaling.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          textFieldSelectionScaling.isEditable = enabled
+          if let renderRibbonSelectionScaling: Double = self.renderRibbonSelectionScaling
+          {
+            textFieldSelectionScaling.doubleValue = renderRibbonSelectionScaling
+          }
+          else
+          {
+            textFieldSelectionScaling.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      
+      if let sliderSelectionScaling: NSSlider = view.viewWithTag(7) as? NSSlider
+      {
+        sliderSelectionScaling.isEnabled = false
+        sliderSelectionScaling.minValue = 1.0
+        sliderSelectionScaling.maxValue = 2.0
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderSelectionScaling.isEnabled = enabled
+          if let renderRibbonSelectionScaling: Double = self.renderRibbonSelectionScaling
+          {
+            sliderSelectionScaling.doubleValue = renderRibbonSelectionScaling
+          }
+        }
+      }
+    case "ProteinRibbonsHDRCell":
+      // High dynamic range
+      if let button: NSButton = view.viewWithTag(1) as? NSButton
+      {
+        button.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          button.isEnabled = enabled
+          
+          if let renderRibbonHDR: Bool = self.renderRibbonHDR
+          {
+            button.allowsMixedState = false
+            button.state = renderRibbonHDR ? NSControl.StateValue.on : NSControl.StateValue.off
+          }
+          else
+          {
+            button.allowsMixedState = true
+            button.state = NSControl.StateValue.mixed
+          }
+        }
+      }
+      
+      // Exposure
+      if let textFieldExposure: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        textFieldExposure.isEditable = false
+        textFieldExposure.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          textFieldExposure.isEditable = enabled
+          if let renderRibbonHDRExposure: Double = self.renderRibbonHDRExposure
+          {
+            textFieldExposure.doubleValue = renderRibbonHDRExposure
+          }
+          else
+          {
+            textFieldExposure.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      if let sliderExposure: NSSlider = view.viewWithTag(3) as? NSSlider
+      {
+        sliderExposure.isEnabled = false
+        sliderExposure.minValue = 0.0
+        sliderExposure.maxValue = 3.0
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderExposure.isEnabled = enabled
+          if let renderRibbonHDRExposure: Double = self.renderRibbonHDRExposure
+          {
+            sliderExposure.doubleValue = renderRibbonHDRExposure
+          }
+        }
+      }
+      
+      // Hue
+      if let textFieldHue: NSTextField = view.viewWithTag(4) as? NSTextField
+      {
+        textFieldHue.isEditable = false
+        textFieldHue.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          textFieldHue.isEditable = enabled
+          if let renderHue: Double = self.renderRibbonHue
+          {
+            textFieldHue.doubleValue = renderHue
+          }
+          else
+          {
+            textFieldHue.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      if let sliderHue: NSSlider = view.viewWithTag(5) as? NSSlider
+      {
+        sliderHue.isEnabled = false
+        sliderHue.minValue = 0.0
+        sliderHue.maxValue = 1.5
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderHue.isEnabled = enabled
+          if let renderHue: Double = self.renderRibbonHue
+          {
+            sliderHue.doubleValue = renderHue
+          }
+        }
+      }
+      
+      // Saturation
+      if let textFieldSaturation: NSTextField = view.viewWithTag(6) as? NSTextField
+      {
+        textFieldSaturation.isEditable = false
+        textFieldSaturation.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          textFieldSaturation.isEditable = enabled
+          if let renderSaturation = self.renderRibbonSaturation
+          {
+            textFieldSaturation.doubleValue = renderSaturation
+          }
+          else
+          {
+            textFieldSaturation.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      if let sliderSaturation: NSSlider = view.viewWithTag(7) as? NSSlider
+      {
+        sliderSaturation.isEnabled = false
+        sliderSaturation.minValue = 0.0
+        sliderSaturation.maxValue = 1.5
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderSaturation.isEnabled = enabled
+          if let renderSaturation = self.renderRibbonSaturation
+          {
+            sliderSaturation.doubleValue = renderSaturation
+          }
+        }
+      }
+      
+      // Value
+      if let textFieldValue: NSTextField = view.viewWithTag(8) as? NSTextField
+      {
+        textFieldValue.isEditable = false
+        textFieldValue.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          textFieldValue.isEditable = enabled
+          if let renderValue: Double = self.renderRibbonValue
+          {
+            textFieldValue.doubleValue = renderValue
+          }
+          else
+          {
+            textFieldValue.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      if let sliderValue: NSSlider = view.viewWithTag(9) as? NSSlider
+      {
+        sliderValue.isEnabled = false
+        sliderValue.minValue = 0.0
+        sliderValue.maxValue = 1.5
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderValue.isEnabled = enabled
+          if let renderValue: Double = self.renderRibbonValue
+          {
+            sliderValue.doubleValue = renderValue
+          }
+        }
+      }
+    
+    
+    case "AtomsScalingCell":
+      // Draw atoms yes/no
+      if let checkDrawAtomsbutton: NSButton = view.viewWithTag(1) as? NSButton
+      {
+        checkDrawAtomsbutton.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          checkDrawAtomsbutton.isEnabled = enabled
+          if let renderDrawAtoms: Bool = self.renderDrawAtoms
+          {
+            checkDrawAtomsbutton.allowsMixedState = false
+            checkDrawAtomsbutton.state = renderDrawAtoms ? NSControl.StateValue.on : NSControl.StateValue.off
+          }
+          else
+          {
+            checkDrawAtomsbutton.allowsMixedState = true
+            checkDrawAtomsbutton.state = NSControl.StateValue.mixed
+          }
+        }
+      }
+      
+      // Atom scaling
+      if let textFieldAtomScaling: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        textFieldAtomScaling.isEditable = false
+        textFieldAtomScaling.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          textFieldAtomScaling.isEditable = enabled
+          if let renderAtomScaleFactor: Double = self.renderAtomScaleFactor
+          {
+            textFieldAtomScaling.doubleValue = renderAtomScaleFactor
+          }
+          else
+          {
+            textFieldAtomScaling.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      
+      if let sliderAtomScaling: NSSlider = view.viewWithTag(3) as? NSSlider
+      {
+        sliderAtomScaling.isEnabled = false
+        sliderAtomScaling.minValue = 0.1
+        sliderAtomScaling.maxValue = 2.0
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderAtomScaling.isEnabled = enabled
+          if let renderAtomScaleFactor: Double = self.renderAtomScaleFactor
+          {
+            sliderAtomScaling.doubleValue = renderAtomScaleFactor
+          }
+        }
+      }
+    case "ProteinRibbonsLightingCell":
+      // Ambient occlusion
+      if let buttonAmbientOcclusion: NSButton = view.viewWithTag(1) as? NSButton
+      {
+        buttonAmbientOcclusion.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          buttonAmbientOcclusion.isEnabled = enabled
+          if let renderRibbonAmbientOcclusion: Bool = self.renderRibbonAmbientOcclusion
+          {
+            buttonAmbientOcclusion.allowsMixedState = false
+            buttonAmbientOcclusion.state = renderRibbonAmbientOcclusion ? NSControl.StateValue.on : NSControl.StateValue.off
+          }
+          else
+          {
+            buttonAmbientOcclusion.allowsMixedState = true
+            buttonAmbientOcclusion.state = NSControl.StateValue.mixed
+          }
+        }
+      }
+      
+      // Ribbon ambient light
+      if let ambientLightIntensitity: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        ambientLightIntensitity.isEditable = false
+        ambientLightIntensitity.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          ambientLightIntensitity.isEditable = enabled
+          if let renderRibbonAmbientIntensity: Double = self.renderRibbonAmbientIntensity
+          {
+            ambientLightIntensitity.doubleValue = renderRibbonAmbientIntensity
+          }
+          else
+          {
+            ambientLightIntensitity.stringValue = NSLocalizedString("Mult. V.", comment: "")
+          }
+          
+        }
+      }
+      if let sliderAmbientLightIntensitity: NSSlider = view.viewWithTag(3) as? NSSlider
+      {
+        sliderAmbientLightIntensitity.isEnabled = false
+        sliderAmbientLightIntensitity.minValue = 0.0
+        sliderAmbientLightIntensitity.maxValue = 1.0
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderAmbientLightIntensitity.isEnabled = enabled
+          if let renderRibbonAmbientIntensity: Double = self.renderRibbonAmbientIntensity
+          {
+            sliderAmbientLightIntensitity.doubleValue = renderRibbonAmbientIntensity
+          }
+        }
+      }
+      if let ambientColor: NSColorWell = view.viewWithTag(4) as? NSColorWell
+      {
+        ambientColor.isEnabled = false
+        ambientColor.color = NSColor.lightGray
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          ambientColor.isEnabled = enabled
+          if let renderRibbonAmbientColor: NSColor = self.renderRibbonAmbientColor
+          {
+            ambientColor.color = renderRibbonAmbientColor
+          }
+          else
+          {
+            ambientColor.color = NSColor.lightGray
+          }
+        }
+      }
+      
+      // Ribbon diffuse light
+      if let diffuseLightIntensitity: NSTextField = view.viewWithTag(5) as? NSTextField
+      {
+        diffuseLightIntensitity.isEditable = false
+        diffuseLightIntensitity.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          diffuseLightIntensitity.isEditable = enabled
+          if let renderRibbonDiffuseIntensity: Double = self.renderRibbonDiffuseIntensity
+          {
+            diffuseLightIntensitity.doubleValue = renderRibbonDiffuseIntensity
+          }
+          else
+          {
+            diffuseLightIntensitity.stringValue = NSLocalizedString("Mult. V.", comment: "")
+          }
+        }
+      }
+      if let sliderDiffuseLightIntensitity: NSSlider = view.viewWithTag(6) as? NSSlider
+      {
+        sliderDiffuseLightIntensitity.isEnabled = false
+        sliderDiffuseLightIntensitity.minValue = 0.0
+        sliderDiffuseLightIntensitity.maxValue = 1.0
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderDiffuseLightIntensitity.isEnabled = enabled
+          if let renderRibbonDiffuseIntensity: Double = self.renderRibbonDiffuseIntensity
+          {
+            sliderDiffuseLightIntensitity.doubleValue = renderRibbonDiffuseIntensity
+          }
+        }
+      }
+      if let diffuseColor: NSColorWell = view.viewWithTag(7) as? NSColorWell
+      {
+        diffuseColor.isEnabled = false
+        diffuseColor.color = NSColor.lightGray
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          diffuseColor.isEnabled = enabled
+          if let renderRibbonDiffuseColor: NSColor = self.renderRibbonDiffuseColor
+          {
+            diffuseColor.color = renderRibbonDiffuseColor
+          }
+          else
+          {
+            diffuseColor.color = NSColor.lightGray
+          }
+        }
+      }
+      
+      // Ribbon specular light
+      if let specularLightIntensitity: NSTextField = view.viewWithTag(8) as? NSTextField
+      {
+        specularLightIntensitity.isEditable = false
+        specularLightIntensitity.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          specularLightIntensitity.isEditable = enabled
+          if let renderRibbonSpecularIntensity: Double = self.renderRibbonSpecularIntensity
+          {
+            specularLightIntensitity.doubleValue = renderRibbonSpecularIntensity
+          }
+          else
+          {
+            specularLightIntensitity.stringValue = NSLocalizedString("Mult. V.", comment: "")
+          }
+        }
+      }
+      if let sliderSpecularLightIntensitity: NSSlider = view.viewWithTag(9) as? NSSlider
+      {
+        sliderSpecularLightIntensitity.isEnabled = false
+        sliderSpecularLightIntensitity.minValue = 0.0
+        sliderSpecularLightIntensitity.maxValue = 1.0
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderSpecularLightIntensitity.isEnabled = enabled
+          if let renderRibbonSpecularIntensity: Double = self.renderRibbonSpecularIntensity
+          {
+            sliderSpecularLightIntensitity.doubleValue = renderRibbonSpecularIntensity
+          }
+        }
+      }
+      if let specularColor: NSColorWell = view.viewWithTag(10) as? NSColorWell
+      {
+        specularColor.isEnabled = false
+        specularColor.color = NSColor.lightGray
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          specularColor.isEnabled = enabled
+          if let renderRibbonSpecularColor: NSColor = self.renderRibbonSpecularColor
+          {
+            specularColor.color = renderRibbonSpecularColor
+          }
+        }
+      }
+      
+      // Ribbon shininess
+      if let shininess: NSTextField = view.viewWithTag(11) as? NSTextField
+      {
+        shininess.isEditable = false
+        shininess.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          shininess.isEditable = enabled
+          if let renderRibbonShininess: Double = self.renderRibbonShininess
+          {
+            shininess.doubleValue = renderRibbonShininess
+          }
+          else
+          {
+            shininess.stringValue = NSLocalizedString("Mult. V.", comment: "")
+          }
+        }
+      }
+      if let sliderShininess: NSSlider = view.viewWithTag(12) as? NSSlider
+      {
+        sliderShininess.isEnabled = false
+        sliderShininess.minValue = 0.1
+        sliderShininess.maxValue = 128.0
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          sliderShininess.isEnabled = enabled
+          if let renderRibbonShininess: Double = self.renderRibbonShininess
+          {
+            sliderShininess.doubleValue = renderRibbonShininess
+          }
+        }
+      }
+    case "ProteinRibbonsVisualAppearanceGroup":
+      disableRibbonAppearanceControls(in: view)
+    default:
+      break
+    }
+  }
+  
+  private func applyRibbonMeshChanges(updateIdentifiers: [OutlineViewItem])
+  {
+    self.updateOutlineView(identifiers: updateIdentifiers)
+    for treeNode in self.iRASPAObjects
+    {
+      (treeNode.object as? ProteinRibbonStructureEditor)?.rebuildRibbonMesh()
+    }
+    self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [])
+    self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+    self.windowController?.detailTabViewController?.renderViewController?.updateAmbientOcclusion()
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
+    self.windowController?.document?.updateChangeCount(.changeDone)
+    self.proxyProject?.representedObject.isEdited = true
+  }
+  
+  private func applyRibbonRepresentationChanges(updateIdentifiers: [OutlineViewItem])
+  {
+    self.updateOutlineView(identifiers: updateIdentifiers)
+    self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [])
+    self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+    self.windowController?.detailTabViewController?.renderViewController?.updateAmbientOcclusion()
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
+    self.windowController?.document?.updateChangeCount(.changeDone)
+    self.proxyProject?.representedObject.isEdited = true
+  }
+  
+  private func ribbonAppearanceDidChange(updateIdentifiers: [OutlineViewItem])
+  {
+    self.recheckRibbonRepresentationStyle()
+    var identifiers: [OutlineViewItem] = updateIdentifiers
+    identifiers.append(self.ribbonsRepresentationStyleCell)
+    self.updateOutlineView(identifiers: identifiers)
+  }
+  
+  func disableRibbonAppearanceControls(in view: NSView)
+  {
+    for subview in view.subviews
+    {
+      if let control: NSControl = subview as? NSControl
+      {
+        control.isEnabled = false
+      }
+      disableRibbonAppearanceControls(in: subview)
     }
   }
   
@@ -3851,20 +4644,18 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   func outlineViewItemDidExpand(_ notification:Notification)
   {
-    let dictionary: AnyObject  = notification.userInfo?["NSObject"] as AnyObject
-    if let index: Int = self.appearanceOutlineView?.childIndex(forItem: dictionary)
+    if let title: String = (notification.userInfo?["NSObject"] as? OutlineViewItem)?.title
     {
-      self.expandedItems[index] = true
+      self.expandedGroupTitles.insert(title)
     }
   }
   
   
   func outlineViewItemDidCollapse(_ notification:Notification)
   {
-    let dictionary: AnyObject  = notification.userInfo?["NSObject"] as AnyObject
-    if let index: Int = self.appearanceOutlineView?.childIndex(forItem: dictionary)
+    if let title: String = (notification.userInfo?["NSObject"] as? OutlineViewItem)?.title
     {
-      self.expandedItems[index] = false
+      self.expandedGroupTitles.remove(title)
     }
   }
   
@@ -5430,6 +6221,668 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
+  @IBAction func changeRibbonSecondaryStructureMethod(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       let title: String = sender.titleOfSelectedItem,
+       let secondaryStructureMethod: ProteinRibbonSecondaryStructureMethod = ProteinRibbonSecondaryStructureMethod.allCases.first(where: {$0.displayName == title})
+    {
+      self.renderRibbonSecondaryStructureMethod = secondaryStructureMethod
+      for treeNode in self.iRASPAObjects
+      {
+        if let protein: Protein = treeNode.object as? Protein
+        {
+          protein.rebuildRibbonSecondaryStructureHierarchy()
+        }
+        else if let proteinCrystal: ProteinCrystal = treeNode.object as? ProteinCrystal
+        {
+          proteinCrystal.rebuildRibbonSecondaryStructureHierarchy()
+        }
+      }
+      self.updateOutlineView(identifiers: [self.ribbonsRepresentationStyleCell])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [])
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.updateAmbientOcclusion()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeRibbonRepresentationStyle(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       let title: String = sender.titleOfSelectedItem,
+       let representationStyle: ProteinRibbonRepresentationStyle = ProteinRibbonRepresentationStyle.selectableCases.first(where: {$0.displayName == title})
+    {
+      self.setRibbonRepresentationStyle(representationStyle)
+      self.applyRibbonRepresentationChanges(updateIdentifiers: [self.ribbonsRepresentationStyleCell, self.ribbonsHDRCell, self.ribbonsLightingCell])
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+    }
+  }
+  
+  @IBAction func changeRibbonColorSet(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       let colorSet = ProteinRibbonColorSet(rawValue: sender.titleOfSelectedItem ?? ProteinRibbonColorSet.standardAcademic.rawValue)
+    {
+      self.setRibbonColorSet(colorSet)
+      
+      self.updateOutlineView(identifiers: [self.ribbonsRepresentationStyleCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func toggleDrawRibbons(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      sender.allowsMixedState = false
+      let drawRibbon: Bool = (sender.state == NSControl.StateValue.on)
+      self.renderDrawRibbon = drawRibbon
+      
+      if drawRibbon
+      {
+        self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.rebuildBackbone()}
+      }
+      
+      self.updateOutlineView(identifiers: [self.ribbonsScalingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadVisibility()
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      if drawRibbon
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.updateAmbientOcclusion()
+      }
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeRibbonScalingSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonScaleFactor = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.ribbonsScalingCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.renderRibbonScaleFactorCompleted = sender.doubleValue
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+          self.applyRibbonMeshChanges(updateIdentifiers: [self.ribbonsScalingCell])
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+
+  @IBAction func changeRibbonSplineType(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       let title: String = sender.titleOfSelectedItem,
+       let splineType: ProteinRibbonSplineType = ProteinRibbonSplineType.allCases.first(where: {$0.displayName == title})
+    {
+      self.renderRibbonSplineType = splineType
+      self.applyRibbonMeshChanges(updateIdentifiers: [self.ribbonsRepresentationStyleCell])
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+    }
+  }
+  
+  @IBAction func changeRibbonScalingTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonScaleFactorCompleted = sender.doubleValue
+      
+      self.applyRibbonMeshChanges(updateIdentifiers: [self.ribbonsScalingCell])
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeRibbonSelectionStyle(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       let selectionStyle = RKSelectionStyle(rawValue: sender.indexOfSelectedItem)
+    {
+      self.renderRibbonSelectionStyle = selectionStyle
+      
+      self.updateOutlineView(identifiers: [self.ribbonsSelectionCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeRibbonSelectionFrequencyTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSelectionFrequency = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.ribbonsSelectionCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeRibbonSelectionDensityTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSelectionDensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.ribbonsSelectionCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeRibbonSelectionIntensityLevelField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSelectionIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.ribbonsSelectionCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeRibbonSelectionIntensityLevel(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSelectionIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.ribbonsSelectionCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeRibbonSelectionScalingTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSelectionScaling = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.ribbonsSelectionCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeRibbonSelectionScalingSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSelectionScaling = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.ribbonsSelectionCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func toggleRibbonHDR(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      sender.allowsMixedState = false
+      self.renderRibbonHDR = (sender.state == NSControl.StateValue.on)
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsHDRCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonHDRExposureTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonHDRExposure = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsHDRCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonExposureSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonHDRExposure = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsHDRCell])
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonHueTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonHue = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsHDRCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonHueSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonHue = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsHDRCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonSaturationTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSaturation = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsHDRCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonSaturationSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSaturation = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsHDRCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonValueTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonValue = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsHDRCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonValueSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonValue = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsHDRCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func toggleRibbonAmbientOcclusion(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      sender.allowsMixedState = false
+      self.renderRibbonAmbientOcclusion = (sender.state == NSControl.StateValue.on)
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [])
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.updateAmbientOcclusion()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonAmbientTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonAmbientIntensity = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonAmbientIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonAmbientIntensity = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonAmbientColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonAmbientColor = sender.color
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonDiffuseTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonDiffuseIntensity = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonDiffuseIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonDiffuseIntensity = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonDiffuseColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonDiffuseColor = sender.color
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonSpecularTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSpecularIntensity = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonSpecularIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSpecularIntensity = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonSpecularColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonSpecularColor = sender.color
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonShininessTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonShininess = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func changeRibbonShininessSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderRibbonShininess = sender.doubleValue
+      
+      self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsLightingCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
   // Force field
   @IBAction func changeForceField(_ sender: NSPopUpButton)
   {
@@ -6172,6 +7625,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.updateAmbientOcclusion()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -8619,7 +10073,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveSelectionStyle = newValue ?? .glow})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveSelectionStyle = newValue ?? .WorleyNoise3D})
     }
   }
   
@@ -8960,6 +10414,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.recheckRepresentationStyle()}
   }
   
+  public func recheckRibbonRepresentationStyle()
+  {
+    self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.recheckRibbonRepresentationStyle()}
+  }
+  
   public func getRepresentationType() -> Structure.RepresentationType?
   {
     let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureEditor)?.getRepresentationType()?.rawValue })
@@ -8998,6 +10457,368 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   public func setRepresentationColorScheme(scheme: String?, colorSets: SKColorSets)
   {
   self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.setRepresentationColorScheme(scheme: scheme ?? "Default", colorSets: colorSets)}
+  }
+  
+  public func getRibbonColorSet() -> ProteinRibbonColorSet?
+  {
+    let set: Set<String> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? ProteinRibbonStructureEditor)?.ribbonColorSet.rawValue })
+    return Set(set).count == 1 ? ProteinRibbonColorSet(rawValue: set.first!) : nil
+  }
+  
+  public func getRibbonSecondaryStructureMethod() -> ProteinRibbonSecondaryStructureMethod?
+  {
+    let set: Set<String> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonSecondaryStructureMethod.rawValue})
+    guard set.count == 1, let rawValue: String = set.first else {return nil}
+    return ProteinRibbonSecondaryStructureMethod(rawValue: rawValue)
+  }
+  
+  public var renderRibbonSecondaryStructureMethod: ProteinRibbonSecondaryStructureMethod?
+  {
+    get { return getRibbonSecondaryStructureMethod() }
+    set(newValue)
+    {
+      guard let newValue: ProteinRibbonSecondaryStructureMethod = newValue else {return}
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonSecondaryStructureMethod = newValue}
+    }
+  }
+  
+  public func getRibbonRepresentationStyle() -> ProteinRibbonRepresentationStyle?
+  {
+    let set: Set<String> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonRepresentationStyle.rawValue})
+    guard set.count == 1, let rawValue: String = set.first else {return nil}
+    return ProteinRibbonRepresentationStyle(rawValue: rawValue)
+  }
+  
+  public func setRibbonRepresentationStyle(_ style: ProteinRibbonRepresentationStyle)
+  {
+    self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.applyRibbonRepresentationStyle(style)}
+  }
+  
+  public func setRibbonColorSet(_ colorSet: ProteinRibbonColorSet)
+  {
+    self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonColorSet = colorSet}
+  }
+  
+  public func getRibbonSplineType() -> ProteinRibbonSplineType?
+  {
+    let set: Set<String> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonSplineType.rawValue})
+    guard set.count == 1, let rawValue: String = set.first else {return nil}
+    return ProteinRibbonSplineType(rawValue: rawValue)
+  }
+  
+  public var renderRibbonSplineType: ProteinRibbonSplineType?
+  {
+    get { return getRibbonSplineType() }
+    set(newValue)
+    {
+      guard let newValue = newValue else {return}
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonSplineType = newValue}
+    }
+  }
+  
+  public var renderDrawRibbon: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.drawRibbon})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.drawRibbon = newValue ?? true}
+    }
+  }
+  
+  public var renderRibbonScaleFactor: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonScaleFactor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonScaleFactor = newValue ?? 1.2}
+    }
+  }
+  
+  public var renderRibbonScaleFactorCompleted: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonScaleFactor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? ProteinRibbonStructureEditor)?.ribbonScaleFactor = newValue ?? 1.2
+        ($0.object as? RKRenderRibbonSource)?.rebuildRibbonMesh()
+      }
+    }
+  }
+  
+  public var renderRibbonSelectionStyle: RKSelectionStyle?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{
+        guard $0.object is ProteinRibbonStructureEditor else {return nil}
+        return ($0.object as? AtomStructureEditor)?.atomSelectionStyle.rawValue
+      })
+      return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        guard $0.object is ProteinRibbonStructureEditor else {return}
+        ($0.object as? AtomStructureEditor)?.atomSelectionStyle = newValue ?? .WorleyNoise3D
+      }
+    }
+  }
+  
+  public var renderRibbonSelectionFrequency: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{
+        guard $0.object is ProteinRibbonStructureEditor else {return nil}
+        return ($0.object as? AtomStructureEditor)?.renderAtomSelectionFrequency
+      })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        guard $0.object is ProteinRibbonStructureEditor else {return}
+        ($0.object as? AtomStructureEditor)?.renderAtomSelectionFrequency = newValue ?? 4.0
+      }
+    }
+  }
+  
+  public var renderRibbonSelectionDensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{
+        guard $0.object is ProteinRibbonStructureEditor else {return nil}
+        return ($0.object as? AtomStructureEditor)?.renderAtomSelectionDensity
+      })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        guard $0.object is ProteinRibbonStructureEditor else {return}
+        ($0.object as? AtomStructureEditor)?.renderAtomSelectionDensity = newValue ?? 4.0
+      }
+    }
+  }
+  
+  public var renderRibbonSelectionIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{
+        guard $0.object is ProteinRibbonStructureEditor else {return nil}
+        return ($0.object as? AtomStructureEditor)?.atomSelectionIntensity
+      })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        guard $0.object is ProteinRibbonStructureEditor else {return}
+        ($0.object as? AtomStructureEditor)?.atomSelectionIntensity = newValue ?? 1.0
+      }
+    }
+  }
+  
+  public var renderRibbonSelectionScaling: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{
+        guard $0.object is ProteinRibbonStructureEditor else {return nil}
+        return ($0.object as? AtomStructureEditor)?.atomSelectionScaling
+      })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        guard $0.object is ProteinRibbonStructureEditor else {return}
+        ($0.object as? AtomStructureEditor)?.atomSelectionScaling = newValue ?? 1.0
+      }
+    }
+  }
+  public var renderRibbonHDR: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonHDR})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonHDR = newValue ?? false}
+    }
+  }
+
+  public var renderRibbonHDRExposure: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonHDRExposure})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonHDRExposure = newValue ?? 1.5}
+    }
+  }
+
+  public var renderRibbonHue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonHue})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonHue = newValue ?? 1.0}
+    }
+  }
+
+  public var renderRibbonSaturation: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonSaturation})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonSaturation = newValue ?? 1.0}
+    }
+  }
+
+  public var renderRibbonValue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonValue})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonValue = newValue ?? 1.0}
+    }
+  }
+
+  public var renderRibbonAmbientOcclusion: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonAmbientOcclusion})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonAmbientOcclusion = newValue ?? true}
+    }
+  }
+
+  public var renderRibbonAmbientColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonAmbientColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+    }
+  }
+
+  public var renderRibbonDiffuseColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonDiffuseColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+    }
+  }
+
+  public var renderRibbonSpecularColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonSpecularColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+    }
+  }
+
+  public var renderRibbonAmbientIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonAmbientIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonAmbientIntensity = newValue ?? 0.2}
+    }
+  }
+
+  public var renderRibbonDiffuseIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonDiffuseIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonDiffuseIntensity = newValue ?? 1.0}
+    }
+  }
+
+  public var renderRibbonSpecularIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonSpecularIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonSpecularIntensity = newValue ?? 1.0}
+    }
+  }
+
+  public var renderRibbonShininess: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? ProteinRibbonStructureEditor)?.ribbonShininess})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonShininess = newValue ?? 4.0}
+    }
   }
   
   public func getRepresentationColorOrder() -> SKColorSets.ColorOrder?
@@ -9257,7 +11078,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomSelectionStyle = newValue ?? .glow}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomSelectionStyle = newValue ?? .WorleyNoise3D}
     }
   }
   
@@ -9545,7 +11366,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondSelectionStyle = newValue ?? .glow})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondSelectionStyle = newValue ?? .WorleyNoise3D})
     }
   }
   

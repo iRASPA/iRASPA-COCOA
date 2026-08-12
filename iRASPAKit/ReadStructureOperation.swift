@@ -42,7 +42,7 @@ class ReadStructureOperation: FKOperation, @unchecked Sendable
   unowned var projectTreeNode : ProjectTreeNode
   let windowController: NSWindowController?
   
-  public init(ProjectTreeNode : ProjectTreeNode, url: URL, windowController: NSWindowController?, onlyAsymmetricUnit: Bool, asMolecule: Bool) throws
+  public init(ProjectTreeNode : ProjectTreeNode, url: URL, windowController: NSWindowController?, onlyAsymmetricUnit: Bool, asMolecule: Bool, separatePolymerChains: Bool = false) throws
   {
     self.windowController = windowController
     self.url = url
@@ -60,10 +60,10 @@ class ReadStructureOperation: FKOperation, @unchecked Sendable
     let fileName = url.lastPathComponent.uppercased()
     switch(url.pathExtension.uppercased())
     {
-    case "CIF":
-      parser = try SKCIFParser(displayName: displayName, data: data, onlyAsymmetricUnit: onlyAsymmetricUnit)
+    case "CIF", "MMCIF":
+      parser = try SKCIFParser(displayName: displayName, data: data, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: !asMolecule, separatePolymerChains: separatePolymerChains)
     case "PDB":
-      parser = try SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule)
+      parser = try SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: !asMolecule, separatePolymerChains: separatePolymerChains)
     case "XYZ":
       parser = try SKXYZParser(displayName: displayName, data: data)
     case "POSCAR", "CONTCAR":

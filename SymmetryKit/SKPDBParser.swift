@@ -46,18 +46,16 @@ import simd
 public final class SKPDBParser: SKParser, ProgressReporting
 {
   var displayName: String
-  var scanner: Scanner
-  let letterSet: CharacterSet
-  let nonLetterSet: CharacterSet
-  let whiteSpacesAndNewlines: CharacterSet
-  let keywordSet: CharacterSet
-  let newLineChararterSet: CharacterSet
+  let fileLines: [String]
   
   var periodic: Bool = false
   var onlyAsymmetricUnitMolecule: Bool = false
   var asMolecule: Bool = false
   var asProtein: Bool = false
   var preview: Bool = false
+  /// PDB TER records end a polymer chain. When false (default), TER is ignored so
+  /// every chain stays in one structure; when true, each TER starts a new movie.
+  var separatePolymerChains: Bool = false
   
   var spaceGroup: SKSpacegroup = SKSpacegroup()
   var scaleMatrixDefined: [Bool] = [false, false, false]
@@ -84,13 +82,231 @@ public final class SKPDBParser: SKParser, ProgressReporting
   var numberOfAtoms: Int = 0
   
   var proteinDetected: Bool = false
+  var dnaDetected: Bool = false
+  /// An entry solved in solution or in the microscope carries a placeholder cell.
+  var experimentIsNonPeriodic: Bool = false
+  
+  private struct ResidueKey: Hashable
+  {
+    let chain: Character
+    let sequence: Int
+  }
+  
+  private struct ResidueRecord
+  {
+    var name: String = ""
+    var hasNitrogen: Bool = false
+    var hasAlphaCarbon: Bool = false
+    var hasCarbonyl: Bool = false
+    var water: Bool = false
+    var nucleotide: Bool = false
+    var nitrogen: SIMD3<Double> = .zero
+    var carbonyl: SIMD3<Double> = .zero
+  }
+  
+  private var polymerChains: Set<Character> = []
+  private var modifiedResidues: Set<String> = []
+  private var residues: [ResidueKey: ResidueRecord] = [:]
   
   public var progress: Progress
   let totalProgressCount: Int
   var currentProgressCount: Double = 0.0
   let percentageFinishedStep: Double
   
-
+  private static func isWaterResidue(_ residueName: String) -> Bool
+  {
+    switch residueName
+    {
+    case "HOH", "DOD", "WAT", "H2O": return true
+    default: return false
+    }
+  }
+  
+  private static func isSolventAgentResidue(_ residueName: String) -> Bool
+  {
+    let agents: Set<String> = [
+      "SO4", "PO4", "GOL", "EDO", "MPD", "PEG", "PG4", "ACT", "ACY", "DMS",
+      "TRS", "MES", "EPE", "IMD", "FMT", "NA", "K", "MG", "CA", "ZN",
+      "MN", "FE", "NI", "CU", "CD", "CL", "BR", "IOD", "F", "CO"
+    ]
+    return agents.contains(residueName)
+  }
+  
+  /// A cell of 1 Å on a side with right angles is the PDB placeholder when there is no crystal.
+  private static func isPlaceholderCell(a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double) -> Bool
+  {
+    let isOne: (Double) -> Bool = { abs($0 - 1.0) < 1.0e-3 }
+    let isRight: (Double) -> Bool = { abs($0 - 90.0) < 1.0e-3 }
+    return isOne(a) && isOne(b) && isOne(c) && isRight(alpha) && isRight(beta) && isRight(gamma)
+  }
+  
+  private func noteResidueAtom(_ atom: SKAsymmetricAtom)
+  {
+    let residueName: String = atom.residueName.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+    guard !residueName.isEmpty else {return}
+    
+    let key = ResidueKey(chain: atom.chainIdentifier, sequence: atom.residueSequenceNumber)
+    var residue: ResidueRecord = residues[key] ?? ResidueRecord()
+    residue.name = residueName
+    residue.water = Self.isWaterResidue(residueName)
+    residue.nucleotide = SKNucleotide.isNucleotideResidueName(residueName)
+    
+    let atomName: String = atom.displayName.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+    if atomName == "N"
+    {
+      residue.hasNitrogen = true
+      residue.nitrogen = atom.position
+    }
+    else if atomName == "CA"
+    {
+      residue.hasAlphaCarbon = true
+    }
+    else if atomName == "C"
+    {
+      residue.hasCarbonyl = true
+      residue.carbonyl = atom.position
+    }
+    residues[key] = residue
+  }
+  
+  private func parseSeqres(_ line: String)
+  {
+    guard line.count >= 19 else {return}
+    let chainField = pdbField(line, 11, 1)
+    guard let chainIdentifier = chainField.first else {return}
+    var start = 19
+    while start + 3 <= line.count
+    {
+      let residueName = pdbField(line, start, 3).trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+      start += 4
+      guard !residueName.isEmpty, !Self.isWaterResidue(residueName) else {continue}
+      if SKElement.knownAminoAcidResidueCodes.contains(residueName) || SKNucleotide.isNucleotideResidueName(residueName)
+      {
+        polymerChains.insert(chainIdentifier)
+        return
+      }
+    }
+  }
+  
+  private func parseModres(_ line: String)
+  {
+    guard line.count >= 15 else {return}
+    let residueName = pdbField(line, 12, 3).trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+    if !residueName.isEmpty
+    {
+      modifiedResidues.insert(residueName)
+    }
+  }
+  
+  private func kindOfCurrentPart() -> SKStructure.Kind
+  {
+    var peptideResidues = 0
+    var nucleicResidues = 0
+    var waterResidues = 0
+    var otherResidues = 0
+    
+    let sortedResidues = residues.sorted
+    {
+      if $0.key.chain != $1.key.chain {return $0.key.chain < $1.key.chain}
+      return $0.key.sequence < $1.key.sequence
+    }
+    
+    for (key, residue) in sortedResidues
+    {
+      let declaredPolymer = polymerChains.contains(key.chain) &&
+        (modifiedResidues.contains(residue.name) ||
+         SKElement.knownAminoAcidResidueCodes.contains(residue.name) ||
+         SKNucleotide.isNucleotideResidueName(residue.name))
+      
+      if residue.water
+      {
+        waterResidues += 1
+      }
+      else if residue.nucleotide || (declaredPolymer && SKNucleotide.isNucleotideResidueName(residue.name))
+      {
+        nucleicResidues += 1
+      }
+      else if (residue.hasNitrogen && residue.hasAlphaCarbon && residue.hasCarbonyl) ||
+              (declaredPolymer && !Self.isWaterResidue(residue.name) && !SKNucleotide.isNucleotideResidueName(residue.name))
+      {
+        peptideResidues += 1
+      }
+      else
+      {
+        otherResidues += 1
+      }
+    }
+    
+    var peptideBonds = 0
+    var previous: ResidueRecord?
+    var previousChain: Character?
+    for (key, residue) in sortedResidues
+    {
+      if let previous, let previousChain, key.chain == previousChain,
+         previous.hasCarbonyl, residue.hasNitrogen
+      {
+        if simd_length(previous.carbonyl - residue.nitrogen) < 2.0
+        {
+          peptideBonds += 1
+        }
+      }
+      previous = residue
+      previousChain = key.chain
+    }
+    
+    let isProtein = peptideResidues >= 2 && peptideBonds >= 1 && peptideResidues > otherResidues
+    if isProtein
+    {
+      proteinDetected = true
+      return (periodic && !asProtein) ? .proteinCrystal : .protein
+    }
+    
+    let isDNA = nucleicResidues >= 2 && nucleicResidues > otherResidues && nucleicResidues >= peptideResidues
+    if isDNA
+    {
+      dnaDetected = true
+      return (periodic && !asMolecule) ? .dnaCrystal : .dna
+    }
+    
+    // Fallback: atom-fraction heuristics for sparse residue metadata
+    if numberOfAtoms > 0
+    {
+      if Double(numberOfAminoAcidAtoms) / Double(numberOfAtoms) > 0.5
+      {
+        proteinDetected = true
+        return (periodic && !asProtein) ? .proteinCrystal : .protein
+      }
+      if Double(numberOfNucleicAcidAtoms) / Double(numberOfAtoms) > 0.5
+      {
+        dnaDetected = true
+        return (periodic && !asMolecule) ? .dnaCrystal : .dna
+      }
+    }
+    
+    var onlySolvent = waterResidues > 0 && peptideResidues == 0 && nucleicResidues == 0
+    if onlySolvent
+    {
+      for (_, residue) in residues
+      {
+        if !residue.water && !Self.isSolventAgentResidue(residue.name)
+        {
+          onlySolvent = false
+          break
+        }
+      }
+    }
+    
+    if proteinDetected && onlySolvent
+    {
+      return (periodic && !asProtein) ? .proteinCrystalSolvent : .molecule
+    }
+    if dnaDetected && onlySolvent
+    {
+      return (periodic && !asMolecule) ? .dnaCrystal : .dna
+    }
+    
+    return (periodic && !asMolecule) ? .molecularCrystal : .molecule
+  }
   
   private func addFrameToStructure()
   {
@@ -106,57 +322,20 @@ public final class SKPDBParser: SKParser, ProgressReporting
         let structure: SKStructure = SKStructure()
         scene[currentMovie].append(structure)
         
-        if (Double(numberOfAminoAcidAtoms)/(Double)(numberOfNucleicAcidAtoms) > 0.5)
+        let kind = kindOfCurrentPart()
+        scene[currentMovie][currentFrame].kind = kind
+        
+        switch kind
         {
-          proteinDetected = true
-          if (periodic && !asProtein)
-          {
-            scene[currentMovie][currentFrame].kind = .proteinCrystal
-            scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitMolecule
-            scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitMolecule ? 1 : self.spaceGroup.spaceGroupSetting.number
-          }
-          else
-          {
-            scene[currentMovie][currentFrame].kind = .protein
-            scene[currentMovie][currentFrame].drawUnitCell = false
-            scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
-          }
-        }
-        else
-        {
-          // set to Solvent if almost all atoms are "HETATM"
-          if (proteinDetected && (Double(numberOfSolventAtoms)/(Double)(numberOfAtoms) > 0.9))
-          {
-            if (periodic && !asProtein)
-            {
-              scene[currentMovie][currentFrame].kind = .proteinCrystal
-              scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitMolecule
-              scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitMolecule ? 1 : self.spaceGroup.spaceGroupSetting.number
-            }
-            else
-            {
-              scene[currentMovie][currentFrame].kind = .protein
-              scene[currentMovie][currentFrame].drawUnitCell = false
-              scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
-            }
-          }
-          else
-          {
-            if (periodic && !asMolecule)
-            {
-              scene[currentMovie][currentFrame].kind = .molecularCrystal
-              scene[currentMovie][currentFrame].drawUnitCell = true
-              scene[currentMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
-            }
-            else
-            {
-              scene[currentMovie][currentFrame].kind = .molecule
-              scene[currentMovie][currentFrame].drawUnitCell = false
-              scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
-            }
-          }
-          
-          
+        case .proteinCrystal, .proteinCrystalSolvent, .dnaCrystal:
+          scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitMolecule
+          scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitMolecule ? 1 : self.spaceGroup.spaceGroupSetting.number
+        case .molecularCrystal:
+          scene[currentMovie][currentFrame].drawUnitCell = true
+          scene[currentMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
+        default:
+          scene[currentMovie][currentFrame].drawUnitCell = false
+          scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
         }
         
         scene[currentMovie][currentFrame].cell = cell
@@ -169,45 +348,185 @@ public final class SKPDBParser: SKParser, ProgressReporting
         numberOfNucleicAcidAtoms = 0
         numberOfSolventAtoms = 0
         numberOfAtoms = 0
+        residues.removeAll(keepingCapacity: true)
       }
     }
     
   }
   
-  public init(displayName: String, data: Data, onlyAsymmetricUnitMolecule: Bool, asMolecule: Bool, asProtein: Bool, preview: Bool = false) throws
+  public init(displayName: String, data: Data, onlyAsymmetricUnitMolecule: Bool, asMolecule: Bool, asProtein: Bool, preview: Bool = false, separatePolymerChains: Bool = false) throws
   {
     self.displayName = displayName
     self.onlyAsymmetricUnitMolecule = onlyAsymmetricUnitMolecule
     self.asMolecule = asMolecule
     self.asProtein = asProtein
     self.preview = preview
+    self.separatePolymerChains = separatePolymerChains
     
     guard let string: String = String(data: data, encoding: String.Encoding.utf8) ?? String(data: data, encoding: String.Encoding.ascii) else
     {
       throw SKParserError.failedDecoding
     }
     
-    self.scanner = Scanner(string: string)
-    self.scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
+    self.fileLines = string.split(omittingEmptySubsequences: false, whereSeparator: \.isNewline).map(String.init)
     
-    let mutableletterSet: NSMutableCharacterSet = NSMutableCharacterSet.letter()
-    mutableletterSet.addCharacters(in: "\"#$\'_;[]")
-    letterSet = mutableletterSet as CharacterSet
-    nonLetterSet = letterSet.inverted
-    
-    whiteSpacesAndNewlines = CharacterSet.whitespacesAndNewlines
-    keywordSet = CharacterSet.whitespacesAndNewlines.inverted
-    
-    newLineChararterSet = CharacterSet.newlines
-    
-    // report progress in steps of 10% (updating faster makes Progress/updating slow)
     progress = Progress()
     progress.totalUnitCount = 10
     
-    // work is defined in terms of the number of lines to parse
-    totalProgressCount = string.components(separatedBy: newLineChararterSet).count
-    percentageFinishedStep = 10.0/Double(max(totalProgressCount - 1,1))
+    totalProgressCount = fileLines.count
+    percentageFinishedStep = 10.0/Double(max(totalProgressCount - 1, 1))
     
+    atoms.reserveCapacity(min(max(data.count / 50, 256), 1_000_000))
+    
+  }
+  
+  private func pdbField(_ line: String, _ location: Int, _ length: Int) -> String
+  {
+    guard line.count >= location + length else {return ""}
+    let start: String.Index = line.index(line.startIndex, offsetBy: location)
+    let end: String.Index = line.index(start, offsetBy: length)
+    return String(line[start..<end])
+  }
+  
+  private func updateParseProgress(_ lineNumber: Int)
+  {
+    currentProgressCount = Double(lineNumber)
+    if Int(currentProgressCount * percentageFinishedStep) > Int((currentProgressCount - 1.0) * percentageFinishedStep)
+    {
+      progress.completedUnitCount += 1
+    }
+  }
+  
+  private func parseAndAppendAtomRecord(line: String, isHetatm: Bool)
+  {
+    numberOfAtoms += 1
+    
+    if isHetatm
+    {
+      numberOfSolventAtoms += 1
+    }
+    
+    guard line.count >= 11 else {return}
+    
+    var atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0, 0.0, 0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
+    atom.solvent = isHetatm
+    
+    if let integerValue: Int = Int(pdbField(line, 6, 5))
+    {
+      atom.serialNumber = integerValue
+    }
+    guard line.count >= 17 else {return}
+    
+    let atomName: String = pdbField(line, 12, 4)
+    let atomDisplayName: String = atomName.trimmingCharacters(in: CharacterSet.whitespaces)
+    atom.displayName = atomDisplayName
+    if atomName.count >= 3
+    {
+      atom.remotenessIndicator = atomName[atomName.index(atomName.startIndex, offsetBy: 2)]
+    }
+    if atomName.count >= 4
+    {
+      atom.branchDesignator = atomName[atomName.index(atomName.startIndex, offsetBy: 3)]
+    }
+    if atomName.count >= 2
+    {
+      let atomNameString: String = String(atomName.prefix(2)).trimmingCharacters(in: CharacterSet.whitespaces)
+      if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: atomNameString)
+      {
+        atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+        atom.elementIdentifier = atomicNumber
+      }
+      else
+      {
+        let letters: CharacterSet = CharacterSet.letters
+        let symbolFromName: String = String(atomName.unicodeScalars.filter{letters.contains($0)})
+        if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: symbolFromName), atomicNumber > 0
+        {
+          atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+          atom.elementIdentifier = atomicNumber
+        }
+      }
+    }
+    
+    guard line.count >= 18 else {return}
+    atom.alternateLocationIndicator = Character(pdbField(line, 16, 1))
+    
+    guard line.count >= 21 else {return}
+    let residueName: String = pdbField(line, 17, 3)
+    atom.residueName = residueName
+    
+    if let residueData: SKResidueAtomDefinition = SKElement.residueDefinitions[residueName.uppercased() + "+" + atomDisplayName.uppercased()]
+    {
+      numberOfAminoAcidAtoms += 1
+      atom.backBoneAtom = SKElement.isBackboneAtomType(residueData.type)
+      if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: residueData.element),
+         atomicNumber > 0
+      {
+        atom.elementIdentifier = atomicNumber
+        atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+      }
+    }
+    else if SKNucleotide.isNucleotideResidueName(residueName)
+    {
+      numberOfNucleicAcidAtoms += 1
+    }
+    
+    guard line.count >= 23 else {return}
+    atom.chainIdentifier = Character(pdbField(line, 21, 1))
+    
+    guard line.count >= 27 else {return}
+    if let residueSequenceNumber: Int = Int(pdbField(line, 22, 4).trimmingCharacters(in: CharacterSet.whitespaces))
+    {
+      atom.residueSequenceNumber = residueSequenceNumber
+    }
+    
+    guard line.count >= 28 else {return}
+    atom.codeForInsertionOfResidues = Character(pdbField(line, 26, 1))
+    
+    guard line.count >= 54 else {return}
+    if let orthogonalXCoordinate: Double = Double(pdbField(line, 30, 8).trimmingCharacters(in: CharacterSet.whitespaces)),
+       let orthogonalYCoordinate: Double = Double(pdbField(line, 38, 8).trimmingCharacters(in: CharacterSet.whitespaces)),
+       let orthogonalZCoordinate: Double = Double(pdbField(line, 46, 8).trimmingCharacters(in: CharacterSet.whitespaces))
+    {
+      atom.fractional = false
+      atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+    }
+    
+    if line.count >= 60,
+       let occupancy: Double = Double(pdbField(line, 54, 6).trimmingCharacters(in: CharacterSet.whitespaces))
+    {
+      atom.occupancy = occupancy
+    }
+    
+    if line.count >= 66,
+       let temperatureFactor: Double = Double(pdbField(line, 60, 6).trimmingCharacters(in: CharacterSet.whitespaces))
+    {
+      atom.temperaturefactor = temperatureFactor
+    }
+    
+    if line.count >= 78
+    {
+      let elementSymbolString: String = pdbField(line, 76, 2).trimmingCharacters(in: CharacterSet.whitespaces)
+      if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: elementSymbolString), atomicNumber > 0
+      {
+        atom.elementIdentifier = atomicNumber
+        atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+      }
+    }
+    
+    if line.count >= 80,
+       let chargeValue: Double = Double(pdbField(line, 78, 2).trimmingCharacters(in: CharacterSet.whitespaces))
+    {
+      atom.charge = chargeValue
+    }
+    
+    if atom.elementIdentifier == 0
+    {
+      unknownAtoms.insert(atom.displayName)
+    }
+    
+    noteResidueAtom(atom)
+    atoms.append(atom)
   }
   
   public override func startParsing() throws
@@ -215,96 +534,110 @@ public final class SKPDBParser: SKParser, ProgressReporting
     var lineNumber: Int = 0
     var modelNumber: Int = 0
     
-    
-    while(!scanner.isAtEnd)
+    for line in fileLines
     {
-      // scan line
-      if let scannedLine: NSString = scanner.scanUpToCharacters(from: newLineChararterSet) as NSString?
+      lineNumber += 1
+      
+      let length: Int = line.count
+      guard length >= 3 else {continue}
+      
+      if line.hasPrefix("TER")
       {
-        lineNumber += 1
-        
-        
-        let length = scannedLine.length
-        guard (length >= 3) else
+        // TER marks the end of a polymer chain. Splitting on it puts each chain
+        // in its own movie; with Separate polymer chains off, keep reading.
+        if separatePolymerChains, atoms.count > 0
         {
-          // only keyword present
-          break
-        }
-        let shortKeyword: String = scannedLine.substring(with: NSRange(location: 0, length: 3))
-        
-        
-        switch(shortKeyword)
-        {
-        case "TER":
-          if(atoms.count > 0)
+          addFrameToStructure()
+          currentMovie += 1
+          if preview
           {
-            addFrameToStructure()
-            currentMovie += 1
-            if(preview)
-            {
-              return
-            }
+            return
           }
-          continue
-        default:
-          break
         }
-        
-        guard (length >= 6) else
+        updateParseProgress(lineNumber)
+        continue
+      }
+      
+      if line.hasPrefix("ATOM  ")
+      {
+        parseAndAppendAtomRecord(line: line, isHetatm: false)
+        updateParseProgress(lineNumber)
+        continue
+      }
+      if line.hasPrefix("HETATM")
+      {
+        parseAndAppendAtomRecord(line: line, isHetatm: true)
+        updateParseProgress(lineNumber)
+        continue
+      }
+      
+      guard length >= 6 else
+      {
+        updateParseProgress(lineNumber)
+        continue
+      }
+      
+      let scannedLine: NSString = line as NSString
+      let keyword: String = scannedLine.substring(with: NSRange(location: 0, length: 6))
+      
+      switch(keyword)
+      {
+      case "HEADER":
+        break
+      case "AUTHOR":
+        break
+      case "REVDAT":
+        break
+      case "JRNL  ":
+        break
+      case "REMARK":
+        break
+      case "EXPDTA":
+        let experiment = scannedLine.substring(from: 6).trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        if experiment.contains("NMR") || experiment.contains("ELECTRON MICROSCOPY") ||
+           experiment.contains("SOLUTION SCATTERING") || experiment.contains("THEORETICAL MODEL")
         {
-          // only keyword present
-          break
+          experimentIsNonPeriodic = true
+          periodic = false
         }
-        let keyword: String = scannedLine.substring(with: NSRange(location: 0, length: 6))
+      case "SEQRES":
+        parseSeqres(line)
+      case "MODRES":
+        parseModres(line)
+      case "MODEL ":
+        currentMovie = 0
         
-        
-        switch(keyword)
+        if length <= 10
         {
-        case "HEADER":
-          break
-        case "AUTHOR":
-          break
-        case "REVDAT":
-          break
-        case "JRNL  ":
-          break
-        case "REMARK":
-          break
-        case "MODEL ":
-          // reset the current frame-list and current atom to zero
-          currentMovie = 0
-        
-          guard (length > 10) else
-          {
-            let modelString: String = scannedLine.substring(from: 6)
-            if let integerValue: Int = Int(modelString)
-            {
-              atoms = []
-              currentFrame = max(0, integerValue-1)
-              currentFrame = modelNumber
-              modelNumber += 1
-            }
-            break
-          }
-          guard (length > 14) else
-          {
-            let modelString: String = scannedLine.substring(from: 10)
-            if let integerValue: Int = Int(modelString)
-            {
-              currentFrame = max(0, integerValue-1)
-            }
-            break
-          }
-          let modelString: String = scannedLine.substring(with: NSRange(location: 10, length: 4))
+          let modelString: String = scannedLine.substring(from: 6)
           if let integerValue: Int = Int(modelString)
           {
-            currentFrame = max(0, integerValue-1)
+            atoms = []
+            currentFrame = max(0, integerValue - 1)
+            currentFrame = modelNumber
+            modelNumber += 1
           }
-        case "ENDMDL":
-          // also frames with zero atoms are allowed in PDB movies from RASPA. This happens in grand-canonical ensembles at low fugacities.
-          addFrameToStructure()
-          currentFrame += 1
-          continue
+          break
+        }
+        if length <= 14
+        {
+          let modelString: String = scannedLine.substring(from: 10)
+          if let integerValue: Int = Int(modelString)
+          {
+            currentFrame = max(0, integerValue - 1)
+          }
+          break
+        }
+        let modelString: String = scannedLine.substring(with: NSRange(location: 10, length: 4))
+        if let integerValue: Int = Int(modelString)
+        {
+          currentFrame = max(0, integerValue - 1)
+        }
+      case "ENDMDL":
+        addFrameToStructure()
+        currentFrame += 1
+        updateParseProgress(lineNumber)
+        continue
         case "SCALE1":
           guard (length > 20) else
           {
@@ -460,6 +793,9 @@ public final class SKPDBParser: SKParser, ProgressReporting
             {
               c = doubleValue
             }
+            let cellIsReal = a > 0.0 && b > 0.0 && c > 0.0 &&
+              !Self.isPlaceholderCell(a: a, b: b, c: c, alpha: alpha, beta: beta, gamma: gamma)
+            periodic = cellIsReal && !experimentIsNonPeriodic
             break
           }
           let cellCString: String = scannedLine.substring(with: NSRange(location: 24, length: 9)).trimmingCharacters(in: .whitespaces)
@@ -467,8 +803,6 @@ public final class SKPDBParser: SKParser, ProgressReporting
           {
             c = doubleValue
           }
-          // when we have read 'CRYST1 a b c' we consider this a MolecularCrystal
-          periodic = true
         
           guard (length >= 41) else
           {
@@ -477,6 +811,9 @@ public final class SKPDBParser: SKParser, ProgressReporting
             {
               alpha = doubleValue
             }
+            let cellIsReal = a > 0.0 && b > 0.0 && c > 0.0 &&
+              !Self.isPlaceholderCell(a: a, b: b, c: c, alpha: alpha, beta: beta, gamma: gamma)
+            periodic = cellIsReal && !experimentIsNonPeriodic
             break
           }
           let cellAlphaString: String = scannedLine.substring(with: NSRange(location: 33, length: 7)).trimmingCharacters(in: .whitespaces)
@@ -491,6 +828,9 @@ public final class SKPDBParser: SKParser, ProgressReporting
             {
               beta = doubleValue
             }
+            let cellIsReal = a > 0.0 && b > 0.0 && c > 0.0 &&
+              !Self.isPlaceholderCell(a: a, b: b, c: c, alpha: alpha, beta: beta, gamma: gamma)
+            periodic = cellIsReal && !experimentIsNonPeriodic
             break
           }
           let cellBetaString: String = scannedLine.substring(with: NSRange(location: 40, length: 7)).trimmingCharacters(in: .whitespaces)
@@ -506,6 +846,9 @@ public final class SKPDBParser: SKParser, ProgressReporting
               gamma = doubleValue
               self.cell = SKCell(a: a, b: b, c: c, alpha: alpha*Double.pi/180.0, beta: beta*Double.pi/180.0, gamma: gamma*Double.pi/180.0)
             }
+            let cellIsReal = a > 0.0 && b > 0.0 && c > 0.0 &&
+              !Self.isPlaceholderCell(a: a, b: b, c: c, alpha: alpha, beta: beta, gamma: gamma)
+            periodic = cellIsReal && !experimentIsNonPeriodic
             break
           }
           let cellGammaString: String = scannedLine.substring(with: NSRange(location: 47, length: 7)).trimmingCharacters(in: .whitespaces)
@@ -515,6 +858,9 @@ public final class SKPDBParser: SKParser, ProgressReporting
         
             self.cell = SKCell(a: a, b: b, c: c, alpha: alpha*Double.pi/180.0, beta: beta*Double.pi/180.0, gamma: gamma*Double.pi/180.0)
           }
+          let cellIsReal = a > 0.0 && b > 0.0 && c > 0.0 &&
+            !Self.isPlaceholderCell(a: a, b: b, c: c, alpha: alpha, beta: beta, gamma: gamma)
+          periodic = cellIsReal && !experimentIsNonPeriodic
         
           guard (length >= 67) else
           {
@@ -549,255 +895,14 @@ public final class SKPDBParser: SKParser, ProgressReporting
           break
         case "ORIGX3":
           break
-        case "ATOM  ", "HETATM":
-          //  COLUMNS   LENGHT  DATA TYPE       CONTENTS
-          //  --------------------------------------------------------------------------------
-          //   0 -  5   6       Record name     "ATOM  "
-          //   6 - 10   5       Integer         Atom serial number.
-          //  11        1
-          //  12 - 15   4       Atom            Atom name.
-          //  16        1       Character       Alternate location indicator.
-          //  17 - 19   3       Residue name    Residue name.
-          //  20        1
-          //  21        1       Character       Chain identifier.
-          //  22 - 25   4       Integer         Residue sequence number.
-          //  26        1       AChar           Code for insertion of residues.
-          //  27 - 29   3
-          //  30 - 37   8       Real(8.3)       Orthogonal coordinates for X in Angstroms.
-          //  38 - 45   8       Real(8.3)       Orthogonal coordinates for Y in Angstroms.
-          //  46 - 53   8       Real(8.3)       Orthogonal coordinates for Z in Angstroms.
-          //  54 - 59   6       Real(6.2)       Occupancy.
-          //  60 - 65   6       Real(6.2)       Temperature factor (Default = 0.0).
-          //  66 - 71   6
-          //  72 - 75   4       LString(4)      Segment identifier, left-justified.
-          //  76 - 77   2       LString(2)      Element symbol, right-justified.
-          //  78 - 79   2       LString(2)      Charge on the atom.
-        
-          // count as nucleic acid atom
-          numberOfNucleicAcidAtoms += 1
-          numberOfAtoms += 1
-        
-          if keyword == "HETATM"
-          {
-            numberOfSolventAtoms += 1
-          }
-        
-          guard (scannedLine.length >= 11) else
-          {
-            break
-          }
-        
-          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color:   NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
-        
-          let atomSerialNumberString: String = scannedLine.substring(with: NSRange(location: 6, length: 5))
-          if let integerValue: Int = Int(atomSerialNumberString)
-          {
-            let atomSerialNumber: Int = integerValue
-            atom.serialNumber = atomSerialNumber
-          }
-          guard (scannedLine.length >= 17) else
-          {
-            break
-          }
-        
-          let atomName: String = scannedLine.substring(with: NSRange(location: 12, length: 4))
-          let atomDisplayName: String = atomName.trimmingCharacters(in: CharacterSet.whitespaces) as String
-          atom.displayName = atomDisplayName
-          atom.remotenessIndicator = atomName[atomName.index(atomName.startIndex, offsetBy: 2)]
-          atom.branchDesignator = atomName[atomName.index(atomName.startIndex, offsetBy: 3)]
-          if atomName.count >= 2
-          {
-            let atomNameString = String(atomName.prefix(2)).trimmingCharacters(in: CharacterSet.whitespaces) as String
-            if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: atomNameString)
-            {
-              atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-              atom.elementIdentifier = atomicNumber
-            }
-            else
-            {
-              let letters = CharacterSet.letters
-              let atomNameString = String(atomName.unicodeScalars.filter { letters.contains($0)})
-              if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: atomNameString), atomicNumber>0
-              {
-                atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-                atom.elementIdentifier = atomicNumber
-              }
-            }
-          }
-        
-          guard (scannedLine.length >= 18) else
-          {
-            break
-          }
-          let alternateLocationIndicator: String = scannedLine.substring(with: NSRange(location: 16, length: 1))
-          atom.alternateLocationIndicator = Character(alternateLocationIndicator)
-        
-          guard (scannedLine.length >= 21) else
-          {
-            break
-          }
-          let residueName: String = scannedLine.substring(with: NSRange(location: 17, length: 3))
-          atom.residueName = residueName as String
-        
-        
-          if let residueData: SKResidueAtomDefinition = SKElement.residueDefinitions[residueName.uppercased() + "+" + atomDisplayName.uppercased()]
-          {
-            numberOfAminoAcidAtoms += 1
-            if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: residueData.element),
-                                       atomicNumber>0
-            {
-              atom.elementIdentifier = atomicNumber
-              atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-            }
-          }
-        
-        
-          guard (scannedLine.length >= 23) else
-          {
-            break
-          }
-          let chainIdentifier: String = scannedLine.substring(with: NSRange(location: 21, length: 1))
-          atom.chainIdentifier = Character(chainIdentifier)
-        
-          guard (scannedLine.length >= 27) else
-          {
-            break
-          }
-          let residueSequenceNumberString: String = scannedLine.substring(with: NSRange(location: 22, length: 4))
-          if let residueSequenceNumber = Int(residueSequenceNumberString.trimmingCharacters(in: .whitespaces))
-          {
-            atom.residueSequenceNumber = residueSequenceNumber
-          }
-        
-          guard (scannedLine.length >= 28) else
-          {
-            break
-          }
-          let codeForInsertionOfResidues: String = scannedLine.substring(with: NSRange(location: 26, length: 1))
-          atom.codeForInsertionOfResidues = Character(codeForInsertionOfResidues)
-        
-          guard (scannedLine.length >= 54) else
-          {
-            let _ = chainIdentifier
-            break
-          }
-          let orthogonalXCoordinateString: String = scannedLine.substring(with: NSRange(location: 30, length: 8)).trimmingCharacters(in: .whitespaces)
-          let orthogonalYCoordinateString: String = scannedLine.substring(with: NSRange(location: 38, length: 8)).trimmingCharacters(in: .whitespaces)
-          let orthogonalZCoordinateString: String = scannedLine.substring(with: NSRange(location: 46, length: 8)).trimmingCharacters(in: .whitespaces)
-        
-        
-          if let orthogonalXCoordinate: Double = Double(orthogonalXCoordinateString),
-            let orthogonalYCoordinate: Double = Double(orthogonalYCoordinateString),
-            let orthogonalZCoordinate: Double = Double(orthogonalZCoordinateString)
-          {
-            // with the position we have enough information to decide to add the atom
-            atom.fractional = false
-            atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
-          }
-          guard (scannedLine.length >= 60) else
-          {
-            if atom.elementIdentifier == 0
-            {
-              unknownAtoms.insert(atom.displayName)
-            }
-            // add atom to the list
-            atoms.append(atom)
-            break
-          }
-          let occupancyString: String = scannedLine.substring(with: NSRange(location: 54, length: 6)).trimmingCharacters(in: .whitespaces)
-        
-          if let occupancy: Double = Double(occupancyString)
-          {
-            atom.occupancy = occupancy
-          }
-          guard (scannedLine.length >= 66) else
-          {
-            if atom.elementIdentifier == 0
-            {
-              unknownAtoms.insert(atom.displayName)
-            }
-            // add atom to the list
-            atoms.append(atom)
-            break
-          }
-          let temperatureFactorString: String = scannedLine.substring(with: NSRange(location: 60, length: 6)).trimmingCharacters(in: .whitespaces)
-          if let temperatureFactor = Double(temperatureFactorString)
-          {
-            atom.temperaturefactor = temperatureFactor
-          }
-        
-          guard (scannedLine.length >= 76) else
-          {
-            if atom.elementIdentifier == 0
-            {
-              unknownAtoms.insert(atom.displayName)
-            }
-            // add atom to the list
-            atoms.append(atom)
-            break
-          }
-          let segmentIdentifier: String = scannedLine.substring(with: NSRange(location: 72, length: 4))
-          guard (scannedLine.length >= 78) else
-          {
-            let _ = segmentIdentifier
-            if atom.elementIdentifier == 0
-            {
-              unknownAtoms.insert(atom.displayName)
-            }
-            // add atom to the list
-            atoms.append(atom)
-            break
-          }
-        
-        
-          let elementSymbol: String = scannedLine.substring(with: NSRange(location: 76, length: 2))
-          let elementSymbolString: String = elementSymbol.trimmingCharacters(in: CharacterSet.whitespaces)
-          if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: elementSymbolString), atomicNumber>0
-          {
-            atom.elementIdentifier = atomicNumber
-            atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-          }
-        
-          guard (scannedLine.length >= 80) else
-          {
-            // add atom to the list
-            if atom.elementIdentifier == 0
-            {
-              unknownAtoms.insert(atom.displayName)
-            }
-            atoms.append(atom)
-            break
-          }
-        
-          let chargeString: String = scannedLine.substring(with: NSRange(location: 78, length: 2))
-          if let chargeValue: Double = Double(chargeString.trimmingCharacters(in: .whitespaces))
-          {
-            atom.charge = chargeValue
-          }
-        
-          if atom.elementIdentifier == 0
-          {
-            unknownAtoms.insert(atom.displayName)
-          }
-        
-          // add atom to the list
-          atoms.append(atom)
         default:
-          //debugPrint("scannedLine \(scannedLine)")
           break
         }
-      }
       
-      // update progress
-      currentProgressCount += 1.0
-      if( Int(currentProgressCount * percentageFinishedStep) > Int((currentProgressCount-1.0) * percentageFinishedStep))
-      {
-        progress.completedUnitCount += 1
-      }
+      updateParseProgress(lineNumber)
     }
     
-    // add current frame in case last TER, ENDMDL, or END is missing
-    if(atoms.count > 0)
+    if atoms.count > 0
     {
       addFrameToStructure()
     }

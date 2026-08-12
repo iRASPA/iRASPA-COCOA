@@ -53,6 +53,22 @@ class MetalEnergyIsosurfaceShader
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
+    // Marching Cubes vertices are always 48 bytes (3 × float4). Do not reuse the shared
+    // RKVertex descriptor (now 64 bytes with ribbon stripeST) — that skips 1/4 of the mesh.
+    let _ = vertexDescriptor
+    let isosurfaceVertexDescriptor = MTLVertexDescriptor()
+    isosurfaceVertexDescriptor.attributes[0].offset = 0
+    isosurfaceVertexDescriptor.attributes[0].format = .float4
+    isosurfaceVertexDescriptor.attributes[0].bufferIndex = 0
+    isosurfaceVertexDescriptor.attributes[1].offset = MemoryLayout<SIMD4<Float>>.stride
+    isosurfaceVertexDescriptor.attributes[1].format = .float4
+    isosurfaceVertexDescriptor.attributes[1].bufferIndex = 0
+    isosurfaceVertexDescriptor.attributes[2].offset = MemoryLayout<SIMD4<Float>>.stride * 2
+    isosurfaceVertexDescriptor.attributes[2].format = .float4
+    isosurfaceVertexDescriptor.attributes[2].bufferIndex = 0
+    isosurfaceVertexDescriptor.layouts[0].stepFunction = .perVertex
+    isosurfaceVertexDescriptor.layouts[0].stride = MemoryLayout<SIMD4<Float>>.stride * 3
+    
     let depthStateDesc: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
     depthStateDesc.depthCompareFunction = MTLCompareFunction.lessEqual
     depthStateDesc.isDepthWriteEnabled = true
@@ -70,7 +86,7 @@ class MetalEnergyIsosurfaceShader
     opaquePipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     opaquePipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     opaquePipelineDescriptor.fragmentFunction = library.makeFunction(name: "IsosurfaceFragmentShader")!
-    opaquePipelineDescriptor.vertexDescriptor = vertexDescriptor
+    opaquePipelineDescriptor.vertexDescriptor = isosurfaceVertexDescriptor
     do
     {
       self.opaquePipeLine = try device.makeRenderPipelineState(descriptor: opaquePipelineDescriptor)
@@ -94,7 +110,7 @@ class MetalEnergyIsosurfaceShader
     transparentPipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
     transparentPipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
     transparentPipelineDescriptor.fragmentFunction = library.makeFunction(name: "IsosurfaceFragmentShader")!
-    transparentPipelineDescriptor.vertexDescriptor = vertexDescriptor
+    transparentPipelineDescriptor.vertexDescriptor = isosurfaceVertexDescriptor
     do
     {
       self.transparentPipeLine = try device.makeRenderPipelineState(descriptor: transparentPipelineDescriptor)

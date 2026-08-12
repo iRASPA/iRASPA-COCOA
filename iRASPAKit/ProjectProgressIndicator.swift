@@ -29,27 +29,42 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
+import Cocoa
+
 public class ProjectProgressIndicator: NSProgressIndicator
 {
-  public var backgroundStyle: NSView.BackgroundStyle = NSView.BackgroundStyle.normal
+  public var backgroundStyle: NSView.BackgroundStyle = .normal
   {
     didSet
     {
-      self.appearance = backgroundStyle == NSView.BackgroundStyle.normal ? NSAppearance(named: NSAppearance.Name.vibrantLight) : NSAppearance(named: NSAppearance.Name.vibrantDark)
+      // Vibrant appearances make bar-style indicators invisible on recent macOS.
+      appearance = nil
+      needsDisplay = true
     }
   }
   
   public override init(frame frameRect: NSRect)
   {
     super.init(frame: frameRect)
-    wantsLayer = true
-    
+    configureForProjectList()
   }
   
   required public init?(coder: NSCoder)
   {
     super.init(coder: coder)
-    wantsLayer = true
+    configureForProjectList()
+  }
+  
+  private func configureForProjectList()
+  {
+    wantsLayer = false
+    appearance = nil
+    style = .bar
+    controlSize = .small
+    isIndeterminate = false
+    isDisplayedWhenStopped = true
+    usesThreadedAnimation = true
+    maxValue = 1.0
   }
   
   override public var isOpaque: Bool
@@ -57,26 +72,33 @@ public class ProjectProgressIndicator: NSProgressIndicator
     return false
   }
   
-  override public var wantsUpdateLayer: Bool
+  override public var isHidden: Bool
   {
-    return false
-  }
-  
-  
-  override public var intrinsicContentSize: NSSize
+    didSet
     {
-    get
-    {
-      if self.isHidden
+      if oldValue != isHidden
       {
-        return NSZeroSize
-      }
-      else
-      {
-        return NSMakeSize(20, 17)
+        invalidateIntrinsicContentSize()
+        superview?.needsLayout = true
       }
     }
   }
   
+  override public var intrinsicContentSize: NSSize
+  {
+    if isHidden
+    {
+      return NSZeroSize
+    }
+    return NSMakeSize(32, 17)
+  }
+  
+  public func applyImportProgressFraction(_ fraction: Double)
+  {
+    isHidden = false
+    isIndeterminate = false
+    maxValue = 1.0
+    doubleValue = min(max(fraction, 0.0), 1.0)
+    startAnimation(nil)
+  }
 }
-

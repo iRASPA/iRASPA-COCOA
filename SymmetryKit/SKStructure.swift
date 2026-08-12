@@ -60,6 +60,8 @@ public class SKStructure
     case VTKDensityVolume = 18
     case VASPDensityVolume = 19
     case GaussianCubeVolume = 20
+    case dna = 21
+    case dnaCrystal = 22
   }
   
   public enum VASPType: Int

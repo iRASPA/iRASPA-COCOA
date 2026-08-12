@@ -35,6 +35,7 @@ class AtomGroupStackView: NSStackView
 {
   @IBOutlet private weak var textField: NSTextField?
   @IBOutlet private weak var checkBox: NSButton?
+  @IBOutlet private weak var ribbonVisibilityControl: NSSegmentedControl?
   
 
   var isSelected: Bool = false
@@ -43,6 +44,32 @@ class AtomGroupStackView: NSStackView
     {
       textField?.cell?.backgroundStyle = isSelected ? NSView.BackgroundStyle.emphasized : NSView.BackgroundStyle.normal
     }
+  }
+  
+  override func awakeFromNib()
+  {
+    super.awakeFromNib()
+    configureHorizontalLayout()
+  }
+  
+  /// Keep the name left-aligned whether the row is editable or read-only.
+  /// When the text field is not editable it shrinks to its string width; with
+  /// `distribution = .fill` that lets the visibility control absorb free space
+  /// and pushes the label to the right (noticeable on Gallery / read-only projects).
+  func configureHorizontalLayout()
+  {
+    distribution = .fill
+    orientation = .horizontal
+    alignment = .centerY
+    
+    checkBox?.setContentHuggingPriority(.required, for: .horizontal)
+    checkBox?.setContentCompressionResistancePriority(.required, for: .horizontal)
+    ribbonVisibilityControl?.setContentHuggingPriority(.required, for: .horizontal)
+    ribbonVisibilityControl?.setContentCompressionResistancePriority(.required, for: .horizontal)
+    
+    textField?.alignment = .left
+    textField?.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    textField?.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
   }
   
   var draggingImageComponents: [NSDraggingImageComponent]

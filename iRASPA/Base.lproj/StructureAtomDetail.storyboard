@@ -104,7 +104,7 @@
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         </customView>
                                                         <stackView identifier="atomGroupRow" distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="0NV-Rf-adU" customClass="AtomGroupStackView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="44" y="43" width="65" height="22"/>
+                                                            <rect key="frame" x="44" y="43" width="120" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                             <subviews>
                                                                 <button placeholderIntrinsicWidth="18" placeholderIntrinsicHeight="18" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="RjT-0h-YYA">
@@ -117,8 +117,21 @@
                                                                         <action selector="checkBoxAction:" target="L26-B0-eRn" id="1hr-i6-Jyo"/>
                                                                     </connections>
                                                                 </button>
+                                                                <segmentedControl verticalHuggingPriority="750" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="AR0-Vis-Seg" hidden="YES">
+                                                                    <rect key="frame" x="28" y="2" width="48" height="18"/>
+                                                                    <segmentedCell key="cell" controlSize="mini" borderStyle="border" alignment="left" style="rounded" trackingMode="selectAny" id="AR0-Vis-Cel">
+                                                                        <font key="font" metaFont="menu" size="9"/>
+                                                                        <segments>
+                                                                            <segment label="A" width="20" toolTip="Show the atoms of this group" selected="YES"/>
+                                                                            <segment label="R" width="20" toolTip="Show the ribbon of this group" selected="YES" tag="1"/>
+                                                                        </segments>
+                                                                    </segmentedCell>
+                                                                    <connections>
+                                                                        <action selector="ribbonGroupVisibilityAction:" target="L26-B0-eRn" id="AR0-Vis-Act"/>
+                                                                    </connections>
+                                                                </segmentedControl>
                                                                 <textField verticalHuggingPriority="750" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="22" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="vvQ-9D-zzB">
-                                                                    <rect key="frame" x="32" y="0.0" width="35" height="22"/>
+                                                                    <rect key="frame" x="80" y="0.0" width="40" height="22"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" id="k88-nM-5kN">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -133,13 +146,16 @@
                                                             <visibilityPriorities>
                                                                 <integer value="1000"/>
                                                                 <integer value="1000"/>
+                                                                <integer value="1000"/>
                                                             </visibilityPriorities>
                                                             <customSpacing>
+                                                                <real value="3.4028234663852886e+38"/>
                                                                 <real value="3.4028234663852886e+38"/>
                                                                 <real value="3.4028234663852886e+38"/>
                                                             </customSpacing>
                                                             <connections>
                                                                 <outlet property="checkBox" destination="RjT-0h-YYA" id="9iP-kR-UYS"/>
+                                                                <outlet property="ribbonVisibilityControl" destination="AR0-Vis-Seg" id="AR0-Vis-Out"/>
                                                                 <outlet property="textField" destination="vvQ-9D-zzB" id="h0W-58-rd3"/>
                                                             </connections>
                                                         </stackView>

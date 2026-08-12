@@ -41,5 +41,7 @@ class LocalAboutWindowController : NSWindowController
     self.window?.titlebarAppearsTransparent = true
     self.window?.title = ""
     self.window?.hasShadow = true
+    // Room for the extra creator and acknowledgement lines (matches WinUI About panel).
+    self.window?.setContentSize(NSSize(width: 750, height: 400))
   }
 }

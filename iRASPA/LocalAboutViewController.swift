@@ -77,6 +77,12 @@ class LocalAboutViewController: NSViewController
         mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "https://www.uva.nl/en/profile/d/u/d.dubbeldam/d.dubbeldam.html", range: foundRangeDubbeldam)
       }
       
+      let foundRangeVreede: NSRange = mutableAttributedString.mutableString.range(of: "Jocelyne Vreede")
+      if foundRangeVreede.location != NSNotFound
+      {
+        mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html", range: foundRangeVreede)
+      }
+      
       let foundRangeCalero: NSRange = mutableAttributedString.mutableString.range(of: "Sofia Calero")
       if foundRangeCalero.location != NSNotFound
       {
@@ -95,7 +101,7 @@ class LocalAboutViewController: NSViewController
         mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "http://www.iec.northwestern.edu", range: foundRangeSnurr)
       }
       
-      let foundRangeYoungchul: NSRange = mutableAttributedString.mutableString.range(of: "Chung G. Yongchul ")
+      let foundRangeYoungchul: NSRange = mutableAttributedString.mutableString.range(of: "Yongchul G. Chung")
       if foundRangeYoungchul.location != NSNotFound
       {
         mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "https://cmcp-group.github.io", range: foundRangeYoungchul)
@@ -113,6 +119,11 @@ class LocalAboutViewController: NSViewController
         mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "https://www.eriksmistad.no/marching-cubes-implementation-using-opencl-and-opengl/", range: foundRangeErikSmistad)
       }
       
+      let foundRangeMarioHolubar: NSRange = mutableAttributedString.mutableString.range(of: "Mario Holubar")
+      if foundRangeMarioHolubar.location != NSNotFound
+      {
+        mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "https://github.com/mario-holubar", range: foundRangeMarioHolubar)
+      }
       
       let attributedString: NSAttributedString = NSAttributedString(attributedString: mutableAttributedString)
       self.textView?.textStorage?.setAttributedString(attributedString)

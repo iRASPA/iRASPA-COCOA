@@ -48,6 +48,7 @@ typedef struct InPerVertex
   float4 normal;
   float2 st;
   float2 pad;
+  float2 stripeST; // ribbon selection stripes; sizeof becomes 56 (stride 64) — isosurfaces use IsosurfaceInVertex instead
 } InPerVertex;
 
 typedef struct InPrimitivePerVertex
@@ -345,9 +346,22 @@ typedef struct StructureUniforms
   
   float4 localAxesPosition;
   float4 numberOfReplicas;
-  float4 pad9;
-  float4 pad10;
-  //----------------------------------------  1024 bytes boundary
+  float4 ribbonCoilColor;
+  float4 ribbonHelixColor;
+  float4 ribbonSheetColor;
+  bool ribbonHDR;
+  float ribbonHDRExposure;
+  float ribbonHue;
+  float ribbonSaturation;
+  float ribbonValue;
+  bool ribbonAmbientOcclusion;
+  float padRibbon1;
+  float ribbonShininess;
+  float padRibbon2;
+  float4 ribbonAmbientColor;
+  float4 ribbonDiffuseColor;
+  float4 ribbonSpecularColor;
+  //----------------------------------------  1136 bytes boundary
 } StructureUniforms;
 
 typedef struct IsosurfaceUniforms

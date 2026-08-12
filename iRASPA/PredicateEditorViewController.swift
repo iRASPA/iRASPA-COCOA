@@ -44,7 +44,9 @@ class iRASPAPredicateEditorRowTemplate: NSPredicateEditorRowTemplate
     
     if let view = templateViews.last
     {
-      view.setFrameSize(NSMakeSize(200, view.bounds.height))
+      // Avoid zero-height frames during nib decode (bounds may not be ready yet).
+      let height = max(view.bounds.height, 22.0)
+      view.setFrameSize(NSMakeSize(200, height))
     }
   }
 }

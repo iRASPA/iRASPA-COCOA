@@ -41,6 +41,31 @@ class MetalView: MTKView
   var edrSupport: CGFloat = 1.0
   weak var renderCameraSource: RKRenderCameraSource?
   var renderQuality: RKRenderQuality = .high
+  var onCycleRibbonAODebugMode: (() -> Void)? = nil
+  private var ribbonDebugOverlay: NSTextField? = nil
+  
+  func updateRibbonDebugOverlay(text: String?, visible: Bool)
+  {
+    if ribbonDebugOverlay == nil
+    {
+      let field: NSTextField = NSTextField(labelWithString: "")
+      field.isBezeled = false
+      field.isEditable = false
+      field.drawsBackground = true
+      field.backgroundColor = NSColor.white.withAlphaComponent(0.85)
+      field.font = NSFont.monospacedSystemFont(ofSize: 11.0, weight: .regular)
+      field.translatesAutoresizingMaskIntoConstraints = false
+      addSubview(field)
+      NSLayoutConstraint.activate([
+        field.topAnchor.constraint(equalTo: topAnchor, constant: 4.0),
+        field.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4.0),
+        field.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -4.0)
+      ])
+      ribbonDebugOverlay = field
+    }
+    ribbonDebugOverlay?.stringValue = text ?? ""
+    ribbonDebugOverlay?.isHidden = !visible
+  }
   
   var trackball: RKTrackBall = RKTrackBall()
   var startPoint: NSPoint? = NSPoint()
@@ -62,6 +87,12 @@ class MetalView: MTKView
   }
   
   var tracking: Tracking = .none
+  
+  /// True while the user is drag-rotating the camera (trackball). Used to skip expensive ribbon picking without affecting click selection.
+  var skipRibbonPicking: Bool
+  {
+    return tracking == .other
+  }
  
   // the MetalView is initialized from the XIB file
   required init(coder: NSCoder)
@@ -130,6 +161,7 @@ class MetalView: MTKView
    
   override public func mouseDown(with theEvent: NSEvent)
   {
+    window?.makeFirstResponder(self)
     super.mouseDown(with: theEvent)
      
     self.renderCameraSource?.renderCamera?.trackBallRotation = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
@@ -372,6 +404,13 @@ class MetalView: MTKView
   
   public override func keyDown(with theEvent: NSEvent)
   {
+    if theEvent.modifierFlags.contains(.option),
+       theEvent.charactersIgnoringModifiers?.lowercased() == "d"
+    {
+      onCycleRibbonAODebugMode?()
+      return
+    }
+    
     self.interpretKeyEvents([theEvent])
 
     super.keyDown(with: theEvent)

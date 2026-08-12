@@ -390,7 +390,8 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
       
       do
       {
-        let cifParser: SKCIFParser = try SKCIFParser(displayName: displayName, data: data)
+        // Match PDB import defaults: asymmetric unit + protein classification when applicable.
+        let cifParser: SKCIFParser = try SKCIFParser(displayName: displayName, data: data, onlyAsymmetricUnit: true, asMolecule: false, asProtein: true)
         try cifParser.startParsing()
         let scene: Scene = Scene(parser: cifParser.scene)
         let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])

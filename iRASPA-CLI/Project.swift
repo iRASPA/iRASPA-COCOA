@@ -53,11 +53,11 @@ class Project
     {      
       switch(url.pathExtension)
       {
-      case "cif":
-        guard let parser = try? SKCIFParser(displayName: displayName, data: data, onlyAsymmetricUnit: onlyAsymmetricUnit) else {return nil}
+      case "cif", "mmcif":
+        guard let parser = try? SKCIFParser(displayName: displayName, data: data, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: !asMolecule) else {return nil}
         self.parser = parser
       case "pdb":
-        guard let parser = try? SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule) else {return nil}
+        guard let parser = try? SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: !asMolecule) else {return nil}
         self.parser = parser
       case "xyz":
         guard let parser = try? SKXYZParser(displayName: displayName, data: data) else {return nil}

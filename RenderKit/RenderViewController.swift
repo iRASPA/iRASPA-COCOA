@@ -105,6 +105,11 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     
     (self.view as? MTKView)?.delegate = self
     
+    if let view: MetalView = self.view as? MetalView
+    {
+      view.onCycleRibbonAODebugMode = {[weak self] in self?.cycleRibbonAODebugMode()}
+    }
+    
     // the metal default library is not in mainBundle, but in the local framework bundle
     let bundle: Bundle = Bundle(for: MetalView.self)
     
@@ -190,6 +195,43 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     }
   }
   
+  public var ribbonAODebugMode: RibbonAODebugMode
+  {
+    get {renderer.ribbonAODebugMode}
+    set
+    {
+      renderer.ribbonAODebugMode = newValue
+      redraw()
+    }
+  }
+  
+  /// Cycles ribbon AO debug visualization (also bound to Option+D in the render view).
+  public func cycleRibbonAODebugMode()
+  {
+    var mode: RibbonAODebugMode = renderer.ribbonAODebugMode
+    mode.cycle()
+    renderer.ribbonAODebugMode = mode
+    print("Ribbon AO debug: \(mode.label)")
+    if mode == .uniformColors,
+       let text: String = ribbonColorUniformDebugOverlayText(renderStructures: renderer.ribbonShader.renderStructures)
+    {
+      print(text)
+    }
+    if let view: MetalView = self.view as? MetalView
+    {
+      if mode == .uniformColors,
+         let text: String = ribbonColorUniformDebugOverlayText(renderStructures: renderer.ribbonShader.renderStructures)
+      {
+        view.updateRibbonDebugOverlay(text: text, visible: true)
+      }
+      else
+      {
+        view.updateRibbonDebugOverlay(text: nil, visible: false)
+      }
+    }
+    redraw()
+  }
+  
   // MARK: -
   // MARK: Reloading
   
@@ -199,16 +241,14 @@ public class RenderViewController: NSViewController, MTKViewDelegate
        let view: MetalView = self.view as? MetalView,
        let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
+      invalidateRibbonAmbientOcclusionCache()
       self.renderer.reloadData(device: device, view.drawableSize, maximumNumberOfSamples: maximumNumberOfSamples)
-    
-      self.renderer.ambientOcclusionShader.adjustAmbientOcclusionTextureSize()
-    
-      self.renderer.buildStructureUniforms(device: device)
     
       self.renderer.isosurfaceShader.buildVertexBuffers()
       self.renderer.volumeRenderedSurfaceShader.buildVertexBuffers(device: device)
 
-      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
+      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader)
+      self.renderer.buildStructureUniforms(device: device)
     
       self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
       
@@ -227,15 +267,13 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     {
       view.renderCameraSource?.renderCamera?.trackBallRotation = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
     
+      invalidateRibbonAmbientOcclusionCache()
       self.renderer.reloadData(device: device, view.drawableSize, maximumNumberOfSamples: maximumNumberOfSamples)
-    
-      self.renderer.ambientOcclusionShader.adjustAmbientOcclusionTextureSize()
-    
-      self.renderer.buildStructureUniforms(device: device)
     
       self.renderer.isosurfaceShader.buildVertexBuffers()
     
-      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: ambientOcclusionQuality, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
+      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: ambientOcclusionQuality, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader)
+      self.renderer.buildStructureUniforms(device: device)
     
       self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
       
@@ -254,6 +292,30 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       renderer.reloadRenderData(device: device)
       view.renderQuality = RKRenderQuality.high
       view.layer?.setNeedsDisplay()
+    }
+  }
+  
+  /// Updates atom/ribbon visibility in the renderer without rebaking the shadow-map AO atlas.
+  public func reloadVisibility()
+  {
+    if let device = self.device,
+       let view: MetalView = self.view as? MetalView
+    {
+      renderer.reloadRenderDataForVisibility(device: device)
+      renderer.buildStructureUniforms(device: device)
+      view.renderQuality = RKRenderQuality.high
+      view.layer?.setNeedsDisplay()
+    }
+  }
+  
+  public func invalidateRibbonAmbientOcclusionCache()
+  {
+    for structures in renderer.ambientOcclusionShader.renderStructures
+    {
+      for structure in structures
+      {
+        renderer.ambientOcclusionShader.cachedAmbientOcclusionTextures.removeObject(forKey: structure.ribbonAmbientOcclusionCacheKey)
+      }
     }
   }
   
@@ -402,7 +464,10 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     if let device = self.device,
        let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
-      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
+      invalidateRibbonAmbientOcclusionCache()
+      self.renderer.buildVertexBuffers(device: device)
+      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader)
+      self.renderer.buildStructureUniforms(device: device)
     }
   }
   
@@ -426,9 +491,10 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   
   public func invalidateCachedAmbientOcclusionTexture(_ structures: [RKRenderObject])
   {
-    for  structure in structures
+    for structure in structures
     {
       self.renderer.ambientOcclusionShader.cachedAmbientOcclusionTextures.removeObject(forKey: structure)
+      self.renderer.ambientOcclusionShader.cachedAmbientOcclusionTextures.removeObject(forKey: structure.ribbonAmbientOcclusionCacheKey)
     }
   }
   
@@ -643,7 +709,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       {
         commandBuffer.addCompletedHandler{(_) in self._inflightSemaphore.signal()}
                     
-        renderer.pickingOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera)
+        renderer.pickingOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera, skipRibbonPicking: view.skipRibbonPicking)
        
         renderer.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera)
          

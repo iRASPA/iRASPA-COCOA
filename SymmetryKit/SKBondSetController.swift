@@ -251,20 +251,42 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
   
   public func restoreBonds(atomTreeController: SKAtomTreeController)
   {
-    // restore references to asymmetricAtoms in the asymmetricBonds
+    // Restore atom references from archived leaf / copy tags. Old Gallery proteins may
+    // rebuild their atom hierarchy after decode; skip bonds whose tags no longer match.
     let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    let atomCount: Int = asymmetricAtoms.count
+    var restoredAsymmetricBonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>] = []
+    restoredAsymmetricBonds.reserveCapacity(self.arrangedObjects.count)
+    
+    for asymmetricBond in self.arrangedObjects
+    {
+      let index1: Int = asymmetricBond.tag1
+      let index2: Int = asymmetricBond.tag2
+      guard index1 >= 0, index1 < atomCount, index2 >= 0, index2 < atomCount else {continue}
+      
+      var restoredBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom> = asymmetricBond
+      restoredBond.atom1 = asymmetricAtoms[index1]
+      restoredBond.atom2 = asymmetricAtoms[index2]
+      restoredAsymmetricBonds.append(restoredBond)
+    }
+    self.arrangedObjects = restoredAsymmetricBonds
+    
+    let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
+    let copyCount: Int = atomList.count
     for i in 0..<self.arrangedObjects.count
     {
-      self.arrangedObjects[i].atom1 = asymmetricAtoms[min(self.arrangedObjects[i].tag1,self.arrangedObjects[i].tag2)]
-      self.arrangedObjects[i].atom2 = asymmetricAtoms[max(self.arrangedObjects[i].tag1,self.arrangedObjects[i].tag2)]
-    }
-    
-    // restore the references to atom-copies in bond-copies
-    let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
-    for bond in self.bonds
-    {
-      bond.atom1 = atomList[min(bond.atom1Tag, bond.atom2Tag)]
-      bond.atom2 = atomList[max(bond.atom1Tag, bond.atom2Tag)]
+      var validCopies: [SKBondNode] = []
+      validCopies.reserveCapacity(self.arrangedObjects[i].copies.count)
+      for bond in self.arrangedObjects[i].copies
+      {
+        let index1: Int = bond.atom1Tag
+        let index2: Int = bond.atom2Tag
+        guard index1 >= 0, index1 < copyCount, index2 >= 0, index2 < copyCount else {continue}
+        bond.atom1 = atomList[index1]
+        bond.atom2 = atomList[index2]
+        validCopies.append(bond)
+      }
+      self.arrangedObjects[i].copies = validCopies
     }
   }
 }

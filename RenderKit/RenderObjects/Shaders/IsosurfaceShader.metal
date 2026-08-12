@@ -33,6 +33,14 @@
 #include "Common.h"
 using namespace metal;
 
+// Marching Cubes emits a fixed 48-byte vertex (3 × float4: position, normal, st/pad).
+// Do not use InPerVertex here — ribbons extended that struct and would break the stride.
+struct IsosurfaceInVertex
+{
+  float4 position;
+  float4 normal;
+  float4 stPad;
+};
 
 struct IsosurfaceVertexShaderOut
 {
@@ -43,7 +51,7 @@ struct IsosurfaceVertexShaderOut
 };
 
 
-vertex IsosurfaceVertexShaderOut IsosurfaceVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+vertex IsosurfaceVertexShaderOut IsosurfaceVertexShader(const device IsosurfaceInVertex *vertices [[buffer(0)]],
                                                 const device float4 *positions [[buffer(1)]],
                                                 constant FrameUniforms& frameUniforms [[buffer(2)]],
                                                 constant StructureUniforms& structureUniforms [[buffer(3)]],

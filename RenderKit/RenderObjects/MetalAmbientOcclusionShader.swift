@@ -43,8 +43,15 @@ class MetalAmbientOcclusionShader
   
   var shadowMapFrameUniformBuffer: MTLBuffer! = nil
   var shadowMapPipeLine: MTLRenderPipelineState! = nil
+  var ribbonShadowMapPipeLine: MTLRenderPipelineState! = nil
   var ambientOcclusionPipeLine: MTLRenderPipelineState! = nil
+  var ribbonAmbientOcclusionPipeLine: MTLRenderPipelineState! = nil
+  var ribbonAOBlurHorizontalPipeLine: MTLRenderPipelineState! = nil
+  var ribbonAOBlurVerticalPipeLine: MTLRenderPipelineState! = nil
+  var ribbonAOBlurVertexBuffer: MTLBuffer! = nil
+  var ribbonAOBlurIndexBuffer: MTLBuffer! = nil
   public var textures: [[MTLTexture]] = []
+  public var ribbonTextures: [[MTLTexture]] = []
   var depthTexture: MTLTexture! = nil
   var depthState: MTLDepthStencilState! = nil
   var quadSamplerState:  MTLSamplerState! = nil
@@ -92,6 +99,22 @@ class MetalAmbientOcclusionShader
       fatalError("Error occurred when creating render pipeline state \(error)")
     }
     
+    let ribbonShadowMapPipeLineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    ribbonShadowMapPipeLineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
+    ribbonShadowMapPipeLineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    ribbonShadowMapPipeLineDescriptor.colorAttachments[0] = nil
+    ribbonShadowMapPipeLineDescriptor.vertexFunction = library.makeFunction(name: "RibbonShadowMapVertexShader")!
+    ribbonShadowMapPipeLineDescriptor.fragmentFunction = library.makeFunction(name: "RibbonShadowMapFragmentShader")!
+    ribbonShadowMapPipeLineDescriptor.vertexDescriptor = vertexDescriptor
+    do
+    {
+      self.ribbonShadowMapPipeLine = try device.makeRenderPipelineState(descriptor: ribbonShadowMapPipeLineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating ribbon shadow map pipeline state \(error)")
+    }
+    
     
     
     let ambientOcclusionPipeLineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -101,6 +124,7 @@ class MetalAmbientOcclusionShader
     ambientOcclusionPipeLineDescriptor.colorAttachments[0].isBlendingEnabled = true
     ambientOcclusionPipeLineDescriptor.colorAttachments[0].writeMask = MTLColorWriteMask.red
     ambientOcclusionPipeLineDescriptor.colorAttachments[0].rgbBlendOperation = MTLBlendOperation.add
+    ambientOcclusionPipeLineDescriptor.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactor.one
     ambientOcclusionPipeLineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one
     ambientOcclusionPipeLineDescriptor.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactor.one
     ambientOcclusionPipeLineDescriptor.vertexFunction = library.makeFunction(name: "AmbientOcclusionVertexShader")!
@@ -114,6 +138,64 @@ class MetalAmbientOcclusionShader
     {
       fatalError("Error occurred when creating render pipeline state \(error)")
     }
+    
+    let ribbonAmbientOcclusionPipeLineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    ribbonAmbientOcclusionPipeLineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.invalid
+    ribbonAmbientOcclusionPipeLineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    ribbonAmbientOcclusionPipeLineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.r16Float
+    ribbonAmbientOcclusionPipeLineDescriptor.colorAttachments[0].isBlendingEnabled = true
+    ribbonAmbientOcclusionPipeLineDescriptor.colorAttachments[0].writeMask = MTLColorWriteMask.red
+    ribbonAmbientOcclusionPipeLineDescriptor.colorAttachments[0].rgbBlendOperation = MTLBlendOperation.add
+    ribbonAmbientOcclusionPipeLineDescriptor.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactor.one
+    ribbonAmbientOcclusionPipeLineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one
+    ribbonAmbientOcclusionPipeLineDescriptor.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactor.one
+    ribbonAmbientOcclusionPipeLineDescriptor.vertexFunction = library.makeFunction(name: "RibbonAmbientOcclusionVertexShader")!
+    ribbonAmbientOcclusionPipeLineDescriptor.fragmentFunction = library.makeFunction(name: "RibbonAmbientOcclusionFragmentShader")!
+    ribbonAmbientOcclusionPipeLineDescriptor.vertexDescriptor = vertexDescriptor
+    do
+    {
+      self.ribbonAmbientOcclusionPipeLine = try device.makeRenderPipelineState(descriptor: ribbonAmbientOcclusionPipeLineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating ribbon ambient occlusion pipeline state \(error)")
+    }
+    
+    let ribbonAOBlurHorizontalPipeLineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    ribbonAOBlurHorizontalPipeLineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.invalid
+    ribbonAOBlurHorizontalPipeLineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    ribbonAOBlurHorizontalPipeLineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.r16Float
+    ribbonAOBlurHorizontalPipeLineDescriptor.vertexFunction = library.makeFunction(name: "ribbonAOBlurVertexShader")!
+    ribbonAOBlurHorizontalPipeLineDescriptor.fragmentFunction = library.makeFunction(name: "ribbonAOBlurHorizontalFragmentShader")!
+    ribbonAOBlurHorizontalPipeLineDescriptor.vertexDescriptor = vertexDescriptor
+    do
+    {
+      self.ribbonAOBlurHorizontalPipeLine = try device.makeRenderPipelineState(descriptor: ribbonAOBlurHorizontalPipeLineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating ribbon AO blur pipeline state \(error)")
+    }
+    
+    let ribbonAOBlurVerticalPipeLineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    ribbonAOBlurVerticalPipeLineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.invalid
+    ribbonAOBlurVerticalPipeLineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    ribbonAOBlurVerticalPipeLineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.r16Float
+    ribbonAOBlurVerticalPipeLineDescriptor.vertexFunction = library.makeFunction(name: "ribbonAOBlurVertexShader")!
+    ribbonAOBlurVerticalPipeLineDescriptor.fragmentFunction = library.makeFunction(name: "ribbonAOBlurVerticalFragmentShader")!
+    ribbonAOBlurVerticalPipeLineDescriptor.vertexDescriptor = vertexDescriptor
+    do
+    {
+      self.ribbonAOBlurVerticalPipeLine = try device.makeRenderPipelineState(descriptor: ribbonAOBlurVerticalPipeLineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating ribbon AO vertical blur pipeline state \(error)")
+    }
+    
+    let quad: MetalQuadGeometry = MetalQuadGeometry()
+    ribbonAOBlurVertexBuffer = device.makeBuffer(bytes: quad.vertices, length: MemoryLayout<RKVertex>.stride * quad.vertices.count, options: .storageModeManaged)
+    ribbonAOBlurIndexBuffer = device.makeBuffer(bytes: quad.indices, length: MemoryLayout<UInt16>.stride * quad.indices.count, options: .storageModeManaged)
 
   }
   
@@ -132,27 +214,28 @@ class MetalAmbientOcclusionShader
           if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource
           {
             let numberOfAtoms: Int = structure.renderAtoms.count
-          
-            switch(numberOfAtoms)
-            {
-            case 0...64:
-              structure.atomAmbientOcclusionTextureSize = min(256,Int(maxSize))
-            case 65...256:
-              structure.atomAmbientOcclusionTextureSize = min(512,Int(maxSize))
-            case 257...1024:
-              structure.atomAmbientOcclusionTextureSize = min(1024,Int(maxSize))
-            case 1025...65536:
-              structure.atomAmbientOcclusionTextureSize = min(2048,Int(maxSize))
-            case 65537...524288:
-              structure.atomAmbientOcclusionTextureSize = min(4096,Int(maxSize))
-            default:
-              structure.atomAmbientOcclusionTextureSize = min(8192,Int(maxSize))
-            }
-          
-          
+            structure.atomAmbientOcclusionTextureSize = RKAmbientOcclusionSizing.maxTextureSize(numberOfAtoms: numberOfAtoms,
+                                                                                                maxTextureDimension: maxSize)
             structure.atomAmbientOcclusionPatchNumber = Int(sqrt(Double(numberOfAtoms)))+1
             structure.atomAmbientOcclusionPatchSize = structure.atomAmbientOcclusionTextureSize/structure.atomAmbientOcclusionPatchNumber
+          }
           
+          if let ribbonSource: RKRenderRibbonSource = structure as? RKRenderRibbonSource,
+             ribbonSource.drawRibbon,
+             ribbonSource.ribbonNumberOfChains > 0
+          {
+            let numberOfAtoms: Int = (structure as? RKRenderAtomSource)?.renderAtoms.count ?? ribbonSource.ribbonResidueDrawRanges.count
+            let atlasDimensions: (width: Int, height: Int, stripHeight: Int) = RKRibbonMesh.ambientOcclusionAtlasDimensions(
+              maxSplineSampleCount: ribbonSource.ribbonMaxSplineSampleCount,
+              numberOfChains: ribbonSource.ribbonNumberOfChains,
+              numberOfAtoms: numberOfAtoms,
+              maxTextureDimension: Int(maxSize))
+            ribbonSource.ribbonAmbientOcclusionTextureWidth = atlasDimensions.width
+            ribbonSource.ribbonAmbientOcclusionTextureHeight = atlasDimensions.height
+            ribbonSource.ribbonAmbientOcclusionStripHeight = atlasDimensions.stripHeight
+            ribbonSource.ribbonAmbientOcclusionTextureSize = max(atlasDimensions.width, atlasDimensions.height)
+            ribbonSource.ribbonAmbientOcclusionPatchNumber = 1
+            ribbonSource.ribbonAmbientOcclusionPatchSize = atlasDimensions.width
           }
         }
       }
@@ -164,11 +247,13 @@ class MetalAmbientOcclusionShader
     adjustAmbientOcclusionTextureSize()
     
     self.textures = []
+    self.ribbonTextures = []
     if let _: RKRenderDataSource = renderDataSource
     {
       for i in 0..<self.renderStructures.count
       {
         var localTextures: [MTLTexture] = []
+        var localRibbonTextures: [MTLTexture] = []
         let structures: [RKRenderObject] = self.renderStructures[i]
         for structure in structures
         {
@@ -178,25 +263,37 @@ class MetalAmbientOcclusionShader
           ambientOcclusionTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
           ambientOcclusionTextureDescriptor.storageMode = MTLStorageMode.managed
           localTextures.append(device.makeTexture(descriptor: ambientOcclusionTextureDescriptor)!)
+          
+          let ribbonTextureWidth: Int = (structure as? RKRenderRibbonSource)?.ribbonAmbientOcclusionTextureWidth ?? 1
+          let ribbonTextureHeight: Int = (structure as? RKRenderRibbonSource)?.ribbonAmbientOcclusionTextureHeight ?? ribbonTextureWidth
+          let ribbonTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.r16Float, width: ribbonTextureWidth, height: ribbonTextureHeight, mipmapped: false)
+          ribbonTextureDescriptor.textureType = MTLTextureType.type2D
+          ribbonTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
+          ribbonTextureDescriptor.storageMode = MTLStorageMode.managed
+          localRibbonTextures.append(device.makeTexture(descriptor: ribbonTextureDescriptor)!)
         }
         self.textures.append(localTextures)
+        self.ribbonTextures.append(localRibbonTextures)
       }
     }
   }
   
   public func updateAmbientOcclusionTextures(device: MTLDevice, _ commandQueue: MTLCommandQueue, quality: RKRenderQuality,
-                                             atomShader: MetalAtomShader, atomOrthographicImposterShader: MetalAtomOrthographicImposterShader)
+                                             atomShader: MetalAtomShader, atomOrthographicImposterShader: MetalAtomOrthographicImposterShader,
+                                             ribbonShader: MetalRibbonShader)
   {
+    buildAmbientOcclusionTextures(device: device)
+    atomShader.buildVertexBuffers(device: device)
+    ribbonShader.buildVertexBuffers(device: device)
+    
     if let crystalProjectData: RKRenderDataSource = renderDataSource
     {
       var structureAmbientOcclusionUniformBuffers: MTLBuffer! = nil
       
-      // create the depth-buffer (will be discarded after the computation)
       let shadowMapDepthTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float, width: 2048, height: 2048, mipmapped: false)
       shadowMapDepthTextureDescriptor.textureType = MTLTextureType.type2D
       shadowMapDepthTextureDescriptor.storageMode = MTLStorageMode.private
       shadowMapDepthTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
-      //let shadowMapDepthTexture: MTLTexture = device.newTextureWithDescriptor(shadowMapDepthTextureDescriptor)
       depthTexture = device.makeTexture(descriptor: shadowMapDepthTextureDescriptor)
       
       let shadowMapPassDescriptor = MTLRenderPassDescriptor()
@@ -223,14 +320,30 @@ class MetalAmbientOcclusionShader
           }
           
           structureAmbientOcclusionUniformBuffers = device.makeBuffer(bytes: structureUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structures.count,1), options:.storageModeManaged)
+          structureAmbientOcclusionUniformBuffers.didModifyRange(0..<MemoryLayout<RKStructureUniforms>.stride * max(structures.count,1))
           
-          if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
-             structure.atomAmbientOcclusion && structure.isVisible
+          let atomSourceForAO: RKRenderAtomSource? = structure as? RKRenderAtomSource
+          let ribbonSourceForAO: RKRenderRibbonSource? = structure as? RKRenderRibbonSource
+          let shouldBakeAtomAO: Bool = {
+            guard let atomSource: RKRenderAtomSource = atomSourceForAO else {return false}
+            return atomSource.drawAtoms &&
+                   atomSource.atomAmbientOcclusion &&
+                   structure.isVisible
+          }()
+          let shouldBakeRibbonAO: Bool = {
+            guard let ribbonSource: RKRenderRibbonSource = ribbonSourceForAO else {return false}
+            return ribbonSource.drawRibbon &&
+                   ribbonSource.ribbonAmbientOcclusion &&
+                   structure.isVisible &&
+                   ribbonSource.ribbonNumberOfChains > 0
+          }()
+          
+          if shouldBakeAtomAO || shouldBakeRibbonAO
           {
-            let textureSize: Int = structure.atomAmbientOcclusionTextureSize
+            let textureSize: Int = atomSourceForAO?.atomAmbientOcclusionTextureSize ?? 256
             
-            
-            if let cachedVersion: Data = cachedAmbientOcclusionTextures.object(forKey: structure) as? Data
+            if shouldBakeAtomAO,
+               let cachedVersion: Data = cachedAmbientOcclusionTextures.object(forKey: structure) as? Data
             {
               let region: MTLRegion = MTLRegionMake2D(0, 0, textureSize, textureSize)
               let ambientOcclusiontexture: MTLTexture = self.textures[i][j]
@@ -239,8 +352,50 @@ class MetalAmbientOcclusionShader
                 ambientOcclusiontexture.replace(region: region, mipmapLevel: 0, slice: 0, withBytes: ptr.baseAddress!, bytesPerRow: 2 * region.size.width, bytesPerImage: 2 * region.size.width * region.size.height)
               }
             }
-            else
+            
+            let needFreshAtomBake: Bool = shouldBakeAtomAO && cachedAmbientOcclusionTextures.object(forKey: structure) == nil
+            let needFreshRibbonBake: Bool = shouldBakeRibbonAO && cachedAmbientOcclusionTextures.object(forKey: structure.ribbonAmbientOcclusionCacheKey) == nil
+            
+            if needFreshAtomBake || needFreshRibbonBake
             {
+              var ribbonRenderStructureUniformBuffers: MTLBuffer? = nil
+              var ribbonBakeDrewGeometry: Bool = false
+              var ribbonAmbientOcclusionPassDescriptor: MTLRenderPassDescriptor? = nil
+              var ribbonAmbientOcclusionBlendPassDescriptor: MTLRenderPassDescriptor? = nil
+              var ribbonTextureWidth: Int = 0
+              var ribbonTextureHeight: Int = 0
+              var ribbonCanBake: Bool = false
+              if needFreshRibbonBake, let ribbonSource: RKRenderRibbonSource = ribbonSourceForAO
+              {
+                ribbonTextureWidth = ribbonSource.ribbonAmbientOcclusionTextureWidth
+                ribbonTextureHeight = ribbonSource.ribbonAmbientOcclusionTextureHeight
+                ribbonCanBake = ribbonShader.metalBuffer(ribbonShader.vertexBuffer, sceneIndex: i, movieIndex: j) != nil &&
+                                ribbonShader.metalBuffer(ribbonShader.indexBuffer, sceneIndex: i, movieIndex: j) != nil &&
+                                ribbonSource.ribbonNumberOfIndices > 0
+                
+                if ribbonCanBake
+                {
+                  var ribbonRenderUniforms: [RKStructureUniforms] = [RKStructureUniforms](repeating: RKStructureUniforms(), count: max(structures.count, 1))
+                  for (k, sceneStructure) in structures.enumerated()
+                  {
+                    ribbonRenderUniforms[k] = RKStructureUniforms(structureIdentifier: i, structure: sceneStructure)
+                  }
+                  ribbonRenderStructureUniformBuffers = device.makeBuffer(bytes: ribbonRenderUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structures.count, 1), options: .storageModeManaged)
+                  ribbonRenderStructureUniformBuffers!.didModifyRange(0..<MemoryLayout<RKStructureUniforms>.stride * max(structures.count, 1))
+                  
+                  ribbonAmbientOcclusionPassDescriptor = MTLRenderPassDescriptor()
+                  ribbonAmbientOcclusionPassDescriptor!.colorAttachments[0].texture = ribbonTextures[i][j]
+                  ribbonAmbientOcclusionPassDescriptor!.colorAttachments[0].loadAction = MTLLoadAction.clear
+                  ribbonAmbientOcclusionPassDescriptor!.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
+                  ribbonAmbientOcclusionPassDescriptor!.colorAttachments[0].storeAction = MTLStoreAction.store
+                  
+                  ribbonAmbientOcclusionBlendPassDescriptor = MTLRenderPassDescriptor()
+                  ribbonAmbientOcclusionBlendPassDescriptor!.colorAttachments[0].texture = ribbonTextures[i][j]
+                  ribbonAmbientOcclusionBlendPassDescriptor!.colorAttachments[0].loadAction = MTLLoadAction.load
+                  ribbonAmbientOcclusionBlendPassDescriptor!.colorAttachments[0].storeAction = MTLStoreAction.store
+                }
+              }
+              
               let ambientOcclusionPassDescriptor = MTLRenderPassDescriptor()
               let ambientOcclusionPassColorAttachment: MTLRenderPassColorAttachmentDescriptor = ambientOcclusionPassDescriptor.colorAttachments[0]
               ambientOcclusionPassColorAttachment.texture = textures[i][j]
@@ -252,7 +407,6 @@ class MetalAmbientOcclusionShader
               let ambientOcclusionBlendPassColorAttachment: MTLRenderPassColorAttachmentDescriptor = ambientOcclusionBlendPassDescriptor.colorAttachments[0]
               ambientOcclusionBlendPassColorAttachment.texture = textures[i][j]
               ambientOcclusionBlendPassColorAttachment.loadAction = MTLLoadAction.load
-              ambientOcclusionPassColorAttachment.clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
               ambientOcclusionBlendPassColorAttachment.storeAction = MTLStoreAction.store
               
               var directions: [simd_quatd] = []
@@ -265,20 +419,24 @@ class MetalAmbientOcclusionShader
               }
               else
               {
-                // use the same direction for the vertices and cells of a hecatonicosachoron
                 directions = simd_quatd.Data300 + simd_quatd.Data60
                 weights = Array<Float>(repeating: 4.0*0.93426/360.0, count: 300) + Array<Float>(repeating: 4.0*1.32870/360.0, count: 60)
               }
               
-              
-              // create the uniform-buffer for all 343-random orientations
               var shadowMapFrameUniformsArray: [RKShadowUniforms] = [RKShadowUniforms](repeating: RKShadowUniforms(), count: directions.count)
               
               if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
               {
-                let ambientOcclusionBlendCommandEncoder: MTLRenderCommandEncoder
-                ambientOcclusionBlendCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: ambientOcclusionPassDescriptor)!
-                ambientOcclusionBlendCommandEncoder.endEncoding()
+                if needFreshAtomBake
+                {
+                  let ambientOcclusionBlendCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: ambientOcclusionPassDescriptor)!
+                  ambientOcclusionBlendCommandEncoder.endEncoding()
+                }
+                if needFreshRibbonBake, let ribbonClearPass: MTLRenderPassDescriptor = ribbonAmbientOcclusionPassDescriptor
+                {
+                  let ribbonClearEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: ribbonClearPass)!
+                  ribbonClearEncoder.endEncoding()
+                }
                 commandBuffer.commit()
               }
               
@@ -296,7 +454,6 @@ class MetalAmbientOcclusionShader
                 right = largestRadius/boundingBoxAspectRatio;
                 top = largestRadius/boundingBoxAspectRatio;
                 bottom = -largestRadius/boundingBoxAspectRatio;
-                
               }
               else
               {
@@ -309,9 +466,9 @@ class MetalAmbientOcclusionShader
               let near: Double = 1.0
               let far: Double = 1000.0
               
-              
-              // the fixed set of directions are randomly, but deterministically, distorted to remove artifacts
               srand48(0)
+              
+              let ribbonUsesRenderUniformsForShadow: Bool = needFreshRibbonBake && !(atomSourceForAO?.drawAtoms ?? false)
               
               for k in 0..<directions.count
               {
@@ -326,11 +483,10 @@ class MetalAmbientOcclusionShader
                 shadowMapFrameUniformsArray[k] = shadowMapFrameUniforms
               }
               shadowMapFrameUniformBuffer = device.makeBuffer(bytes: &shadowMapFrameUniformsArray, length:MemoryLayout<RKShadowUniforms>.stride * shadowMapFrameUniformsArray.count, options:.storageModeManaged)
-              
+              shadowMapFrameUniformBuffer.didModifyRange(0..<MemoryLayout<RKShadowUniforms>.stride * shadowMapFrameUniformsArray.count)
               
               if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
               {
-                // generate shadow-map
                 for k in 0..<directions.count
                 {
                   let shadowMapCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowMapPassDescriptor)!
@@ -340,64 +496,97 @@ class MetalAmbientOcclusionShader
                   shadowMapCommandEncoder.setFrontFacing(MTLWinding.clockwise)
                   shadowMapCommandEncoder.setRenderPipelineState(self.shadowMapPipeLine)
                   
-                  
                   for (l, structure) in structures.enumerated()
                   {
-                    
-                    if structure.isVisible
+                    guard structure.isVisible else {continue}
+                    drawAtomShadowMapInstances(shadowMapCommandEncoder,
+                                               sceneIndex: i,
+                                               structureIndex: l,
+                                               structureUniformBuffers: structureAmbientOcclusionUniformBuffers,
+                                               structureUniformOffset: l * MemoryLayout<RKStructureUniforms>.stride,
+                                               shadowUniformOffset: k * MemoryLayout<RKShadowUniforms>.stride,
+                                               includeHiddenAtomsForRibbonOcclusion: needFreshRibbonBake && (atomSourceForAO?.drawAtoms ?? false),
+                                               atomShader: atomShader,
+                                               atomOrthographicImposterShader: atomOrthographicImposterShader)
+                    if needFreshRibbonBake
                     {
-                      shadowMapCommandEncoder.setVertexBuffer(atomOrthographicImposterShader.vertexBuffer, offset: 0, index: 0)
-                      shadowMapCommandEncoder.setVertexBuffer(atomShader.instanceBuffer[i][l], offset: 0, index: 1)
-                      shadowMapCommandEncoder.setVertexBuffer(self.shadowMapFrameUniformBuffer, offset: k*MemoryLayout<RKShadowUniforms>.stride, index: 2)
-                      shadowMapCommandEncoder.setVertexBuffer(structureAmbientOcclusionUniformBuffers, offset: l*MemoryLayout<RKStructureUniforms>.stride, index: 3)
-                      shadowMapCommandEncoder.setFragmentBuffer(self.shadowMapFrameUniformBuffer, offset: k*MemoryLayout<RKShadowUniforms>.stride, index: 0)
-                      
-                      if let buffer: MTLBuffer = atomShader.instanceBuffer[i][l]
-                      {
-                        let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-                        
-                        shadowMapCommandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: atomOrthographicImposterShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: atomOrthographicImposterShader.indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
-                      }
+                      let ribbonShadowUniformBuffers: MTLBuffer = (ribbonUsesRenderUniformsForShadow && ribbonRenderStructureUniformBuffers != nil)
+                        ? ribbonRenderStructureUniformBuffers!
+                        : structureAmbientOcclusionUniformBuffers
+                      drawRibbonShadowMapMeshes(shadowMapCommandEncoder,
+                                                sceneIndex: i,
+                                                structureIndex: l,
+                                                shadowUniformOffset: k * MemoryLayout<RKShadowUniforms>.stride,
+                                                structureUniformBuffers: ribbonShadowUniformBuffers,
+                                                structureUniformOffset: l * MemoryLayout<RKStructureUniforms>.stride,
+                                                ribbonShader: ribbonShader)
                     }
                   }
                   
                   shadowMapCommandEncoder.endEncoding()
                   
-                  
-                  
-                  let ambientOcclusionBlendCommandEncoder: MTLRenderCommandEncoder
-                  ambientOcclusionBlendCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: ambientOcclusionBlendPassDescriptor)!
-                  
-                  ambientOcclusionBlendCommandEncoder.setFragmentBytes(&weights[k], length: MemoryLayout<Float>.stride, index: 2)
-                  
-                  ambientOcclusionBlendCommandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(textureSize), height: Double(textureSize), znear: 0.0, zfar: 1.0))
-                  ambientOcclusionBlendCommandEncoder.setRenderPipelineState(self.ambientOcclusionPipeLine)
-                  
-                  ambientOcclusionBlendCommandEncoder.setVertexBuffer(atomOrthographicImposterShader.vertexBuffer, offset: 0, index: 0)
-                  ambientOcclusionBlendCommandEncoder.setVertexBuffer(atomShader.instanceBuffer[i][j], offset: 0, index: 1)
-                  ambientOcclusionBlendCommandEncoder.setVertexBuffer(shadowMapFrameUniformBuffer, offset: k*MemoryLayout<RKShadowUniforms>.stride, index: 2)
-                  ambientOcclusionBlendCommandEncoder.setVertexBuffer(structureAmbientOcclusionUniformBuffers, offset: j*MemoryLayout<RKStructureUniforms>.stride, index: 3)
-                  
-                  
-                  ambientOcclusionBlendCommandEncoder.setFragmentBuffer(shadowMapFrameUniformBuffer, offset: k*MemoryLayout<RKShadowUniforms>.stride, index: 0)
-                  ambientOcclusionBlendCommandEncoder.setFragmentBuffer(structureAmbientOcclusionUniformBuffers, offset: j*MemoryLayout<RKStructureUniforms>.stride, index: 1)
-                  ambientOcclusionBlendCommandEncoder.setFragmentTexture(depthTexture, index: 0)
-                  ambientOcclusionBlendCommandEncoder.setFragmentSamplerState(quadSamplerState, index: 0)
-                  
-                  if let buffer: MTLBuffer = atomShader.instanceBuffer[i][j]
+                  if needFreshAtomBake
                   {
-                    let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-                    ambientOcclusionBlendCommandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: atomOrthographicImposterShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: atomOrthographicImposterShader.indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
+                    let ambientOcclusionBlendCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: ambientOcclusionBlendPassDescriptor)!
+                    
+                    ambientOcclusionBlendCommandEncoder.setFragmentBytes(&weights[k], length: MemoryLayout<Float>.stride, index: 2)
+                    
+                    ambientOcclusionBlendCommandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(textureSize), height: Double(textureSize), znear: 0.0, zfar: 1.0))
+                    ambientOcclusionBlendCommandEncoder.setRenderPipelineState(self.ambientOcclusionPipeLine)
+                    ambientOcclusionBlendCommandEncoder.setVertexBuffer(shadowMapFrameUniformBuffer, offset: k*MemoryLayout<RKShadowUniforms>.stride, index: 2)
+                    ambientOcclusionBlendCommandEncoder.setVertexBuffer(structureAmbientOcclusionUniformBuffers, offset: j*MemoryLayout<RKStructureUniforms>.stride, index: 3)
+                    ambientOcclusionBlendCommandEncoder.setFragmentBuffer(shadowMapFrameUniformBuffer, offset: k*MemoryLayout<RKShadowUniforms>.stride, index: 0)
+                    ambientOcclusionBlendCommandEncoder.setFragmentBuffer(structureAmbientOcclusionUniformBuffers, offset: j*MemoryLayout<RKStructureUniforms>.stride, index: 1)
+                    ambientOcclusionBlendCommandEncoder.setFragmentTexture(depthTexture, index: 0)
+                    ambientOcclusionBlendCommandEncoder.setFragmentSamplerState(quadSamplerState, index: 0)
+                    
+                    if let buffer: MTLBuffer = atomShader.instanceBuffer[i][j],
+                       let indexBuffer: MTLBuffer = atomOrthographicImposterShader.indexBuffer,
+                       let vertexBuffer: MTLBuffer = atomOrthographicImposterShader.vertexBuffer
+                    {
+                      let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+                      let indexCount: Int = indexBuffer.length / MemoryLayout<UInt16>.stride
+                      if instanceCount > 0 && indexCount > 0
+                      {
+                        ambientOcclusionBlendCommandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+                        ambientOcclusionBlendCommandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+                        ambientOcclusionBlendCommandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexCount, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
+                      }
+                    }
+                    
+                    ambientOcclusionBlendCommandEncoder.endEncoding()
                   }
                   
-                  ambientOcclusionBlendCommandEncoder.endEncoding()
+                  if needFreshRibbonBake && ribbonCanBake,
+                     let ribbonSource: RKRenderRibbonSource = ribbonSourceForAO,
+                     let ribbonBlendPass: MTLRenderPassDescriptor = ribbonAmbientOcclusionBlendPassDescriptor
+                  {
+                    let ribbonAccumulationUniformBuffers: MTLBuffer = (ribbonUsesRenderUniformsForShadow && ribbonRenderStructureUniformBuffers != nil)
+                      ? ribbonRenderStructureUniformBuffers!
+                      : structureAmbientOcclusionUniformBuffers
+                    let ribbonAOEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: ribbonBlendPass)!
+                    let drewThisPass: Bool = encodeRibbonAmbientOcclusionAccumulation(ribbonAOEncoder,
+                                                                                        sceneIndex: i,
+                                                                                        structureIndex: j,
+                                                                                        ribbonSource: ribbonSource,
+                                                                                        ribbonShader: ribbonShader,
+                                                                                        structureUniformBuffers: ribbonAccumulationUniformBuffers,
+                                                                                        structureUniformOffset: j * MemoryLayout<RKStructureUniforms>.stride,
+                                                                                        shadowUniformOffset: k * MemoryLayout<RKShadowUniforms>.stride,
+                                                                                        weight: weights[k],
+                                                                                        textureWidth: ribbonTextureWidth,
+                                                                                        textureHeight: ribbonTextureHeight)
+                    ribbonBakeDrewGeometry = ribbonBakeDrewGeometry || drewThisPass
+                    ribbonAOEncoder.endEncoding()
+                  }
                 }
                 
                 commandBuffer.commit()
                 commandBuffer.waitUntilCompleted()
               }
               
-              
+              if needFreshAtomBake
+              {
               let dataLength: Int = textureSize * textureSize * 2
               let textureBuffer: MTLBuffer = device.makeBuffer(length: dataLength, options: MTLResourceOptions())!
               
@@ -417,10 +606,300 @@ class MetalAmbientOcclusionShader
               // store ambient-occlusion texture for reuse (i.e. it is too expensive to recompute everytime a user switches projects)
               let ambientOcclusionTextureData: Data = Data(bytes: textureBuffer.contents().assumingMemoryBound(to: UInt8.self), count: dataLength)
               self.cachedAmbientOcclusionTextures.setObject(ambientOcclusionTextureData as AnyObject, forKey: structure)
+              }
+              
+              if needFreshRibbonBake && ribbonCanBake && ribbonBakeDrewGeometry
+              {
+                postprocessRibbonAmbientOcclusionTexture(device: device,
+                                                         commandQueue: commandQueue,
+                                                         texture: self.ribbonTextures[i][j],
+                                                         textureWidth: ribbonTextureWidth,
+                                                         textureHeight: ribbonTextureHeight)
+                
+                let ribbonDataLength: Int = ribbonTextureWidth * ribbonTextureHeight * 2
+                let ribbonTextureBuffer: MTLBuffer = device.makeBuffer(length: ribbonDataLength, options: MTLResourceOptions())!
+                if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
+                {
+                  let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()!
+                  blitEncoder.synchronize(resource: self.ribbonTextures[i][j])
+                  blitEncoder.copy(from: self.ribbonTextures[i][j], sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0, 0, 0), sourceSize: MTLSizeMake(ribbonTextureWidth, ribbonTextureHeight, 1), to: ribbonTextureBuffer, destinationOffset: 0, destinationBytesPerRow: ribbonTextureWidth * 2, destinationBytesPerImage: 0)
+                  blitEncoder.endEncoding()
+                  commandBuffer.commit()
+                  commandBuffer.waitUntilCompleted()
+                }
+                let ribbonTextureData: Data = Data(bytes: ribbonTextureBuffer.contents().assumingMemoryBound(to: UInt8.self), count: ribbonDataLength)
+                if ribbonAmbientOcclusionTextureHasContent(ribbonTextureData, texelCount: ribbonTextureWidth * ribbonTextureHeight)
+                {
+                  self.cachedAmbientOcclusionTextures.setObject(ribbonTextureData as AnyObject, forKey: structure.ribbonAmbientOcclusionCacheKey)
+                }
+                synchronizeManagedTextureToGPU(device: device, commandQueue: commandQueue, texture: self.ribbonTextures[i][j])
+              }
+            }
+          }
+          
+          if let ribbonSource: RKRenderRibbonSource = structure as? RKRenderRibbonSource,
+             ribbonSource.drawRibbon,
+             ribbonSource.ribbonAmbientOcclusion,
+             ribbonSource.isVisible,
+             ribbonSource.ribbonNumberOfChains > 0
+          {
+            let textureWidth: Int = ribbonSource.ribbonAmbientOcclusionTextureWidth
+            let textureHeight: Int = ribbonSource.ribbonAmbientOcclusionTextureHeight
+            let cacheKey: NSString = structure.ribbonAmbientOcclusionCacheKey
+            
+            if let cachedVersion: Data = cachedAmbientOcclusionTextures.object(forKey: cacheKey) as? Data
+            {
+              let region: MTLRegion = MTLRegionMake2D(0, 0, textureWidth, textureHeight)
+              let ribbonTexture: MTLTexture = self.ribbonTextures[i][j]
+              cachedVersion.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> () in
+                ribbonTexture.replace(region: region, mipmapLevel: 0, slice: 0, withBytes: ptr.baseAddress!, bytesPerRow: 2 * region.size.width, bytesPerImage: 2 * region.size.width * region.size.height)
+              }
+              synchronizeManagedTextureToGPU(device: device, commandQueue: commandQueue, texture: ribbonTexture)
             }
           }
         }
       }
     }
+  }
+  
+  @discardableResult
+  private func encodeRibbonAmbientOcclusionAccumulation(_ aoEncoder: MTLRenderCommandEncoder,
+                                                        sceneIndex: Int,
+                                                        structureIndex: Int,
+                                                        ribbonSource: RKRenderRibbonSource,
+                                                        ribbonShader: MetalRibbonShader,
+                                                        structureUniformBuffers: MTLBuffer,
+                                                        structureUniformOffset: Int,
+                                                        shadowUniformOffset: Int,
+                                                        weight: Float,
+                                                        textureWidth: Int,
+                                                        textureHeight: Int) -> Bool
+  {
+    var mutableWeight: Float = weight
+    
+    aoEncoder.setFragmentBytes(&mutableWeight, length: MemoryLayout<Float>.stride, index: 1)
+    aoEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(textureWidth), height: Double(textureHeight), znear: 0.0, zfar: 1.0))
+    aoEncoder.setRenderPipelineState(self.ribbonAmbientOcclusionPipeLine)
+    aoEncoder.setVertexBuffer(structureUniformBuffers, offset: structureUniformOffset, index: 3)
+    aoEncoder.setFragmentBuffer(shadowMapFrameUniformBuffer, offset: shadowUniformOffset, index: 0)
+    aoEncoder.setFragmentTexture(depthTexture, index: 0)
+    aoEncoder.setFragmentSamplerState(quadSamplerState, index: 0)
+    
+    guard let ribbonVertexBuffer: MTLBuffer = ribbonShader.metalBuffer(ribbonShader.vertexBuffer, sceneIndex: sceneIndex, movieIndex: structureIndex),
+          let ribbonIndexBuffer: MTLBuffer = ribbonShader.metalBuffer(ribbonShader.indexBuffer, sceneIndex: sceneIndex, movieIndex: structureIndex)
+    else {return false}
+    
+    aoEncoder.setVertexBuffer(ribbonVertexBuffer, offset: 0, index: 0)
+    
+    var drewGeometry: Bool = false
+    for chainRange in ribbonSource.ribbonChainDrawRanges
+    {
+      guard chainRange.indexCount > 0 else {continue}
+      aoEncoder.drawIndexedPrimitives(type: .triangle,
+                                      indexCount: chainRange.indexCount,
+                                      indexType: .uint32,
+                                      indexBuffer: ribbonIndexBuffer,
+                                      indexBufferOffset: chainRange.indexStart * MemoryLayout<UInt32>.stride)
+      drewGeometry = true
+    }
+    return drewGeometry
+  }
+  
+  private func ribbonAmbientOcclusionTextureHasContent(_ data: Data, texelCount: Int) -> Bool
+  {
+    guard texelCount > 0, data.count >= texelCount * MemoryLayout<UInt16>.stride else {return false}
+    
+    var maxValue: Float = 0.0
+    data.withUnsafeBytes { (rawBuffer: UnsafeRawBufferPointer) in
+      guard let pointer: UnsafePointer<UInt16> = rawBuffer.baseAddress?.assumingMemoryBound(to: UInt16.self) else {return}
+      for index in 0..<texelCount
+      {
+        maxValue = max(maxValue, RKHalfFloat.float(fromHalfBits: pointer[index]))
+      }
+    }
+    return maxValue > 1.0e-5
+  }
+  
+  private func postprocessRibbonAmbientOcclusionTexture(device: MTLDevice,
+                                                         commandQueue: MTLCommandQueue,
+                                                         texture: MTLTexture,
+                                                         textureWidth: Int,
+                                                         textureHeight: Int)
+  {
+    let texelCount: Int = textureWidth * textureHeight
+    guard texelCount > 0 else {return}
+    
+    let readBuffer: MTLBuffer = device.makeBuffer(length: texelCount * MemoryLayout<UInt16>.stride, options: MTLResourceOptions())!
+    if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
+    {
+      let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()!
+      blitEncoder.synchronize(resource: texture)
+      blitEncoder.copy(from: texture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0, 0, 0), sourceSize: MTLSizeMake(textureWidth, textureHeight, 1), to: readBuffer, destinationOffset: 0, destinationBytesPerRow: textureWidth * MemoryLayout<UInt16>.stride, destinationBytesPerImage: 0)
+      blitEncoder.endEncoding()
+      commandBuffer.commit()
+      commandBuffer.waitUntilCompleted()
+    }
+    
+    var channelData: [Float] = Array(repeating: 0.0, count: texelCount)
+    let halfPointer: UnsafeMutablePointer<UInt16> = readBuffer.contents().assumingMemoryBound(to: UInt16.self)
+    for index in 0..<texelCount
+    {
+      channelData[index] = RKHalfFloat.float(fromHalfBits: halfPointer[index])
+    }
+    
+    RibbonAOTexturePostProcess.dilateAndSmooth(&channelData, width: textureWidth, height: textureHeight)
+    
+    for index in 0..<texelCount
+    {
+      halfPointer[index] = RKHalfFloat.halfBits(from: channelData[index])
+    }
+    
+    let region: MTLRegion = MTLRegionMake2D(0, 0, textureWidth, textureHeight)
+    texture.replace(region: region, mipmapLevel: 0, slice: 0, withBytes: readBuffer.contents(), bytesPerRow: textureWidth * MemoryLayout<UInt16>.stride, bytesPerImage: textureWidth * textureHeight * MemoryLayout<UInt16>.stride)
+    synchronizeManagedTextureToGPU(device: device, commandQueue: commandQueue, texture: texture)
+    
+    blurRibbonAmbientOcclusionTexture(device: device,
+                                      commandQueue: commandQueue,
+                                      sourceTexture: texture,
+                                      textureWidth: textureWidth,
+                                      textureHeight: textureHeight)
+  }
+  
+  private func blurRibbonAmbientOcclusionTexture(device: MTLDevice,
+                                                 commandQueue: MTLCommandQueue,
+                                                 sourceTexture: MTLTexture,
+                                                 textureWidth: Int,
+                                                 textureHeight: Int)
+  {
+    let blurTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.r16Float,
+                                                                                               width: textureWidth,
+                                                                                               height: textureHeight,
+                                                                                               mipmapped: false)
+    blurTextureDescriptor.textureType = MTLTextureType.type2D
+    blurTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
+    blurTextureDescriptor.storageMode = MTLStorageMode.managed
+    guard let blurTexture: MTLTexture = device.makeTexture(descriptor: blurTextureDescriptor)
+    else {return}
+    
+    let blurPipelines: [MTLRenderPipelineState] = [ribbonAOBlurHorizontalPipeLine, ribbonAOBlurVerticalPipeLine]
+    var blurUniforms: RibbonAOBlurUniforms = RibbonAOBlurUniforms()
+    blurUniforms.inverseTextureSize = SIMD2<Float>(Float(1.0 / Double(max(textureWidth, 1))),
+                                                   Float(1.0 / Double(max(textureHeight, 1))))
+    
+    for pipeline in blurPipelines
+    {
+      guard let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
+      else {return}
+      
+      let blurPassDescriptor: MTLRenderPassDescriptor = MTLRenderPassDescriptor()
+      blurPassDescriptor.colorAttachments[0].texture = blurTexture
+      blurPassDescriptor.colorAttachments[0].loadAction = MTLLoadAction.dontCare
+      blurPassDescriptor.colorAttachments[0].storeAction = MTLStoreAction.store
+      
+      let blurEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: blurPassDescriptor)!
+      blurEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(textureWidth), height: Double(textureHeight), znear: 0.0, zfar: 1.0))
+      blurEncoder.setRenderPipelineState(pipeline)
+      blurEncoder.setVertexBuffer(ribbonAOBlurVertexBuffer, offset: 0, index: 0)
+      blurEncoder.setFragmentBytes(&blurUniforms, length: MemoryLayout<RibbonAOBlurUniforms>.stride, index: 0)
+      blurEncoder.setFragmentTexture(sourceTexture, index: 0)
+      blurEncoder.setFragmentSamplerState(quadSamplerState, index: 0)
+      blurEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: 4, indexType: .uint16, indexBuffer: ribbonAOBlurIndexBuffer, indexBufferOffset: 0)
+      blurEncoder.endEncoding()
+      
+      let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()!
+      blitEncoder.copy(from: blurTexture,
+                       sourceSlice: 0,
+                       sourceLevel: 0,
+                       sourceOrigin: MTLOriginMake(0, 0, 0),
+                       sourceSize: MTLSizeMake(textureWidth, textureHeight, 1),
+                       to: sourceTexture,
+                       destinationSlice: 0,
+                       destinationLevel: 0,
+                       destinationOrigin: MTLOriginMake(0, 0, 0))
+      blitEncoder.endEncoding()
+      commandBuffer.commit()
+      commandBuffer.waitUntilCompleted()
+    }
+  }
+  
+  private func synchronizeManagedTextureToGPU(device: MTLDevice, commandQueue: MTLCommandQueue, texture: MTLTexture)
+  {
+    guard texture.storageMode == .managed,
+          let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
+    else {return}
+    
+    let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()!
+    blitEncoder.synchronize(resource: texture)
+    blitEncoder.endEncoding()
+    commandBuffer.commit()
+    commandBuffer.waitUntilCompleted()
+  }
+  
+  private func drawRibbonShadowMapMeshes(_ encoder: MTLRenderCommandEncoder,
+                                         sceneIndex: Int,
+                                         structureIndex: Int,
+                                         shadowUniformOffset: Int,
+                                         structureUniformBuffers: MTLBuffer,
+                                         structureUniformOffset: Int,
+                                         ribbonShader: MetalRibbonShader)
+  {
+    guard sceneIndex < renderStructures.count,
+          structureIndex < renderStructures[sceneIndex].count,
+          let ribbonSource: RKRenderRibbonSource = renderStructures[sceneIndex][structureIndex] as? RKRenderRibbonSource,
+          ribbonSource.drawRibbon,
+          let ribbonVertexBuffer: MTLBuffer = ribbonShader.metalBuffer(ribbonShader.vertexBuffer, sceneIndex: sceneIndex, movieIndex: structureIndex),
+          let ribbonIndexBuffer: MTLBuffer = ribbonShader.metalBuffer(ribbonShader.indexBuffer, sceneIndex: sceneIndex, movieIndex: structureIndex)
+    else {return}
+    
+    encoder.setCullMode(MTLCullMode.none)
+    encoder.setFrontFacing(MTLWinding.clockwise)
+    encoder.setRenderPipelineState(ribbonShadowMapPipeLine)
+    encoder.setVertexBuffer(shadowMapFrameUniformBuffer, offset: shadowUniformOffset, index: 1)
+    encoder.setVertexBuffer(structureUniformBuffers, offset: structureUniformOffset, index: 2)
+    encoder.setFragmentBuffer(shadowMapFrameUniformBuffer, offset: shadowUniformOffset, index: 0)
+    encoder.setVertexBuffer(ribbonVertexBuffer, offset: 0, index: 0)
+    
+    for chainRange in ribbonSource.ribbonChainDrawRanges
+    {
+      guard chainRange.indexCount > 0 else {continue}
+      encoder.drawIndexedPrimitives(type: .triangle,
+                                    indexCount: chainRange.indexCount,
+                                    indexType: .uint32,
+                                    indexBuffer: ribbonIndexBuffer,
+                                    indexBufferOffset: chainRange.indexStart * MemoryLayout<UInt32>.stride)
+    }
+  }
+  
+  private func drawAtomShadowMapInstances(_ encoder: MTLRenderCommandEncoder,
+                                          sceneIndex: Int,
+                                          structureIndex: Int,
+                                          structureUniformBuffers: MTLBuffer,
+                                          structureUniformOffset: Int,
+                                          shadowUniformOffset: Int,
+                                          includeHiddenAtomsForRibbonOcclusion: Bool,
+                                          atomShader: MetalAtomShader,
+                                          atomOrthographicImposterShader: MetalAtomOrthographicImposterShader)
+  {
+    guard sceneIndex < renderStructures.count,
+          structureIndex < renderStructures[sceneIndex].count,
+          let atomSource: RKRenderAtomSource = renderStructures[sceneIndex][structureIndex] as? RKRenderAtomSource,
+          atomSource.atomAmbientOcclusion,
+          atomSource.drawAtoms || includeHiddenAtomsForRibbonOcclusion,
+          let instanceBuffer: MTLBuffer = atomShader.instanceBuffer[sceneIndex][structureIndex],
+          let vertexBuffer: MTLBuffer = atomOrthographicImposterShader.vertexBuffer,
+          let indexBuffer: MTLBuffer = atomOrthographicImposterShader.indexBuffer
+    else {return}
+    
+    let instanceCount: Int = instanceBuffer.length / MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+    let indexCount: Int = indexBuffer.length / MemoryLayout<UInt16>.stride
+    guard instanceCount > 0, indexCount > 0 else {return}
+    
+    encoder.setRenderPipelineState(shadowMapPipeLine)
+    encoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+    encoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
+    encoder.setVertexBuffer(shadowMapFrameUniformBuffer, offset: shadowUniformOffset, index: 2)
+    encoder.setVertexBuffer(structureUniformBuffers, offset: structureUniformOffset, index: 3)
+    encoder.setFragmentBuffer(shadowMapFrameUniformBuffer, offset: shadowUniformOffset, index: 0)
+    encoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexCount, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
   }
 }

@@ -77,6 +77,8 @@ class TableListNameTextField: NSTextField
     if let cell = cell as? NSTextFieldCell
     {
       cell.backgroundStyle = .normal
+      cell.textColor = nil
+      cell.backgroundColor = nil
     }
   }
   
@@ -91,17 +93,20 @@ class TableListNameTextField: NSTextField
     return becameFirstResponder
   }
   
-  private func applyEditingAppearance()
+  /// Call while the row may still be selection-emphasized so edit text stays readable.
+  func applyEditingAppearance()
   {
     drawsBackground = true
     backgroundColor = .textBackgroundColor
     textColor = .labelColor
     if let cell = cell as? NSTextFieldCell
     {
+      // Emphasized (selected) rows force white text; editing needs a normal style.
       cell.backgroundStyle = .normal
       cell.textColor = .labelColor
       cell.backgroundColor = .textBackgroundColor
     }
+    configureFieldEditor()
   }
   
   private func configureFieldEditor()
@@ -109,11 +114,24 @@ class TableListNameTextField: NSTextField
     guard let textView = currentEditor() as? NSTextView else { return }
     textView.drawsBackground = true
     textView.backgroundColor = .textBackgroundColor
+    textView.textColor = .labelColor
     textView.insertionPointColor = .labelColor
+    var typing: [NSAttributedString.Key: Any] = textView.typingAttributes
+    typing[.foregroundColor] = NSColor.labelColor
+    if let font = font
+    {
+      typing[.font] = font
+    }
+    textView.typingAttributes = typing
     textView.selectedTextAttributes = [
-      .foregroundColor: NSColor.labelColor,
+      .foregroundColor: NSColor.selectedTextColor,
       .backgroundColor: NSColor.selectedTextBackgroundColor
     ]
+    // Re-color any already-inserted characters (may still be white from selection style).
+    if let storage = textView.textStorage, storage.length > 0
+    {
+      storage.addAttribute(.foregroundColor, value: NSColor.labelColor, range: NSRange(location: 0, length: storage.length))
+    }
   }
   
   private func enclosingListView() -> NSView?

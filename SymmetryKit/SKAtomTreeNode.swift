@@ -38,9 +38,24 @@ import simd
 
 public let NSPasteboardTypeAtomTreeNode: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.atom")
 
+/// What a group node stands for. A group is a folder over atoms; chain / segment / residue
+/// groups have a ribbon to speak for, the rest have only their atoms.
+public enum SKAtomTreeGroupKind: Int
+{
+  case none = 0                      // a leaf: an atom, not a folder
+  case custom = 1                    // a folder of no particular kind, symmetry copies among them
+  case chain = 2
+  case secondaryStructureSegment = 3 // alpha-helix, beta-sheet or coil
+  case residue = 4                   // one residue, of the polymer or of the HETATM listed beside it
+  case hetatm = 5                    // the HETATM of a chain: waters, ions, ligands
+  case other = 6                     // atoms without a residue identity
+  case dnaHelix = 7                  // the nucleotides of one strand
+  case otherNucleotides = 8          // nucleotides the backbone trace left out
+}
+
 public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable, Copying
 {
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
 
   public var displayName: String = "Empty"
   
@@ -67,20 +82,31 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
   
   public var isEditable: Bool = true
   
+  /// A leaf is of kind none and a group is of any other kind; setting the kind keeps `isGroup` in sync.
+  public var groupKind: SKAtomTreeGroupKind = .none
+  {
+    didSet
+    {
+      isGroup = groupKind != .none
+    }
+  }
+  
   /// The object the tree node represents.
   ///
   public var representedObject: SKAsymmetricAtom
   
-  public convenience init(representedObject modelObject: SKAsymmetricAtom, isGroup: Bool = false)
+  public convenience init(representedObject modelObject: SKAsymmetricAtom, isGroup: Bool = false, groupKind: SKAtomTreeGroupKind? = nil)
   {
-    self.init(name: modelObject.displayName, representedObject: modelObject, isGroup: isGroup)
+    self.init(name: modelObject.displayName, representedObject: modelObject, isGroup: isGroup, groupKind: groupKind)
   }
   
-  public init(name: String, representedObject: SKAsymmetricAtom, isGroup: Bool = false)
+  public init(name: String, representedObject: SKAsymmetricAtom, isGroup: Bool = false, groupKind: SKAtomTreeGroupKind? = nil)
   {
     self.displayName = name
     self.representedObject = representedObject
-    self.isGroup = isGroup
+    let resolvedKind: SKAtomTreeGroupKind = groupKind ?? (isGroup ? .custom : .none)
+    self.groupKind = resolvedKind
+    self.isGroup = resolvedKind != .none
     super.init()
   }
   
@@ -88,7 +114,8 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
   {
     self.displayName = treeNode.displayName
     self.representedObject = treeNode.representedObject
-    self.isGroup = treeNode.isGroup
+    self.groupKind = treeNode.groupKind
+    self.isGroup = treeNode.groupKind != .none
     self.childNodes = treeNode.childNodes
     
     super.init()
@@ -104,7 +131,8 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
   {
     self.displayName = copy.displayName
     self.representedObject = copy.representedObject.copy()
-    self.isGroup = copy.isGroup
+    self.groupKind = copy.groupKind
+    self.isGroup = copy.groupKind != .none
     self.isEditable = copy.isEditable
     self.childNodes = []
   }
@@ -600,6 +628,7 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
     encoder.encode(self.displayName)
     encoder.encode(self.isGroup)
     encoder.encode(self.isEditable)
+    encoder.encode(self.groupKind.rawValue)
     
     encoder.encode(self.representedObject)
     encoder.encode(self.childNodes)
@@ -607,6 +636,20 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
   
   // MARK: -
   // MARK: Binary Decodable support
+  
+  /// Archives written before the kind was stored name their groups by convention.
+  private static func groupKindFromLegacyName(_ displayName: String) -> SKAtomTreeGroupKind
+  {
+    if displayName.hasPrefix("Chain") {return .chain}
+    if displayName.hasPrefix("Alpha-helix") ||
+       displayName.hasPrefix("Beta-sheet") ||
+       displayName.hasPrefix("Coil") {return .secondaryStructureSegment}
+    if displayName.hasPrefix("DNA helix") {return .dnaHelix}
+    if displayName == "HETATM" {return .hetatm}
+    if displayName == "Other nucleotides" {return .otherNucleotides}
+    if displayName == "Other" {return .other}
+    return .custom
+  }
   
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
@@ -620,6 +663,20 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
     self.isGroup = try decoder.decode(Bool.self)
     self.isEditable = try decoder.decode(Bool.self)
     
+    if readVersionNumber >= 2
+    {
+      let rawKind: Int = try decoder.decode(Int.self)
+      let decodedKind: SKAtomTreeGroupKind = SKAtomTreeGroupKind(rawValue: rawKind) ?? (self.isGroup ? .custom : .none)
+      self.groupKind = decodedKind
+      self.isGroup = decodedKind != .none
+    }
+    else
+    {
+      let decodedKind: SKAtomTreeGroupKind = self.isGroup ? Self.groupKindFromLegacyName(self.displayName) : .none
+      self.groupKind = decodedKind
+      self.isGroup = decodedKind != .none
+    }
+    
     self.representedObject = try decoder.decode(SKAsymmetricAtom.self)
     self.childNodes = try decoder.decode([SKAtomTreeNode].self)
     
@@ -629,6 +686,20 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
     for child in childNodes
     {
       child.parentNode = self
+    }
+    
+    // A residue was named after itself rather than after what it is, so it is known only from
+    // what holds it. The children are read before their parent, which is where that becomes answerable.
+    if readVersionNumber < 2 &&
+       (groupKind == .secondaryStructureSegment ||
+        groupKind == .hetatm ||
+        groupKind == .dnaHelix ||
+        groupKind == .otherNucleotides)
+    {
+      for child in childNodes where child.groupKind == .custom
+      {
+        child.groupKind = .residue
+      }
     }
   }
   

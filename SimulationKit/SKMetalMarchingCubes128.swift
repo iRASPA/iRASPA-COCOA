@@ -270,7 +270,7 @@ public class SKMetalMarchingCubes128
             
       if numberOfTriangles > 0
       {
-        // 3 points consisting of a position, a normal, and texture coordinates
+        // 3 points consisting of a position, a normal, and texture coordinates (48 bytes / vertex)
         let isosurfaceVertexBuffer: MTLBuffer? = device.makeBuffer(length: Int(numberOfTriangles) * 3 * 3 * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeShared)
         
         if isosurfaceVertexBuffer == nil

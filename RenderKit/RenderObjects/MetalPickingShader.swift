@@ -34,6 +34,9 @@ import Foundation
 
 class MetalPickingShader
 {
+  /// Set to `false` to skip ribbon geometry in the picking pass entirely.
+  public static var ribbonPickingEnabled: Bool = true
+  
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderObject]] = [[]]
   
@@ -49,6 +52,7 @@ class MetalPickingShader
   var internalBondPipeLine: MTLRenderPipelineState! = nil
   var externalBondPipeLine: MTLRenderPipelineState! = nil
   var polygonalPrismPrimitivePipeLine: MTLRenderPipelineState! = nil
+  var ribbonPipeLine: MTLRenderPipelineState! = nil
  
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
@@ -178,6 +182,23 @@ class MetalPickingShader
     {
       fatalError("Error occurred when creating polygonal-prism-primitive render pipeline state \(error)")
     }
+    
+    let ribbonPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    ribbonPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba32Uint
+    ribbonPipelineDescriptor.vertexFunction = library.makeFunction(name: "RibbonPickingVertexShader")!
+    ribbonPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
+    ribbonPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    ribbonPipelineDescriptor.fragmentFunction = library.makeFunction(name: "RibbonPickingFragmentShader")!
+    ribbonPipelineDescriptor.vertexDescriptor = vertexDescriptor
+    
+    do
+    {
+      self.ribbonPipeLine = try device.makeRenderPipelineState(descriptor: ribbonPipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating ribbon-picking render pipeline state \(error)")
+    }
   }
   
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int)
@@ -256,7 +277,7 @@ class MetalPickingShader
         
         memcpy(&pick, textureBuffer.contents(), textureBuffer.length)
         
-        if (pick[0] == 1)
+        if (pick[0] >= 1)
         {
           memcpy(&depth, textureBufferDepth.contents(), textureBufferDepth.length)
           return depth
@@ -278,11 +299,13 @@ class MetalPickingShader
                                               cylinderPrimitiveShader: MetalCylinderShader,
                                               crystalPolygonalPrismPrimitiveShader: MetalCrystalPolygonalPrismShader,
                                               polygonalPrismPrimitiveShader: MetalPolygonalPrismShader,
+                                              ribbonShader: MetalRibbonShader,
                                               frameUniformBuffer: MTLBuffer,
                                               structureUniformBuffers: MTLBuffer?,
                                               size: CGSize,
                                               renderQuality: RKRenderQuality,
-                                              camera: RKCamera?)
+                                              camera: RKCamera?,
+                                              skipRibbonPicking: Bool = false)
   {
     if let _: RKRenderDataSource = renderDataSource
     {
@@ -731,6 +754,51 @@ class MetalPickingShader
           }
           index = index + 1
         }
+      }
+      
+      commandEncoder.setCullMode(MTLCullMode.none)
+      commandEncoder.setDepthStencilState(depthState)
+      
+      if Self.ribbonPickingEnabled && !skipRibbonPicking
+      {
+      commandEncoder.setRenderPipelineState(ribbonPipeLine)
+      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
+      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 1)
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderObject] = self.renderStructures[i]
+        
+        for (j, structure) in structures.enumerated()
+        {
+          if let ribbonSource: RKRenderRibbonSource = structure as? RKRenderRibbonSource,
+             let ribbonVertexBuffer: MTLBuffer = self.metalBuffer(ribbonShader.vertexBuffer, sceneIndex: i, movieIndex: j),
+             let ribbonIndexBuffer: MTLBuffer = self.metalBuffer(ribbonShader.indexBuffer, sceneIndex: i, movieIndex: j),
+             ribbonSource.drawRibbon,
+             ribbonSource.isVisible,
+             ribbonSource.ribbonNumberOfIndices > 0
+          {
+            commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+            commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
+            
+            let drawRanges: [RKRibbonChainDrawRange] = ribbonSource.ribbonDrawRangesForEncoding()
+            commandEncoder.setVertexBuffer(ribbonVertexBuffer, offset: 0, index: 0)
+            for drawRange in drawRanges
+            {
+              guard drawRange.indexCount > 0 else {continue}
+              commandEncoder.drawIndexedPrimitives(type: .triangle,
+                                                   indexCount: drawRange.indexCount,
+                                                   indexType: .uint32,
+                                                   indexBuffer: ribbonIndexBuffer,
+                                                   indexBufferOffset: drawRange.indexStart * MemoryLayout<UInt32>.stride)
+            }
+          }
+          index = index + 1
+        }
+      }
       }
       
       commandEncoder.endEncoding()

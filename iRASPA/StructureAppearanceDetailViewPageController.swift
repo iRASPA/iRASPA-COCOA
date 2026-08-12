@@ -197,7 +197,7 @@ class StructureAppearanceDetailViewPageController: NSPageController, WindowContr
       viewController.proxyProject = self.proxyProject
       if let currentViewController = self.selectedViewController as? StructureAppearanceDetailViewController
       {
-        viewController.expandedItems = currentViewController.expandedItems
+        viewController.expandedGroupTitles = currentViewController.expandedGroupTitles
       }
       viewController.reloadData()
     }

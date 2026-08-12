@@ -39,30 +39,312 @@ import SimulationKit
 import LogViewKit
 import OperationKit
 
-public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, Cloning
+public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderRibbonSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, Cloning
 {
-  private static var classVersionNumber: Int = 2
+  private static var classVersionNumber: Int = 7
+  
+  public var backbone: ProteinBackbone = ProteinBackbone()
+  public var drawRibbon: Bool = true
+  public var ribbonScaleFactor: Double = 1.2
+  public var ribbonColorSet: ProteinRibbonColorSet = .standardAcademic
+  public var ribbonRepresentationStyle: ProteinRibbonRepresentationStyle = .default
+  public var ribbonSecondaryStructureMethod: ProteinRibbonSecondaryStructureMethod = .stride
+  public var ribbonSplineType: ProteinRibbonSplineType = .bSpline
+  public var ribbonSubdivisionsPerSegment: Int = 24
+  public var ribbonCrossSectionRingResolution: Int = 32
+  public var ribbonCoilRadiusScale: Double = 0.35
+  public var ribbonWidthClamp: Double = 0.125
+  public var ribbonSheetArrowLengthExtent: Double = 1.5
+  public var ribbonSheetArrowWingPosition: Double = 1.0
+  public var ribbonSheetArrowPeakWidthFactor: Double = 2.5
+  public var ribbonNormalSmoothingRadius: Int = 4
+  public var ribbonHDR: Bool = true
+  public var ribbonHDRExposure: Double = 1.5
+  public var ribbonHue: Double = 1.0
+  public var ribbonSaturation: Double = 1.0
+  public var ribbonValue: Double = 1.0
+  public var ribbonAmbientOcclusion: Bool = false
+  public var ribbonAmbientColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var ribbonDiffuseColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var ribbonSpecularColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var ribbonAmbientIntensity: Double = 0.2
+  public var ribbonDiffuseIntensity: Double = 1.0
+  public var ribbonSpecularIntensity: Double = 1.0
+  public var ribbonShininess: Double = 6.0
+  public private(set) var ribbonMesh: RKRibbonMesh = RKRibbonMesh()
+  public var ribbonAmbientOcclusionPatchNumber: Int = 1
+  public var ribbonAmbientOcclusionPatchSize: Int = 16
+  public var ribbonAmbientOcclusionTextureSize: Int = 256
+  public var ribbonAmbientOcclusionTextureWidth: Int = 2048
+  public var ribbonAmbientOcclusionTextureHeight: Int = 64
+  public var ribbonAmbientOcclusionStripHeight: Int = 64
+  
+  public var ribbonMaxSplineSampleCount: Int
+  {
+    return ribbonMesh.maxSplineSampleCount
+  }
+  
+  public var ribbonCoilColor: SIMD3<Float>
+  {
+    return ribbonColorSet.coilColor
+  }
+  
+  public var ribbonHelixColor: SIMD3<Float>
+  {
+    return ribbonColorSet.helixColor
+  }
+  
+  public var ribbonSheetColor: SIMD3<Float>
+  {
+    return ribbonColorSet.sheetColor
+  }
+  
+  public var renderRibbonVertices: [RKVertex]
+  {
+    return ribbonMesh.vertices
+  }
+  
+  public var renderRibbonIndices: [UInt32]
+  {
+    return ribbonMesh.indices
+  }
+  
+  public var ribbonNumberOfVertices: Int
+  {
+    return ribbonMesh.vertices.count
+  }
+  
+  public var ribbonNumberOfIndices: Int
+  {
+    return ribbonMesh.indices.count
+  }
+  
+  public var ribbonChainDrawRanges: [RKRibbonChainDrawRange]
+  {
+    return ribbonMesh.chainDrawRanges
+  }
+  
+  public var ribbonSegmentDrawRanges: [RKRibbonChainDrawRange]
+  {
+    return ribbonMesh.segmentDrawRanges
+  }
+  
+  public var ribbonResidueDrawRanges: [RKRibbonChainDrawRange]
+  {
+    return ribbonMesh.residueDrawRanges
+  }
+  
+  public var ribbonUsesSegmentVisibility: Bool
+  {
+    if !ribbonMesh.segmentAlphaCarbonTags.isEmpty
+    {
+      return ribbonMesh.segmentAlphaCarbonTags.count == ribbonMesh.segmentDrawRanges.count
+    }
+    return ProteinRibbonSegmentSupport.segmentTreeNodesAlignWithDrawRanges(atomTreeController,
+                                                                           drawRangeCount: ribbonMesh.segmentDrawRanges.count)
+  }
+  
+  public var ribbonUsesResidueVisibility: Bool
+  {
+    // Mesh residue ranges are 1:1 with Cα tags; tree residue groups can outnumber them
+    // (HETATM, single-sample residues skipped in the sweep). Prefer tags so R/A visibility works.
+    if !ribbonMesh.residueAlphaCarbonTags.isEmpty
+    {
+      return ribbonMesh.residueAlphaCarbonTags.count == ribbonMesh.residueDrawRanges.count
+    }
+    return ProteinRibbonSegmentSupport.residueTreeNodesAlignWithDrawRanges(atomTreeController,
+                                                                           drawRangeCount: ribbonMesh.residueDrawRanges.count)
+  }
+  
+  public func isRibbonSegmentDrawRangeVisible(at index: Int) -> Bool
+  {
+    guard ribbonUsesSegmentVisibility else {return true}
+    if !ribbonMesh.segmentAlphaCarbonTags.isEmpty
+    {
+      guard index >= 0 && index < ribbonMesh.segmentAlphaCarbonTags.count else {return true}
+      let tag: Int = ribbonMesh.segmentAlphaCarbonTags[index]
+      guard let segmentNode: SKAtomTreeNode = ProteinRibbonSegmentSupport.segmentTreeNode(forAtomTag: tag,
+                                                                                            in: atomTreeController) else {return true}
+      return ProteinRibbonSegmentSupport.isRibbonSegmentVisible(segmentNode)
+    }
+    let segmentNodes: [SKAtomTreeNode] = ProteinRibbonSegmentSupport.orderedSegmentTreeNodes(in: atomTreeController)
+    guard index >= 0 && index < segmentNodes.count else {return true}
+    return ProteinRibbonSegmentSupport.isRibbonSegmentVisible(segmentNodes[index])
+  }
+  
+  public func isRibbonResidueDrawRangeVisible(at index: Int) -> Bool
+  {
+    guard ribbonUsesResidueVisibility else {return true}
+    if !ribbonMesh.residueAlphaCarbonTags.isEmpty
+    {
+      guard index >= 0 && index < ribbonMesh.residueAlphaCarbonTags.count else {return true}
+      let tag: Int = ribbonMesh.residueAlphaCarbonTags[index]
+      guard let residueNode: SKAtomTreeNode = ProteinRibbonSegmentSupport.residueTreeNode(forAtomTag: tag,
+                                                                                            in: atomTreeController) else {return true}
+      return ProteinRibbonSegmentSupport.isRibbonResidueVisible(residueNode)
+    }
+    let residueNodes: [SKAtomTreeNode] = ProteinRibbonSegmentSupport.orderedResidueTreeNodes(in: atomTreeController)
+    guard index >= 0 && index < residueNodes.count else {return true}
+    return ProteinRibbonSegmentSupport.isRibbonResidueVisible(residueNodes[index])
+  }
+  
+  public func ribbonDrawRangesForEncoding() -> [RKRibbonChainDrawRange]
+  {
+    return drawRangesForEncoding(mesh: ribbonMesh)
+  }
+  
+  private func drawRangesForEncoding(mesh: RKRibbonMesh) -> [RKRibbonChainDrawRange]
+  {
+    if ribbonUsesResidueVisibility && !mesh.residueDrawRanges.isEmpty
+    {
+      let visible: [Bool]
+      if mesh.residueAlphaCarbonTags.count == mesh.residueDrawRanges.count
+      {
+        visible = ProteinRibbonSegmentSupport.residueVisibilityMask(forAtomTags: mesh.residueAlphaCarbonTags,
+                                                                    in: atomTreeController)
+      }
+      else if ribbonMesh.residueAlphaCarbonTags.count == mesh.residueDrawRanges.count
+      {
+        visible = ProteinRibbonSegmentSupport.residueVisibilityMask(forAtomTags: ribbonMesh.residueAlphaCarbonTags,
+                                                                    in: atomTreeController)
+      }
+      else
+      {
+        return mesh.chainDrawRanges
+      }
+      if visible.allSatisfy({$0})
+      {
+        return mesh.chainDrawRanges
+      }
+      return RKRibbonMesh.mergedVisibleDrawRanges(mesh.residueDrawRanges, visible: visible)
+    }
+    
+    if ribbonUsesSegmentVisibility && !mesh.segmentDrawRanges.isEmpty
+    {
+      let visible: [Bool]
+      if mesh.segmentAlphaCarbonTags.count == mesh.segmentDrawRanges.count
+      {
+        visible = ProteinRibbonSegmentSupport.segmentVisibilityMask(forAtomTags: mesh.segmentAlphaCarbonTags,
+                                                                    in: atomTreeController)
+      }
+      else if ribbonMesh.segmentAlphaCarbonTags.count == mesh.segmentDrawRanges.count
+      {
+        visible = ProteinRibbonSegmentSupport.segmentVisibilityMask(forAtomTags: ribbonMesh.segmentAlphaCarbonTags,
+                                                                    in: atomTreeController)
+      }
+      else
+      {
+        return mesh.chainDrawRanges
+      }
+      if visible.allSatisfy({$0})
+      {
+        return mesh.chainDrawRanges
+      }
+      return RKRibbonMesh.mergedVisibleDrawRanges(mesh.segmentDrawRanges, visible: visible)
+    }
+    
+    return mesh.chainDrawRanges
+  }
+  
+  public var renderSelectedRibbonSegmentDrawRangeIndices: Set<Int>
+  {
+    return ProteinRibbonSegmentSupport.selectedSegmentDrawRangeIndices(in: atomTreeController)
+  }
+  
+  public var renderSelectedRibbonResidueDrawRangeIndices: Set<Int>
+  {
+    return ProteinRibbonSegmentSupport.selectedResidueDrawRangeIndices(in: atomTreeController)
+  }
+  
+  public var ribbonNumberOfChains: Int
+  {
+    return ribbonMesh.numberOfChains
+  }
+  
+  public var ribbonNumberOfRings: Int
+  {
+    return ribbonMesh.numberOfRings
+  }
   
   public override init()
   {
     super.init()
     self.drawUnitCell = false
+    self.drawAtoms = false
+    self.drawBonds = false
     reComputeBoundingBox()
   }
   
   public override init(name: String)
   {
     super.init(name: name)
+    self.drawAtoms = false
+    self.drawBonds = false
   }
   
   public required init(copy protein: Protein)
   {
     super.init(copy: protein)
+    self.drawRibbon = protein.drawRibbon
+    self.ribbonScaleFactor = protein.ribbonScaleFactor
+    self.ribbonColorSet = protein.ribbonColorSet
+    self.ribbonRepresentationStyle = protein.ribbonRepresentationStyle
+    self.ribbonSecondaryStructureMethod = protein.ribbonSecondaryStructureMethod
+    self.ribbonSplineType = protein.ribbonSplineType
+    self.ribbonSubdivisionsPerSegment = protein.ribbonSubdivisionsPerSegment
+    self.ribbonCrossSectionRingResolution = protein.ribbonCrossSectionRingResolution
+    self.ribbonCoilRadiusScale = protein.ribbonCoilRadiusScale
+    self.ribbonWidthClamp = protein.ribbonWidthClamp
+    self.ribbonSheetArrowLengthExtent = protein.ribbonSheetArrowLengthExtent
+    self.ribbonSheetArrowWingPosition = protein.ribbonSheetArrowWingPosition
+    self.ribbonSheetArrowPeakWidthFactor = protein.ribbonSheetArrowPeakWidthFactor
+    self.ribbonNormalSmoothingRadius = protein.ribbonNormalSmoothingRadius
+    self.ribbonHDR = protein.ribbonHDR
+    self.ribbonHDRExposure = protein.ribbonHDRExposure
+    self.ribbonHue = protein.ribbonHue
+    self.ribbonSaturation = protein.ribbonSaturation
+    self.ribbonValue = protein.ribbonValue
+    self.ribbonAmbientOcclusion = protein.ribbonAmbientOcclusion
+    self.ribbonAmbientColor = protein.ribbonAmbientColor
+    self.ribbonDiffuseColor = protein.ribbonDiffuseColor
+    self.ribbonSpecularColor = protein.ribbonSpecularColor
+    self.ribbonAmbientIntensity = protein.ribbonAmbientIntensity
+    self.ribbonDiffuseIntensity = protein.ribbonDiffuseIntensity
+    self.ribbonSpecularIntensity = protein.ribbonSpecularIntensity
+    self.ribbonShininess = protein.ribbonShininess
   }
   
   public required init(clone protein: Protein)
   {
-    super.init(clone: protein)        
+    super.init(clone: protein)
+    self.drawRibbon = protein.drawRibbon
+    self.ribbonScaleFactor = protein.ribbonScaleFactor
+    self.ribbonColorSet = protein.ribbonColorSet
+    self.ribbonRepresentationStyle = protein.ribbonRepresentationStyle
+    self.ribbonSecondaryStructureMethod = protein.ribbonSecondaryStructureMethod
+    self.ribbonSplineType = protein.ribbonSplineType
+    self.ribbonSubdivisionsPerSegment = protein.ribbonSubdivisionsPerSegment
+    self.ribbonCrossSectionRingResolution = protein.ribbonCrossSectionRingResolution
+    self.ribbonCoilRadiusScale = protein.ribbonCoilRadiusScale
+    self.ribbonWidthClamp = protein.ribbonWidthClamp
+    self.ribbonSheetArrowLengthExtent = protein.ribbonSheetArrowLengthExtent
+    self.ribbonSheetArrowWingPosition = protein.ribbonSheetArrowWingPosition
+    self.ribbonSheetArrowPeakWidthFactor = protein.ribbonSheetArrowPeakWidthFactor
+    self.ribbonNormalSmoothingRadius = protein.ribbonNormalSmoothingRadius
+    self.ribbonHDR = protein.ribbonHDR
+    self.ribbonHDRExposure = protein.ribbonHDRExposure
+    self.ribbonHue = protein.ribbonHue
+    self.ribbonSaturation = protein.ribbonSaturation
+    self.ribbonValue = protein.ribbonValue
+    self.ribbonAmbientOcclusion = protein.ribbonAmbientOcclusion
+    self.ribbonAmbientColor = protein.ribbonAmbientColor
+    self.ribbonDiffuseColor = protein.ribbonDiffuseColor
+    self.ribbonSpecularColor = protein.ribbonSpecularColor
+    self.ribbonAmbientIntensity = protein.ribbonAmbientIntensity
+    self.ribbonDiffuseIntensity = protein.ribbonDiffuseIntensity
+    self.ribbonSpecularIntensity = protein.ribbonSpecularIntensity
+    self.ribbonShininess = protein.ribbonShininess
+    rebuildBackbone()
   }
   
   public required init(from object: Object)
@@ -80,11 +362,43 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
       }
     }
     
+    _ = ProteinAtomTreeBuilder.applyHierarchyIfNeeded(to: self.atomTreeController,
+                                                      secondaryStructureMethod: self.ribbonSecondaryStructureMethod)
+    
     self.expandSymmetry()
     reComputeBoundingBox()
     reComputeBonds()
     self.atomTreeController.tag()
     self.bondSetController.tag()
+    rebuildBackbone()
+  }
+  
+  public func rebuildBackboneStructure()
+  {
+    let atoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    self.backbone = ProteinBackbone.build(from: atoms)
+  }
+  
+  public func rebuildBackbone()
+  {
+    guard drawRibbon else {return}
+    rebuildBackboneStructure()
+    rebuildRibbonMesh()
+  }
+  
+  public func rebuildRibbonMesh()
+  {
+    guard drawRibbon else {return}
+    migrateLegacySheetArrowDefaultsIfNeeded()
+    let atomCount: Int = atomTreeController.flattenedLeafNodes().count
+    let residueCount: Int = backbone.alphaCarbonResidueCount
+    let meshParameters: ProteinRibbonMeshParameters = ribbonMeshParameters.effectiveForStructure(atomCount: atomCount, residueCount: residueCount)
+    ribbonMesh = ProteinRibbonMeshBuilder.build(from: backbone,
+                                                radius: ribbonScaleFactor,
+                                                contentShift: cell.contentShift,
+                                                parameters: meshParameters,
+                                                secondaryStructureMethod: ribbonSecondaryStructureMethod)
+    ribbonAmbientOcclusionStripHeight = meshParameters.crossSectionRingResolution
   }
   
   public override var colorAtomsWithBondColor: Bool
@@ -1116,6 +1430,43 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
   {
     encoder.encode(Protein.classVersionNumber)
     encoder.encode(Int(0x6f6b6187))
+    encoder.encode(ribbonColorSet.rawValue)
+    if Protein.classVersionNumber >= 4
+    {
+      encoder.encode(ribbonHDR)
+      encoder.encode(ribbonHDRExposure)
+      encoder.encode(ribbonHue)
+      encoder.encode(ribbonSaturation)
+      encoder.encode(ribbonValue)
+      encoder.encode(ribbonAmbientOcclusion)
+      encoder.encode(ribbonAmbientColor)
+      encoder.encode(ribbonDiffuseColor)
+      encoder.encode(ribbonSpecularColor)
+      encoder.encode(ribbonAmbientIntensity)
+      encoder.encode(ribbonDiffuseIntensity)
+      encoder.encode(ribbonSpecularIntensity)
+      encoder.encode(ribbonShininess)
+    }
+    if Protein.classVersionNumber >= 5
+    {
+      encoder.encode(ribbonSplineType.rawValue)
+      encoder.encode(ribbonSubdivisionsPerSegment)
+      encoder.encode(ribbonCrossSectionRingResolution)
+      encoder.encode(ribbonCoilRadiusScale)
+      encoder.encode(ribbonWidthClamp)
+      encoder.encode(ribbonSheetArrowLengthExtent)
+      encoder.encode(ribbonSheetArrowWingPosition)
+      encoder.encode(ribbonSheetArrowPeakWidthFactor)
+      encoder.encode(ribbonNormalSmoothingRadius)
+    }
+    if Protein.classVersionNumber >= 6
+    {
+      encoder.encode(ribbonRepresentationStyle.rawValue)
+    }
+    if Protein.classVersionNumber >= 7
+    {
+      encoder.encode(ribbonSecondaryStructureMethod.rawValue)
+    }
     super.binaryEncode(to: encoder)
   }
   
@@ -1136,7 +1487,64 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
       }
     }
     
+    if readVersionNumber >= 3
+    {
+      let colorSetIdentifier: String = try decoder.decode(String.self)
+      self.ribbonColorSet = ProteinRibbonColorSet(rawValue: colorSetIdentifier) ?? .standardAcademic
+    }
+    
+    if readVersionNumber >= 4
+    {
+      self.ribbonHDR = try decoder.decode(Bool.self)
+      self.ribbonHDRExposure = try decoder.decode(Double.self)
+      self.ribbonHue = try decoder.decode(Double.self)
+      self.ribbonSaturation = try decoder.decode(Double.self)
+      self.ribbonValue = try decoder.decode(Double.self)
+      self.ribbonAmbientOcclusion = try decoder.decode(Bool.self)
+      self.ribbonAmbientColor = try decoder.decode(NSColor.self)
+      self.ribbonDiffuseColor = try decoder.decode(NSColor.self)
+      self.ribbonSpecularColor = try decoder.decode(NSColor.self)
+      self.ribbonAmbientIntensity = try decoder.decode(Double.self)
+      self.ribbonDiffuseIntensity = try decoder.decode(Double.self)
+      self.ribbonSpecularIntensity = try decoder.decode(Double.self)
+      self.ribbonShininess = try decoder.decode(Double.self)
+    }
+    
+    if readVersionNumber >= 5
+    {
+      let splineTypeIdentifier: String = try decoder.decode(String.self)
+      self.ribbonSplineType = ProteinRibbonSplineType(rawValue: splineTypeIdentifier) ?? .bSpline
+      self.ribbonSubdivisionsPerSegment = try decoder.decode(Int.self)
+      self.ribbonCrossSectionRingResolution = try decoder.decode(Int.self)
+      self.ribbonCoilRadiusScale = try decoder.decode(Double.self)
+      self.ribbonWidthClamp = try decoder.decode(Double.self)
+      self.ribbonSheetArrowLengthExtent = try decoder.decode(Double.self)
+      self.ribbonSheetArrowWingPosition = try decoder.decode(Double.self)
+      self.ribbonSheetArrowPeakWidthFactor = try decoder.decode(Double.self)
+      self.ribbonNormalSmoothingRadius = try decoder.decode(Int.self)
+    }
+    
+    if readVersionNumber >= 6
+    {
+      let representationStyleIdentifier: String = try decoder.decode(String.self)
+      self.ribbonRepresentationStyle = ProteinRibbonRepresentationStyle(rawValue: representationStyleIdentifier) ?? .default
+    }
+    else if readVersionNumber >= 4
+    {
+      self.ribbonRepresentationStyle = self.ribbonAmbientOcclusion ? .fancy : .default
+    }
+    
+    if readVersionNumber >= 7
+    {
+      let secondaryStructureMethodIdentifier: String = try decoder.decode(String.self)
+      self.ribbonSecondaryStructureMethod = ProteinRibbonSecondaryStructureMethod(rawValue: secondaryStructureMethodIdentifier) ?? .stride
+    }
+    
     try super.init(fromBinary: decoder)
+    self.recheckRibbonRepresentationStyle()
+    _ = ProteinAtomTreeBuilder.applyHierarchyIfNeeded(to: self.atomTreeController,
+                                                      secondaryStructureMethod: self.ribbonSecondaryStructureMethod)
+    rebuildBackbone()
   }
 }
 

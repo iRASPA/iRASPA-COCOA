@@ -45,7 +45,7 @@ public class ImportProjectOperation: FKGroupOperation, @unchecked Sendable
   unowned let treeController: ProjectTreeController
   
   // urls are in order of selection in import panel.
-  public init(projectTreeNode: ProjectTreeNode, outlineView: NSOutlineView?, treeController: ProjectTreeController, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, urls: [URL], onlyAsymmetricUnit: Bool, asMolecule: Bool, asMovie: Bool) throws
+  public init(projectTreeNode: ProjectTreeNode, outlineView: NSOutlineView?, treeController: ProjectTreeController, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, urls: [URL], onlyAsymmetricUnit: Bool, asMolecule: Bool, separatePolymerChains: Bool = false, asMovie: Bool) throws
   {
     self.outlineView = outlineView
     self.projectTreeNode = projectTreeNode
@@ -61,7 +61,7 @@ public class ImportProjectOperation: FKGroupOperation, @unchecked Sendable
     progress = Progress.discreteProgress(totalUnitCount: 100)
     progress.completedUnitCount = 0
         
-    let readStructureOperation: ReadStructureGroupOperation = try ReadStructureGroupOperation(projectTreeNode: projectTreeNode, urls: urls, windowController: windowController, colorSets: colorSets, forceFieldSets: forceFieldSets, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+    let readStructureOperation: ReadStructureGroupOperation = try ReadStructureGroupOperation(projectTreeNode: projectTreeNode, urls: urls, windowController: windowController, colorSets: colorSets, forceFieldSets: forceFieldSets, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, separatePolymerChains: separatePolymerChains)
     progress.addChild(readStructureOperation.progress, withPendingUnitCount: 20)
     
     self.addOperation(readStructureOperation)
@@ -81,8 +81,13 @@ public class ImportProjectOperation: FKGroupOperation, @unchecked Sendable
       projectTreeNode.representedObject = iRASPAProject(structureProject: projectStructureNode)
       
       
-      // set default colorset etc.
-      projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationStyle(style: .default, colorSets: colorSets)}
+      // Non-ribbon structures get the default ball-and-stick look. Proteins/DNA already got
+      // licorice + ribbon defaults during Scene import (same order as WINUI).
+      projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach
+      {
+        if $0 is Protein || $0 is ProteinCrystal || $0 is DNA || $0 is DNACrystal {return}
+        $0.setRepresentationStyle(style: .default, colorSets: colorSets)
+      }
       
       let computeBondsGroupOperation: ComputeBondsGroupOperation = ComputeBondsGroupOperation(structures: projectStructureNode.sceneList.allObjects, windowController: windowController)
       self?.progress.addChild(computeBondsGroupOperation.progress, withPendingUnitCount: 80)
@@ -121,13 +126,8 @@ public class ImportProjectOperation: FKGroupOperation, @unchecked Sendable
       else
       {
         DispatchQueue.main.async {
-          if let row = self.outlineView?.row(forItem: self.projectTreeNode), row >= 0
-          {
-            self.projectTreeNode.representedObject.isEdited = true  // make sure it is saved
-            //self.projectTreeNode.status = .ready
-            self.outlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
-            //Swift.print("type: \(type(of: self.projectTreeNode.representedObject!))")
-          }
+          self.projectTreeNode.representedObject.isEdited = true
+          self.projectTreeNode.finishImportProgressUI(in: self.outlineView)
         }
       }
     }
@@ -148,9 +148,9 @@ public class ImportProjectOperation: FKGroupOperation, @unchecked Sendable
         // check that the node still exists (it does not when closing the app, but this background process is still running)
         if let row = self.outlineView?.row(forItem: self.projectTreeNode), row >= 0
         {
-          if let view: ProgressIndicator = self.outlineView?.view(atColumn: 0, row: row, makeIfNecessary: false) as?  ProgressIndicator
+          if let view: ProgressIndicator = self.outlineView?.view(atColumn: 0, row: row, makeIfNecessary: false) as? ProgressIndicator
           {
-            view.progressIndicator?.doubleValue = newProgress.fractionCompleted
+            view.syncImportProgress(with: self.projectTreeNode, fraction: newProgress.fractionCompleted)
           }
         }
       })

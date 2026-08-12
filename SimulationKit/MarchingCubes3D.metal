@@ -485,6 +485,7 @@ kernel void traverseHP(texture3d<float,access::read> rawData [[ texture(0) ]],
     const float3 normal = forwardDifference0 + (forwardDifference1 - forwardDifference0) * diff;
     
     // a single triangle contains: 3 times a position and a normal
+    // (plus unused float4 for st/pad — 48 bytes total, matching IsosurfaceInVertex)
     VBOBuffer[target*9 + vertexNr*3] = scaledVertex;
     VBOBuffer[target*9 + vertexNr*3 + 1] = float4(normalize(normal), 0.0);
     

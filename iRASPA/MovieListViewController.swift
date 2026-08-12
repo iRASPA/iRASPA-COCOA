@@ -1526,7 +1526,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
           {
             view.textField?.stringValue = movie.displayName
             (view.textField as? TableListNameTextField)?.endRenaming()
-            view.progressIndicator?.isHidden = !movie.isLoading
+            view.setImportProgressVisible(movie.isLoading)
             view.cancelButton?.isHidden = !movie.isLoading
           
             if let button: NSButton = view.viewWithTag(1) as? NSButton

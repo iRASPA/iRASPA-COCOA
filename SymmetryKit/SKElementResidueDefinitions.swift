@@ -187,7 +187,7 @@ extension SKElement
     "HIS+HD1": SKResidueAtomDefinition(element: "H", type: "H", bondedAtoms: []),
     "HIS+HD2": SKResidueAtomDefinition(element: "H", type: "H", bondedAtoms: []),
     "HIS+HE1": SKResidueAtomDefinition(element: "H", type: "H", bondedAtoms: []),
-    "HOH+O": SKResidueAtomDefinition(element: "C", type: "HOH", bondedAtoms: []),
+    "HOH+O": SKResidueAtomDefinition(element: "O", type: "HOH", bondedAtoms: []),
     "HOH+H": SKResidueAtomDefinition(element: "H", type: "HOH", bondedAtoms: []),
     "ILE+C": SKResidueAtomDefinition(element: "C", type: "C", bondedAtoms: ["CA", "O"]),
     "ILE+CA": SKResidueAtomDefinition(element: "C", type: "CH1E", bondedAtoms: ["N ", "CB ", "C"]),
@@ -386,4 +386,93 @@ extension SKElement
     "VAL+HG22": SKResidueAtomDefinition(element: "H", type: "H", bondedAtoms: []),
     "VAL+HG23": SKResidueAtomDefinition(element: "H", type: "H", bondedAtoms: []),
   ]
+  
+  public enum SKBackboneAtomRole: Int
+  {
+    case nitrogen = 0
+    case alphaCarbon = 1
+    case carbonylCarbon = 2
+    case carbonylOxygen = 3
+  }
+  
+  public static func backboneAtomRole(residueName: String, atomName: String) -> SKBackboneAtomRole?
+  {
+    let trimmedResidue: String = residueName.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
+    let trimmedAtom: String = atomName.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
+    let key: String = trimmedResidue + "+" + trimmedAtom
+    if let definition: SKResidueAtomDefinition = residueDefinitions[key]
+    {
+      return backboneAtomRole(forType: definition.type)
+    }
+    // MODRES such as SET (aminoserine) are absent from the standard residue tables but still
+    // carry N/CA/C/O. Skip waters and solvent agents so HOH "O" is not treated as a carbonyl.
+    if isWaterResidueName(trimmedResidue) || isSolventAgentResidueName(trimmedResidue)
+    {
+      return nil
+    }
+    return backboneAtomRoleFromStandardAtomName(trimmedAtom)
+  }
+  
+  /// Standard peptide backbone atom names when the residue code is not in `residueDefinitions`.
+  public static func backboneAtomRoleFromStandardAtomName(_ atomName: String) -> SKBackboneAtomRole?
+  {
+    switch atomName
+    {
+    case "N": return .nitrogen
+    case "CA": return .alphaCarbon
+    case "C": return .carbonylCarbon
+    case "O", "OXT": return .carbonylOxygen
+    default: return nil
+    }
+  }
+  
+  public static func isWaterResidueName(_ residueName: String) -> Bool
+  {
+    switch residueName.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
+    {
+    case "HOH", "DOD", "WAT", "H2O": return true
+    default: return false
+    }
+  }
+  
+  public static func isSolventAgentResidueName(_ residueName: String) -> Bool
+  {
+    let name: String = residueName.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
+    let agents: Set<String> = [
+      "SO4", "PO4", "GOL", "EDO", "MPD", "PEG", "PG4", "ACT", "ACY", "DMS",
+      "TRS", "MES", "EPE", "IMD", "FMT", "NA", "K", "MG", "CA", "ZN",
+      "MN", "FE", "NI", "CU", "CD", "CL", "BR", "IOD", "F", "CO"
+    ]
+    return agents.contains(name)
+  }
+  
+  public static func backboneAtomRole(forType type: String) -> SKBackboneAtomRole?
+  {
+    switch type.trimmingCharacters(in: .whitespaces)
+    {
+    case "NH1":
+      return .nitrogen
+    case "CH1E", "CH2G":
+      return .alphaCarbon
+    case "C":
+      return .carbonylCarbon
+    case "O":
+      return .carbonylOxygen
+    default:
+      return nil
+    }
+  }
+  
+  public static func isBackboneAtomType(_ type: String) -> Bool
+  {
+    return backboneAtomRole(forType: type) != nil
+  }
+}
+
+extension SKAsymmetricAtom
+{
+  public var backboneAtomRole: SKElement.SKBackboneAtomRole?
+  {
+    return SKElement.backboneAtomRole(residueName: residueName, atomName: displayName)
+  }
 }

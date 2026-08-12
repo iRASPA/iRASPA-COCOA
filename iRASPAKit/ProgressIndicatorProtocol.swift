@@ -29,9 +29,59 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
+import AppKit
 import Foundation
 
 public protocol ProgressIndicator: AnyObject
 {
   var progressIndicator: ProjectProgressIndicator? {get}
+  var cancelButton: NSButton? {get}
+}
+
+public extension ProgressIndicator
+{
+  func setImportProgressVisible(_ visible: Bool, fraction: Double = 0.0)
+  {
+    progressIndicator?.isHidden = !visible
+    cancelButton?.isHidden = !visible
+    if visible
+    {
+      progressIndicator?.applyImportProgressFraction(fraction)
+    }
+  }
+  
+  func updateImportProgressFraction(_ fraction: Double)
+  {
+    setImportProgressVisible(true, fraction: fraction)
+  }
+  
+  func syncImportProgress(with node: ProjectTreeNode, fraction: Double)
+  {
+    setImportProgressVisible(node.showsImportProgress, fraction: fraction)
+  }
+}
+
+public extension ProjectTreeNode
+{
+  /// Clears the import operation and updates the visible project row (reload alone does not reconfigure cells on recent macOS).
+  func finishImportProgressUI(in outlineView: NSOutlineView?)
+  {
+    importOperation = nil
+    refreshImportProgressUI(in: outlineView)
+  }
+  
+  func refreshImportProgressUI(in outlineView: NSOutlineView?)
+  {
+    guard let outlineView else {return}
+    let row: Int = outlineView.row(forItem: self)
+    guard row >= 0 else {return}
+    
+    if let view: ProgressIndicator = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as? ProgressIndicator
+    {
+      view.setImportProgressVisible(showsImportProgress)
+    }
+    
+    outlineView.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
+    outlineView.noteHeightOfRows(withIndexesChanged: IndexSet(integer: row))
+  }
 }

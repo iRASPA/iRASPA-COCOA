@@ -70,6 +70,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   var tracking: Tracking = .none
   var startPoint: NSPoint? = NSPoint()
   var pickedDepth: Float? = 1.0
+  /// When true, ribbon picks select the secondary-structure segment instead of the residue (option-click / option-drag without command).
+  var ribbonPickSelectsSegment: Bool = false
   
   public enum WindowAspectRatio: Int
   {
@@ -425,6 +427,16 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
     {
       renderController.reloadData()
+    }
+  }
+  
+  func reloadVisibility()
+  {
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
+    {
+      renderController.reloadVisibility()
     }
   }
   
@@ -1057,6 +1069,209 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   // MARK: Selection
   // =====================================================================
   
+  private func structureIdentifier(from pick: [Int32], objectType: Int) -> Int
+  {
+    if objectType == Int(ProteinRibbonSegmentSupport.ribbonPickObjectType)
+    {
+      return Int(pick[1])
+    }
+    return Int(pick[2])
+  }
+  
+  private func ribbonTreeNode(for pick: [Int32], atomViewer: AtomViewer, selectSegment: Bool? = nil) -> SKAtomTreeNode?
+  {
+    let pickSegment: Bool = selectSegment ?? ribbonPickSelectsSegment
+    return ProteinRibbonSegmentSupport.treeNodeForRibbonPick(segmentIndex: Int(pick[2]),
+                                                             residueIndex: Int(pick[3]),
+                                                             selectSegment: pickSegment,
+                                                             in: atomViewer.atomTreeController)
+  }
+  
+  func toggleRibbonSecondaryStructureSegmentSelection(_ pick: [Int32])
+  {
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+    {
+      let objectType: Int = Int(pick[0])
+      guard objectType == Int(ProteinRibbonSegmentSupport.ribbonPickObjectType) else {return}
+      
+      let structureIdentifier: Int = structureIdentifier(from: pick, objectType: objectType)
+      let structures: [RKRenderObject] = crystalProjectData.renderStructures
+      
+      if structureIdentifier >= 0, structureIdentifier < structures.count,
+         let selectedStructure: Object = structures[structureIdentifier] as? Object,
+         selectedStructure.isVisible,
+         let atomViewer: AtomViewer = selectedStructure as? AtomViewer,
+         let segmentNode: SKAtomTreeNode = ribbonTreeNode(for: pick, atomViewer: atomViewer, selectSegment: true)
+      {
+        self.toggleRibbonSecondaryStructureSegmentSelection(object: selectedStructure, segmentNode: segmentNode)
+        self.reloadRenderDataSelectedAtoms()
+        syncTransformationPanelToSelection(animated: true)
+        NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+      }
+    }
+  }
+  
+  func toggleRibbonSecondaryStructureSegmentSelection(object: Object, segmentNode: SKAtomTreeNode)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let atomViewer: AtomViewer = object as? AtomViewer
+    {
+      var selectedTreeNodes: Set<SKAtomTreeNode> = atomViewer.atomTreeController.selectedTreeNodes
+      var selectedBonds: IndexSet = (object as? BondViewer)?.bondSetController.selectedObjects ?? []
+      let residueNodes: Set<SKAtomTreeNode> = Set(ProteinRibbonSegmentSupport.residueGroupNodes(in: segmentNode))
+      
+      if ProteinRibbonSegmentSupport.isSecondaryStructureSegmentSelected(segmentNode, in: selectedTreeNodes)
+      {
+        selectedTreeNodes.remove(segmentNode)
+        selectedTreeNodes.subtract(residueNodes)
+      }
+      else
+      {
+        selectedTreeNodes.subtract(residueNodes)
+        selectedTreeNodes.insert(segmentNode)
+      }
+      
+      let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(selectedTreeNodes.map{$0.representedObject})
+      if let bondViewer = object as? BondViewer
+      {
+        selectedBonds = []
+        for (index, bond) in bondViewer.bondSetController.arrangedObjects.enumerated()
+        {
+          if asymmetricAtoms.contains(bond.atom1) || asymmetricAtoms.contains(bond.atom2)
+          {
+            selectedBonds.insert(index)
+          }
+        }
+      }
+      
+      let previousAtomSelection = atomViewer.atomTreeController.selectedTreeNodes
+      let previousBondSelection = (object as? BondViewer)?.bondSetController.selectedObjects ?? []
+      project.undoManager.setActionName(NSLocalizedString("Change Selection", comment: ""))
+      self.setCurrentSelection(object: object, atomSelection: selectedTreeNodes, previousAtomSelection: previousAtomSelection, bondSelection: selectedBonds, previousBondSelection: previousBondSelection)
+      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+    }
+  }
+  
+  func setRibbonTreeNodesSelection(object: Object, nodes: Set<SKAtomTreeNode>, byExtendingSelection extending: Bool)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let atomViewer: AtomViewer = object as? AtomViewer
+    {
+      var selectedAtomTreeNodes: Set<SKAtomTreeNode> = atomViewer.atomTreeController.selectedTreeNodes
+      var selectedBonds: IndexSet = (object as? BondViewer)?.bondSetController.selectedObjects ?? []
+      if !extending
+      {
+        selectedAtomTreeNodes = []
+        selectedBonds = []
+      }
+      
+      selectedAtomTreeNodes.formUnion(nodes)
+      
+      let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(selectedAtomTreeNodes.map{$0.representedObject})
+      if let bondViewer = object as? BondViewer
+      {
+        for (index, bond) in bondViewer.bondSetController.arrangedObjects.enumerated()
+        {
+          if asymmetricAtoms.contains(bond.atom1) || asymmetricAtoms.contains(bond.atom2)
+          {
+            selectedBonds.insert(index)
+          }
+        }
+      }
+      
+      let previousBondSelection = (object as? BondViewer)?.bondSetController.selectedObjects ?? []
+      let previousAtomSelection = atomViewer.atomTreeController.selectedTreeNodes
+      
+      if selectedAtomTreeNodes != atomViewer.atomTreeController.selectedTreeNodes ||
+         selectedBonds != previousBondSelection
+      {
+        project.undoManager.setActionName(NSLocalizedString("Change Selection", comment: ""))
+        self.setCurrentSelection(object: object, atomSelection: selectedAtomTreeNodes, previousAtomSelection: previousAtomSelection, bondSelection: selectedBonds, previousBondSelection: previousBondSelection)
+      }
+      
+      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+    }
+  }
+  
+  func setRibbonTreeNodeSelection(object: Object, node: SKAtomTreeNode, byExtendingSelection extending: Bool)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let atomViewer: AtomViewer = object as? AtomViewer
+    {
+      var selectedAtomTreeNodes: Set<SKAtomTreeNode> = atomViewer.atomTreeController.selectedTreeNodes
+      var selectedBonds: IndexSet = (object as? BondViewer)?.bondSetController.selectedObjects ?? []
+      if !extending
+      {
+        selectedAtomTreeNodes = []
+        selectedBonds = []
+      }
+      
+      selectedAtomTreeNodes.insert(node)
+      
+      let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(selectedAtomTreeNodes.map{$0.representedObject})
+      if let bondViewer = object as? BondViewer
+      {
+        for (index, bond) in bondViewer.bondSetController.arrangedObjects.enumerated()
+        {
+          if asymmetricAtoms.contains(bond.atom1) || asymmetricAtoms.contains(bond.atom2)
+          {
+            selectedBonds.insert(index)
+          }
+        }
+      }
+      
+      let previousBondSelection = (object as? BondViewer)?.bondSetController.selectedObjects ?? []
+      let previousAtomSelection = atomViewer.atomTreeController.selectedTreeNodes
+      
+      if selectedAtomTreeNodes != atomViewer.atomTreeController.selectedTreeNodes ||
+         selectedBonds != previousBondSelection
+      {
+        project.undoManager.setActionName(NSLocalizedString("Change Selection", comment: ""))
+        self.setCurrentSelection(object: object, atomSelection: selectedAtomTreeNodes, previousAtomSelection: previousAtomSelection, bondSelection: selectedBonds, previousBondSelection: previousBondSelection)
+      }
+      
+      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+    }
+  }
+  
+  func toggleRibbonTreeNodeSelection(object: Object, node: SKAtomTreeNode)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let atomViewer: AtomViewer = object as? AtomViewer
+    {
+      var selectedTreeNodes: Set<SKAtomTreeNode> = atomViewer.atomTreeController.selectedTreeNodes
+      var selectedBonds: IndexSet = (object as? BondViewer)?.bondSetController.selectedObjects ?? []
+      
+      if selectedTreeNodes.contains(node)
+      {
+        selectedTreeNodes.remove(node)
+      }
+      else
+      {
+        selectedTreeNodes.insert(node)
+      }
+      
+      let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(selectedTreeNodes.map{$0.representedObject})
+      if let bondViewer = object as? BondViewer
+      {
+        selectedBonds = []
+        for (index, bond) in bondViewer.bondSetController.arrangedObjects.enumerated()
+        {
+          if asymmetricAtoms.contains(bond.atom1) || asymmetricAtoms.contains(bond.atom2)
+          {
+            selectedBonds.insert(index)
+          }
+        }
+      }
+      
+      let previousAtomSelection = atomViewer.atomTreeController.selectedTreeNodes
+      let previousBondSelection = (object as? BondViewer)?.bondSetController.selectedObjects ?? []
+      project.undoManager.setActionName(NSLocalizedString("Change Selection", comment: ""))
+      self.setCurrentSelection(object: object, atomSelection: selectedTreeNodes, previousAtomSelection: previousAtomSelection, bondSelection: selectedBonds, previousBondSelection: previousBondSelection)
+      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+    }
+  }
+  
   func setObjectToSelection(_ pick: [Int32])
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource
@@ -1069,7 +1284,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         return
       }
       
-      let structureIdentifier: Int = Int(pick[2])
+      let structureIdentifier: Int = structureIdentifier(from: pick, objectType: objectType)
       let pickedObject: Int = Int(pick[3])
                            
       let structures: [RKRenderObject] = crystalProjectData.renderStructures
@@ -1095,6 +1310,12 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           self.setSelectionFor(object: selectedStructure, atomIndexSet: IndexSet(integer: pickedAsymmetricAtom), bondIndexSet: [],  byExtendingSelection: false)
         case 2:
           self.setSelectionFor(object: selectedStructure, atomIndexSet: [], bondIndexSet: IndexSet(integer: pickedObject), byExtendingSelection: false)
+        case Int(ProteinRibbonSegmentSupport.ribbonPickObjectType):
+          if let atomViewer: AtomViewer = selectedStructure as? AtomViewer,
+             let treeNode: SKAtomTreeNode = ribbonTreeNode(for: pick, atomViewer: atomViewer)
+          {
+            self.setRibbonTreeNodeSelection(object: selectedStructure, node: treeNode, byExtendingSelection: false)
+          }
         default:
           break
         }
@@ -1111,7 +1332,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource
     {
       let objectType: Int = Int(pick[0])
-      let structureIdentifier: Int = Int(pick[2])
+      let structureIdentifier: Int = structureIdentifier(from: pick, objectType: objectType)
       let pickedObject: Int = Int(pick[3])
          
       let structures: [RKRenderObject] = crystalProjectData.renderStructures
@@ -1150,6 +1371,14 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
               self.reloadRenderDataSelectedInternalBonds()
             }
             NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+          case Int(ProteinRibbonSegmentSupport.ribbonPickObjectType):
+            if let atomViewer: AtomViewer = selectedStructure as? AtomViewer,
+               let treeNode: SKAtomTreeNode = ribbonTreeNode(for: pick, atomViewer: atomViewer)
+            {
+              self.toggleRibbonTreeNodeSelection(object: selectedStructure, node: treeNode)
+              self.reloadRenderDataSelectedAtoms()
+              NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+            }
           default:
             break
           }
@@ -1507,6 +1736,53 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
+  private func ribbonDragSelectionNodes(for structure: Structure, filter: (SIMD3<Double>) -> Bool) -> Set<SKAtomTreeNode>
+  {
+    let backbone: ProteinBackbone
+    let drawRibbon: Bool
+    let atomViewer: AtomViewer
+    
+    if let protein: Protein = structure as? Protein
+    {
+      backbone = protein.backbone
+      drawRibbon = protein.drawRibbon
+      guard let viewer: AtomViewer = protein as? AtomViewer else {return []}
+      atomViewer = viewer
+    }
+    else if let proteinCrystal: ProteinCrystal = structure as? ProteinCrystal
+    {
+      backbone = proteinCrystal.backbone
+      drawRibbon = proteinCrystal.drawRibbon
+      guard let viewer: AtomViewer = proteinCrystal as? AtomViewer else {return []}
+      atomViewer = viewer
+    }
+    else
+    {
+      return []
+    }
+    
+    guard drawRibbon else {return []}
+    
+    if ribbonPickSelectsSegment
+    {
+      return ProteinRibbonSegmentSupport.filterSegmentTreeNodes(in: atomViewer.atomTreeController,
+                                                                backbone: backbone,
+                                                                contentShift: structure.cell.contentShift,
+                                                                orientation: structure.orientation,
+                                                                boundingBoxCenter: structure.cell.boundingBox.center,
+                                                                origin: structure.origin,
+                                                                filter: filter)
+    }
+    
+    return ProteinRibbonSegmentSupport.filterResidueTreeNodes(in: atomViewer.atomTreeController,
+                                                              backbone: backbone,
+                                                              contentShift: structure.cell.contentShift,
+                                                              orientation: structure.orientation,
+                                                              boundingBoxCenter: structure.cell.boundingBox.center,
+                                                              origin: structure.origin,
+                                                              filter: filter)
+  }
+  
   func selectInRectangle(_ rect: NSRect, inViewPort bounds: NSRect, byExtendingSelection extending: Bool)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
@@ -1538,10 +1814,27 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         let structure: RKRenderObject = crystalProjectData.renderStructures[i]
         if let structure: Structure = structure as? Structure, structure.isVisible
         {
-          let indexSetAtoms: IndexSet = structure.filterCartesianAtomPositions(closure)
-          let indexSetInternalBonds: IndexSet = structure.filterCartesianBondPositions(closure)
-                    
-          self.setSelectionFor(object: structure, atomIndexSet: indexSetAtoms, bondIndexSet: indexSetInternalBonds, byExtendingSelection: extending)
+          if let ribbonSource: RKRenderRibbonSource = structure as? RKRenderRibbonSource,
+             ribbonSource.drawRibbon,
+             structure is Protein || structure is ProteinCrystal
+          {
+            let selectedNodes: Set<SKAtomTreeNode> = ribbonDragSelectionNodes(for: structure, filter: closure)
+            if !extending
+            {
+              for otherStructure in crystalProjectData.renderStructures.compactMap({ $0 as? Object }) where otherStructure !== structure
+              {
+                self.setSelectionFor(object: otherStructure, atomIndexSet: [], bondIndexSet: [], byExtendingSelection: false)
+              }
+            }
+            self.setRibbonTreeNodesSelection(object: structure, nodes: selectedNodes, byExtendingSelection: extending)
+          }
+          else
+          {
+            let indexSetAtoms: IndexSet = structure.filterCartesianAtomPositions(closure)
+            let indexSetInternalBonds: IndexSet = structure.filterCartesianBondPositions(closure)
+            
+            self.setSelectionFor(object: structure, atomIndexSet: indexSetAtoms, bondIndexSet: indexSetInternalBonds, byExtendingSelection: extending)
+          }
         }
       }
       self.reloadRenderDataSelectedAtoms()
@@ -1848,7 +2141,27 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   {
     let pick: [Int32] = pickPoint(locationInWindow: view.convert(point, to: nil))
     
-    if (pick[0] == 1)
+    if pick[0] == ProteinRibbonSegmentSupport.ribbonPickObjectType
+    {
+      if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+      {
+        let structureIdentifier: Int = Int(pick[1])
+        let segmentIndex: Int = Int(pick[2])
+        let residueIndex: Int = Int(pick[3])
+        let structures: [RKRenderObject] = crystalProjectData.renderStructures
+        
+        if structureIdentifier >= 0 && structureIdentifier < structures.count,
+           let structure: Structure = structures[structureIdentifier] as? Structure,
+           structure.isVisible,
+           let atomViewer: AtomViewer = structure as? AtomViewer
+        {
+          let segmentName: String = ProteinRibbonSegmentSupport.treeNodeForSegment(at: segmentIndex, in: atomViewer.atomTreeController)?.representedObject.displayName ?? "segment \(segmentIndex)"
+          let residueName: String = ProteinRibbonSegmentSupport.treeNodeForResidue(at: residueIndex, in: atomViewer.atomTreeController)?.representedObject.displayName ?? "residue \(residueIndex)"
+          return "structure: \(structure.displayName), segment: \(segmentName), residue: \(residueName)"
+        }
+      }
+    }
+    else if (pick[0] == 1)
     {
       if let crystalProjectData: RKRenderDataSource = self.renderDataSource
       {
@@ -1891,6 +2204,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     startPoint = self.view.convert(event.locationInWindow, from: nil)
     
     let modifiers: NSEvent.ModifierFlags = deviceIndependentModifierFlags(for: event)
+    ribbonPickSelectsSegment = modifiers.contains(.option) &&
+                               !modifiers.contains(.command)
     if modifiers.contains(NSEvent.ModifierFlags.shift)
     {
       tracking = .newSelection
@@ -2133,17 +2448,31 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           selectInRectangle(NSMakeRect(startPoint.x,startPoint.y,point.x-startPoint.x,point.y-startPoint.y), inViewPort: layer.bounds, byExtendingSelection: true)
         }
-      case .translateSelection:      // option-command-drag
-        if let startPoint = startPoint,
-           let pickedDepth = pickedDepth
-        {
-          finalizeShiftSelection(to: SIMD3<Double>(Double(point.x),Double(point.y),0.0), origin: SIMD3<Double>(Double(startPoint.x),Double(startPoint.y),0.0), depth: Double(pickedDepth))
-        }
-      case .measurement:      // option-drag
+      case .translateSelection:      // option-command-click toggles secondary-structure segment; option-command-drag translates
         if let _: RKRenderDataSource = renderDataSource
         {
           let pick: [Int32] = pickPointForMouseUp(releasePoint: point)
-          if (pick[0] == 1)
+          if pick[0] == ProteinRibbonSegmentSupport.ribbonPickObjectType,
+             startPoint.map({ isClick(notDragFrom: $0, to: point) }) == true
+          {
+            toggleRibbonSecondaryStructureSegmentSelection(pick)
+          }
+          else if let startPoint = startPoint,
+                  let pickedDepth = pickedDepth
+          {
+            finalizeShiftSelection(to: SIMD3<Double>(Double(point.x), Double(point.y), 0.0), origin: SIMD3<Double>(Double(startPoint.x), Double(startPoint.y), 0.0), depth: Double(pickedDepth))
+          }
+        }
+      case .measurement:      // option-click / option-drag
+        if let _: RKRenderDataSource = renderDataSource
+        {
+          let pick: [Int32] = pickPointForMouseUp(releasePoint: point)
+          if pick[0] == ProteinRibbonSegmentSupport.ribbonPickObjectType,
+             startPoint.map({ isClick(notDragFrom: $0, to: point) }) == true
+          {
+            setObjectToSelection(pick)
+          }
+          else if (pick[0] == 1)
           {
             addAtomToMeasurement(pick)
           }
@@ -2162,6 +2491,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
       startPoint = nil
       tracking = .none
+      ribbonPickSelectsSegment = false
       cameraDidChange()
     }
     

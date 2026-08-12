@@ -329,14 +329,16 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     camera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
     camera.resetCameraDistance()
     
-    let defaultColorSet: SKColorSet = SKColorSet(colorScheme: SKColorSets.ColorScheme.rasmol)
+    let defaultColorSet: SKColorSet = SKColorSet(colorScheme: SKColorSets.ColorScheme.jmol)
     
     for iRASPAstructure in allIRASPAStructures
     {
       if iRASPAstructure.type == .protein || iRASPAstructure.type == .proteinCrystal || iRASPAstructure.type == .proteinCrystalSolvent
       {
-        (iRASPAstructure.object as? Structure)?.setRepresentationStyle(style: .fancy)
-        (iRASPAstructure.object as? Structure)?.setRepresentationColorScheme(colorSet: defaultColorSet)
+        guard let structure: Structure = iRASPAstructure.object as? Structure else {continue}
+        structure.setRepresentationStyle(style: .licorice)
+        structure.setBondScaleFactor(0.1)
+        structure.setRepresentationColorScheme(colorSet: defaultColorSet)
       }
     }
   }

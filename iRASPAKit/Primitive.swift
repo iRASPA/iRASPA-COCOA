@@ -106,7 +106,7 @@ public class Primitive: Object, AtomEditor, PrimitiveEditor
   public var primitiveSaturation: Double = 1.0
   public var primitiveValue: Double = 1.0
   
-  public var primitiveSelectionStyle: RKSelectionStyle = .striped
+  public var primitiveSelectionStyle: RKSelectionStyle = .WorleyNoise3D
   public var primitiveSelectionScaling: Double = 1.0
   public var primitiveSelectionStripesDensity: Double = 0.25
   public var primitiveSelectionStripesFrequency: Double = 12.0

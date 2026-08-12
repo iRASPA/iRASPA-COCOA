@@ -114,6 +114,7 @@ public class ImportProjectFromCloudOperation: FKGroupOperation, @unchecked Senda
         
         self.outlineView?.makeItemVisible(item: projectTreeNode)
         self.outlineView?.reloadItem(self.projectTreeNode)
+        self.projectTreeNode?.finishImportProgressUI(in: self.outlineView)
         
         reloadCompletionBlock()
       }
@@ -294,9 +295,10 @@ public class ImportProjectFromCloudOperation: FKGroupOperation, @unchecked Senda
         // check that the node still exists (it does not when closing the app, but this background process is still running)
         if let row = self.outlineView?.row(forItem: self.projectTreeNode), row >= 0
         {
-          if let view: ProgressIndicator = self.outlineView?.view(atColumn: 0, row: row, makeIfNecessary: false) as?  ProgressIndicator
+          if let view: ProgressIndicator = self.outlineView?.view(atColumn: 0, row: row, makeIfNecessary: false) as? ProgressIndicator,
+             let projectTreeNode = self.projectTreeNode
           {
-            view.progressIndicator?.doubleValue = newProgress.fractionCompleted
+            view.syncImportProgress(with: projectTreeNode, fraction: newProgress.fractionCompleted)
           }
         }
       })

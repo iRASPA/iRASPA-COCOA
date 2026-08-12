@@ -35,7 +35,7 @@ import simd
 import SymmetryKit
 
 // IMPORTANT: must be aligned on 256-bytes boundaries
-// current number of bytes: 768 bytes
+// current number of bytes: 1040 bytes
 public struct RKStructureUniforms
 {
   public var sceneIdentifier: Int32 = 0
@@ -166,8 +166,21 @@ public struct RKStructureUniforms
 
   public var localAxisPosition: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
   public var numberOfReplicas: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
-  public var pad9: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
-  public var pad10: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var ribbonCoilColor: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 1.0, z: 0.0, w: 1.0)
+  public var ribbonHelixColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 0.0, z: 1.0, w: 1.0)
+  public var ribbonSheetColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 0.0, w: 1.0)
+  public var ribbonHDR: Int32 = 0
+  public var ribbonHDRExposure: Float = 1.5
+  public var ribbonHue: Float = 1.0
+  public var ribbonSaturation: Float = 0.5
+  public var ribbonValue: Float = 1.0
+  public var ribbonAmbientOcclusion: Int32 = 1
+  public var padRibbon1: Float = 0.0
+  public var ribbonShininess: Float = 4.0
+  public var padRibbon2: Float = 0.0
+  public var ribbonAmbientColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var ribbonDiffuseColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var ribbonSpecularColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
  
   
   public init()
@@ -335,6 +348,26 @@ public struct RKStructureUniforms
     clipPlaneFront = -SIMD4<Float>(x: u_plane0.x, y: u_plane0.y, z: u_plane0.z, w: -dot(u_plane0,corner2))
     clipPlaneTop = -SIMD4<Float>(x: u_plane1.x, y: u_plane1.y, z: u_plane1.z, w: -dot(u_plane1,corner2))
     clipPlaneRight = -SIMD4<Float>(x: u_plane2.x, y: u_plane2.y, z: u_plane2.z, w: -dot(u_plane2,corner2))
+    
+    if let structure: RKRenderRibbonSource = structure as? RKRenderRibbonSource
+    {
+      let coilColor: SIMD3<Float> = structure.ribbonCoilColor
+      let helixColor: SIMD3<Float> = structure.ribbonHelixColor
+      let sheetColor: SIMD3<Float> = structure.ribbonSheetColor
+      self.ribbonCoilColor = SIMD4<Float>(x: coilColor.x, y: coilColor.y, z: coilColor.z, w: 1.0)
+      self.ribbonHelixColor = SIMD4<Float>(x: helixColor.x, y: helixColor.y, z: helixColor.z, w: 1.0)
+      self.ribbonSheetColor = SIMD4<Float>(x: sheetColor.x, y: sheetColor.y, z: sheetColor.z, w: 1.0)
+      self.ribbonHDR = structure.ribbonHDR ? 1 : 0
+      self.ribbonHDRExposure = Float(structure.ribbonHDRExposure)
+      self.ribbonHue = Float(structure.ribbonHue)
+      self.ribbonSaturation = Float(structure.ribbonSaturation)
+      self.ribbonValue = Float(structure.ribbonValue)
+      self.ribbonAmbientOcclusion = structure.ribbonAmbientOcclusion ? 1 : 0
+      self.ribbonAmbientColor = Float(structure.ribbonAmbientIntensity) * SIMD4<Float>(color: structure.ribbonAmbientColor)
+      self.ribbonDiffuseColor = Float(structure.ribbonDiffuseIntensity) * SIMD4<Float>(color: structure.ribbonDiffuseColor)
+      self.ribbonSpecularColor = Float(structure.ribbonSpecularIntensity) * SIMD4<Float>(color: structure.ribbonSpecularColor)
+      self.ribbonShininess = Float(structure.ribbonShininess)
+    }
     
     if let structure: RKRenderLocalAxesSource = structure as? RKRenderLocalAxesSource
     {

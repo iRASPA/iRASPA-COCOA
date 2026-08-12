@@ -56,17 +56,31 @@ public class FrameTableCellView: NSTableCellView
   
   func syncSelectionAppearance(for style: NSView.BackgroundStyle)
   {
-    textField?.cell?.backgroundStyle = style
+    let nameField = textField as? TableListNameTextField
+    let isRenaming = nameField?.allowsRenaming == true
+    
+    if isRenaming
+    {
+      nameField?.applyEditingAppearance()
+    }
+    else
+    {
+      textField?.cell?.backgroundStyle = style
+    }
+    
     (imageView as? TableImageViewIcon)?.applyBackgroundStyle(style)
     imageView?.cell?.backgroundStyle = style
     
-    if style == .emphasized
+    if !isRenaming
     {
-      textField?.textColor = NSColor.alternateSelectedControlTextColor
-    }
-    else if textField?.textColor == NSColor.alternateSelectedControlTextColor
-    {
-      textField?.textColor = nil
+      if style == .emphasized
+      {
+        textField?.textColor = NSColor.alternateSelectedControlTextColor
+      }
+      else if textField?.textColor == NSColor.alternateSelectedControlTextColor
+      {
+        textField?.textColor = nil
+      }
     }
     
     textField?.needsDisplay = true

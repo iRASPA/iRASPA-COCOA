@@ -39,6 +39,8 @@ public struct RKVertex: CustomStringConvertible
   public var normal:  SIMD4<Float>
   public var st: SIMD2<Float>
   public var pad: SIMD2<Float> = SIMD2<Float>()
+  /// Residue-local stripe coordinates: x = along residue (0–1), y = around cross-section (0–1).
+  public var stripeST: SIMD2<Float> = SIMD2<Float>()
   
   public init()
   {

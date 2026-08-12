@@ -38,6 +38,22 @@ open class LineNumberView : NSTextView
   public required init?(coder: NSCoder)
   {
     super.init(coder: coder)
+    configureScrollableTextLayout()
+  }
+  
+  /// Avoid AppKit layout recursion: verticallyResizable + horizontallyResizable +
+  /// allowsNonContiguousLayout can loop setFrameSize ↔ _fillLayoutHole until stack overflow.
+  private func configureScrollableTextLayout()
+  {
+    isHorizontallyResizable = false
+    isVerticallyResizable = true
+    layoutManager?.allowsNonContiguousLayout = false
+    if let textContainer = textContainer
+    {
+      textContainer.widthTracksTextView = true
+      textContainer.heightTracksTextView = false
+      textContainer.containerSize = NSSize(width: 0.0, height: CGFloat.greatestFiniteMagnitude)
+    }
   }
   
   open override func rulerView(_ ruler: NSRulerView, willSetClientView newClient: NSView)
@@ -47,6 +63,8 @@ open class LineNumberView : NSTextView
   
   public func setUpLineNumberView()
   {
+    configureScrollableTextLayout()
+    
     lineNumberRulerView = LineNumberRulerView(textView: self)
     
     if font == nil

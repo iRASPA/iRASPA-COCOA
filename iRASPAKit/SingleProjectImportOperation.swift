@@ -92,9 +92,9 @@ public class SingleProjectImportOperation: FKGroupOperation
       DispatchQueue.main.async(execute: {
         // check that the node still exists (it does not when closing the app, but this background process is still running)
         let row = self.outlineView.row(forItem: self.projectProxy)
-        if let view: ProjectTableCellView = self.outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as?  ProjectTableCellView, row >= 0
+        if let view: ProjectTableCellView = self.outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as? ProjectTableCellView, row >= 0
         {
-          view.progressIndicator?.doubleValue = newProgress.fractionCompleted
+          view.updateImportProgressFraction(newProgress.fractionCompleted)
         }
       })
     }

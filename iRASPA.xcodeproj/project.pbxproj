@@ -76,6 +76,40 @@
 		930DD6471E26BA5D00B8FE9B /* MolecularCrystal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6401E26BA5D00B8FE9B /* MolecularCrystal.swift */; };
 		930DD6481E26BA5D00B8FE9B /* Molecule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6411E26BA5D00B8FE9B /* Molecule.swift */; };
 		930DD6491E26BA5D00B8FE9B /* Protein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6421E26BA5D00B8FE9B /* Protein.swift */; };
+		93C0CA021F00000100BACK01 /* ProteinBackbone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA011F00000100BACK01 /* ProteinBackbone.swift */; };
+		93C0CA041F00000200BACK01 /* ProteinBSpline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA031F00000200BACK01 /* ProteinBSpline.swift */; };
+		93C0CA061F00000300BACK01 /* ProteinRibbonMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA051F00000300BACK01 /* ProteinRibbonMesh.swift */; };
+		93C0CA0C1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA0B1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift */; };
+		93C0CA161F00002000BACK01 /* ProteinRibbonColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA151F00002000BACK01 /* ProteinRibbonColorSet.swift */; };
+		93C0CA201F00003000BACK01 /* ProteinRibbonSplineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA1F1F00003000BACK01 /* ProteinRibbonSplineType.swift */; };
+		93C0CA301F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA2F1F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift */; };
+		93C0CA281F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA271F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift */; };
+		93C0CA221F00003000BACK01 /* ProteinRibbonMeshParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA211F00003000BACK01 /* ProteinRibbonMeshParameters.swift */; };
+		93C0CA241F00003000BACK01 /* ProteinRibbonCenterlinePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA231F00003000BACK01 /* ProteinRibbonCenterlinePath.swift */; };
+		93C0CA261F00003000BACK01 /* ProteinCatmullRomSpline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA251F00003000BACK01 /* ProteinCatmullRomSpline.swift */; };
+		93C0CA181F00002100BACK01 /* ProteinRibbonStructureEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA171F00002100BACK01 /* ProteinRibbonStructureEditor.swift */; };
+		93C0CA3A1F00005700DNA001 /* DNARibbonStructureEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA391F00005700DNA001 /* DNARibbonStructureEditor.swift */; };
+		93C0CA3C1F00005800DNA002 /* DNABackbone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA3B1F00005800DNA002 /* DNABackbone.swift */; };
+		93C0CA551F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA541F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift */; };
+		93C0CA531F00006100DNA011 /* ProteinNucleicAcidMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA521F00006100DNA011 /* ProteinNucleicAcidMesh.swift */; };
+		93C0CA511F00006000DNA010 /* DNANucleotideGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA501F00006000DNA010 /* DNANucleotideGeometry.swift */; };
+		93C0CA3E1F00005900DNA003 /* DNAAtomTreeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA3D1F00005900DNA003 /* DNAAtomTreeBuilder.swift */; };
+		93C0CA401F00005A00DNA004 /* DNA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA3F1F00005A00DNA004 /* DNA.swift */; };
+		93C0CA421F00005B00DNA005 /* DNACrystal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA411F00005B00DNA005 /* DNACrystal.swift */; };
+		93C0CA0E1F00000800BACK01 /* ProteinAtomTreeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA0D1F00000800BACK01 /* ProteinAtomTreeBuilder.swift */; };
+		93C0CA101F00000900BACK01 /* ProteinRibbonSegmentSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA0F1F00000900BACK01 /* ProteinRibbonSegmentSupport.swift */; };
+		93C0CA2A1F00005000STRD01 /* SKStrideRamachandranMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA291F00005000STRD01 /* SKStrideRamachandranMaps.swift */; };
+		93C0CA2C1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA2B1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift */; };
+		93C0CA2E1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA2D1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift */; };
+		93C0CA321F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA311F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift */; };
+		93C0CA341F00005400GEOM1 /* SKSecondaryStructureGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA331F00005400GEOM1 /* SKSecondaryStructureGeometry.swift */; };
+		93C0CA361F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA351F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift */; };
+		93C0CA381F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA371F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift */; };
+		93C0CA3A1F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA391F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift */; };
+		93C0CA081F00000400RIBN01 /* RibbonShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA071F00000400RIBN01 /* RibbonShader.metal */; };
+		93C0CA0A1F00000500RIBN01 /* MetalRibbonShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA091F00000500RIBN01 /* MetalRibbonShader.swift */; };
+		93C0CA121F00001700RIBN01 /* MetalRibbonSelectionShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA111F00001600RIBN01 /* MetalRibbonSelectionShader.swift */; };
+		93C0CA141F00001900RIBN01 /* RibbonSelectionShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA131F00001800RIBN01 /* RibbonSelectionShader.metal */; };
 		930DD64A1E26BA5D00B8FE9B /* ProteinCrystal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6431E26BA5D00B8FE9B /* ProteinCrystal.swift */; };
 		930DD64B1E26BA5D00B8FE9B /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6441E26BA5D00B8FE9B /* Structure.swift */; };
 		930DD6581E26BAAD00B8FE9B /* ProjectGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6541E26BAAD00B8FE9B /* ProjectGroup.swift */; };
@@ -140,6 +174,10 @@
 		93274E852205AA54004031BA /* PolygonalPrismPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */; };
 		93281D9B2FEF08370008F9A1 /* SKElementAminoAcidAtomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281D9A2FEF08220008F9A1 /* SKElementAminoAcidAtomTypes.swift */; };
 		93281D9D2FEF084A0008F9A1 /* SKElementResidueDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281D9C2FEF08460008F9A1 /* SKElementResidueDefinitions.swift */; };
+		93C0CA441F00005C00DNA006 /* SKNucleotide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA431F00005C00DNA006 /* SKNucleotide.swift */; };
+		93C0CA461F00005C00DNA007 /* SKNucleotideBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CA451F00005C00DNA007 /* SKNucleotideBase.swift */; };
+		93AA00012F02000100AA001 /* SKAminoAcidIdealGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA00022F02000100AA001 /* SKAminoAcidIdealGeometry.swift */; };
+		93AA00032F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA00042F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift */; };
 		932A1C941F967D62000A0037 /* AngleNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A1C931F967D62000A0037 /* AngleNumberFormatter.swift */; };
 		932A49561E537EF400F71AE7 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A49551E537EF400F71AE7 /* LogViewController.swift */; };
 		932A495C1E544FDA00F71AE7 /* LogToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A495B1E544FDA00F71AE7 /* LogToolBar.swift */; };
@@ -287,6 +325,8 @@
 		93784A971E61B81500A7FF23 /* StructureElementDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A961E61B81500A7FF23 /* StructureElementDetailViewController.swift */; };
 		93784A9B1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A9A1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift */; };
 		93784A9D1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A9C1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift */; };
+		A1B2C3D41E70DNA100000001 /* AppearanceRibbonHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D31E70DNA000000001 /* AppearanceRibbonHelpers.swift */; };
+		A1B2C3D41E70DNA200000001 /* StructureAppearanceDNARibbonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D31E70DNA100000001 /* StructureAppearanceDNARibbonExtension.swift */; };
 		93784A9F1E61BC9700A7FF23 /* StructureCellDetailViewPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A9E1E61BC9700A7FF23 /* StructureCellDetailViewPageController.swift */; };
 		93784AA11E61BCE500A7FF23 /* StructureCellDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784AA01E61BCE500A7FF23 /* StructureCellDetailViewController.swift */; };
 		93784AA31E61BDE000A7FF23 /* StructureAtomDetailViewPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784AA21E61BDE000A7FF23 /* StructureAtomDetailViewPageController.swift */; };
@@ -335,6 +375,9 @@
 		93793B2521CA85DB004CAD9C /* MetalBlurVerticalPictureShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2421CA85DB004CAD9C /* MetalBlurVerticalPictureShader.swift */; };
 		93793B2721D7FE59004CAD9C /* SKStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2621D7FE59004CAD9C /* SKStructure.swift */; };
 		93793B2921D943CC004CAD9C /* RKVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2821D943CB004CAD9C /* RKVertex.swift */; };
+		93C0CB051F00001000A001 /* RKRibbonMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CB041F00001000A001 /* RKRibbonMesh.swift */; };
+		93C0CB071F00001000A002 /* RibbonAOLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CB061F00001000A002 /* RibbonAOLayout.swift */; };
+		93C0CB091F00001000A003 /* RibbonAOTexturePostProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0CB081F00001000A003 /* RibbonAOTexturePostProcess.swift */; };
 		93793B2B21D943F1004CAD9C /* RKTextVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2A21D943F1004CAD9C /* RKTextVertex.swift */; };
 		93793B2D21D94421004CAD9C /* RKBondVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2C21D94421004CAD9C /* RKBondVertex.swift */; };
 		93793B2F21D94462004CAD9C /* RKInPerInstanceAttributesText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2E21D94462004CAD9C /* RKInPerInstanceAttributesText.swift */; };
@@ -854,6 +897,7 @@
 		A1C2E3F42680D7A900D47402 /* SKCIFSymmetryOperationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */; };
 		A1C2E3F42680D7A900D47404 /* SKCIFSpaceGroupIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */; };
 		A1C2E3F42680D7A900D47406 /* SKCIFSymmetryOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */; };
+		A1C2E3F42680D7A900D47408 /* SKCIFmmCIFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47407 /* SKCIFmmCIFTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1447,6 +1491,40 @@
 		930DD6401E26BA5D00B8FE9B /* MolecularCrystal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolecularCrystal.swift; sourceTree = "<group>"; };
 		930DD6411E26BA5D00B8FE9B /* Molecule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Molecule.swift; sourceTree = "<group>"; };
 		930DD6421E26BA5D00B8FE9B /* Protein.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protein.swift; sourceTree = "<group>"; };
+		93C0CA011F00000100BACK01 /* ProteinBackbone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinBackbone.swift; sourceTree = "<group>"; };
+		93C0CA031F00000200BACK01 /* ProteinBSpline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinBSpline.swift; sourceTree = "<group>"; };
+		93C0CA051F00000300BACK01 /* ProteinRibbonMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonMesh.swift; sourceTree = "<group>"; };
+		93C0CA0B1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSecondaryStructure.swift; sourceTree = "<group>"; };
+		93C0CA151F00002000BACK01 /* ProteinRibbonColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonColorSet.swift; sourceTree = "<group>"; };
+		93C0CA1F1F00003000BACK01 /* ProteinRibbonSplineType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSplineType.swift; sourceTree = "<group>"; };
+		93C0CA2F1F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSecondaryStructureMethod.swift; sourceTree = "<group>"; };
+		93C0CA271F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonRepresentationStyle.swift; sourceTree = "<group>"; };
+		93C0CA211F00003000BACK01 /* ProteinRibbonMeshParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonMeshParameters.swift; sourceTree = "<group>"; };
+		93C0CA231F00003000BACK01 /* ProteinRibbonCenterlinePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonCenterlinePath.swift; sourceTree = "<group>"; };
+		93C0CA251F00003000BACK01 /* ProteinCatmullRomSpline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinCatmullRomSpline.swift; sourceTree = "<group>"; };
+		93C0CA171F00002100BACK01 /* ProteinRibbonStructureEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonStructureEditor.swift; sourceTree = "<group>"; };
+		93C0CA391F00005700DNA001 /* DNARibbonStructureEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNARibbonStructureEditor.swift; sourceTree = "<group>"; };
+		93C0CA3B1F00005800DNA002 /* DNABackbone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNABackbone.swift; sourceTree = "<group>"; };
+		93C0CA541F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinNucleicAcidRibbonMesh.swift; sourceTree = "<group>"; };
+		93C0CA521F00006100DNA011 /* ProteinNucleicAcidMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinNucleicAcidMesh.swift; sourceTree = "<group>"; };
+		93C0CA501F00006000DNA010 /* DNANucleotideGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNANucleotideGeometry.swift; sourceTree = "<group>"; };
+		93C0CA3D1F00005900DNA003 /* DNAAtomTreeBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNAAtomTreeBuilder.swift; sourceTree = "<group>"; };
+		93C0CA3F1F00005A00DNA004 /* DNA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNA.swift; sourceTree = "<group>"; };
+		93C0CA411F00005B00DNA005 /* DNACrystal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNACrystal.swift; sourceTree = "<group>"; };
+		93C0CA0D1F00000800BACK01 /* ProteinAtomTreeBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinAtomTreeBuilder.swift; sourceTree = "<group>"; };
+		93C0CA0F1F00000900BACK01 /* ProteinRibbonSegmentSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinRibbonSegmentSupport.swift; sourceTree = "<group>"; };
+		93C0CA291F00005000STRD01 /* SKStrideRamachandranMaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStrideRamachandranMaps.swift; sourceTree = "<group>"; };
+		93C0CA2B1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStrideSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA2D1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDssSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA311F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDsspSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA331F00005400GEOM1 /* SKSecondaryStructureGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSecondaryStructureGeometry.swift; sourceTree = "<group>"; };
+		93C0CA351F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPSeaSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA371F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSequoiaSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA391F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSegnoSecondaryStructureAssigner.swift; sourceTree = "<group>"; };
+		93C0CA071F00000400RIBN01 /* RibbonShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = RibbonShader.metal; sourceTree = "<group>"; };
+		93C0CA091F00000500RIBN01 /* MetalRibbonShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRibbonShader.swift; sourceTree = "<group>"; };
+		93C0CA111F00001600RIBN01 /* MetalRibbonSelectionShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRibbonSelectionShader.swift; sourceTree = "<group>"; };
+		93C0CA131F00001800RIBN01 /* RibbonSelectionShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = RibbonSelectionShader.metal; sourceTree = "<group>"; };
 		930DD6431E26BA5D00B8FE9B /* ProteinCrystal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProteinCrystal.swift; sourceTree = "<group>"; };
 		930DD6441E26BA5D00B8FE9B /* Structure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Structure.swift; sourceTree = "<group>"; };
 		930DD6541E26BAAD00B8FE9B /* ProjectGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectGroup.swift; sourceTree = "<group>"; };
@@ -1559,6 +1637,10 @@
 		93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonalPrismPrimitive.swift; sourceTree = "<group>"; };
 		93281D9A2FEF08220008F9A1 /* SKElementAminoAcidAtomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKElementAminoAcidAtomTypes.swift; sourceTree = "<group>"; };
 		93281D9C2FEF08460008F9A1 /* SKElementResidueDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKElementResidueDefinitions.swift; sourceTree = "<group>"; };
+		93C0CA431F00005C00DNA006 /* SKNucleotide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNucleotide.swift; sourceTree = "<group>"; };
+		93C0CA451F00005C00DNA007 /* SKNucleotideBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNucleotideBase.swift; sourceTree = "<group>"; };
+		93AA00022F02000100AA001 /* SKAminoAcidIdealGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAminoAcidIdealGeometry.swift; sourceTree = "<group>"; };
+		93AA00042F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinAminoAcidResidueReplacer.swift; sourceTree = "<group>"; };
 		932A1C931F967D62000A0037 /* AngleNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleNumberFormatter.swift; sourceTree = "<group>"; };
 		932A49551E537EF400F71AE7 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		932A495B1E544FDA00F71AE7 /* LogToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogToolBar.swift; sourceTree = "<group>"; };
@@ -1740,6 +1822,8 @@
 		93784A961E61B81500A7FF23 /* StructureElementDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureElementDetailViewController.swift; sourceTree = "<group>"; };
 		93784A9A1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureAppearanceDetailViewPageController.swift; sourceTree = "<group>"; };
 		93784A9C1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureAppearanceDetailViewController.swift; sourceTree = "<group>"; };
+		A1B2C3D31E70DNA000000001 /* AppearanceRibbonHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppearanceRibbonHelpers.swift; sourceTree = "<group>"; };
+		A1B2C3D31E70DNA100000001 /* StructureAppearanceDNARibbonExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureAppearanceDNARibbonExtension.swift; sourceTree = "<group>"; };
 		93784A9E1E61BC9700A7FF23 /* StructureCellDetailViewPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureCellDetailViewPageController.swift; sourceTree = "<group>"; };
 		93784AA01E61BCE500A7FF23 /* StructureCellDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureCellDetailViewController.swift; sourceTree = "<group>"; };
 		93784AA21E61BDE000A7FF23 /* StructureAtomDetailViewPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureAtomDetailViewPageController.swift; sourceTree = "<group>"; };
@@ -1788,6 +1872,9 @@
 		93793B2421CA85DB004CAD9C /* MetalBlurVerticalPictureShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalBlurVerticalPictureShader.swift; sourceTree = "<group>"; };
 		93793B2621D7FE59004CAD9C /* SKStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStructure.swift; sourceTree = "<group>"; };
 		93793B2821D943CB004CAD9C /* RKVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKVertex.swift; sourceTree = "<group>"; };
+		93C0CB041F00001000A001 /* RKRibbonMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKRibbonMesh.swift; sourceTree = "<group>"; };
+		93C0CB061F00001000A002 /* RibbonAOLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonAOLayout.swift; sourceTree = "<group>"; };
+		93C0CB081F00001000A003 /* RibbonAOTexturePostProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonAOTexturePostProcess.swift; sourceTree = "<group>"; };
 		93793B2A21D943F1004CAD9C /* RKTextVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKTextVertex.swift; sourceTree = "<group>"; };
 		93793B2C21D94421004CAD9C /* RKBondVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKBondVertex.swift; sourceTree = "<group>"; };
 		93793B2E21D94462004CAD9C /* RKInPerInstanceAttributesText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKInPerInstanceAttributesText.swift; sourceTree = "<group>"; };
@@ -2432,6 +2519,7 @@
 		A1C2E3F42680D7A900D47401 /* SKCIFSymmetryOperationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationParser.swift; sourceTree = "<group>"; };
 		A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSpaceGroupIdentification.swift; sourceTree = "<group>"; };
 		A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationTests.swift; sourceTree = "<group>"; };
+		A1C2E3F42680D7A900D47407 /* SKCIFmmCIFTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFmmCIFTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2726,6 +2814,17 @@
 			isa = PBXGroup;
 			children = (
 				93281D9C2FEF08460008F9A1 /* SKElementResidueDefinitions.swift */,
+				93C0CA431F00005C00DNA006 /* SKNucleotide.swift */,
+				93C0CA451F00005C00DNA007 /* SKNucleotideBase.swift */,
+				93AA00022F02000100AA001 /* SKAminoAcidIdealGeometry.swift */,
+				93C0CA291F00005000STRD01 /* SKStrideRamachandranMaps.swift */,
+				93C0CA2B1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift */,
+				93C0CA2D1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift */,
+				93C0CA311F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift */,
+				93C0CA331F00005400GEOM1 /* SKSecondaryStructureGeometry.swift */,
+				93C0CA351F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift */,
+				93C0CA371F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift */,
+				93C0CA391F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift */,
 				93281D9A2FEF08220008F9A1 /* SKElementAminoAcidAtomTypes.swift */,
 				930DD4C11E26AA0100B8FE9B /* SymmetryKit.h */,
 				93B1ECB1261E0FAF002E9069 /* Localizable.strings */,
@@ -2861,6 +2960,29 @@
 				930DD6431E26BA5D00B8FE9B /* ProteinCrystal.swift */,
 				930DD6411E26BA5D00B8FE9B /* Molecule.swift */,
 				930DD6421E26BA5D00B8FE9B /* Protein.swift */,
+				93C0CA011F00000100BACK01 /* ProteinBackbone.swift */,
+				93C0CA031F00000200BACK01 /* ProteinBSpline.swift */,
+				93C0CA051F00000300BACK01 /* ProteinRibbonMesh.swift */,
+				93C0CA0B1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift */,
+				93C0CA151F00002000BACK01 /* ProteinRibbonColorSet.swift */,
+				93C0CA1F1F00003000BACK01 /* ProteinRibbonSplineType.swift */,
+				93C0CA2F1F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift */,
+				93C0CA271F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift */,
+				93C0CA211F00003000BACK01 /* ProteinRibbonMeshParameters.swift */,
+				93C0CA231F00003000BACK01 /* ProteinRibbonCenterlinePath.swift */,
+				93C0CA251F00003000BACK01 /* ProteinCatmullRomSpline.swift */,
+				93C0CA171F00002100BACK01 /* ProteinRibbonStructureEditor.swift */,
+				93C0CA391F00005700DNA001 /* DNARibbonStructureEditor.swift */,
+				93C0CA3B1F00005800DNA002 /* DNABackbone.swift */,
+				93C0CA541F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift */,
+				93C0CA521F00006100DNA011 /* ProteinNucleicAcidMesh.swift */,
+				93C0CA501F00006000DNA010 /* DNANucleotideGeometry.swift */,
+				93C0CA3D1F00005900DNA003 /* DNAAtomTreeBuilder.swift */,
+				93C0CA3F1F00005A00DNA004 /* DNA.swift */,
+				93C0CA411F00005B00DNA005 /* DNACrystal.swift */,
+				93C0CA0D1F00000800BACK01 /* ProteinAtomTreeBuilder.swift */,
+				93AA00042F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift */,
+				93C0CA0F1F00000900BACK01 /* ProteinRibbonSegmentSupport.swift */,
 				930DD6441E26BA5D00B8FE9B /* Structure.swift */,
 				93F86E50272150D40060E250 /* Primitive.swift */,
 				9399E62C2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift */,
@@ -3044,6 +3166,8 @@
 				937956961E9E7D1400802529 /* StructureInfoDetailViewController.swift */,
 				93784A9A1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift */,
 				93784A9C1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift */,
+				A1B2C3D31E70DNA000000001 /* AppearanceRibbonHelpers.swift */,
+				A1B2C3D31E70DNA100000001 /* StructureAppearanceDNARibbonExtension.swift */,
 				93784A9E1E61BC9700A7FF23 /* StructureCellDetailViewPageController.swift */,
 				93784AA01E61BCE500A7FF23 /* StructureCellDetailViewController.swift */,
 				93784AA21E61BDE000A7FF23 /* StructureAtomDetailViewPageController.swift */,
@@ -3316,6 +3440,7 @@
 				93E20F8A26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift */,
 				93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */,
 				A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */,
+				A1C2E3F42680D7A900D47407 /* SKCIFmmCIFTests.swift */,
 				936E776726B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift */,
 				93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */,
 				931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */,
@@ -3542,6 +3667,8 @@
 				93793B3421D944D8004CAD9C /* RKTransformationUniforms.swift */,
 				93F7511B26C914A3005796C4 /* RKGlobalAxesUniforms.swift */,
 				93793B3621D944FF004CAD9C /* RKStructureUniforms.swift */,
+				93C0CB061F00001000A002 /* RibbonAOLayout.swift */,
+				93C0CB081F00001000A003 /* RibbonAOTexturePostProcess.swift */,
 				93793B3821D94525004CAD9C /* RKShadowUniforms.swift */,
 				93793B3A21D94551004CAD9C /* RKIsosurfaceUniforms.swift */,
 				93793B3C21D9457A004CAD9C /* RKLight.swift */,
@@ -3600,6 +3727,8 @@
 				93793AF221C7CB76004CAD9C /* MetalBoundingBoxCylinderShader.swift */,
 				93793AF021C7CB0D004CAD9C /* MetalBoundingBoxSphereShader.swift */,
 				93793AF421C7D04A004CAD9C /* MetalEnergyIsosurfaceShader.swift */,
+				93C0CA091F00000500RIBN01 /* MetalRibbonShader.swift */,
+				93C0CA111F00001600RIBN01 /* MetalRibbonSelectionShader.swift */,
 				93518DDC26FC7094009A7B8D /* MetalVolumeRenderedSurfaceShader.swift */,
 				93793AF621C7D0A2004CAD9C /* MetalMeasurementShader.swift */,
 				93793B1021C833ED004CAD9C /* MetalMeasurementOrthographicImposterShader.swift */,
@@ -3663,6 +3792,7 @@
 			isa = PBXGroup;
 			children = (
 				93793B2821D943CB004CAD9C /* RKVertex.swift */,
+				93C0CB041F00001000A001 /* RKRibbonMesh.swift */,
 				936AF6E826BED72900E91649 /* RKPrimitiveVertex.swift */,
 				93793B2A21D943F1004CAD9C /* RKTextVertex.swift */,
 				93793B2C21D94421004CAD9C /* RKBondVertex.swift */,
@@ -3697,6 +3827,8 @@
 				93EA79E824236CC60027D14B /* InternalBondSelectionShaders.metal */,
 				932B98A42425340400033AA7 /* ExternalBondSelectionShaders.metal */,
 				930DD5E01E26B62E00B8FE9B /* IsosurfaceShader.metal */,
+				93C0CA071F00000400RIBN01 /* RibbonShader.metal */,
+				93C0CA131F00001800RIBN01 /* RibbonSelectionShader.metal */,
 				939E7F502779D78A00CC654D /* VolumeRenderedSurfaceShader.metal */,
 				93518DDE26FC7433009A7B8D /* VolumeRenderedVolumetricDataShader.metal */,
 				930DD5E11E26B62E00B8FE9B /* PickingShader.metal */,
@@ -5053,6 +5185,17 @@
 				9374794F1FB9EB51008C4411 /* SKBoundingBox.swift in Sources */,
 				93506970268B71580071B4CC /* SKIntegerChangeOfBasis.swift in Sources */,
 				93281D9D2FEF084A0008F9A1 /* SKElementResidueDefinitions.swift in Sources */,
+				93C0CA441F00005C00DNA006 /* SKNucleotide.swift in Sources */,
+				93C0CA461F00005C00DNA007 /* SKNucleotideBase.swift in Sources */,
+				93AA00012F02000100AA001 /* SKAminoAcidIdealGeometry.swift in Sources */,
+				93C0CA2A1F00005000STRD01 /* SKStrideRamachandranMaps.swift in Sources */,
+				93C0CA2C1F00005000STRD01 /* SKStrideSecondaryStructureAssigner.swift in Sources */,
+				93C0CA2E1F00005100DSS001 /* SKDssSecondaryStructureAssigner.swift in Sources */,
+				93C0CA321F00005300DSSP1 /* SKDsspSecondaryStructureAssigner.swift in Sources */,
+				93C0CA341F00005400GEOM1 /* SKSecondaryStructureGeometry.swift in Sources */,
+				93C0CA361F00005500PSEA1 /* SKPSeaSecondaryStructureAssigner.swift in Sources */,
+				93C0CA381F00005600SEQO1 /* SKSequoiaSecondaryStructureAssigner.swift in Sources */,
+				93C0CA3A1F00005700SEGN1 /* SKSegnoSecondaryStructureAssigner.swift in Sources */,
 				930DD4E91E26AA5200B8FE9B /* SKPointGroup.swift in Sources */,
 				93F3A58F218738C4008E41A2 /* SKBondSetController.swift in Sources */,
 				93B777341FA47AB700A5DF86 /* SKColorSet.swift in Sources */,
@@ -5098,6 +5241,8 @@
 				93EACCBE2206022B00AB8026 /* MetalCylinderShader.swift in Sources */,
 				930DD5E41E26B62E00B8FE9B /* AmbientOcclusionShader.metal in Sources */,
 				930DD5E91E26B62E00B8FE9B /* IsosurfaceShader.metal in Sources */,
+				93C0CA081F00000400RIBN01 /* RibbonShader.metal in Sources */,
+				93C0CA141F00001900RIBN01 /* RibbonSelectionShader.metal in Sources */,
 				93793B2B21D943F1004CAD9C /* RKTextVertex.swift in Sources */,
 				930DD5EC1E26B62E00B8FE9B /* UnitCellShader.metal in Sources */,
 				93338DFD1FFA8B2B004AE2CA /* BoundingBoxShader.metal in Sources */,
@@ -5159,6 +5304,7 @@
 				93584CD720011FC6005F01A7 /* Noise2D.metal in Sources */,
 				936AF6DF26BC2B6700E91649 /* MetalCapsuleGeometry.swift in Sources */,
 				93793B2921D943CC004CAD9C /* RKVertex.swift in Sources */,
+				93C0CB051F00001000A001 /* RKRibbonMesh.swift in Sources */,
 				930DD7591E280A3C00B8FE9B /* BondCylinderShader.metal in Sources */,
 				936AF6E726BED5E800E91649 /* MetalArrowXGeometry.swift in Sources */,
 				931000742484EACB009CD836 /* MetalCylinderPrimitiveSelectionWorleyNoise3DShader.swift in Sources */,
@@ -5183,6 +5329,8 @@
 				930DD5F61E26B65C00B8FE9B /* MetalRenderer.swift in Sources */,
 				931000602483DC9C009CD836 /* MetalEllipsoidPrimitiveSelectionStripedShader.swift in Sources */,
 				93793B3721D944FF004CAD9C /* RKStructureUniforms.swift in Sources */,
+				93C0CB071F00001000A002 /* RibbonAOLayout.swift in Sources */,
+				93C0CB091F00001000A003 /* RibbonAOTexturePostProcess.swift in Sources */,
 				932B989D2424C9CE00033AA7 /* MetalInternalBondSelectionGlowShader.swift in Sources */,
 				9386FBB12019DEAA00442E5C /* RKCachedFontAtlas.swift in Sources */,
 				930DD5431E26B38D00B8FE9B /* RKRenderLight.swift in Sources */,
@@ -5195,6 +5343,8 @@
 				930DD5F71E26B65C00B8FE9B /* MetalSphereGeometry.swift in Sources */,
 				93793B1121C833ED004CAD9C /* MetalMeasurementOrthographicImposterShader.swift in Sources */,
 				93793AF521C7D04A004CAD9C /* MetalEnergyIsosurfaceShader.swift in Sources */,
+				93C0CA0A1F00000500RIBN01 /* MetalRibbonShader.swift in Sources */,
+				93C0CA121F00001700RIBN01 /* MetalRibbonSelectionShader.swift in Sources */,
 				93F7511A26C91379005796C4 /* GlobalAxesBackgroundShader.metal in Sources */,
 				9310006824841BD5009CD836 /* MetalCylinderPrimitiveSelectionStripedShader.swift in Sources */,
 				931000822485067E009CD836 /* MetalCrystalCylinderPrimitiveSelectionGlowShader.swift in Sources */,
@@ -5253,6 +5403,29 @@
 				93D70EFE274CF1D600FBD919 /* BondStructureEditor.swift in Sources */,
 				93D70EEE27454B4600FBD919 /* VASPVolumetricData.swift in Sources */,
 				930DD6491E26BA5D00B8FE9B /* Protein.swift in Sources */,
+				93C0CA021F00000100BACK01 /* ProteinBackbone.swift in Sources */,
+				93C0CA041F00000200BACK01 /* ProteinBSpline.swift in Sources */,
+				93C0CA061F00000300BACK01 /* ProteinRibbonMesh.swift in Sources */,
+				93C0CA0C1F00000600BACK01 /* ProteinRibbonSecondaryStructure.swift in Sources */,
+				93C0CA161F00002000BACK01 /* ProteinRibbonColorSet.swift in Sources */,
+				93C0CA201F00003000BACK01 /* ProteinRibbonSplineType.swift in Sources */,
+				93C0CA301F00005200SSM001 /* ProteinRibbonSecondaryStructureMethod.swift in Sources */,
+				93C0CA281F00004000BACK01 /* ProteinRibbonRepresentationStyle.swift in Sources */,
+				93C0CA221F00003000BACK01 /* ProteinRibbonMeshParameters.swift in Sources */,
+				93C0CA241F00003000BACK01 /* ProteinRibbonCenterlinePath.swift in Sources */,
+				93C0CA261F00003000BACK01 /* ProteinCatmullRomSpline.swift in Sources */,
+				93C0CA181F00002100BACK01 /* ProteinRibbonStructureEditor.swift in Sources */,
+				93C0CA3A1F00005700DNA001 /* DNARibbonStructureEditor.swift in Sources */,
+				93C0CA3C1F00005800DNA002 /* DNABackbone.swift in Sources */,
+				93C0CA551F00006200DNA012 /* ProteinNucleicAcidRibbonMesh.swift in Sources */,
+				93C0CA531F00006100DNA011 /* ProteinNucleicAcidMesh.swift in Sources */,
+				93C0CA511F00006000DNA010 /* DNANucleotideGeometry.swift in Sources */,
+				93C0CA3E1F00005900DNA003 /* DNAAtomTreeBuilder.swift in Sources */,
+				93C0CA401F00005A00DNA004 /* DNA.swift in Sources */,
+				93C0CA421F00005B00DNA005 /* DNACrystal.swift in Sources */,
+				93C0CA0E1F00000800BACK01 /* ProteinAtomTreeBuilder.swift in Sources */,
+				93AA00032F02000100AA001 /* ProteinAminoAcidResidueReplacer.swift in Sources */,
+				93C0CA101F00000900BACK01 /* ProteinRibbonSegmentSupport.swift in Sources */,
 				930DD65B1E26BAAD00B8FE9B /* ProjectNode.swift in Sources */,
 				93A31C9F1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift in Sources */,
 				93A31C991EB4CC300010101B /* ReadStructureOperation.swift in Sources */,
@@ -5350,6 +5523,7 @@
 				93E20F8326A5C59100473702 /* FindPointGroupTests.swift in Sources */,
 				93E20F8526A5F3B200473702 /* SpaceGroupCIFTests.swift in Sources */,
 				A1C2E3F42680D7A900D47406 /* SKCIFSymmetryOperationTests.swift in Sources */,
+				A1C2E3F42680D7A900D47408 /* SKCIFmmCIFTests.swift in Sources */,
 				93E20F8926A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift in Sources */,
 				93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */,
 				933D79C126905E290023EB94 /* ConventionalCellTests.swift in Sources */,
@@ -5395,6 +5569,8 @@
 				93BF1B23260A62C900AFFCF3 /* FrameTableCellView.swift in Sources */,
 				93B85450260CA5E300B6408C /* InfoPanelIconView.swift in Sources */,
 				93784A9D1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift in Sources */,
+				A1B2C3D41E70DNA100000001 /* AppearanceRibbonHelpers.swift in Sources */,
+				A1B2C3D41E70DNA200000001 /* StructureAppearanceDNARibbonExtension.swift in Sources */,
 				933CEEB71F4DF273002758AB /* AnimatedPropertiesLayer.swift in Sources */,
 				93784A9B1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift in Sources */,
 				930DD6D21E28064300B8FE9B /* MainSplitViewController.swift in Sources */,

@@ -103,7 +103,7 @@ class ProjectOutlineView: NSOutlineView
     
     // loading projects can not be dragged
     if let item = item,
-      item.representedObject.lazyStatus == .loading
+      item.showsImportProgress
     {
       return false
     }

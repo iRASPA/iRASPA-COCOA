@@ -64,6 +64,8 @@ public class Object: NSObject, RKRenderObject, BinaryDecodable, BinaryEncodable
     case VTKVolumetricData = 18
     case VASPVolumetricData = 19
     case GaussianCubeVolumetricData = 20
+    case dna = 21
+    case dnaCrystal = 22
   }
   
   public var allObjects: [Object]

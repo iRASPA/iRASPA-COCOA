@@ -54,6 +54,19 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   public weak var importOperation: Foundation.Operation? = nil
   
+  public var showsImportProgress: Bool
+  {
+    if representedObject.lazyStatus == .loading || representedObject.lazyStatus == .error
+    {
+      return true
+    }
+    if let importOperation, !importOperation.isFinished
+    {
+      return true
+    }
+    return false
+  }
+  
   public weak var projectFileWrapper: FileWrapper? = nil
   
   /// The parent of a ProjectTreeNode

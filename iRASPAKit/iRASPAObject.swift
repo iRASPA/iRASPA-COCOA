@@ -103,6 +103,20 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
     self.object = protein
     super.init()
   }
+
+  public init(dna: DNA)
+  {
+    self.type = .dna
+    self.object = dna
+    super.init()
+  }
+
+  public init(dnaCrystal: DNACrystal)
+  {
+    self.type = .dnaCrystal
+    self.object = dnaCrystal
+    super.init()
+  }
   
   public init(crystalEllipsoidPrimitive: CrystalEllipsoidPrimitive)
   {
@@ -194,7 +208,11 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
       self.object = structure.copy()
     case let structure as Protein:
       self.object = structure.copy()
+    case let structure as DNA:
+      self.object = structure.copy()
     case let structure as ProteinCrystal:
+      self.object = structure.copy()
+    case let structure as DNACrystal:
       self.object = structure.copy()
     case let structure as CrystalEllipsoidPrimitive:
       self.object = structure.copy()
@@ -307,6 +325,10 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
       return proteinIcon
     case .proteinCrystal:
       return proteinCrystalIcon
+    case .dna:
+      return proteinIcon
+    case .dnaCrystal:
+      return proteinCrystalIcon
     case .crystalEllipsoidPrimitive:
       return ellipsoidCrystalIcon
     case .crystalCylinderPrimitive:
@@ -382,6 +404,10 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
       self.object = try decoder.decode(Protein.self)
     case .proteinCrystal:
       self.object = try decoder.decode(ProteinCrystal.self)
+    case .dna:
+      self.object = try decoder.decode(DNA.self)
+    case .dnaCrystal:
+      self.object = try decoder.decode(DNACrystal.self)
     case .crystalEllipsoidPrimitive:
       self.object = try decoder.decode(CrystalEllipsoidPrimitive.self)
     case .crystalCylinderPrimitive:

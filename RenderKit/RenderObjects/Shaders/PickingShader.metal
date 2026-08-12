@@ -357,11 +357,44 @@ vertex PickingVertexShaderOut PickingPolygonalPrismVertexShader(const device InP
 
 
 fragment PickingBondFragOutput PickingPolygonalPrismFragmentShader(PickingVertexShaderOut vert [[stage_in]],
-                                              constant StructureUniforms& structureUniforms [[buffer(0)]])
+                                                              constant StructureUniforms& structureUniforms [[buffer(0)]])
                                               
 {
   PickingBondFragOutput output;
   
   output.albedo = uint4(1,0,structureUniforms.structureIdentifier, vert.instanceId);
+  return output;
+}
+
+
+struct RibbonPickingVertexShaderOut
+{
+  float4 position [[position]];
+  uint segmentIndex [[flat]];
+  uint residueIndex [[flat]];
+};
+
+
+vertex RibbonPickingVertexShaderOut RibbonPickingVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+                                                              constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                              constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                              uint vid [[vertex_id]])
+{
+  RibbonPickingVertexShaderOut vert;
+  float4 pos = vertices[vid].position;
+  vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * pos;
+  vert.segmentIndex = uint(vertices[vid].normal.w);
+  vert.residueIndex = uint(vertices[vid].pad.y);
+  return vert;
+}
+
+
+fragment PickingFragOutput RibbonPickingFragmentShader(RibbonPickingVertexShaderOut vert [[stage_in]],
+                                                       constant StructureUniforms& structureUniforms [[buffer(1)]])
+{
+  PickingFragOutput output;
+  output.depth = vert.position.z / vert.position.w;
+  // type 3 = ribbon; z = secondary-structure segment index, w = residue index
+  output.albedo = uint4(3, structureUniforms.structureIdentifier, vert.segmentIndex, vert.residueIndex);
   return output;
 }

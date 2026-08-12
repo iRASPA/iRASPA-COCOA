@@ -156,6 +156,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
     
     self.ligandAtom = atom.ligandAtom
     self.backBoneAtom = atom.backBoneAtom
+    self.solvent = atom.solvent
   }
   
   public init(modelAtom: SKAsymmetricAtom, color: NSColor, drawRadius: Double, bondDistanceCriteria: Double)
@@ -184,6 +185,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
     
     self.ligandAtom = modelAtom.ligandAtom
     self.backBoneAtom = modelAtom.backBoneAtom
+    self.solvent = modelAtom.solvent
     
     self.color = color
     self.drawRadius = drawRadius
@@ -218,6 +220,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
     
     self.ligandAtom = copy.ligandAtom
     self.backBoneAtom = copy.backBoneAtom
+    self.solvent = copy.solvent
     
     self.color = copy.color
     self.drawRadius = copy.drawRadius

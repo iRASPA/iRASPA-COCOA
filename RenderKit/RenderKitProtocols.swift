@@ -160,6 +160,93 @@ public protocol RKRenderBondSource: RKRenderObject
   var bondSelectionScaling: Double {get}
 }
 
+public protocol RKRenderRibbonSource: RKRenderObject
+{
+  var drawRibbon: Bool {get}
+  var ribbonScaleFactor: Double {get}
+  var renderRibbonVertices: [RKVertex] {get}
+  var renderRibbonIndices: [UInt32] {get}
+  var ribbonNumberOfVertices: Int {get}
+  var ribbonNumberOfIndices: Int {get}
+  var ribbonChainDrawRanges: [RKRibbonChainDrawRange] {get}
+  var ribbonSegmentDrawRanges: [RKRibbonChainDrawRange] {get}
+  var ribbonResidueDrawRanges: [RKRibbonChainDrawRange] {get}
+  var ribbonUsesSegmentVisibility: Bool {get}
+  var ribbonUsesResidueVisibility: Bool {get}
+  func isRibbonSegmentDrawRangeVisible(at index: Int) -> Bool
+  func isRibbonResidueDrawRangeVisible(at index: Int) -> Bool
+  /// Visible ribbon draw ranges for encoding (merged contiguous/overlapping spans). Prefer this over per-range visibility in draw loops.
+  func ribbonDrawRangesForEncoding() -> [RKRibbonChainDrawRange]
+  var renderSelectedRibbonSegmentDrawRangeIndices: Set<Int> {get}
+  var renderSelectedRibbonResidueDrawRangeIndices: Set<Int> {get}
+  var ribbonNumberOfChains: Int {get}
+  var ribbonNumberOfRings: Int {get}
+  var ribbonMaxSplineSampleCount: Int {get}
+  var ribbonAmbientOcclusionPatchNumber: Int {get set}
+  var ribbonAmbientOcclusionPatchSize: Int {get set}
+  var ribbonAmbientOcclusionTextureSize: Int {get set}
+  var ribbonAmbientOcclusionTextureWidth: Int {get set}
+  var ribbonAmbientOcclusionTextureHeight: Int {get set}
+  var ribbonAmbientOcclusionStripHeight: Int {get set}
+  var ribbonCoilColor: SIMD3<Float> {get}
+  var ribbonHelixColor: SIMD3<Float> {get}
+  var ribbonSheetColor: SIMD3<Float> {get}
+  var ribbonHDR: Bool {get}
+  var ribbonHDRExposure: Double {get}
+  var ribbonHue: Double {get}
+  var ribbonSaturation: Double {get}
+  var ribbonValue: Double {get}
+  var ribbonAmbientOcclusion: Bool {get}
+  var ribbonAmbientColor: NSColor {get}
+  var ribbonDiffuseColor: NSColor {get}
+  var ribbonSpecularColor: NSColor {get}
+  var ribbonAmbientIntensity: Double {get}
+  var ribbonDiffuseIntensity: Double {get}
+  var ribbonSpecularIntensity: Double {get}
+  var ribbonShininess: Double {get}
+  func rebuildBackbone()
+  func rebuildRibbonMesh()
+}
+
+public extension RKRenderRibbonSource
+{
+  /// Default: resolve visibility once per encode and merge contiguous/overlapping ranges.
+  /// Types with expensive per-index visibility should override with a single tree walk.
+  func ribbonDrawRangesForEncoding() -> [RKRibbonChainDrawRange]
+  {
+    let ranges: [RKRibbonChainDrawRange]
+    let isVisible: (Int) -> Bool
+    if ribbonUsesResidueVisibility && !ribbonResidueDrawRanges.isEmpty
+    {
+      ranges = ribbonResidueDrawRanges
+      isVisible = { self.isRibbonResidueDrawRangeVisible(at: $0) }
+    }
+    else if ribbonUsesSegmentVisibility && !ribbonSegmentDrawRanges.isEmpty
+    {
+      ranges = ribbonSegmentDrawRanges
+      isVisible = { self.isRibbonSegmentDrawRangeVisible(at: $0) }
+    }
+    else
+    {
+      return ribbonChainDrawRanges
+    }
+    
+    var visible: [Bool] = Array(repeating: true, count: ranges.count)
+    var allVisible: Bool = true
+    for index in 0..<ranges.count
+    {
+      let rangeVisible: Bool = isVisible(index)
+      visible[index] = rangeVisible
+      if !rangeVisible {allVisible = false}
+    }
+    if allVisible
+    {
+      return ribbonChainDrawRanges
+    }
+    return RKRibbonMesh.mergedVisibleDrawRanges(ranges, visible: visible)
+  }
+}
+
 public protocol RKRenderVolumetricDataSource: RKRenderObject
 {
   var drawAdsorptionSurface: Bool {get}

@@ -62,7 +62,15 @@ public class MetalRenderer
   var boundingBoxSphereShader: MetalBoundingBoxSphereShader = MetalBoundingBoxSphereShader()
   
   var isosurfaceShader: MetalEnergyIsosurfaceShader = MetalEnergyIsosurfaceShader()
+  var ribbonShader: MetalRibbonShader = MetalRibbonShader()
+  var ribbonSelectionShader: MetalRibbonSelectionShader = MetalRibbonSelectionShader()
   var volumeRenderedSurfaceShader: MetalEnergyVolumeRenderedSurfaceShader = MetalEnergyVolumeRenderedSurfaceShader()
+  
+  public var ribbonAODebugMode: RibbonAODebugMode
+  {
+    get {ribbonShader.aoDebugMode}
+    set {ribbonShader.aoDebugMode = newValue}
+  }
     
   var textShader: MetalTextShader = MetalTextShader()
   
@@ -176,8 +184,6 @@ public class MetalRenderer
       self.renderDataSource = dataSource
       self.reloadData(device: device, size, maximumNumberOfSamples: maximumNumberOfSamples)
       
-      self.ambientOcclusionShader.adjustAmbientOcclusionTextureSize()
-      
       self.buildLightUniforms(device: device)
       self.buildStructureUniforms(device: device)
       self.buildIsosurfaceUniforms(device: device)
@@ -219,6 +225,12 @@ public class MetalRenderer
     
     isosurfaceShader.renderDataSource = renderDataSource
     isosurfaceShader.renderStructures = renderStructures
+    
+    ribbonShader.renderDataSource = renderDataSource
+    ribbonShader.renderStructures = renderStructures
+    
+    ribbonSelectionShader.renderDataSource = renderDataSource
+    ribbonSelectionShader.renderStructures = renderStructures
     
     volumeRenderedSurfaceShader.renderDataSource = renderDataSource
     volumeRenderedSurfaceShader.renderStructures = renderStructures
@@ -360,11 +372,21 @@ public class MetalRenderer
       setDataSources(renderDataSource: renderDataSource, renderStructures: renderStructures)
     }
     
+    for structures in renderStructures
+    {
+      for structure in structures
+      {
+        if let ribbonSource: RKRenderRibbonSource = structure as? RKRenderRibbonSource,
+           ribbonSource.drawRibbon
+        {
+          ribbonSource.rebuildRibbonMesh()
+        }
+      }
+    }
+    
     backgroundShader.reloadBackgroundImage(device: device)
     
     buildTextures(device: device, size: size, maximumNumberOfSamples: maximumNumberOfSamples)
-    
-    ambientOcclusionShader.buildAmbientOcclusionTextures(device: device)
     
     buildVertexBuffers(device: device)
     
@@ -376,7 +398,18 @@ public class MetalRenderer
     buildLightUniforms(device: device)
   }
   
-  public func reloadRenderData(device: MTLDevice)
+  public func reloadRenderData(device: MTLDevice, rebuildRibbonMesh: Bool = true)
+  {
+    reloadRenderDataFromSource(device: device, rebuildRibbonMesh: rebuildRibbonMesh)
+  }
+  
+  /// Refreshes render structures and GPU buffers after atom-tree visibility changes only.
+  public func reloadRenderDataForVisibility(device: MTLDevice)
+  {
+    reloadRenderDataFromSource(device: device, rebuildRibbonMesh: false)
+  }
+  
+  private func reloadRenderDataFromSource(device: MTLDevice, rebuildRibbonMesh: Bool)
   {
     // makes sure the rendering data is consistent
     var renderStructures: [[RKRenderObject]] = []
@@ -393,6 +426,21 @@ public class MetalRenderer
       }
       
       setDataSources(renderDataSource: renderDataSource, renderStructures: renderStructures)
+    }
+    
+    if rebuildRibbonMesh
+    {
+      for structures in renderStructures
+      {
+        for structure in structures
+        {
+          if let ribbonSource: RKRenderRibbonSource = structure as? RKRenderRibbonSource,
+             ribbonSource.drawRibbon
+          {
+            ribbonSource.rebuildRibbonMesh()
+          }
+        }
+      }
     }
     
     self.buildVertexBuffers(device: device)
@@ -481,6 +529,8 @@ public class MetalRenderer
     boundingBoxSphereShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     isosurfaceShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    ribbonShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    ribbonSelectionShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     volumeRenderedSurfaceShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     pickingShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
@@ -603,6 +653,7 @@ public class MetalRenderer
     
     isosurfaceShader.buildInstanceBuffers(device: device)
     isosurfaceShader.buildVertexBuffers()
+    ribbonShader.buildVertexBuffers(device: device)
     volumeRenderedSurfaceShader.buildVertexBuffers(device: device)
     
     textShader.buildVertexBuffers(device: device)
@@ -805,6 +856,8 @@ public class MetalRenderer
     
     self.isosurfaceShader.renderOpaqueIsosurfaceWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
+    self.ribbonShader.renderWithEncoder(commandEncoder, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.ribbonTextures, size: size)
+    
     self.localAxesShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
     
@@ -851,6 +904,13 @@ public class MetalRenderer
       
       self.externalBondSelectionWorleyShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: externalBondSelectionShader, bondShader: externalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       self.externalBondSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: externalBondSelectionShader, bondShader: externalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
+      self.ribbonSelectionShader.renderOverlayWithEncoder(commandEncoder,
+                                                          ribbonShader: ribbonShader,
+                                                          frameUniformBuffer: frameUniformBuffer,
+                                                          structureUniformBuffers: structureUniformBuffers,
+                                                          lightUniformBuffers: lightUniformBuffers,
+                                                          size: size)
       
       
      
@@ -946,7 +1006,7 @@ public class MetalRenderer
     commandEncoder.endEncoding()
   }
   
-  func pickingOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
+  func pickingOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, skipRibbonPicking: Bool = false)
   {
     pickingShader.renderPickingTextureWithEncoder(commandBuffer,
                                                   renderPassDescriptor: pickingShader.renderPassDescriptor,
@@ -960,11 +1020,13 @@ public class MetalRenderer
                                                   cylinderPrimitiveShader: metalCylinderShader,
                                                   crystalPolygonalPrismPrimitiveShader: metalCrystalPolygonalPrismShader,
                                                   polygonalPrismPrimitiveShader: metalPolygonalPrismShader,
+                                                  ribbonShader: ribbonShader,
                                                   frameUniformBuffer: frameUniformBuffer,
                                                   structureUniformBuffers: structureUniformBuffers,
                                                   size: size,
                                                   renderQuality: renderQuality,
-                                                  camera: camera)
+                                                  camera: camera,
+                                                  skipRibbonPicking: skipRibbonPicking)
   }
   
   func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
@@ -1006,7 +1068,14 @@ public class MetalRenderer
       
       polygonalPrismPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalPolygonalPrismShader: metalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       crystalPolygonalPrismPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalCrystalPolygonalPrismShader: metalCrystalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-     
+      
+      ribbonSelectionShader.renderGlowWithEncoder(commandEncoder,
+                                                  ribbonShader: ribbonShader,
+                                                  frameUniformBuffer: frameUniformBuffer,
+                                                  structureUniformBuffers: structureUniformBuffers,
+                                                  lightUniformBuffers: lightUniformBuffers,
+                                                  size: size)
+      
       commandEncoder.endEncoding()
     }
     
@@ -1037,7 +1106,7 @@ public class MetalRenderer
       let frameUniformBuffer: MTLBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)!
       
       
-      self.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: self.atomShader, atomOrthographicImposterShader: self.atomOrthographicImposterShader)
+      self.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: self.atomShader, atomOrthographicImposterShader: self.atomOrthographicImposterShader, ribbonShader: self.ribbonShader)
     
       self.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
       self.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})

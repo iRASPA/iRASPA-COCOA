@@ -500,6 +500,12 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       }
     }
     
+    let ext: String = url.pathExtension.uppercased()
+    if ext == "CIF" || ext == "MMCIF" || ext == "PDB" || ext == "XYZ" || ext == "VTK" || ext == "CUBE"
+    {
+      return true
+    }
+    
     if url.pathExtension.isEmpty &&
       (url.lastPathComponent.uppercased() == "POSCAR" ||
        url.lastPathComponent.uppercased() == "CONTCAR" ||
@@ -536,17 +542,25 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
          if let onlyAsymmetricUnitButton: NSButton = importAccessoryViewController.proteinsOnlyAsymmetricUnit,
             let asMoleculeButton: NSButton = importAccessoryViewController.importAsMolecule
          {
-           //let asSeparateProjects: Bool = importButton.state == NSControl.StateValue.on ? true : false
-           let onlyAsymmetricUnit: Bool = onlyAsymmetricUnitButton.state == NSControl.StateValue.on ? true : false
-           let asMolecule: Bool = asMoleculeButton.state == NSControl.StateValue.on ? true : false
+           let onlyAsymmetricUnit: Bool = onlyAsymmetricUnitButton.state == NSControl.StateValue.on
+           let asMolecule: Bool = asMoleculeButton.state == NSControl.StateValue.on
+           let separatePolymerChains: Bool = importAccessoryViewController.separatePolymerChains?.state == NSControl.StateValue.on
          
-           self.importStructureFiles(openPanel.urls as [URL], importType: importAccessoryViewController.importType, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+           self.importStructureFiles(openPanel.urls as [URL],
+                                     importType: importAccessoryViewController.importType,
+                                     onlyAsymmetricUnit: onlyAsymmetricUnit,
+                                     asMolecule: asMolecule,
+                                     separatePolymerChains: separatePolymerChains)
          }
        }
      }
   }
   
-  func importStructureFiles(_ URLs: [URL], importType: SKParser.ImportType, onlyAsymmetricUnit: Bool, asMolecule: Bool)
+  func importStructureFiles(_ URLs: [URL],
+                            importType: SKParser.ImportType,
+                            onlyAsymmetricUnit: Bool,
+                            asMolecule: Bool,
+                            separatePolymerChains: Bool = false)
   {
     guard URLs.count > 0 else {return}
     
@@ -606,7 +620,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           // send as a single operation to the 'window-controller-queue'
           do
           {
-            let operation = try ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: [url], onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, asMovie: false)
+            let operation = try ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: [url], onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, separatePolymerChains: separatePolymerChains, asMovie: false)
             node.importOperation = operation
             windowController?.projectConcurrentQueue.addOperation(operation)
           
@@ -639,7 +653,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         // send as a single operation to the 'window-controller-queue'
         do
         {
-          let operation = try ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: URLs, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, asMovie: importType == SKParser.ImportType.asMovieFrames)
+          let operation = try ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: URLs, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, separatePolymerChains: separatePolymerChains, asMovie: importType == SKParser.ImportType.asMovieFrames)
           node.importOperation = operation
           windowController?.projectConcurrentQueue.addOperation(operation)
         }
@@ -792,23 +806,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     if let node: ProjectTreeNode  = item as? ProjectTreeNode,
        let view: ProjectTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "projectView"), owner: self) as? ProjectTableCellView
     {
-      view.progressIndicator?.isHidden = true
-      view.cancelButton?.isHidden = true
-      
       (view.textField as? TableListNameTextField)?.endRenaming()
       view.textField?.stringValue = node.displayName
       (view.imageView as? TableImageViewIcon)?.image = node.infoPanelIcon
       
-      if node.representedObject.lazyStatus == .loading || node.representedObject.lazyStatus == .error
-      {
-        view.progressIndicator?.isHidden = false
-        view.cancelButton?.isHidden = false
-      }
-      else
-      {
-        view.progressIndicator?.isHidden = true
-        view.cancelButton?.isHidden = true
-      }
+      view.setImportProgressVisible(node.showsImportProgress)
       
       view.textField?.textColor = nil
       
@@ -1880,7 +1882,14 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
               }
             }
             
-            node.representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? BondEditor}).forEach{$0.reComputeBonds()}
+            node.representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? BondEditor}).forEach
+            {
+              bondEditor in
+              if let structure: Structure = bondEditor as? Structure, structure.drawBonds
+              {
+                bondEditor.reComputeBonds()
+              }
+            }
           }
         }
       }
@@ -2026,7 +2035,16 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             }
             
             
-            node.representedObject.loadedProjectStructureNode?.allObjects.forEach{$0.reComputeBonds()}
+            node.representedObject.loadedProjectStructureNode?.allObjects.forEach
+            {
+              object in
+              if let bondEditor: BondEditor = object as? BondEditor,
+                 let structure: Structure = object as? Structure,
+                 structure.drawBonds
+              {
+                bondEditor.reComputeBonds()
+              }
+            }
             
           }
           
@@ -3284,7 +3302,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     {
       if let selectedRow: Int = proposedSelectionIndexes.first,
          let node: ProjectTreeNode = self.projectOutlineView?.item(atRow: selectedRow) as? ProjectTreeNode,
-         node.representedObject.lazyStatus == .loading
+         node.showsImportProgress
       {
         // if the project is not present then it can not be selected unless it is loaded lazily
         return self.projectOutlineView?.selectedRowIndexes ?? IndexSet()

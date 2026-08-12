@@ -42,7 +42,7 @@ class ReadStructureGroupOperation: FKGroupOperation, @unchecked Sendable
   unowned var colorSets: SKColorSets
   unowned var forceFieldSets: SKForceFieldSets
     
-  public init(projectTreeNode : ProjectTreeNode, urls: [URL], windowController: NSWindowController?, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, onlyAsymmetricUnit: Bool, asMolecule: Bool) throws
+  public init(projectTreeNode : ProjectTreeNode, urls: [URL], windowController: NSWindowController?, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, onlyAsymmetricUnit: Bool, asMolecule: Bool, separatePolymerChains: Bool = false) throws
   {
     self.projectTreeNode = projectTreeNode
     self.colorSets = colorSets
@@ -56,7 +56,7 @@ class ReadStructureGroupOperation: FKGroupOperation, @unchecked Sendable
     var operations: [ReadStructureOperation] = []
     for url in urls
     {
-      let operation: ReadStructureOperation = try ReadStructureOperation(ProjectTreeNode: projectTreeNode, url: url, windowController: windowController, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+      let operation: ReadStructureOperation = try ReadStructureOperation(ProjectTreeNode: projectTreeNode, url: url, windowController: windowController, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, separatePolymerChains: separatePolymerChains)
       progress.addChild(operation.progress, withPendingUnitCount: 1)
       operations.append(operation)
     }

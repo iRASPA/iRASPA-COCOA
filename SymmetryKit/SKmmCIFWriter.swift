@@ -47,8 +47,9 @@ public class SKmmCIFWriter
     
     let numberFormatter: NumberFormatter = NumberFormatter()
     numberFormatter.numberStyle = .decimal
-    numberFormatter.formatWidth = 14
-    numberFormatter.minimumFractionDigits = 8
+    numberFormatter.formatWidth = 12
+    numberFormatter.minimumFractionDigits = 6
+    numberFormatter.maximumFractionDigits = 6
     numberFormatter.minimumIntegerDigits = 1
     numberFormatter.negativePrefix = "-"
     numberFormatter.positivePrefix = " "
@@ -57,92 +58,151 @@ public class SKmmCIFWriter
     numberFormatter.groupingSeparator = ""
     numberFormatter.decimalSeparator = "."
     
-    // write local header
-    dataString += String("data_\(displayName)\n") + "\n"
+    let occupancyFormatter: NumberFormatter = NumberFormatter()
+    occupancyFormatter.numberStyle = .decimal
+    occupancyFormatter.minimumFractionDigits = 2
+    occupancyFormatter.maximumFractionDigits = 2
+    occupancyFormatter.usesGroupingSeparator = false
+    occupancyFormatter.decimalSeparator = "."
     
-    // write spacegroup data
-    dataString += String("_cell.length_a    \(numberFormatter.string(from: NSNumber(value: cell.a))!)\n")
-    dataString += String("_cell.length_b    \(numberFormatter.string(from: NSNumber(value: cell.b))!)\n")
-    dataString += String("_cell.length_c    \(numberFormatter.string(from: NSNumber(value: cell.c))!)\n")
-    dataString += String("_cell.angle_alpha \(numberFormatter.string(from: NSNumber(value: cell.alpha * 180.0/Double.pi))!)\n")
-    dataString += String("_cell.angle_beta  \(numberFormatter.string(from: NSNumber(value: cell.beta * 180.0/Double.pi))!)\n")
-    dataString += String("_cell.angle_gamma \(numberFormatter.string(from: NSNumber(value: cell.gamma * 180.0/Double.pi))!)\n")
-    dataString += String("_cell.Z_PDB       \(numberFormatter.string(from: NSNumber(value: cell.zValue))!)\n") + "\n\n"
+    let safeName: String = Self.cifDataBlockName(from: displayName)
+    
+    // write local header
+    dataString += "data_\(safeName)\n\n"
+    
+    // write cell data (mmCIF dotted tags)
+    dataString += "_cell.length_a     \(numberFormatter.string(from: NSNumber(value: cell.a))!)\n"
+    dataString += "_cell.length_b     \(numberFormatter.string(from: NSNumber(value: cell.b))!)\n"
+    dataString += "_cell.length_c     \(numberFormatter.string(from: NSNumber(value: cell.c))!)\n"
+    dataString += "_cell.angle_alpha  \(numberFormatter.string(from: NSNumber(value: cell.alpha * 180.0/Double.pi))!)\n"
+    dataString += "_cell.angle_beta   \(numberFormatter.string(from: NSNumber(value: cell.beta * 180.0/Double.pi))!)\n"
+    dataString += "_cell.angle_gamma  \(numberFormatter.string(from: NSNumber(value: cell.gamma * 180.0/Double.pi))!)\n"
+    if cell.zValue > 0
+    {
+      dataString += "_cell.Z_PDB        \(cell.zValue)\n"
+    }
+    dataString += "\n"
     
     let spaceGroup = SKSpacegroup(HallNumber: spaceGroupHallNumber ?? 1)
-    dataString += String("_symmetry.space_group_name_Hall '\(spaceGroup.spaceGroupSetting.Hall)'\n")
-    dataString += String("_symmetry.pdbx_full_space_group_name_H-M '\(spaceGroup.spaceGroupSetting.HM)'\n")
-    dataString += String("_symmetry.Int_Tables_number \(spaceGroup.spaceGroupSetting.number)") + "\n\n"
+    dataString += "_symmetry.space_group_name_Hall '\(spaceGroup.spaceGroupSetting.Hall)'\n"
+    dataString += "_symmetry.pdbx_full_space_group_name_H-M '\(spaceGroup.spaceGroupSetting.HM)'\n"
+    dataString += "_symmetry.Int_Tables_number \(spaceGroup.spaceGroupSetting.number)\n\n"
     
     // write structure atom data
-    dataString += String("loop_\n")
-    dataString += String("_atom_site.group_PDB\n")
-    dataString += String("_atom_site.id\n")
-    dataString += String("_atom_site.type_symbol\n")
+    dataString += "loop_\n"
+    dataString += "_atom_site.group_PDB\n"
+    dataString += "_atom_site.id\n"
+    dataString += "_atom_site.type_symbol\n"
     if withProteinInfo
     {
-      dataString += String("_atom_site.label_comp_id\n")
-      dataString += String("_atom_site.label_entity_id\n");
-      dataString += String("_atom_site.label_seq_id\n");
-      dataString += String("_atom_site.pdbx_PDB_ins_code\n");
+      dataString += "_atom_site.label_atom_id\n"
+      dataString += "_atom_site.label_alt_id\n"
+      dataString += "_atom_site.label_comp_id\n"
+      dataString += "_atom_site.label_asym_id\n"
+      dataString += "_atom_site.label_entity_id\n"
+      dataString += "_atom_site.label_seq_id\n"
+      dataString += "_atom_site.pdbx_PDB_ins_code\n"
     }
-    dataString += exportFractional ? String("_atom_site.fract_x\n") : String("_atom_site.Cartn_x\n")
-    dataString += exportFractional ? String("_atom_site.fract_y\n") : String("_atom_site.Cartn_y\n")
-    dataString += exportFractional ? String("_atom_site.fract_z\n") : String("_atom_site.Cartn_z\n")
-    dataString += String("_atom_site.charge\n")
+    else
+    {
+      dataString += "_atom_site.label_atom_id\n"
+    }
+    dataString += exportFractional ? "_atom_site.fract_x\n" : "_atom_site.Cartn_x\n"
+    dataString += exportFractional ? "_atom_site.fract_y\n" : "_atom_site.Cartn_y\n"
+    dataString += exportFractional ? "_atom_site.fract_z\n" : "_atom_site.Cartn_z\n"
+    dataString += "_atom_site.occupancy\n"
+    if withProteinInfo
+    {
+      dataString += "_atom_site.auth_seq_id\n"
+      dataString += "_atom_site.auth_comp_id\n"
+      dataString += "_atom_site.auth_asym_id\n"
+      dataString += "_atom_site.auth_atom_id\n"
+    }
+    dataString += "_atom_site.charge\n"
     
     let unitCell: double3x3 = cell.unitCell
     let inverseUnitCell: double3x3 = cell.inverseUnitCell
+    var serial: Int = 1
     for atom in atoms
     {
       let position: SIMD3<Double>
-      let chemicalElement = PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol
-      
       if atomsAreFractional && !exportFractional
       {
         position = unitCell * atom.position - origin
       }
       else if !atomsAreFractional && exportFractional
       {
-        position = inverseUnitCell * atom.position - origin
+        position = inverseUnitCell * (atom.position - origin)
       }
       else
       {
         position = atom.position - origin
       }
-      let name: String
-      let residueString: String
-      let entityId: String
-      let sequenceId: String
-      let insertionCode: String
+      
+      let chemicalElement: String = PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol
+      let groupPDB: String = (withProteinInfo && atom.solvent) ? "HETATM" : "ATOM"
+      let atomId: Int = atom.serialNumber > 0 ? atom.serialNumber : serial
+      let atomName: String = Self.atomName(for: atom, chemicalElement: chemicalElement)
+      
+      guard let positionX: String = numberFormatter.string(from: NSNumber(value: position.x)),
+            let positionY: String = numberFormatter.string(from: NSNumber(value: position.y)),
+            let positionZ: String = numberFormatter.string(from: NSNumber(value: position.z)),
+            let occupancy: String = occupancyFormatter.string(from: NSNumber(value: atom.occupancy)),
+            let charge: String = numberFormatter.string(from: NSNumber(value: atom.charge))
+      else
+      {
+        serial += 1
+        continue
+      }
+      
       if withProteinInfo
       {
-        name = chemicalElement + String(atom.remotenessIndicator) + String(atom.branchDesignator)
-        residueString = atom.residueName.count > 0 ? atom.residueName : "UNK"
-        entityId = atom.chainIdentifier == " " ? "?" : String(atom.chainIdentifier)
-        sequenceId = String(atom.residueSequenceNumber)
-        insertionCode = atom.codeForInsertionOfResidues == " " ? "?" : String(atom.codeForInsertionOfResidues)
+        let residueName: String = atom.residueName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "UNK" : atom.residueName
+        let chain: String = (atom.chainIdentifier == " " || atom.chainIdentifier == "\0") ? "A" : String(atom.chainIdentifier)
+        let sequenceId: String = atom.residueSequenceNumber == 0 ? "?" : String(atom.residueSequenceNumber)
+        let insertionCode: String = (atom.codeForInsertionOfResidues == " " || atom.codeForInsertionOfResidues == "\0") ? "?" : String(atom.codeForInsertionOfResidues)
+        let altId: String = (atom.alternateLocationIndicator == " " || atom.alternateLocationIndicator == "\0") ? "." : String(atom.alternateLocationIndicator)
+        
+        dataString += "\(groupPDB) \(atomId) \(chemicalElement) \(atomName) \(altId) \(residueName) \(chain) ? \(sequenceId) \(insertionCode) \(positionX) \(positionY) \(positionZ) \(occupancy) \(sequenceId) \(residueName) \(chain) \(atomName) \(charge)\n"
       }
       else
       {
-        name = atom.displayName.padding(toLength: 8, withPad:  " ", startingAt: 0)
-        residueString = ""
-        entityId = ""
-        sequenceId = ""
-        insertionCode = ""
+        dataString += "\(groupPDB) \(atomId) \(chemicalElement) \(atomName) \(positionX) \(positionY) \(positionZ) \(occupancy) \(charge)\n"
       }
-      let chemicalElementString = chemicalElement.padding(toLength: 3, withPad:  " ", startingAt: 0)
-      
-      if let positionX: String = numberFormatter.string(from: NSNumber(value: position.x)),
-         let positionY: String = numberFormatter.string(from: NSNumber(value: position.y)),
-         let positionZ: String = numberFormatter.string(from: NSNumber(value: position.z)),
-         let charge: String = numberFormatter.string(from: NSNumber(value: atom.charge))
-      {
-        dataString += String("ATOM \(name) \(chemicalElementString) \(residueString) \(entityId) \(sequenceId) \(insertionCode) \(positionX) \(positionY) \(positionZ) \(charge)\n")
-      }
+      serial += 1
     }
     
     return dataString
   }
+  
+  private static func cifDataBlockName(from displayName: String) -> String
+  {
+    let trimmed: String = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+    let allowed = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "_-"))
+    let mapped: String = String(trimmed.map { character -> Character in
+      let scalars = String(character).unicodeScalars
+      return scalars.allSatisfy { allowed.contains($0) } ? character : "_"
+    })
+    return mapped.isEmpty ? "structure" : mapped
+  }
+  
+  private static func atomName(for atom: SKAsymmetricAtom, chemicalElement: String) -> String
+  {
+    let display: String = atom.displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+    if !display.isEmpty
+    {
+      return display.contains(" ") ? "'\(display)'" : display
+    }
+    
+    var name: String = chemicalElement
+    if atom.remotenessIndicator != " " && atom.remotenessIndicator != "\0"
+    {
+      name.append(atom.remotenessIndicator)
+    }
+    if atom.branchDesignator != " " && atom.branchDesignator != "\0"
+    {
+      name.append(atom.branchDesignator)
+    }
+    return name
+  }
 }
-

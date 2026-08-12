@@ -158,6 +158,11 @@ class AppDelegate: NSObject, NSApplicationDelegate
      return false
   }
 
+  func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool
+  {
+    return true
+  }
+
   func applicationDidFinishLaunching(_ aNotification: Notification)
   {
     // Insert code here to initialize your application

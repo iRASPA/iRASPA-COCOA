@@ -67,6 +67,7 @@ class ImportAccessoryNSBox: NSBox
 public class ImportAccessoryViewController: NSViewController
 {
   @IBOutlet var proteinsOnlyAsymmetricUnit: NSButton?
+  @IBOutlet var separatePolymerChains: NSButton?
   @IBOutlet var importAsMolecule: NSButton?
   
   public var importType: SKParser.ImportType = .asSingleProject
