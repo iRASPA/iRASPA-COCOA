@@ -178,10 +178,10 @@ class NSInformationPanelView: NSView
         
         // iTunes style
         //
-        kBackgroundGradient = NSGradient(colorsAndLocations: (NSColor(calibratedRed: 0.929, green: 0.945, blue: 0.882, alpha: 1.0),0.0),
-                                         (NSColor(calibratedRed: 0.902, green: 0.922, blue: 0.835, alpha: 1.0),0.5),
-                                         (NSColor(calibratedRed: 0.871, green: 0.894, blue: 0.78, alpha: 1.0),0.5),
-                                         (NSColor(calibratedRed: 0.949, green: 0.961, blue: 0.878, alpha: 1.0),1.0))
+        kBackgroundGradient = NSGradient(colorsAndLocations: (NSColor(red: 0.929, green: 0.945, blue: 0.882, alpha: 1.0),0.0),
+                                         (NSColor(red: 0.902, green: 0.922, blue: 0.835, alpha: 1.0),0.5),
+                                         (NSColor(red: 0.871, green: 0.894, blue: 0.78, alpha: 1.0),0.5),
+                                         (NSColor(red: 0.949, green: 0.961, blue: 0.878, alpha: 1.0),1.0))
         
         
       }

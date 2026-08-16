@@ -77,8 +77,8 @@ class MetalAtomSelectionGlowShader
   {
     let sphere: MetalSphereGeometry = MetalSphereGeometry()
     
-    vertexBuffer = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:.storageModeManaged)
+    vertexBuffer = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:RKMetal.hostStorage)
+    indexBuffer = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:RKMetal.hostStorage)
   }
   
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int, sceneDepthTexture: MTLTexture)

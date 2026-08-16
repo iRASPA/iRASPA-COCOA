@@ -156,19 +156,19 @@ class MetalGlobalAxesSystemShader
                                                                                 aspectRatio: renderDataSource.renderAxes.aspectRatio,
                                                                                 sectorCount: renderDataSource.renderAxes.NumberOfSectors)
     
-      vertexAxesBuffer = device.makeBuffer(bytes: axes.vertices, length:MemoryLayout<RKPrimitiveVertex>.stride * axes.vertices.count, options:.storageModeManaged)
-      indexAxesBuffer = device.makeBuffer(bytes: axes.indices, length:MemoryLayout<UInt16>.stride * axes.indices.count, options:.storageModeManaged)
+      vertexAxesBuffer = device.makeBuffer(bytes: axes.vertices, length:MemoryLayout<RKPrimitiveVertex>.stride * axes.vertices.count, options:RKMetal.hostStorage)
+      indexAxesBuffer = device.makeBuffer(bytes: axes.indices, length:MemoryLayout<UInt16>.stride * axes.indices.count, options:RKMetal.hostStorage)
       
       let quad: MetalBackPlaneGeometry  = MetalBackPlaneGeometry()
-      vertexTextBuffer = device.makeBuffer(bytes: quad.vertices, length:MemoryLayout<RKVertex>.stride * quad.vertices.count, options:.storageModeManaged)
-      indexTextBuffer = device.makeBuffer(bytes: quad.indices, length:MemoryLayout<UInt16>.stride * quad.indices.count, options:.storageModeManaged)
+      vertexTextBuffer = device.makeBuffer(bytes: quad.vertices, length:MemoryLayout<RKVertex>.stride * quad.vertices.count, options:RKMetal.hostStorage)
+      indexTextBuffer = device.makeBuffer(bytes: quad.indices, length:MemoryLayout<UInt16>.stride * quad.indices.count, options:RKMetal.hostStorage)
       
       let fontAtlas: RKFontAtlas = RKCachedFontAtlas.shared.fontAtlas(for: "Helvetica")
       let X: [RKInPerInstanceAttributesText] = fontAtlas.buildMeshWithString(position: SIMD4<Float>(1.0,0.0,0.0,1.0), scale: SIMD4<Float>(1.0,1.0,1.0,1.0), text: "X", alignment: RKTextAlignment.center)
       let Y: [RKInPerInstanceAttributesText] = fontAtlas.buildMeshWithString(position: SIMD4<Float>(0.0,1.0,0.0,1.0), scale: SIMD4<Float>(1.0,1.0,1.0,1.0), text: "Y", alignment: RKTextAlignment.center)
       let Z: [RKInPerInstanceAttributesText] = fontAtlas.buildMeshWithString(position: SIMD4<Float>(0.0,0.0,1.0,1.0), scale: SIMD4<Float>(1.0,1.0,1.0,1.0), text: "Z", alignment: RKTextAlignment.center)
       let textData: [RKInPerInstanceAttributesText] = X+Y+Z
-      instanceBuffer = device.makeBuffer(bytes: textData, length:MemoryLayout<RKInPerInstanceAttributesText>.stride * 3, options:.storageModeManaged)
+      instanceBuffer = device.makeBuffer(bytes: textData, length:MemoryLayout<RKInPerInstanceAttributesText>.stride * 3, options:RKMetal.hostStorage)
       
       let samplerDescriptor: MTLSamplerDescriptor = MTLSamplerDescriptor()
       samplerDescriptor.minFilter = MTLSamplerMinMagFilter.linear
@@ -244,7 +244,9 @@ class MetalGlobalAxesSystemShader
       
       commandEncoder.label = "Axes background command encoder"
       commandEncoder.setCullMode(MTLCullMode.none)
+      #if os(macOS)
       commandEncoder.setDepthClipMode(.clamp)
+      #endif
       commandEncoder.setRenderPipelineState(self.backgroundPipeline)
       commandEncoder.setDepthStencilState(clearDepthState)
       commandEncoder.setVertexBuffer(vertexTextBuffer, offset: 0, index: 0)

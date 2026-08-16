@@ -71,6 +71,7 @@ class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelega
     if let windowController: iRASPAWindowController = storyboard.instantiateController(withIdentifier: "Document Window Controller") as? iRASPAWindowController
     {
       windowController.currentDocument = self
+      DocumentContext.forceFieldViewer = self
       self.addWindowController(windowController)
     
       windowController.masterTabViewController?.initializeData()

@@ -34,7 +34,7 @@ import simd
 
 extension SIMD4 where Scalar==Float
 {
-  public init(color: NSColor)
+  public init(color: PlatformColor)
   {
     if let color = color.usingColorSpace(NSColorSpace.genericRGB)
     {
@@ -46,7 +46,7 @@ extension SIMD4 where Scalar==Float
     }
   }
   
-  public init(color: NSColor, opacity: Double)
+  public init(color: PlatformColor, opacity: Double)
   {
     if let color = color.usingColorSpace(NSColorSpace.genericRGB)
     {

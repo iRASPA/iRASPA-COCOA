@@ -29,6 +29,7 @@
 
 import Foundation
 import simd
+import MathKit
 
 public class RKCachedFontAtlas
 {

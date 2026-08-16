@@ -88,8 +88,8 @@ class MetalAtomShader
   {
     let sphere: MetalSphereGeometry = MetalSphereGeometry()
     
-    vertexBuffer = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:.storageModeManaged)
+    vertexBuffer = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:RKMetal.hostStorage)
+    indexBuffer = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:RKMetal.hostStorage)
     
     
     if let _: RKRenderDataSource = renderDataSource
@@ -109,7 +109,7 @@ class MetalAtomShader
           for structure in structures
           {
             let atoms: [RKInPerInstanceAttributesAtoms] = (structure as? RKRenderAtomSource)?.renderAtoms ?? []
-            let buffer: MTLBuffer? = atoms.isEmpty ? nil : device.makeBuffer(bytes: atoms, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atoms.count, options:.storageModeManaged)
+            let buffer: MTLBuffer? = atoms.isEmpty ? nil : device.makeBuffer(bytes: atoms, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atoms.count, options:RKMetal.hostStorage)
             sceneInstance.append(buffer)
           }
         }

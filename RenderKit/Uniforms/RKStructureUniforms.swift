@@ -34,8 +34,8 @@ import Foundation
 import simd
 import SymmetryKit
 
-// IMPORTANT: must be aligned on 256-bytes boundaries
-// current number of bytes: 1040 bytes
+// IMPORTANT: must be aligned on 256-bytes boundaries (Metal constant buffers on iOS).
+// Payload is 1136 bytes; padded to 1280 so array strides (index * stride) stay 256-aligned.
 public struct RKStructureUniforms
 {
   public var sceneIdentifier: Int32 = 0
@@ -181,7 +181,18 @@ public struct RKStructureUniforms
   public var ribbonAmbientColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   public var ribbonDiffuseColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   public var ribbonSpecularColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
- 
+  //----------------------------------------  1136 bytes boundary
+  // Pad 144 bytes so stride is 1280 (multiple of 256) for set*BufferOffset.
+  public var padAlignment0: SIMD4<Float> = SIMD4<Float>()
+  public var padAlignment1: SIMD4<Float> = SIMD4<Float>()
+  public var padAlignment2: SIMD4<Float> = SIMD4<Float>()
+  public var padAlignment3: SIMD4<Float> = SIMD4<Float>()
+  public var padAlignment4: SIMD4<Float> = SIMD4<Float>()
+  public var padAlignment5: SIMD4<Float> = SIMD4<Float>()
+  public var padAlignment6: SIMD4<Float> = SIMD4<Float>()
+  public var padAlignment7: SIMD4<Float> = SIMD4<Float>()
+  public var padAlignment8: SIMD4<Float> = SIMD4<Float>()
+  //----------------------------------------  1280 bytes boundary
   
   public init()
   {

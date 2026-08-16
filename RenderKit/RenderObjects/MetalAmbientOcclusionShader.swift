@@ -194,8 +194,8 @@ class MetalAmbientOcclusionShader
     }
     
     let quad: MetalQuadGeometry = MetalQuadGeometry()
-    ribbonAOBlurVertexBuffer = device.makeBuffer(bytes: quad.vertices, length: MemoryLayout<RKVertex>.stride * quad.vertices.count, options: .storageModeManaged)
-    ribbonAOBlurIndexBuffer = device.makeBuffer(bytes: quad.indices, length: MemoryLayout<UInt16>.stride * quad.indices.count, options: .storageModeManaged)
+    ribbonAOBlurVertexBuffer = device.makeBuffer(bytes: quad.vertices, length: MemoryLayout<RKVertex>.stride * quad.vertices.count, options: RKMetal.hostStorage)
+    ribbonAOBlurIndexBuffer = device.makeBuffer(bytes: quad.indices, length: MemoryLayout<UInt16>.stride * quad.indices.count, options: RKMetal.hostStorage)
 
   }
   
@@ -261,7 +261,7 @@ class MetalAmbientOcclusionShader
           let ambientOcclusionTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.r16Float, width: textureSize, height: textureSize,   mipmapped: false)
           ambientOcclusionTextureDescriptor.textureType = MTLTextureType.type2D
           ambientOcclusionTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
-          ambientOcclusionTextureDescriptor.storageMode = MTLStorageMode.managed
+          ambientOcclusionTextureDescriptor.storageMode = RKMetal.hostStorageMode
           localTextures.append(device.makeTexture(descriptor: ambientOcclusionTextureDescriptor)!)
           
           let ribbonTextureWidth: Int = (structure as? RKRenderRibbonSource)?.ribbonAmbientOcclusionTextureWidth ?? 1
@@ -269,7 +269,7 @@ class MetalAmbientOcclusionShader
           let ribbonTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.r16Float, width: ribbonTextureWidth, height: ribbonTextureHeight, mipmapped: false)
           ribbonTextureDescriptor.textureType = MTLTextureType.type2D
           ribbonTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
-          ribbonTextureDescriptor.storageMode = MTLStorageMode.managed
+          ribbonTextureDescriptor.storageMode = RKMetal.hostStorageMode
           localRibbonTextures.append(device.makeTexture(descriptor: ribbonTextureDescriptor)!)
         }
         self.textures.append(localTextures)
@@ -319,8 +319,8 @@ class MetalAmbientOcclusionShader
             structureUniforms[k] = RKStructureUniforms(structureIdentifier: i, structure: structure, inverseModelMatrix: modelMatrix.inverse)
           }
           
-          structureAmbientOcclusionUniformBuffers = device.makeBuffer(bytes: structureUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structures.count,1), options:.storageModeManaged)
-          structureAmbientOcclusionUniformBuffers.didModifyRange(0..<MemoryLayout<RKStructureUniforms>.stride * max(structures.count,1))
+          structureAmbientOcclusionUniformBuffers = device.makeBuffer(bytes: structureUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structures.count,1), options:RKMetal.hostStorage)
+          RKMetal.didModify(structureAmbientOcclusionUniformBuffers, range: 0..<MemoryLayout<RKStructureUniforms>.stride * max(structures.count,1))
           
           let atomSourceForAO: RKRenderAtomSource? = structure as? RKRenderAtomSource
           let ribbonSourceForAO: RKRenderRibbonSource? = structure as? RKRenderRibbonSource
@@ -380,8 +380,8 @@ class MetalAmbientOcclusionShader
                   {
                     ribbonRenderUniforms[k] = RKStructureUniforms(structureIdentifier: i, structure: sceneStructure)
                   }
-                  ribbonRenderStructureUniformBuffers = device.makeBuffer(bytes: ribbonRenderUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structures.count, 1), options: .storageModeManaged)
-                  ribbonRenderStructureUniformBuffers!.didModifyRange(0..<MemoryLayout<RKStructureUniforms>.stride * max(structures.count, 1))
+                  ribbonRenderStructureUniformBuffers = device.makeBuffer(bytes: ribbonRenderUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structures.count, 1), options: RKMetal.hostStorage)
+                  RKMetal.didModify(ribbonRenderStructureUniformBuffers, range: 0..<MemoryLayout<RKStructureUniforms>.stride * max(structures.count, 1))
                   
                   ribbonAmbientOcclusionPassDescriptor = MTLRenderPassDescriptor()
                   ribbonAmbientOcclusionPassDescriptor!.colorAttachments[0].texture = ribbonTextures[i][j]
@@ -482,8 +482,8 @@ class MetalAmbientOcclusionShader
                 let shadowMapFrameUniforms: RKShadowUniforms = RKShadowUniforms(projectionMatrix: projectionMatrix, viewMatrix:  viewMatrix, modelMatrix: modelMatrix)
                 shadowMapFrameUniformsArray[k] = shadowMapFrameUniforms
               }
-              shadowMapFrameUniformBuffer = device.makeBuffer(bytes: &shadowMapFrameUniformsArray, length:MemoryLayout<RKShadowUniforms>.stride * shadowMapFrameUniformsArray.count, options:.storageModeManaged)
-              shadowMapFrameUniformBuffer.didModifyRange(0..<MemoryLayout<RKShadowUniforms>.stride * shadowMapFrameUniformsArray.count)
+              shadowMapFrameUniformBuffer = device.makeBuffer(bytes: &shadowMapFrameUniformsArray, length:MemoryLayout<RKShadowUniforms>.stride * shadowMapFrameUniformsArray.count, options:RKMetal.hostStorage)
+              RKMetal.didModify(shadowMapFrameUniformBuffer, range: 0..<MemoryLayout<RKShadowUniforms>.stride * shadowMapFrameUniformsArray.count)
               
               if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
               {
@@ -594,7 +594,7 @@ class MetalAmbientOcclusionShader
               if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
               {
                 let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()!
-                blitEncoder.synchronize(resource: self.textures[i][j])
+                RKMetal.synchronize(blitEncoder, resource: self.textures[i][j])
                 blitEncoder.copy(from: self.textures[i][j], sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0,0, 0), sourceSize: MTLSizeMake(textureSize, textureSize, 1), to: textureBuffer, destinationOffset: 0, destinationBytesPerRow: textureSize * 2, destinationBytesPerImage: 0)
                 blitEncoder.endEncoding()
                 
@@ -621,7 +621,7 @@ class MetalAmbientOcclusionShader
                 if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
                 {
                   let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()!
-                  blitEncoder.synchronize(resource: self.ribbonTextures[i][j])
+                  RKMetal.synchronize(blitEncoder, resource: self.ribbonTextures[i][j])
                   blitEncoder.copy(from: self.ribbonTextures[i][j], sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0, 0, 0), sourceSize: MTLSizeMake(ribbonTextureWidth, ribbonTextureHeight, 1), to: ribbonTextureBuffer, destinationOffset: 0, destinationBytesPerRow: ribbonTextureWidth * 2, destinationBytesPerImage: 0)
                   blitEncoder.endEncoding()
                   commandBuffer.commit()
@@ -733,7 +733,7 @@ class MetalAmbientOcclusionShader
     if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
     {
       let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()!
-      blitEncoder.synchronize(resource: texture)
+      RKMetal.synchronize(blitEncoder, resource: texture)
       blitEncoder.copy(from: texture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0, 0, 0), sourceSize: MTLSizeMake(textureWidth, textureHeight, 1), to: readBuffer, destinationOffset: 0, destinationBytesPerRow: textureWidth * MemoryLayout<UInt16>.stride, destinationBytesPerImage: 0)
       blitEncoder.endEncoding()
       commandBuffer.commit()
@@ -777,7 +777,7 @@ class MetalAmbientOcclusionShader
                                                                                                mipmapped: false)
     blurTextureDescriptor.textureType = MTLTextureType.type2D
     blurTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
-    blurTextureDescriptor.storageMode = MTLStorageMode.managed
+    blurTextureDescriptor.storageMode = RKMetal.hostStorageMode
     guard let blurTexture: MTLTexture = device.makeTexture(descriptor: blurTextureDescriptor)
     else {return}
     
@@ -824,12 +824,13 @@ class MetalAmbientOcclusionShader
   
   private func synchronizeManagedTextureToGPU(device: MTLDevice, commandQueue: MTLCommandQueue, texture: MTLTexture)
   {
-    guard texture.storageMode == .managed,
+    guard RKMetal.isManagedStorage,
+          texture.storageMode == RKMetal.hostStorageMode,
           let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
     else {return}
     
     let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()!
-    blitEncoder.synchronize(resource: texture)
+    RKMetal.synchronize(blitEncoder, resource: texture)
     blitEncoder.endEncoding()
     commandBuffer.commit()
     commandBuffer.waitUntilCompleted()

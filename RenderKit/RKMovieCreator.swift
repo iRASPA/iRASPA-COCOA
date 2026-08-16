@@ -30,6 +30,12 @@
  *************************************************************************************************************/
 
 import Foundation
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+import MathKit
 import LogViewKit
 import AVFoundation
 import AVKit

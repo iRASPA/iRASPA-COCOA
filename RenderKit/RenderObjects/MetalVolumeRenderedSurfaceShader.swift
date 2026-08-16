@@ -32,6 +32,7 @@
 
 import Foundation
 import LogViewKit
+import MathKit
 import SymmetryKit
 import SimulationKit
 import simd
@@ -105,7 +106,7 @@ class MetalEnergyVolumeRenderedSurfaceShader
     textureDescriptor.pixelFormat = .rgba32Float
     textureDescriptor.width = 256
     textureDescriptor.usage = .shaderRead
-    textureDescriptor.storageMode = MTLStorageMode.managed
+    textureDescriptor.storageMode = RKMetal.hostStorageMode
     guard let texture = device.makeTexture(descriptor: textureDescriptor) else {return}
     texture.label = "Volume rendering transfer function texture"
     textureTransferFunction = texture
@@ -183,8 +184,8 @@ class MetalEnergyVolumeRenderedSurfaceShader
   public func buildVertexBuffers(device: MTLDevice)
   {
     let unitCube: MetalUnitCubeGeometry = MetalUnitCubeGeometry()
-    vertexBuffer = device.makeBuffer(bytes: unitCube.vertices, length:MemoryLayout<RKVertex>.stride * unitCube.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: unitCube.indices, length:MemoryLayout<UInt16>.stride * unitCube.indices.count, options:.storageModeManaged)
+    vertexBuffer = device.makeBuffer(bytes: unitCube.vertices, length:MemoryLayout<RKVertex>.stride * unitCube.vertices.count, options:RKMetal.hostStorage)
+    indexBuffer = device.makeBuffer(bytes: unitCube.indices, length:MemoryLayout<UInt16>.stride * unitCube.indices.count, options:RKMetal.hostStorage)
     
     self.textureData = []
     if let _: RKRenderDataSource = renderDataSource
@@ -209,7 +210,9 @@ class MetalEnergyVolumeRenderedSurfaceShader
     {
       commandEncoder.setRenderPipelineState(surfacePipeLine)
       commandEncoder.setCullMode(MTLCullMode.back)
+      #if os(macOS)
       commandEncoder.setDepthClipMode(.clamp)
+      #endif
       
       // for transparent surface:
       // disable depth-buffer updates (depth-buffer testing is still active)
@@ -270,7 +273,9 @@ class MetalEnergyVolumeRenderedSurfaceShader
     {
       commandEncoder.setRenderPipelineState(transparentPipeLine)
       commandEncoder.setCullMode(MTLCullMode.back)
+      #if os(macOS)
       commandEncoder.setDepthClipMode(.clamp)
+      #endif
       
       // for transparent surface:
       // disable depth-buffer updates (depth-buffer testing is still active)
@@ -407,7 +412,7 @@ class MetalEnergyVolumeRenderedSurfaceShader
             textureDescriptor.height = size
             textureDescriptor.depth = size
             textureDescriptor.usage = .shaderRead
-            textureDescriptor.storageMode = MTLStorageMode.managed
+            textureDescriptor.storageMode = RKMetal.hostStorageMode
             guard let texture = device.makeTexture(descriptor: textureDescriptor) else {return}
             texture.label = "Energy/gradient 3D texture"
             textureData[i][j] = texture

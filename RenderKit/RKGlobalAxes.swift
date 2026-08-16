@@ -31,6 +31,7 @@
 
 import Foundation
 import BinaryCodable
+import MathKit
 
 public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
 {
@@ -88,14 +89,14 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
   public var borderOffsetScreenFraction: Double = 1.0/32.0
   public var sizeScreenFraction: Double = 1.0/5.0
   
-  public var axesBackgroundColor: NSColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 0.1882)
+  public var axesBackgroundColor: NSColor = NSColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.1882)
   public var axesBackgroundAdditionalSize: Double = 0.0
   public var axesBackgroundStyle: BackgroundStyle = .filledCircle
   
   public var textScale: SIMD3<Double> = SIMD3<Double>(1.0,1.0,1.0)
-  public var textColorX: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
-  public var textColorY: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
-  public var textColorZ: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+  public var textColorX: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+  public var textColorY: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+  public var textColorZ: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
   public var textDisplacementX: SIMD3<Double> = SIMD3<Double>(0.0,0.0,0.0)
   public var textDisplacementY: SIMD3<Double> = SIMD3<Double>(0.0,0.0,0.0)
   public var textDisplacementZ: SIMD3<Double> = SIMD3<Double>(0.0,0.0,0.0)
@@ -123,24 +124,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
   
   var aspectRatio: Double = 1.0
  
-  var centerAmbientColor: NSColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
-  var centerDiffuseColor: NSColor = NSColor(calibratedRed: 0.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  var centerSpecularColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  var centerAmbientColor: NSColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+  var centerDiffuseColor: NSColor = NSColor(red: 0.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  var centerSpecularColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   var centerShininess: Double = 4.0
   
-  var axisXAmbientColor: NSColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
-  var axisXDiffuseColor: NSColor = NSColor(calibratedRed: 0.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  var axisXSpecularColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  var axisXAmbientColor: NSColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+  var axisXDiffuseColor: NSColor = NSColor(red: 0.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  var axisXSpecularColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   var axisXShininess: Double = 4.0
   
-  var axisYAmbientColor: NSColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
-  var axisYDiffuseColor: NSColor = NSColor(calibratedRed: 0.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  var axisYSpecularColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  var axisYAmbientColor: NSColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+  var axisYDiffuseColor: NSColor = NSColor(red: 0.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  var axisYSpecularColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   var axisYShininess: Double = 4.0
   
-  var axisZAmbientColor: NSColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
-  var axisZDiffuseColor: NSColor = NSColor(calibratedRed: 0.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  var axisZSpecularColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  var axisZAmbientColor: NSColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+  var axisZDiffuseColor: NSColor = NSColor(red: 0.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  var axisZSpecularColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   var axisZShininess: Double = 4.0
   
   public init(style: RKGlobalAxes.Style = RKGlobalAxes.Style.default)
@@ -177,24 +178,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 1.0
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     case .thickRGB:
       HDR = true
@@ -216,24 +217,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 1.0
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     case .thick:
       HDR = true
@@ -255,24 +256,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 1.0
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 1.0, green: 0.4, blue: 0.7, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 1.0, green: 0.4, blue: 0.7, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.7, green: 1.0, blue: 0.4, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.7, green: 1.0, blue: 0.4, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     case .thinRGB:
       HDR = true
@@ -294,24 +295,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 1.0
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     case .thin:
       HDR = true
@@ -333,24 +334,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 1.0
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 1.0, green: 0.4, blue: 0.7, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 1.0, green: 0.4, blue: 0.7, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.7, green: 1.0, blue: 0.4, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.7, green: 1.0, blue: 0.4, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     case .beamArrowRGB:
       HDR = true
@@ -372,24 +373,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 1.0
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     case .beamArrow:
       HDR = true
@@ -411,24 +412,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 1.0
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 1.0, green: 0.4, blue: 0.7, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 1.0, green: 0.4, blue: 0.7, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.7, green: 1.0, blue: 0.4, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.7, green: 1.0, blue: 0.4, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     case .beamRGB:
       HDR = true
@@ -450,24 +451,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 1.0
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     case .beam:
       HDR = true
@@ -489,24 +490,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 1.0
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 1.0, green: 0.4, blue: 0.7, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 1.0, green: 0.4, blue: 0.7, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.7, green: 1.0, blue: 0.4, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.7, green: 1.0, blue: 0.4, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     case .squashedRGB:
       HDR = true
@@ -528,24 +529,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 0.25
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     case .squashed:
       HDR = true
@@ -567,24 +568,24 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
       
       aspectRatio = 0.25
      
-      centerAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      centerDiffuseColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-      centerSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      centerDiffuseColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      centerSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       centerShininess = 4.0
       
-      axisXAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisXDiffuseColor = NSColor(calibratedRed: 1.0, green: 0.4, blue: 0.7, alpha: 1.0)
-      axisXSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisXAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisXDiffuseColor = NSColor(red: 1.0, green: 0.4, blue: 0.7, alpha: 1.0)
+      axisXSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisXShininess = 4.0
       
-      axisYAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisYDiffuseColor = NSColor(calibratedRed: 0.7, green: 1.0, blue: 0.4, alpha: 1.0)
-      axisYSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisYAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisYDiffuseColor = NSColor(red: 0.7, green: 1.0, blue: 0.4, alpha: 1.0)
+      axisYSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisYShininess = 4.0
       
-      axisZAmbientColor = NSColor(calibratedRed: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
-      axisZDiffuseColor = NSColor(calibratedRed: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
-      axisZSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      axisZAmbientColor = NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.2)
+      axisZDiffuseColor = NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)
+      axisZSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       axisZShininess = 4.0
     }
   }

@@ -34,6 +34,7 @@ import OperationKit
 import SimulationKit
 import SymmetryKit
 import LogViewKit
+import MathKit
 
 class ReadStructureGroupOperation: FKGroupOperation, @unchecked Sendable
 {

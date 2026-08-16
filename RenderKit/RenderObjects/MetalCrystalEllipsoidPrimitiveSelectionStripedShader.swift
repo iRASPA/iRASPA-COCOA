@@ -79,8 +79,8 @@ class MetalCrystalEllipsoidPrimitiveSelectionStripedShader
   {
     let sphere: MetalSphereGeometry = MetalSphereGeometry()
     
-    vertexBuffer = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:.storageModeManaged)
+    vertexBuffer = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:RKMetal.hostStorage)
+    indexBuffer = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:RKMetal.hostStorage)
   }
   
   public func buildInstanceBuffers(device: MTLDevice)
@@ -97,7 +97,7 @@ class MetalCrystalEllipsoidPrimitiveSelectionStripedShader
         for structure in structures
         {
           let atomPositions: [RKInPerInstanceAttributesAtoms] = (structure as? RKRenderCrystalEllipsoidObjectsSource)?.renderSelectedCrystalEllipsoidObjects ?? []
-          let buffer: MTLBuffer? = atomPositions.isEmpty ? nil : device.makeBuffer(bytes: atomPositions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atomPositions.count, options:.storageModeManaged)
+          let buffer: MTLBuffer? = atomPositions.isEmpty ? nil : device.makeBuffer(bytes: atomPositions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atomPositions.count, options:RKMetal.hostStorage)
           sceneInstance.append(buffer)
         }
         instanceBuffer.append(sceneInstance)

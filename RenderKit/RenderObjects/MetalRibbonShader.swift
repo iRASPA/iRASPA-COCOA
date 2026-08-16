@@ -113,12 +113,12 @@ class MetalRibbonShader
               let indices: [UInt32] = ribbonSource.renderRibbonIndices
               let vBuffer: MTLBuffer? = device.makeBuffer(bytes: vertices,
                                                           length: MemoryLayout<RKVertex>.stride * vertices.count,
-                                                          options: .storageModeManaged)
-              vBuffer?.didModifyRange(0..<MemoryLayout<RKVertex>.stride * vertices.count)
+                                                          options: RKMetal.hostStorage)
+              RKMetal.didModify(vBuffer, range: 0..<MemoryLayout<RKVertex>.stride * vertices.count)
               let iBuffer: MTLBuffer? = device.makeBuffer(bytes: indices,
                                                           length: MemoryLayout<UInt32>.stride * indices.count,
-                                                          options: .storageModeManaged)
-              iBuffer?.didModifyRange(0..<MemoryLayout<UInt32>.stride * indices.count)
+                                                          options: RKMetal.hostStorage)
+              RKMetal.didModify(iBuffer, range: 0..<MemoryLayout<UInt32>.stride * indices.count)
               sceneVertexBuffers.append(vBuffer)
               sceneIndexBuffers.append(iBuffer)
             }

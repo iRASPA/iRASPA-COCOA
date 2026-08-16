@@ -32,6 +32,7 @@
 import Foundation
 import BinaryCodable
 import simd
+import MathKit
 
 public final class SKColorSets: BinaryDecodable, BinaryEncodable
 {

@@ -32,19 +32,18 @@
 import Foundation
 import simd
 
-extension NSColor
+extension PlatformColor
 {
   public convenience init(colorCode: UInt32)
   {
-    // colorCode=(r,g,b) -> shift and mask off high bits
     let redColor: CGFloat = CGFloat((colorCode >> 16) & 0x0000FF)/255.0
     let greenColor: CGFloat = CGFloat((colorCode >> 8)  & 0x0000FF)/255.0
     let blueColor: CGFloat = CGFloat(colorCode & 0x0000FF)/255.0
-    self.init(calibratedRed: redColor, green: greenColor, blue: blueColor, alpha: 1.0)
+    self.init(red: redColor, green: greenColor, blue: blueColor, alpha: 1.0)
   }
   
   public convenience init(float4: SIMD4<Float>)
   {
-    self.init(calibratedRed: CGFloat(float4.x), green: CGFloat(float4.y), blue: CGFloat(float4.z), alpha: CGFloat(float4.w))
+    self.init(red: CGFloat(float4.x), green: CGFloat(float4.y), blue: CGFloat(float4.z), alpha: CGFloat(float4.w))
   }
 }

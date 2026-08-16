@@ -36,6 +36,11 @@ import SimulationKit
 import SymmetryKit
 import LogViewKit
 import MathKit
+#if os(macOS)
+import CoreServices
+#else
+import MobileCoreServices
+#endif
 
 public let NSPasteboardTypeFrame: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Frame")
 
@@ -490,7 +495,7 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
     
       let displayName: String = url.deletingPathExtension().lastPathComponent
         
-      if #available(OSX 11.0, *)
+      if #available(macOS 11.0, iOS 14.0, *)
       {
         guard let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
               let type = resourceValues.contentType else {return nil}

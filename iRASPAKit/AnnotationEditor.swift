@@ -34,6 +34,7 @@ import simd
 import RenderKit
 import SymmetryKit
 import SimulationKit
+import MathKit
 
 public protocol AnnotationViewer: AnyObject
 {

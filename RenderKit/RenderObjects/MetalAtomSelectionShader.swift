@@ -54,7 +54,7 @@ class MetalAtomSelectionShader
         for structure in structures
         {
           let atomPositions: [RKInPerInstanceAttributesAtoms] = (structure as? RKRenderAtomSource)?.renderSelectedAtoms ?? []
-          let buffer: MTLBuffer? = atomPositions.isEmpty ? nil : device.makeBuffer(bytes: atomPositions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atomPositions.count, options:.storageModeManaged)
+          let buffer: MTLBuffer? = atomPositions.isEmpty ? nil : device.makeBuffer(bytes: atomPositions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atomPositions.count, options:RKMetal.hostStorage)
           sceneInstance.append(buffer)
         }
         instanceBuffer.append(sceneInstance)

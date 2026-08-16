@@ -65,14 +65,14 @@ class MetalBoundingBoxCylinderShader
   public func buildVertexBuffers(device: MTLDevice)
   {
     let boundingBoxCylinder: MetalBondCylinderGeometry = MetalBondCylinderGeometry()
-    vertexBuffer = device.makeBuffer(bytes: boundingBoxCylinder.vertices, length:MemoryLayout<RKVertex>.stride * boundingBoxCylinder.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: boundingBoxCylinder.indices, length:MemoryLayout<UInt16>.stride * boundingBoxCylinder.indices.count, options:.storageModeManaged)
+    vertexBuffer = device.makeBuffer(bytes: boundingBoxCylinder.vertices, length:MemoryLayout<RKVertex>.stride * boundingBoxCylinder.vertices.count, options:RKMetal.hostStorage)
+    indexBuffer = device.makeBuffer(bytes: boundingBoxCylinder.indices, length:MemoryLayout<UInt16>.stride * boundingBoxCylinder.indices.count, options:RKMetal.hostStorage)
     
     if let project: RKRenderDataSource = renderDataSource
     {
       let positions: [RKInPerInstanceAttributesBonds] = project.renderBoundingBoxCylinders
       
-      instanceBuffer = positions.isEmpty ? nil : device.makeBuffer(bytes: positions, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * positions.count, options:.storageModeManaged)
+      instanceBuffer = positions.isEmpty ? nil : device.makeBuffer(bytes: positions, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * positions.count, options:RKMetal.hostStorage)
     }
   }
   

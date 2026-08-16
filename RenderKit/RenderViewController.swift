@@ -29,8 +29,13 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import MetalKit
+import MathKit
 import SimulationKit
 import SymmetryKit
 import AVFoundation
@@ -38,7 +43,13 @@ import CoreMedia
 import CoreVideo
 import LogViewKit
 
-public class RenderViewController: NSViewController, MTKViewDelegate
+#if os(macOS)
+public typealias RenderViewControllerBase = NSViewController
+#else
+public typealias RenderViewControllerBase = UIViewController
+#endif
+
+public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
 {
   var device: MTLDevice? = nil
   var computeDevice: MTLDevice? = nil
@@ -71,6 +82,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   // MARK: -
   // MARK: Initialization
   
+  #if os(macOS)
   override public init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?)
   {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -80,6 +92,19 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   {
     self.init(nibName: nil, bundle: Bundle(for: RenderViewController.self))
   }
+  #else
+  public init()
+  {
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  public override func loadView()
+  {
+    let metalView = MetalView(frame: UIScreen.main.bounds, device: MTLCreateSystemDefaultDevice())
+    metalView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    view = metalView
+  }
+  #endif
   
   // called when present in a NIB-file
   public required init?(coder aDecoder: NSCoder)
@@ -113,18 +138,31 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     // the metal default library is not in mainBundle, but in the local framework bundle
     let bundle: Bundle = Bundle(for: MetalView.self)
     
-    if let newDevice = MTLCreateSystemDefaultDevice(),
-       let file: String = bundle.path(forResource: "default", ofType: "metallib"),
-       let library: MTLLibrary = try? newDevice.makeLibrary(filepath: file)
+    if let newDevice = MTLCreateSystemDefaultDevice()
     {
+      var library: MTLLibrary? = nil
+      if let url = bundle.url(forResource: "default", withExtension: "metallib")
+      {
+        library = try? newDevice.makeLibrary(URL: url)
+      }
+      if library == nil, let file = bundle.path(forResource: "default", ofType: "metallib")
+      {
+        library = try? newDevice.makeLibrary(filepath: file)
+      }
+      if let library
+      {
       self.device = newDevice
       self.renderCommandQueue = newDevice.makeCommandQueue()
       self.defaultLibrary = library
       
       (self.view as? MTKView)?.device = newDevice
     
+      #if os(macOS)
       let devices: [MTLDevice] = MTLCopyAllDevices().filter{!$0.isEqual(device) && !$0.isLowPower}
       self.computeDevice = devices.first ?? device
+      #else
+      self.computeDevice = newDevice
+      #endif
       self.computeCommandQueue = self.computeDevice?.makeCommandQueue()
 
       // detect the maximum MSAA
@@ -136,12 +174,16 @@ public class RenderViewController: NSViewController, MTKViewDelegate
           break
         }
       }
+      #if os(iOS)
+      self.maximumNumberOfSamples = min(self.maximumNumberOfSamples, 4)
+      #endif
+      }
     }
     
     if let device = self.device,
-       let buffer1: MTLBuffer = device.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged),
-       let buffer2: MTLBuffer = device.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged),
-       let buffer3: MTLBuffer = device.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)
+       let buffer1: MTLBuffer = device.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: RKMetal.hostStorage),
+       let buffer2: MTLBuffer = device.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: RKMetal.hostStorage),
+       let buffer3: MTLBuffer = device.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: RKMetal.hostStorage)
     {
       self.frameUniformBuffers =  [buffer1,buffer2,buffer3]
     }
@@ -159,19 +201,50 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     }
   }
   
+  #if os(macOS)
   public override func viewWillAppear()
   {
     super.viewWillAppear()
-    
+    updateEDRSupport()
+  }
+  #else
+  public override func viewWillAppear(_ animated: Bool)
+  {
+    super.viewWillAppear(animated)
+    updateEDRSupport()
+  }
+  #endif
+
+  private func updateEDRSupport()
+  {
     if let view: MetalView = self.view as? MetalView
     {
       view.edrSupport = 1.0
-    
-      if #available(OSX 10.15, *)
+      #if os(macOS)
+      if #available(macOS 10.15, *)
       {
         view.edrSupport = view.window?.screen?.maximumPotentialExtendedDynamicRangeColorComponentValue ?? 1.0
       }
+      #endif
     }
+  }
+
+  private var hostWindowController: NSWindowController?
+  {
+    #if os(macOS)
+    return self.view.window?.windowController
+    #else
+    return nil
+    #endif
+  }
+
+  private func setViewNeedsDisplay()
+  {
+    #if os(macOS)
+    self.view.layer?.setNeedsDisplay()
+    #else
+    (self.view as? MTKView)?.setNeedsDisplay()
+    #endif
   }
   
   // MARK: -
@@ -219,6 +292,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     }
     if let view: MetalView = self.view as? MetalView
     {
+      #if os(macOS)
       if mode == .uniformColors,
          let text: String = ribbonColorUniformDebugOverlayText(renderStructures: renderer.ribbonShader.renderStructures)
       {
@@ -228,6 +302,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       {
         view.updateRibbonDebugOverlay(text: nil, visible: false)
       }
+      #endif
     }
     redraw()
   }
@@ -250,12 +325,12 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader)
       self.renderer.buildStructureUniforms(device: device)
     
-      self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
+      self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: {})
       
-      self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
+      self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: {})
 
       view.renderQuality = RKRenderQuality.high
-      self.view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -275,12 +350,12 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: ambientOcclusionQuality, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader)
       self.renderer.buildStructureUniforms(device: device)
     
-      self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
+      self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: {})
       
-      self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
+      self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: {})
     
       view.renderQuality = RKRenderQuality.high
-      self.view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -291,7 +366,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     {
       renderer.reloadRenderData(device: device)
       view.renderQuality = RKRenderQuality.high
-      view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -304,7 +379,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       renderer.reloadRenderDataForVisibility(device: device)
       renderer.buildStructureUniforms(device: device)
       view.renderQuality = RKRenderQuality.high
-      view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -325,7 +400,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
        let view: MetalView = self.view as? MetalView
     {
       renderer.reloadBoundingBoxData(device: device)
-      view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -336,7 +411,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     {
       renderer.reloadRenderDataSelectedAtoms(device: device)
       view.renderQuality = RKRenderQuality.high
-      view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -347,7 +422,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     {
       renderer.reloadRenderDataSelectedInternalBonds(device: device)
       view.renderQuality = RKRenderQuality.high
-      self.view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -358,7 +433,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     {
       renderer.reloadRenderDataSelectedExternalBonds(device: device)
       view.renderQuality = RKRenderQuality.high
-      view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -369,7 +444,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     {
       renderer.reloadRenderDataSelectedPrimitives(device: device)
       view.renderQuality = RKRenderQuality.high
-      view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -379,7 +454,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
        let view: MetalView = self.view as? MetalView
     {
       renderer.reloadRenderMeasurePointsData(device: device)
-      view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -389,7 +464,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
        let view: MetalView = self.view as? MetalView
     {
       renderer.reloadGlobalAxesSystem(device: device)
-      view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -399,7 +474,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
        let view: MetalView = self.view as? MetalView
     {
       renderer.reloadLocalAxesSystem(device: device)
-      view.layer?.setNeedsDisplay()
+      setViewNeedsDisplay()
     }
   }
   
@@ -413,7 +488,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   
   public func redraw()
   {
-    self.view.layer?.setNeedsDisplay()
+    setViewNeedsDisplay()
   }
   
   // MARK: -
@@ -476,8 +551,8 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     if let device = self.device,
        let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
-      self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: completionHandler)
-      self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: completionHandler)
+      self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: completionHandler)
+      self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: completionHandler)
     }
   }
   
@@ -539,7 +614,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   // MARK: -
   // MARK: Make Pictures
   
-  public func makeThumbnail(size: NSSize, camera: RKCamera) -> Data?
+  public func makeThumbnail(size: CGSize, camera: RKCamera) -> Data?
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource
     {
@@ -564,17 +639,20 @@ public class RenderViewController: NSViewController, MTKViewDelegate
           let bytesPerRow: Int = 4 * Int(size.width)
           cgImage = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo, provider: dataProvider, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)!
             
+          #if os(macOS)
           let imageRep: NSBitmapImageRep = NSBitmapImageRep(cgImage: cgImage)
           imageRep.size = NSMakeSize(CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72), CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72.0 * Double(size.height) / Double(size.width)))
-          
           return imageRep.representation(using: NSBitmapImageRep.FileType.jpeg2000, properties: [:])
+          #else
+          return UIImage(cgImage: cgImage).pngData()
+          #endif
         }
       }
     }
     return nil
   }
   
-  public func makePicture(size: NSSize, camera: RKCamera?, imageQuality: RKImageQuality) -> Data?
+  public func makePicture(size: CGSize, camera: RKCamera?, imageQuality: RKImageQuality) -> Data?
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
        let camera: RKCamera = camera
@@ -619,7 +697,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       var renderTexture: CVMetalTexture? = nil
       CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, coreVideoTextureCache!, pixelBuffer, nil, MTLPixelFormat.bgra8Unorm, width, height, 0, &renderTexture)
     
-      let size: NSSize = NSMakeSize(CGFloat(width), CGFloat(height))
+      let size: CGSize = CGSize(width: CGFloat(width), height: CGFloat(height))
       
       let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera!)
       if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera!, imageQuality: .rgb_8_bits, renderQuality: .picture)
@@ -682,28 +760,36 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   public func draw(in: MTKView)
   {
     if let view: MetalView = self.view as? MetalView,
-       let _ = view.window,
        let _ = self.device,
-       let commandQueue: MTLCommandQueue = self.renderCommandQueue
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue,
+       frameUniformBuffers != nil
     {
+      #if os(macOS)
+      guard view.window != nil else { return }
+      #endif
       let size: CGSize = view.drawableSize
+      guard size.width > 1, size.height > 1 else { return }
+      guard view.currentDrawable != nil, view.currentRenderPassDescriptor != nil else { return }
       
       _ = _inflightSemaphore.wait(timeout: DispatchTime.distantFuture)
          
       let maximumEDRvalue: CGFloat
-      if #available(OSX 10.15, *)
+      #if os(macOS)
+      if #available(macOS 10.15, *)
       {
         maximumEDRvalue = self.view.window?.screen?.maximumExtendedDynamicRangeColorComponentValue ?? 1.0
       }
       else
       {
-        // Fallback on earlier versions
         maximumEDRvalue = 1.0
       }
+      #else
+      maximumEDRvalue = 1.0
+      #endif
       
       var uniforms: RKTransformationUniforms = renderer.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue, camera: view.renderCameraSource?.renderCamera)
       memcpy(frameUniformBuffers[constantDataBufferIndex].contents(),&uniforms, MemoryLayout<RKTransformationUniforms>.stride)
-      frameUniformBuffers[constantDataBufferIndex].didModifyRange(0..<MemoryLayout<RKTransformationUniforms>.stride)
+      RKMetal.didModify(frameUniformBuffers[constantDataBufferIndex], range: 0..<MemoryLayout<RKTransformationUniforms>.stride)
 
       if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
       {
@@ -717,11 +803,9 @@ public class RenderViewController: NSViewController, MTKViewDelegate
            let currentDrawable = (self.view as? MTKView)?.currentDrawable
         {
           renderer.drawOnScreen(commandBuffer: commandBuffer, renderPass: renderPass, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size)
-           
           commandBuffer.present(currentDrawable)
-             
-          commandBuffer.commit()
         }
+        commandBuffer.commit()
          
         constantDataBufferIndex = (constantDataBufferIndex + 1) % frameUniformBuffers.count
       }

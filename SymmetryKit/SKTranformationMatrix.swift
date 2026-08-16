@@ -29,7 +29,11 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import MathKit
 import simd
 

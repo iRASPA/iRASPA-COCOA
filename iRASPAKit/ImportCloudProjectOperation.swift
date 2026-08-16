@@ -36,6 +36,7 @@ import OperationKit
 import SimulationKit
 import SymmetryKit
 import BinaryCodable
+import MathKit
 
 extension NSOutlineView
 {

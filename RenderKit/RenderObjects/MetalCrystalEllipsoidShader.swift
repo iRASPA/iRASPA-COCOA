@@ -125,8 +125,8 @@ class MetalCrystalEllipsoidShader
   {
     let sphere: MetalSphereGeometry = MetalSphereGeometry()
     
-    vertexBuffers = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:.storageModeManaged)
-    indexBuffers = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:.storageModeManaged)
+    vertexBuffers = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:RKMetal.hostStorage)
+    indexBuffers = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:RKMetal.hostStorage)
     
     
     if let _: RKRenderDataSource = renderDataSource
@@ -146,7 +146,7 @@ class MetalCrystalEllipsoidShader
           for structure in structures
           {
             let atoms: [RKInPerInstanceAttributesAtoms] = (structure as? RKRenderCrystalEllipsoidObjectsSource)?.renderCrystalEllipsoidObjects ?? []
-            let buffer: MTLBuffer? = atoms.isEmpty ? nil : device.makeBuffer(bytes: atoms, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atoms.count, options:.storageModeManaged)
+            let buffer: MTLBuffer? = atoms.isEmpty ? nil : device.makeBuffer(bytes: atoms, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atoms.count, options:RKMetal.hostStorage)
             sceneInstance.append(buffer)
           }
         }

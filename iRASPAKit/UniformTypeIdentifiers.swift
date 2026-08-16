@@ -30,6 +30,11 @@
  *************************************************************************************************************/
 
 import UniformTypeIdentifiers
+#if os(macOS)
+@_exported import CoreServices
+#else
+@_exported import MobileCoreServices
+#endif
 
 // CFBundleDocumentTypes: if you want your app to open when the user double clicks one of these files.
 // UTExportedTypeDeclarations: if your app should be considered authoritative for that extension.

@@ -54,6 +54,7 @@ public class SKMetalMarchingCubes128
   var constructHPLevelPipelineState: MTLComputePipelineState? = nil
   var classifyCubesPipelineState: MTLComputePipelineState? = nil
   var traverseHPPipelineState: MTLComputePipelineState? = nil
+  var countHPTrianglesPipelineState: MTLComputePipelineState? = nil
   
   public init(device: MTLDevice, commandQueue: MTLCommandQueue, dimensions: SIMD3<Int32>)
   {
@@ -62,8 +63,7 @@ public class SKMetalMarchingCubes128
     self.dimensions = SIMD3<UInt32>(UInt32(dimensions.x),UInt32(dimensions.y),UInt32(dimensions.z))
     
     let bundle: Bundle = Bundle(for: SKMetalMarchingCubes128.self)
-    let file: String = bundle.path(forResource: "default", ofType: "metallib")!
-    defaultLibrary = try! self.device.makeLibrary(filepath: file)
+    defaultLibrary = RKMetal.loadDefaultLibrary(device: device, bundle: bundle)
     
     constructHPLevelKernel = defaultLibrary.makeFunction(name: "constructHPLevel")
     if let constructHPLevelKernel = constructHPLevelKernel
@@ -105,15 +105,32 @@ public class SKMetalMarchingCubes128
         fatalError("Error occurred when creating compute pipeline state \(error)")
       }
     }
+
+    if let countKernel = defaultLibrary.makeFunction(name: "countHPTriangles")
+    {
+      countHPTrianglesPipelineState = try? device.makeComputePipelineState(function: countKernel)
+    }
+  }
+
+  private func dispatch3D(_ encoder: MTLComputeCommandEncoder, pipeline: MTLComputePipelineState, size: Int)
+  {
+    let w = max(pipeline.threadExecutionWidth, 1)
+    let h = max(1, pipeline.maxTotalThreadsPerThreadgroup / w)
+    let threadsPerThreadgroup = MTLSizeMake(w, h, 1)
+    let threadgroups = MTLSizeMake((size + w - 1) / w, (size + h - 1) / h, size)
+    encoder.dispatchThreadgroups(threadgroups, threadsPerThreadgroup: threadsPerThreadgroup)
   }
   
   
   public func prepareHistoPyramids(_ voxels: [Float]) throws -> MTLBuffer?
   {
-    if let classifyCubesPipelineState = classifyCubesPipelineState,
-      let constructHPLevelPipelineState = constructHPLevelPipelineState,
-      let traverseHPPipelineState = traverseHPPipelineState
-    {
+    guard let classifyCubesPipelineState = classifyCubesPipelineState,
+          let constructHPLevelPipelineState = constructHPLevelPipelineState,
+          let traverseHPPipelineState = traverseHPPipelineState else {
+      LogQueue.shared.error(destination: nil, message: "Marching cubes Metal kernels were not found in SimulationKit.default.metallib")
+      throw SimulationKitError.couldNotCreateTexture
+    }
+
       let largestSize: UInt32 = max(dimensions.x,dimensions.y,dimensions.z)
       var powerOfTwo: Int32 = 1
       while(largestSize > Int(pow(2.0,Double(powerOfTwo))))
@@ -124,23 +141,22 @@ public class SKMetalMarchingCubes128
       var bufferSize: Int = Int(pow(2.0,Double(powerOfTwo)))
       let size: Int = bufferSize
       var images: [MTLTexture] = []
-      
-      let textureDescriptorRawData = MTLTextureDescriptor()
-      textureDescriptorRawData.textureType = MTLTextureType.type3D
-      textureDescriptorRawData.height = bufferSize;
-      textureDescriptorRawData.width = bufferSize;
-      textureDescriptorRawData.depth = bufferSize;
-      textureDescriptorRawData.pixelFormat = MTLPixelFormat.r32Float;
-      textureDescriptorRawData.mipmapLevelCount = 1
-      textureDescriptorRawData.resourceOptions = .storageModeManaged
-      textureDescriptorRawData.usage = [MTLTextureUsage.shaderRead]
-      
-      guard let rawDataTexture: MTLTexture = device.makeTexture(descriptor: textureDescriptorRawData) else {
-        throw SimulationKitError.couldNotCreateTexture }
-      
-      let region: MTLRegion = MTLRegionMake3D(0, 0, 0, bufferSize, bufferSize, bufferSize)
-      rawDataTexture.replace(region: region, mipmapLevel: 0, slice: 0, withBytes: voxels, bytesPerRow: MemoryLayout<Float>.stride * region.size.width, bytesPerImage: MemoryLayout<Float>.stride * region.size.width * region.size.height)
-      
+
+      guard let rawDataTexture = RKMetal.makePrivate3DTexture(device: device, size: bufferSize, pixelFormat: .r32Float, usage: .shaderRead) else {
+        throw SimulationKitError.couldNotCreateTexture
+      }
+
+      let voxelCount = bufferSize * bufferSize * bufferSize
+      var cube = [Float](repeating: 0, count: voxelCount)
+      let copyCount = min(voxels.count, voxelCount)
+      if copyCount > 0
+      {
+        cube.replaceSubrange(0..<copyCount, with: voxels[0..<copyCount])
+      }
+      guard let voxelBuffer = device.makeBuffer(bytes: cube, length: voxelCount * MemoryLayout<Float>.stride, options: .storageModeShared) else {
+        throw SimulationKitError.couldNotCreateBuffer
+      }
+
       for i in 1..<powerOfTwo
       {
         let textureDescriptor = MTLTextureDescriptor()
@@ -149,29 +165,16 @@ public class SKMetalMarchingCubes128
         textureDescriptor.width = bufferSize;
         textureDescriptor.depth = bufferSize;
         textureDescriptor.mipmapLevelCount = 1
-        textureDescriptor.resourceOptions = .storageModePrivate
+        textureDescriptor.storageMode = .private
         textureDescriptor.usage = [MTLTextureUsage.shaderRead, MTLTextureUsage.shaderWrite]
         
-        switch(i)
-        {
-        case 1:
-          textureDescriptor.pixelFormat = MTLPixelFormat.rgba8Uint
-          break;
-        case 2:
-          textureDescriptor.pixelFormat = MTLPixelFormat.r8Uint;
-          break;
-        case 3:
-          textureDescriptor.pixelFormat = MTLPixelFormat.r16Uint;
-          break;
-        case 4:
-          textureDescriptor.pixelFormat = MTLPixelFormat.r16Uint;
-          break;
-        default:
-          textureDescriptor.pixelFormat = MTLPixelFormat.r32Uint;
-          break;
-        }
+        // iOS only allows shader writes to a small set of 32-bit integer formats.
+        // The base level stores (triangleCount, cubeIndex); later levels store sums.
+        textureDescriptor.pixelFormat = (i == 1) ? MTLPixelFormat.rg32Uint : MTLPixelFormat.r32Uint
       
-        guard let image: MTLTexture = device.makeTexture(descriptor: textureDescriptor) else {return nil}
+        guard let image: MTLTexture = device.makeTexture(descriptor: textureDescriptor) else {
+          throw SimulationKitError.couldNotCreateTexture
+        }
         images.append(image)
                 
         bufferSize /= 2
@@ -183,29 +186,37 @@ public class SKMetalMarchingCubes128
       textureDescriptor.width = bufferSize;
       textureDescriptor.depth = bufferSize;
       textureDescriptor.mipmapLevelCount = 1
-      textureDescriptor.resourceOptions = .storageModeManaged
+      textureDescriptor.storageMode = .private
       textureDescriptor.pixelFormat = MTLPixelFormat.r32Uint;
       textureDescriptor.usage = [MTLTextureUsage.shaderRead, MTLTextureUsage.shaderWrite]
-      guard let image: MTLTexture = device.makeTexture(descriptor: textureDescriptor) else {return nil}
+      guard let image: MTLTexture = device.makeTexture(descriptor: textureDescriptor) else {
+        throw SimulationKitError.couldNotCreateTexture
+      }
       images.append(image)
       
       
-      guard let isoValueBufferData: MTLBuffer = device.makeBuffer(bytes: &isoValue, length: MemoryLayout<Float>.stride, options: .storageModeManaged) else {
+      guard let isoValueBufferData: MTLBuffer = device.makeBuffer(bytes: &isoValue, length: MemoryLayout<Float>.stride, options: RKMetal.hostStorage) else {
         throw SimulationKitError.couldNotCreateBuffer
       }
       
-      guard let dimensionsBufferData: MTLBuffer = device.makeBuffer(bytes: &dimensions, length: MemoryLayout<SIMD3<UInt32>>.stride, options: .storageModeManaged) else {
+      guard let dimensionsBufferData: MTLBuffer = device.makeBuffer(bytes: &dimensions, length: MemoryLayout<SIMD3<UInt32>>.stride, options: RKMetal.hostStorage) else {
        throw SimulationKitError.couldNotCreateBuffer
       }
       
       var arraySize: Int32 = powerOfTwo - 1;
-      guard let sizeBufferData: MTLBuffer = device.makeBuffer(bytes: &arraySize, length: MemoryLayout<Int32>.stride, options: .storageModeManaged) else {
+      guard let sizeBufferData: MTLBuffer = device.makeBuffer(bytes: &arraySize, length: MemoryLayout<Int32>.stride, options: RKMetal.hostStorage) else {
        throw SimulationKitError.couldNotCreateBuffer
       }
       
       guard let commandBuffer = commandQueue.makeCommandBuffer() else {
         throw SimulationKitError.couldNotMakeCommandBuffer
       }
+
+      guard let uploadEncoder = commandBuffer.makeBlitCommandEncoder() else {
+        throw SimulationKitError.couldNotMakeCommandEncoder
+      }
+      uploadEncoder.copy(from: voxelBuffer, sourceOffset: 0, sourceBytesPerRow: size * MemoryLayout<Float>.stride, sourceBytesPerImage: size * size * MemoryLayout<Float>.stride, sourceSize: MTLSizeMake(size, size, size), to: rawDataTexture, destinationSlice: 0, destinationLevel: 0, destinationOrigin: MTLOriginMake(0, 0, 0))
+      uploadEncoder.endEncoding()
       
       guard let commandEncoder1 = commandBuffer.makeComputeCommandEncoder() else {
         throw SimulationKitError.couldNotMakeCommandEncoder
@@ -215,11 +226,7 @@ public class SKMetalMarchingCubes128
       commandEncoder1.setTexture(images[0], index: 1)
       commandEncoder1.setBuffer(isoValueBufferData, offset: 0, index: 0)
       commandEncoder1.setBuffer(dimensionsBufferData, offset: 0, index: 1)
-      let threadsPerGrid128 = MTLSize(width: size, height: size, depth: size)
-      let w128: Int = classifyCubesPipelineState.threadExecutionWidth
-      let h128: Int = classifyCubesPipelineState.maxTotalThreadsPerThreadgroup / w128
-      let threadsPerThreadgroup128: MTLSize = MTLSizeMake(w128, h128, 1)
-      commandEncoder1.dispatchThreads(threadsPerGrid128, threadsPerThreadgroup: threadsPerThreadgroup128)
+      dispatch3D(commandEncoder1, pipeline: classifyCubesPipelineState, size: size)
       commandEncoder1.endEncoding()
             
      
@@ -232,67 +239,94 @@ public class SKMetalMarchingCubes128
         commandEncoder2.setComputePipelineState(constructHPLevelPipelineState)
         commandEncoder2.setTexture(images[i], index: 0)
         commandEncoder2.setTexture(images[i+1], index: 1)
-        let threadsPerGrid64 = MTLSize(width: bufferSize, height: bufferSize, depth: bufferSize)
-        let w64: Int = constructHPLevelPipelineState.threadExecutionWidth
-        let h64: Int = constructHPLevelPipelineState.maxTotalThreadsPerThreadgroup / w64
-        let threadsPerThreadgroup64: MTLSize = MTLSizeMake(w64, h64, 1)
-        commandEncoder2.dispatchThreads(threadsPerGrid64, threadsPerThreadgroup: threadsPerThreadgroup64)
+        dispatch3D(commandEncoder2, pipeline: constructHPLevelPipelineState, size: bufferSize)
         commandEncoder2.endEncoding()
         
         bufferSize /= 2
       }
       
     
-      guard let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder() else {
-        throw SimulationKitError.couldNotMakeCommandEncoder
+      guard let countBuffer = device.makeBuffer(length: MemoryLayout<UInt32>.stride, options: .storageModeShared) else {
+        throw SimulationKitError.couldNotCreateBuffer
       }
-      blitEncoder.synchronize(texture: images.last!, slice: 0, level: 0)
-      blitEncoder.endEncoding()
-      
+      countBuffer.contents().bindMemory(to: UInt32.self, capacity: 1).pointee = 0
+
+      if let countPipeline = countHPTrianglesPipelineState,
+         let countEncoder = commandBuffer.makeComputeCommandEncoder()
+      {
+        countEncoder.setComputePipelineState(countPipeline)
+        countEncoder.setTexture(images.last, index: 0)
+        countEncoder.setBuffer(countBuffer, offset: 0, index: 0)
+        countEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1), threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
+        countEncoder.endEncoding()
+      }
+      else
+      {
+        let alignment = max(device.minimumLinearTextureAlignment(for: .r32Uint), 16)
+        let bytesPerRow = max(2 * MemoryLayout<UInt32>.stride, alignment)
+        let alignedBPR = ((bytesPerRow + alignment - 1) / alignment) * alignment
+        let alignedBPI = alignedBPR * 2
+        guard let alignedBuffer = device.makeBuffer(length: alignedBPI * 2, options: .storageModeShared),
+              let blitEncoder = commandBuffer.makeBlitCommandEncoder() else {
+          throw SimulationKitError.couldNotMakeCommandEncoder
+        }
+        blitEncoder.copy(from: images.last!, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0, 0, 0), sourceSize: MTLSizeMake(2, 2, 2), to: alignedBuffer, destinationOffset: 0, destinationBytesPerRow: alignedBPR, destinationBytesPerImage: alignedBPI)
+        #if os(macOS)
+        blitEncoder.synchronize(resource: alignedBuffer)
+        #endif
+        blitEncoder.endEncoding()
+        commandBuffer.commit()
+        commandBuffer.waitUntilCompleted()
+        if let error = commandBuffer.error
+        {
+          throw NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.genericMetalError.rawValue, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription])
+        }
+        var numberOfTriangles: UInt32 = 0
+        let raw = alignedBuffer.contents()
+        for z in 0..<2
+        {
+          for y in 0..<2
+          {
+            for x in 0..<2
+            {
+              let offset = z * alignedBPI + y * alignedBPR + x * MemoryLayout<UInt32>.stride
+              numberOfTriangles += raw.load(fromByteOffset: offset, as: UInt32.self)
+            }
+          }
+        }
+        return try extractVertices(numberOfTriangles: numberOfTriangles, rawDataTexture: rawDataTexture, images: images, isoValueBufferData: isoValueBufferData, dimensionsBufferData: dimensionsBufferData, sizeBufferData: sizeBufferData, traverseHPPipelineState: traverseHPPipelineState)
+      }
+
       commandBuffer.commit()
-      
       commandBuffer.waitUntilCompleted()
-      
       if let error = commandBuffer.error
       {
         throw NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.genericMetalError.rawValue, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription])
       }
-      
-      var imageBytes2x2 = [UInt32](repeating: 0, count: 2*2*2)
-      let region3d2x2 = MTLRegionMake3D(0, 0, 0, 2, 2, 2)
-      images.last!.getBytes(&imageBytes2x2, bytesPerRow: 2 * MemoryLayout<UInt32>.stride, bytesPerImage: MemoryLayout<UInt32>.stride * 2 * 2, from: region3d2x2, mipmapLevel: 0, slice: 0)
-      
-      var numberOfTriangles: UInt32 = 0
-      for i in 0..<8
-      {
-        numberOfTriangles += imageBytes2x2[i]
-      }
-            
+
+      let numberOfTriangles = countBuffer.contents().bindMemory(to: UInt32.self, capacity: 1).pointee
+      return try extractVertices(numberOfTriangles: numberOfTriangles, rawDataTexture: rawDataTexture, images: images, isoValueBufferData: isoValueBufferData, dimensionsBufferData: dimensionsBufferData, sizeBufferData: sizeBufferData, traverseHPPipelineState: traverseHPPipelineState)
+  }
+
+  private func extractVertices(numberOfTriangles: UInt32, rawDataTexture: MTLTexture, images: [MTLTexture], isoValueBufferData: MTLBuffer, dimensionsBufferData: MTLBuffer, sizeBufferData: MTLBuffer, traverseHPPipelineState: MTLComputePipelineState) throws -> MTLBuffer?
+  {
       if numberOfTriangles > 0
       {
-        // 3 points consisting of a position, a normal, and texture coordinates (48 bytes / vertex)
         let isosurfaceVertexBuffer: MTLBuffer? = device.makeBuffer(length: Int(numberOfTriangles) * 3 * 3 * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeShared)
-        
         if isosurfaceVertexBuffer == nil
         {
           throw SimulationKitError.couldNotCreateBuffer
         }
-        
-        if numberOfTriangles>0
-        {
           guard let commandBuffer2 = commandQueue.makeCommandBuffer() else {
             throw SimulationKitError.couldNotMakeCommandBuffer
           }
-          
           guard let commandEncoder2 = commandBuffer2.makeComputeCommandEncoder() else {
             throw SimulationKitError.couldNotMakeCommandEncoder
           }
-                    
           var dataSize: UInt32 = UInt32(numberOfTriangles)
-          guard let sumBufferData: MTLBuffer = device.makeBuffer(bytes: &dataSize, length: MemoryLayout<UInt32>.stride, options: .storageModeManaged) else {
+          guard let sumBufferData: MTLBuffer = device.makeBuffer(bytes: &dataSize, length: MemoryLayout<UInt32>.stride, options: RKMetal.hostStorage) else {
               throw SimulationKitError.couldNotCreateBuffer
           }
-          
           commandEncoder2.setComputePipelineState(traverseHPPipelineState)
           commandEncoder2.setTexture(rawDataTexture, index: 0)
           for j in 0..<images.count
@@ -304,27 +338,18 @@ public class SKMetalMarchingCubes128
           commandEncoder2.setBuffer(sumBufferData, offset: 0, index: 2)
           commandEncoder2.setBuffer(dimensionsBufferData, offset: 0, index: 3)
           commandEncoder2.setBuffer(sizeBufferData, offset: 0, index: 4)
-          
-          let threadsPerGrid = MTLSize(width: Int(numberOfTriangles), height: 1, depth: 1)
-          let threadExecutionWidth: Int = traverseHPPipelineState.threadExecutionWidth
-          let threadsPerThreadgroup: MTLSize = MTLSizeMake(threadExecutionWidth, 1, 1)
-          commandEncoder2.dispatchThreads(threadsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
-          
+          let threadExecutionWidth: Int = max(traverseHPPipelineState.threadExecutionWidth, 1)
+          let threadgroups = MTLSizeMake((Int(numberOfTriangles) + threadExecutionWidth - 1) / threadExecutionWidth, 1, 1)
+          commandEncoder2.dispatchThreadgroups(threadgroups, threadsPerThreadgroup: MTLSizeMake(threadExecutionWidth, 1, 1))
           commandEncoder2.endEncoding()
-          
           commandBuffer2.commit()
-          
           commandBuffer2.waitUntilCompleted()
-          
           if let error = commandBuffer2.error
           {
             throw NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.genericMetalError.rawValue, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription])
           }
-          
           return isosurfaceVertexBuffer
-        }
       }
-    }
     return nil
   }
 }

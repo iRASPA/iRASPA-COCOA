@@ -368,7 +368,24 @@ kernel void constructHPLevel(texture3d<uint,access::read> readHistoPyramid [[ te
                    readHistoPyramid.read((readPos+cubeOffsets[6])).x+
                    readHistoPyramid.read((readPos+cubeOffsets[7])).x;
   
-  writeHistoPyramid.write(writeValue, gid);
+  writeHistoPyramid.write(uint4(uint(writeValue), 0u, 0u, 0u), gid);
+}
+
+kernel void countHPTriangles(texture3d<uint, access::read> hp [[texture(0)]],
+                             device uint *out [[buffer(0)]])
+{
+  uint sum = 0;
+  for (uint z = 0; z < 2; z++)
+  {
+    for (uint y = 0; y < 2; y++)
+    {
+      for (uint x = 0; x < 2; x++)
+      {
+        sum += hp.read(uint3(x, y, z)).x;
+      }
+    }
+  }
+  *out = sum;
 }
 
 

@@ -30,11 +30,16 @@
  *************************************************************************************************************/
 
 import Foundation
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import RenderKit
 import SymmetryKit
 import BinaryCodable
 import simd
+import MathKit
 
 public class Object: NSObject, RKRenderObject, BinaryDecodable, BinaryEncodable
 {
@@ -262,7 +267,7 @@ public class Object: NSObject, RKRenderObject, BinaryDecodable, BinaryEncodable
   
   public var drawUnitCell: Bool = false
   public var unitCellScaleFactor: Double = 1.0
-  public var unitCellDiffuseColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var unitCellDiffuseColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   public var unitCellDiffuseIntensity: Double = 1.0
   
   public var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms]

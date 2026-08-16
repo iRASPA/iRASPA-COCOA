@@ -69,3 +69,18 @@ fragment half4 backgroundQuadFragment(BackgroundVertexShaderOut inFrag [[ stage_
   //color.w = 0.5;
   return color;
 }
+
+// iOS/tvOS cannot hardware-resolve depth32Float_stencil8 MSAA targets.
+// This pass copies sample 0 into a single-sample depth texture for volume rendering.
+struct DepthResolveFragmentOut
+{
+  float depth [[depth(any)]];
+};
+
+fragment DepthResolveFragmentOut depthMSAAResolveFragment(BackgroundVertexShaderOut inFrag [[ stage_in ]],
+                                                          depth2d_ms<float> depthTexture [[ texture(0) ]])
+{
+  DepthResolveFragmentOut out;
+  out.depth = depthTexture.read(uint2(inFrag.m_Position.xy), 0);
+  return out;
+}

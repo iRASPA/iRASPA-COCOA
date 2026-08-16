@@ -29,8 +29,13 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import simd
+import MathKit
 
 
 // By tradition, the ATOM keyword is used to identify proteins or nucleic acid atoms, and keyword HETATM is used to identify atoms in small molecules

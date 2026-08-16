@@ -30,6 +30,8 @@
  *************************************************************************************************************/
 import Foundation
 
+#if os(macOS)
+
 public class LineNumberRulerView: NSRulerView
 {
   var font: NSFont!
@@ -134,3 +136,4 @@ public class LineNumberRulerView: NSRulerView
 }
 
 
+#endif

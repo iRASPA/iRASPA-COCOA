@@ -29,7 +29,13 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
+#if os(macOS)
 
 public class MyNSClipView: NSClipView
 {
@@ -70,3 +76,4 @@ public class MyNSClipView: NSClipView
  self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawNever;
  */
 
+#endif

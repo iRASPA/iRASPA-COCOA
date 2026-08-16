@@ -151,9 +151,9 @@ class MetalPolygonalPrismShader
               {
                 let cylinder: MetalCappedNSidedPrismGeometry = MetalCappedNSidedPrismGeometry(r: 1.0, s: numberOfSides)
                 
-                let vertexBuffer = device.makeBuffer(bytes: cylinder.vertices, length:MemoryLayout<RKVertex>.stride * cylinder.vertices.count, options:.storageModeManaged)
+                let vertexBuffer = device.makeBuffer(bytes: cylinder.vertices, length:MemoryLayout<RKVertex>.stride * cylinder.vertices.count, options:RKMetal.hostStorage)
                 
-                let indexBuffer = device.makeBuffer(bytes: cylinder.indices, length:MemoryLayout<UInt16>.stride * cylinder.indices.count, options:.storageModeManaged)
+                let indexBuffer = device.makeBuffer(bytes: cylinder.indices, length:MemoryLayout<UInt16>.stride * cylinder.indices.count, options:RKMetal.hostStorage)
                 
                 sceneVertexBuffers.append(vertexBuffer)
                 sceneIndexBuffers.append(indexBuffer)
@@ -162,9 +162,9 @@ class MetalPolygonalPrismShader
               {
                 let cylinder: MetalNSidedPrismGeometry = MetalNSidedPrismGeometry(r: 1.0, s: numberOfSides)
                 
-                let vertexBuffer = device.makeBuffer(bytes: cylinder.vertices, length:MemoryLayout<RKVertex>.stride * cylinder.vertices.count, options:.storageModeManaged)
+                let vertexBuffer = device.makeBuffer(bytes: cylinder.vertices, length:MemoryLayout<RKVertex>.stride * cylinder.vertices.count, options:RKMetal.hostStorage)
                 
-                let indexBuffer = device.makeBuffer(bytes: cylinder.indices, length:MemoryLayout<UInt16>.stride * cylinder.indices.count, options:.storageModeManaged)
+                let indexBuffer = device.makeBuffer(bytes: cylinder.indices, length:MemoryLayout<UInt16>.stride * cylinder.indices.count, options:RKMetal.hostStorage)
                 
                 sceneVertexBuffers.append(vertexBuffer)
                 sceneIndexBuffers.append(indexBuffer)
@@ -172,7 +172,7 @@ class MetalPolygonalPrismShader
               
               let objects: [RKInPerInstanceAttributesAtoms] = structure.renderPolygonalPrismObjects
               
-              let instanceBuffer: MTLBuffer? = objects.isEmpty ? nil : device.makeBuffer(bytes: objects, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * objects.count, options:.storageModeManaged)
+              let instanceBuffer: MTLBuffer? = objects.isEmpty ? nil : device.makeBuffer(bytes: objects, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * objects.count, options:RKMetal.hostStorage)
               
               
               sceneInstanceBuffers.append(instanceBuffer)

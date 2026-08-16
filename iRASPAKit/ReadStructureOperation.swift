@@ -34,6 +34,7 @@ import SymmetryKit
 import OperationKit
 import LogViewKit
 import BinaryCodable
+import MathKit
 
 class ReadStructureOperation: FKOperation, @unchecked Sendable
 {

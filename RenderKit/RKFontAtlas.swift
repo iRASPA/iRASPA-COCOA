@@ -33,6 +33,7 @@ import Foundation
 import CoreGraphics
 import Metal
 import simd
+import MathKit
 
 struct GlyphDescriptor
 {
@@ -191,23 +192,7 @@ public class RKFontAtlas
     CTFrameGetLineOrigins(frame, entire, &lineOriginArray)
     var glyphIndexInFrame = 0
     
-    let size = NSMakeSize(1, 1);
-    let im = NSImage(size: size)
-    
-    let rep = NSBitmapImageRep(bitmapDataPlanes: nil,
-                               pixelsWide: Int(size.width),
-                               pixelsHigh: Int(size.height),
-                               bitsPerSample: 8,
-                               samplesPerPixel: 4,
-                               hasAlpha: true,
-                               isPlanar: false,
-                               colorSpaceName: NSColorSpaceName.calibratedRGB,
-                               bytesPerRow: 0,
-                               bitsPerPixel: 0)
-    
-    im.addRepresentation(rep!)
-    
-    let context = NSGraphicsContext.current?.cgContext
+    let context: CGContext? = nil
     for (i, line) in lines.enumerated()
     {
       let lineOrigin = lineOriginArray[i]

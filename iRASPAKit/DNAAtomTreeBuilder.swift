@@ -6,6 +6,7 @@
 
 import Foundation
 import SymmetryKit
+import MathKit
 
 /// Builds a hierarchical atom tree for DNA: chain → DNA helix → residue → atom.
 public enum DNAAtomTreeBuilder

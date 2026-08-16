@@ -66,8 +66,8 @@ class MetalUnitCellSphereShader
   public func buildVertexBuffers(device: MTLDevice)
   {
     let unitCellSphere: MetalSphereGeometry = MetalSphereGeometry()
-    vertexBuffer = device.makeBuffer(bytes: unitCellSphere.vertices, length:MemoryLayout<RKVertex>.stride * unitCellSphere.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: unitCellSphere.indices, length:MemoryLayout<UInt16>.stride * unitCellSphere.indices.count, options:.storageModeManaged)
+    vertexBuffer = device.makeBuffer(bytes: unitCellSphere.vertices, length:MemoryLayout<RKVertex>.stride * unitCellSphere.vertices.count, options:RKMetal.hostStorage)
+    indexBuffer = device.makeBuffer(bytes: unitCellSphere.indices, length:MemoryLayout<UInt16>.stride * unitCellSphere.indices.count, options:RKMetal.hostStorage)
     
     if let _: RKRenderDataSource = renderDataSource
     {
@@ -87,7 +87,7 @@ class MetalUnitCellSphereShader
           {
             let unitCellSpherePositions: [RKInPerInstanceAttributesAtoms] = (structure as?RKRenderUnitCellSource)?.renderUnitCellSpheres ?? []
             
-            let buffer = unitCellSpherePositions.isEmpty ? nil : device.makeBuffer(bytes: unitCellSpherePositions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * unitCellSpherePositions.count, options:.storageModeManaged)
+            let buffer = unitCellSpherePositions.isEmpty ? nil : device.makeBuffer(bytes: unitCellSpherePositions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * unitCellSpherePositions.count, options:RKMetal.hostStorage)
             
             sceneInstance.append(buffer)
           }

@@ -29,7 +29,11 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import RenderKit
 import SimulationKit
 import SymmetryKit
@@ -37,6 +41,7 @@ import BinaryCodable
 import OperationKit
 import LogViewKit
 import simd
+import MathKit
 
 public class GaussianCubeVolumetricData: Structure, UnitCellViewer, IsosurfaceViewer, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource
 {  
@@ -322,7 +327,7 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, IsosurfaceVi
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
@@ -385,7 +390,7 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, IsosurfaceVi
   {
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
      
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -452,7 +457,7 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, IsosurfaceVi
   {
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)

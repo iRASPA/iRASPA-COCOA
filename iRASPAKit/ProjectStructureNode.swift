@@ -35,6 +35,7 @@ import BinaryCodable
 import SimulationKit
 import RenderKit
 import SymmetryKit
+import MathKit
 
 public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRenderCameraSource, NSSecureCoding
 {
@@ -363,9 +364,9 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
         let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(position.x), y: Float(position.y), z: Float(position.z), w: Float(w))
       
         let radius: Double = atomInfo.copy.asymmetricParentAtom.drawRadius
-        let ambient: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-        let diffuse: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-        let specular: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        let ambient: NSColor = NSColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+        let diffuse: NSColor = NSColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+        let specular: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       
         return RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(0))
       }

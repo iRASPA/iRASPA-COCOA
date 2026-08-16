@@ -23,6 +23,7 @@ import simd
 import SymmetryKit
 import BinaryCodable
 import SimulationKit
+import MathKit
 
 public enum ProteinAminoAcidResidueReplacer
 {

@@ -169,7 +169,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
@@ -232,7 +232,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   {
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
      
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -299,7 +299,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   {
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -560,7 +560,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
@@ -626,7 +626,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   {
     var data: [RKInPerInstanceAttributesBonds] = []
      
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -694,7 +694,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   {
     var data: [RKInPerInstanceAttributesBonds] = []
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -783,7 +783,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   public override func filterCartesianAtomPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
   {
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -837,7 +837,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   
   public override func filterCartesianBondPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
   {
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
         
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -2264,6 +2264,10 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
     let cell: SKCell = self.cell
     let positions: [SIMD3<Double>] = self.atomUnitCellPositions
     let potentialParameters: [SIMD2<Double>] = self.potentialParameters
+    if potentialParameters.allSatisfy({ $0.x == 0.0 && $0.y == 0.0 })
+    {
+      LogQueue.shared.warning(destination: nil, message: "Force-field epsilon/sigma are zero for \(self.displayName); the energy grid will be flat.")
+    }
     let probeParameters: SIMD2<Double> = self.adsorptionSurfaceProbeParameters
     let size: Int32 = Int32(pow(2.0,Double(self.encompassingPowerOfTwoCubicGridSize)))
     self.dimensions = SIMD3<Int32>(size,size,size)
@@ -2276,9 +2280,13 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
       let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell:   cell.unitCell, numberOfReplicas: numberOfReplicas)
       
       let data: [Float] = framework.ComputeEnergyGrid(Int(size), sizeY: Int(size), sizeZ: Int(size), probeParameter: probeParameters)
-                  
-      self.minimumGridEnergyValue = data.min()
-      self.range = (Double(minimumGridEnergyValue!),0.0)
+      guard let minValue = data.min() else {
+        LogQueue.shared.error(destination: nil, message: "Energy grid for \(self.displayName) is empty (no atoms or Metal compute failed).")
+        return data
+      }
+      self.minimumGridEnergyValue = minValue
+      self.range = (Double(minValue), 0.0)
+      LogQueue.shared.info(destination: nil, message: "Energy grid for \(self.displayName): \(data.count) voxels, min \(minValue) K, iso \(self.adsorptionSurfaceIsoValue) K")
       
       self.adsorptionVolumeStepLength = 0.25 / Double(size)
    

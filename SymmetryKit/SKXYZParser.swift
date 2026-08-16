@@ -31,6 +31,7 @@
 
 import Foundation
 import simd
+import MathKit
 
 extension String {
   func condensingWhitespace() -> String {

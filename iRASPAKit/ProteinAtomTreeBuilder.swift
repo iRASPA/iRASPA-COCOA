@@ -20,6 +20,7 @@
 
 import Foundation
 import SymmetryKit
+import MathKit
 
 /// Builds a hierarchical atom tree for proteins: chain → secondary-structure segment → residue → atom.
 /// PDB HETATM records (waters, ions, ligands — not polymer MODRES) collect under a "HETATM" group per chain.

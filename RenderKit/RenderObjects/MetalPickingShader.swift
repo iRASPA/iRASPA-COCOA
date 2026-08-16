@@ -31,6 +31,12 @@
 
 
 import Foundation
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+import MathKit
 
 class MetalPickingShader
 {
@@ -205,7 +211,7 @@ class MetalPickingShader
   {
     let pickingTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba32Uint, width: max(16, Int(size.width)), height: max(16,Int(size.height)), mipmapped: false)
     pickingTextureDescriptor.textureType = MTLTextureType.type2D
-    pickingTextureDescriptor.storageMode = MTLStorageMode.managed
+    pickingTextureDescriptor.storageMode = RKMetal.hostStorageMode
     pickingTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
     texture = device.makeTexture(descriptor: pickingTextureDescriptor)
     texture.label = "picking texture"
@@ -236,12 +242,12 @@ class MetalPickingShader
     if NSMakeRect(0.0, 0.0, CGFloat(texture.width), CGFloat(texture.height)).contains(point)
     {
       if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer(),
-        let textureBuffer: MTLBuffer = device.makeBuffer(bytes: data, length:MemoryLayout<Int32>.stride * 4, options: .storageModeManaged),
+        let textureBuffer: MTLBuffer = device.makeBuffer(bytes: data, length:MemoryLayout<Int32>.stride * 4, options: RKMetal.hostStorage),
         let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()
       {
         blitEncoder.label = "Picking texture blit command encoder"
         blitEncoder.copy(from: texture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(Int(round(point.x)), Int(round(point.y)), 0), sourceSize: MTLSizeMake(1, 1, 1), to: textureBuffer, destinationOffset: 0, destinationBytesPerRow: MemoryLayout<Int32>.stride * 4, destinationBytesPerImage: 0)
-        blitEncoder.synchronize(resource: textureBuffer)
+        RKMetal.synchronize(blitEncoder, resource: textureBuffer)
         blitEncoder.endEncoding()
         commandBuffer.commit()
         commandBuffer.waitUntilCompleted()
@@ -258,8 +264,8 @@ class MetalPickingShader
     if NSMakeRect(0.0, 0.0, CGFloat(depthTexture.width), CGFloat(depthTexture.height)).contains(point)
     {
       if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer(),
-        let textureBuffer: MTLBuffer = device.makeBuffer(bytes: pick, length: MemoryLayout<Int32>.stride * 4, options: .storageModeManaged),
-        let textureBufferDepth: MTLBuffer = device.makeBuffer(bytes: &depth, length:MemoryLayout<Float>.stride, options: .storageModeManaged),
+        let textureBuffer: MTLBuffer = device.makeBuffer(bytes: pick, length: MemoryLayout<Int32>.stride * 4, options: RKMetal.hostStorage),
+        let textureBufferDepth: MTLBuffer = device.makeBuffer(bytes: &depth, length:MemoryLayout<Float>.stride, options: RKMetal.hostStorage),
         let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()
       {
         blitEncoder.label = "Picking texture blit command encoder"
@@ -268,8 +274,8 @@ class MetalPickingShader
         blitEncoder.label = "Picking texture blit command encoder"
         blitEncoder.copy(from: depthTexture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(Int(round(point.x)), Int(round(point.y)), 0), sourceSize: MTLSizeMake(1, 1, 1), to: textureBufferDepth, destinationOffset: 0, destinationBytesPerRow: MemoryLayout<Float>.stride, destinationBytesPerImage: 0)
         
-        blitEncoder.synchronize(resource: textureBuffer)
-        blitEncoder.synchronize(resource: textureBufferDepth)
+        RKMetal.synchronize(blitEncoder, resource: textureBuffer)
+        RKMetal.synchronize(blitEncoder, resource: textureBufferDepth)
         
         blitEncoder.endEncoding()
         commandBuffer.commit()
@@ -307,6 +313,7 @@ class MetalPickingShader
                                               camera: RKCamera?,
                                               skipRibbonPicking: Bool = false)
   {
+    _ = renderQuality
     if let _: RKRenderDataSource = renderDataSource
     {
       let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
@@ -320,23 +327,15 @@ class MetalPickingShader
       let atomIndexBuffer: MTLBuffer
       let atomPipeline: MTLRenderPipelineState
       
-      switch renderQuality
+      atomVertexBuffer = atomOrthographicImposterShader.vertexBuffer
+      atomIndexBuffer = atomOrthographicImposterShader.indexBuffer
+      if let camera, camera.frustrumType == .perspective
       {
-      case .high, .picture:
-        atomVertexBuffer = atomShader.vertexBuffer
-        atomIndexBuffer = atomShader.indexBuffer
-        atomPipeline = atomMeshPipeLine
-      case .medium, .low:
-        atomVertexBuffer = atomOrthographicImposterShader.vertexBuffer
-        atomIndexBuffer = atomOrthographicImposterShader.indexBuffer
-        if let camera: RKCamera = camera, camera.frustrumType == .perspective
-        {
-          atomPipeline = atomPerspectivePipeLine
-        }
-        else
-        {
-          atomPipeline = atomOrthographicPipeLine
-        }
+        atomPipeline = atomPerspectivePipeLine
+      }
+      else
+      {
+        atomPipeline = atomOrthographicPipeLine
       }
       
       commandEncoder.setVertexBuffer(atomVertexBuffer, offset: 0, index: 0)

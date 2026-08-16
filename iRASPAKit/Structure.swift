@@ -64,9 +64,9 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var drawAtoms: Bool =  true
   
   // material properties
-  public var atomAmbientColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var atomDiffuseColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var atomSpecularColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var atomAmbientColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var atomDiffuseColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var atomSpecularColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   public var atomAmbientIntensity: Double = 0.2
   public var atomDiffuseIntensity: Double = 1.0
   public var atomSpecularIntensity: Double = 1.0
@@ -183,9 +183,9 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   
   public var drawBonds: Bool = true
   
-  public var bondAmbientColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var bondDiffuseColor: NSColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-  public var bondSpecularColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var bondAmbientColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var bondDiffuseColor: NSColor = NSColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+  public var bondSpecularColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   public var bondAmbientIntensity: Double = 0.1
   public var bondDiffuseIntensity: Double = 1.0
   public var bondSpecularIntensity: Double = 1.0
@@ -1698,9 +1698,9 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.bondAmbientOcclusion = false
         self.bondColorMode = .uniform
         self.bondScaleFactor = 0.15
-        self.bondAmbientColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        self.bondDiffuseColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-        self.bondSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.bondAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.bondDiffuseColor = NSColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+        self.bondSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         self.bondAmbientIntensity = 0.35
         self.bondDiffuseIntensity = 1.0
         self.bondSpecularIntensity = 1.0
@@ -1794,9 +1794,9 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.bondAmbientOcclusion = false
         self.bondColorMode = .split
         self.bondScaleFactor = 0.25
-        self.bondAmbientColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        self.bondDiffuseColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-        self.bondSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.bondAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.bondDiffuseColor = NSColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+        self.bondSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         self.bondAmbientIntensity = 0.1
         self.bondDiffuseIntensity = 1.0
         self.bondSpecularIntensity = 1.0
@@ -3360,7 +3360,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     
     encoder.encode(self.atomTextType.rawValue)
     encoder.encode(self.atomTextFont)
-    let font: NSFont = NSFont(name: self.atomTextFont, size: 32) ?? NSFont()
+    let font: NSFont = NSFont(name: self.atomTextFont, size: 32) ?? NSFont.systemFont(ofSize: 32)
     let fontFamilyName: String = font.familyName ?? "Helvetica"
     let fontMemberName: String = NSFontManager.shared.memberName(of: font) ?? "Regular"
     encoder.encode(fontFamilyName)

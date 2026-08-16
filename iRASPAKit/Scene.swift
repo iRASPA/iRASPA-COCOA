@@ -896,9 +896,9 @@ fileprivate func applyImportedDNARibbonDefaults(_ object: Object)
     applyImportedStructureRibbonSelectionDefaults(structure)
   }
   
-  target.bondDiffuseColor = NSColor(calibratedRed: 0.2, green: 0.45, blue: 0.85, alpha: 1.0)
-  target.bondAmbientColor = NSColor(calibratedRed: 0.35, green: 0.35, blue: 0.35, alpha: 1.0)
-  target.bondSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  target.bondDiffuseColor = NSColor(red: 0.2, green: 0.45, blue: 0.85, alpha: 1.0)
+  target.bondAmbientColor = NSColor(red: 0.35, green: 0.35, blue: 0.35, alpha: 1.0)
+  target.bondSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   target.bondAmbientIntensity = 0.35
   target.bondDiffuseIntensity = 0.85
   target.bondSpecularIntensity = 0.25

@@ -31,6 +31,9 @@
 
 import Foundation
 
+#if os(macOS)
+import AppKit
+
 extension NSFontManager
 {
   public func memberName(of font: NSFont) -> String?
@@ -102,3 +105,23 @@ extension NSFontManager
     return dictionary
   }
 }
+#else
+import UIKit
+
+open class NSFontManager: NSObject
+{
+  public static let shared = NSFontManager()
+
+  public func memberName(of font: UIFont) -> String?
+  {
+    return font.fontDescriptor.object(forKey: .face) as? String ?? "Regular"
+  }
+
+  public func font(familyName: String, memberName: String) -> String?
+  {
+    let descriptor = UIFontDescriptor(fontAttributes: [.family: familyName, .face: memberName])
+    return UIFont(descriptor: descriptor, size: 32).fontName
+  }
+}
+#endif
+

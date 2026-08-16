@@ -31,6 +31,7 @@
 
 import Foundation
 import OperationKit
+import MathKit
 
 class ComputeBondsGroupOperation: FKGroupOperation, @unchecked Sendable
 {

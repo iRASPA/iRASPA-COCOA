@@ -110,7 +110,7 @@ class ProjectSlideCarrierView: NSView
     {
       
       // Item is selected, and is not indicated for proposed deselection: Show an Aqua border around it.
-      borderColor = NSColor(calibratedRed:0.0, green:0.5, blue:1.0, alpha:1.0) // Aqua
+      borderColor = NSColor(red:0.0, green:0.5, blue:1.0, alpha:1.0) // Aqua
       
     }
     else

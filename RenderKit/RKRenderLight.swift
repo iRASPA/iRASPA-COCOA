@@ -29,7 +29,11 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import simd
 import MathKit
 
@@ -38,9 +42,9 @@ public struct RKRenderLight
   private static var classVersionNumber: Int = 1
   
   public var position: SIMD4<Double> = SIMD4<Double>(x:0, y:0, z: 100.0, w: 0.0)
-  public var ambient: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var diffuse: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var specular: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var ambient: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var diffuse: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var specular: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   public var ambientIntensity: Double = 1.0
   public var diffuseIntensity: Double = 1.0
   public var specularIntensity: Double = 1.0

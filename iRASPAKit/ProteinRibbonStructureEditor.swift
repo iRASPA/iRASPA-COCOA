@@ -6,6 +6,7 @@
 
 import Foundation
 import SymmetryKit
+import MathKit
 
 public protocol ProteinRibbonStructureEditor: AnyObject
 {

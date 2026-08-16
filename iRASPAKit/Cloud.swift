@@ -38,7 +38,7 @@ import OperationKit
 public class Cloud
 {
   public let projectData: ProjectTreeController = ProjectTreeController()
-  public let cloudKitContainer: CKContainer = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA")
+  public lazy var cloudKitContainer: CKContainer = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA")
   private let projectNodeSubscriptionID = "iRASPA projects"
   var userRecordID: CKRecord.ID? = nil
   var userRecord: CKRecord? = nil
@@ -47,6 +47,11 @@ public class Cloud
   
   // The lazy initialization of the shared instance is thread safe by the definition of let
   public static let shared: Cloud = Cloud()
+
+  /// CloudKit is attempted whenever the app runs. On Simulator you still need a
+  /// team-signed build with the `iCloud.nl.darkwing.iRASPA` entitlement; failures
+  /// show up as `CKError` / log messages rather than a hard UI gate.
+  public static var isCloudKitUsable: Bool { true }
   
   public let cloudQueue: FKOperationQueue = FKOperationQueue()
     
@@ -56,6 +61,10 @@ public class Cloud
   {
     cloudQueue.name = "iCloud queue"
     cloudQueue.qualityOfService = .userInitiated
+
+    #if os(iOS)
+    return
+    #endif
 
     let cloudAccountAvailableOperation: CloudAccountAvailableOperation = CloudAccountAvailableOperation()
     cloudQueue.addOperation(cloudAccountAvailableOperation)

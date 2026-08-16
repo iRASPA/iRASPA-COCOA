@@ -8,7 +8,12 @@
 //  See https://github.com/weichsel/ZIPFoundation/blob/master/LICENSE for license information.
 //
 
+#import <Foundation/Foundation.h>
+#if TARGET_OS_OSX
 #import <Cocoa/Cocoa.h>
+#elif TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#endif
 
 //! Project version number for ZIPFoundation.
 FOUNDATION_EXPORT double ZIPFoundationVersionNumber;

@@ -31,6 +31,7 @@
 
 import Foundation
 import BinaryCodable
+import MathKit
 
 public let iRASPAProjectPasteboardType: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.iraspa")
 

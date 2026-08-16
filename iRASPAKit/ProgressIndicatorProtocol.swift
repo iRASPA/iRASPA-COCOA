@@ -29,8 +29,14 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
+#if os(macOS)
 import AppKit
+#else
+import UIKit
+#endif
 import Foundation
+
+#if os(macOS)
 
 public protocol ProgressIndicator: AnyObject
 {
@@ -85,3 +91,4 @@ public extension ProjectTreeNode
     outlineView.noteHeightOfRows(withIndexesChanged: IndexSet(integer: row))
   }
 }
+#endif

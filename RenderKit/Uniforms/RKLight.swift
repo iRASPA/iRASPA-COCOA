@@ -32,13 +32,14 @@
 
 import Foundation
 import simd
+import MathKit
 
 public struct RKLight
 {
   public var position: SIMD4<Float> = SIMD4<Float>(x:0.0, y:0.0, z: 100.0, w: 0.0)  // w=0 directional light, w=1.0 positional light
-  public var ambient: SIMD4<Float> = SIMD4<Float>(color: NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-  public var diffuse: SIMD4<Float> = SIMD4<Float>(color: NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-  public var specular: SIMD4<Float> = SIMD4<Float>(color: NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+  public var ambient: SIMD4<Float> = SIMD4<Float>(color: NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+  public var diffuse: SIMD4<Float> = SIMD4<Float>(color: NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+  public var specular: SIMD4<Float> = SIMD4<Float>(color: NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
   
   public var spotDirection: SIMD4<Float> = SIMD4<Float>(x:1.0, y:1.0, z: 1.0, w:0.0)
   public var constantAttenuation: Float = 1.0

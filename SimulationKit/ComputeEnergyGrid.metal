@@ -41,7 +41,6 @@ kernel void ComputeEnergyGrid(constant int& numberOfAtoms [[ buffer(0) ]],
                               constant int& numberOfReplicas [[ buffer(5) ]],
                               constant float4* replicas [[ buffer(6) ]],
                               device float *output [[ buffer(7) ]],
-                              threadgroup float *shared [[ threadgroup(0)]],
                               uint igrid [[thread_position_in_grid]],
                               uint lsize [[threads_per_threadgroup]],
                               uint lid [[thread_position_in_threadgroup]])

@@ -30,11 +30,22 @@
  *************************************************************************************************************/
 
 import Foundation
+#if os(macOS)
+import AppKit
+private typealias LogColor = NSColor
+private typealias LogFont = NSFont
+#else
+import UIKit
+private typealias LogColor = UIColor
+private typealias LogFont = UIFont
+#endif
 
 @objc public protocol LogReporting: AnyObject
 {
   func update(attributedString: NSTextStorage)
+  #if os(macOS)
   var logScriptView: LogScriptTextView? {get set}
+  #endif
 }
 
 
@@ -43,15 +54,13 @@ public class LogQueue
 {
   public static let shared: LogQueue = LogQueue()
   
-  // Create a serial queue
   var queue: DispatchQueue = DispatchQueue(label: "Log dispatch queue")
   
   let stateLock: NSLock = NSLock()
   
-  public var destinations: NSMapTable<LogReporting, NSWindowController> = NSMapTable(keyOptions: .weakMemory, valueOptions: .weakMemory, capacity: 5)
+  public var destinations: NSMapTable<LogReporting, AnyObject> = NSMapTable(keyOptions: .weakMemory, valueOptions: .weakMemory, capacity: 5)
   
-  // Create the text-storage in the LogQueue. This allows logging of initalization (e.g. iCloud) messages when the viewcontrollers are not yet onscreen.
-  public var textStorageView: NSTextStorage = NSTextStorage(string: NSLocalizedString("Log console ready", bundle: Bundle(for: LogQueue.self), comment: ""),  attributes: [.foregroundColor : NSColor.textColor])
+  public var textStorageView: NSTextStorage = NSTextStorage(string: NSLocalizedString("Log console ready", bundle: Bundle(for: LogQueue.self), comment: ""),  attributes: [.foregroundColor : LogQueue.logTextColor])
   
   
   public enum Level: Int
@@ -62,14 +71,25 @@ public class LogQueue
     case verbose = 3
   }
   
-  public func subscribe(_ subscriber: LogReporting, windowController: NSWindowController)
+  private static var logTextColor: LogColor
+  {
+    #if os(macOS)
+    return NSColor.textColor
+    #else
+    return UIColor.label
+    #endif
+  }
+  
+  public func subscribe(_ subscriber: LogReporting, windowController: AnyObject)
   {
     stateLock.lock()
       
     if self.destinations.object(forKey: subscriber) == nil
     {
       self.destinations.setObject(windowController, forKey: subscriber)
+      #if os(macOS)
       subscriber.logScriptView?.layoutManager?.textStorage?.append(textStorageView)
+      #endif
     }
     
     stateLock.unlock()
@@ -89,35 +109,30 @@ public class LogQueue
   
   private init()
   {
-    //let font: NSFont = NSFont.systemFont(ofSize: NSFont.systemFontSize, weight: NSFont.Weight.regular)
-    //NSFont.setUserFixedPitch(font)
-    //textStorageView.font = font
   }
   
   
-  public func error(destination: NSWindowController?, message: String, completionHandler: @escaping () -> () = {})
+  public func error(destination: AnyObject?, message: String, completionHandler: @escaping () -> () = {})
   {
-    
     self.dispatchMessage(windowController: destination, level: .error, message: message, thread: Thread.current.name ?? "unknown", completionHandler: completionHandler)
-    
   }
   
-  public func warning(destination: NSWindowController?, message: String, completionHandler: @escaping () -> () = {})
+  public func warning(destination: AnyObject?, message: String, completionHandler: @escaping () -> () = {})
   {
     self.dispatchMessage(windowController: destination, level: .warning, message: message, thread: Thread.current.name ?? "unknown", completionHandler: completionHandler)
   }
   
-  public func info(destination: NSWindowController?, message: String, completionHandler: @escaping () -> () = {})
+  public func info(destination: AnyObject?, message: String, completionHandler: @escaping () -> () = {})
   {
     self.dispatchMessage(windowController: destination, level: .info, message: message, thread: Thread.current.name ?? "unknown", completionHandler: completionHandler)
   }
   
-  public func verbose(destination: NSWindowController?, message: String, completionHandler: @escaping () -> () = {})
+  public func verbose(destination: AnyObject?, message: String, completionHandler: @escaping () -> () = {})
   {
     self.dispatchMessage(windowController: destination, level: .verbose, message: message, thread: Thread.current.name ?? "unknown", completionHandler: completionHandler)
   }
   
-  public func dispatchMessage(windowController: NSWindowController?, level: Level, message: String, thread: String, completionHandler: @escaping () -> () = {})
+  public func dispatchMessage(windowController: AnyObject?, level: Level, message: String, thread: String, completionHandler: @escaping () -> () = {})
   {
     let bundle: Bundle = Bundle(for: LogQueue.self)
     
@@ -128,42 +143,47 @@ public class LogQueue
       formatter.timeStyle = .medium
       let timeString: String = formatter.string(from: Date()) as String
       
-      let baseFont: NSFont = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+      let baseFont: LogFont = LogFont.systemFont(ofSize: LogFont.systemFontSize)
       
       let levelString: NSString
       let colorString: String
-      let color: NSColor
+      let color: LogColor
       let stringRange: NSRange
-      let fontMask: NSFontTraitMask
       switch(level)
       {
       case .error:
         colorString = NSLocalizedString("Error", bundle: bundle, comment: "")
         levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
-        color = NSColor.red
-        fontMask = NSFontTraitMask.boldFontMask
+        color = LogColor.red
       case .warning:
         colorString = NSLocalizedString("Warning", bundle: bundle, comment: "")
         levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
-        color = NSColor.blue
-        fontMask = NSFontTraitMask.italicFontMask
+        color = LogColor.blue
       case .verbose:
         colorString = NSLocalizedString("Verbose", bundle: bundle, comment: "")
         levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
-        color = NSColor(calibratedRed:0.13333333333333333, green:0.5450980392156862, blue:0.13333333333333333, alpha:1.0)   // Forest green
-        fontMask = NSFontTraitMask.fixedPitchFontMask
+        color = LogColor(red:0.13333333333333333, green:0.5450980392156862, blue:0.13333333333333333, alpha:1.0)
       case .info:
         colorString = NSLocalizedString("Info", bundle: bundle, comment: "")
         levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
-        color = NSColor.magenta
-        fontMask = NSFontTraitMask.fixedPitchFontMask
+        color = LogColor.magenta
       }
-      let attributedString: NSTextStorage = NSTextStorage(string: String(levelString), attributes: [.foregroundColor : NSColor.textColor])
+      let attributedString: NSTextStorage = NSTextStorage(string: String(levelString), attributes: [.foregroundColor : LogQueue.logTextColor])
       let colorRange: NSRange = levelString.localizedStandardRange(of: colorString)
       attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: colorRange)
       stringRange = NSMakeRange(1, attributedString.length - 1)
       attributedString.addAttribute(NSAttributedString.Key.font, value: baseFont, range: stringRange)
-      attributedString.applyFontTraits(fontMask, range: stringRange)
+      #if os(macOS)
+      switch(level)
+      {
+      case .error:
+        attributedString.applyFontTraits(NSFontTraitMask.boldFontMask, range: stringRange)
+      case .warning:
+        attributedString.applyFontTraits(NSFontTraitMask.italicFontMask, range: stringRange)
+      case .verbose, .info:
+        attributedString.applyFontTraits(NSFontTraitMask.fixedPitchFontMask, range: stringRange)
+      }
+      #endif
       
       
       
@@ -174,8 +194,7 @@ public class LogQueue
         let enumerator: NSEnumerator = self.destinations.keyEnumerator()
         for destination in enumerator
         {
-          // send message to designated windowController or to all if nil
-          if windowController == nil || self.destinations.object(forKey: destination as? LogReporting) == windowController
+          if windowController == nil || self.destinations.object(forKey: destination as? LogReporting) === windowController
           {
             (destination as? LogReporting)?.update(attributedString: attributedString)
           }
@@ -187,5 +206,3 @@ public class LogQueue
     })
   }
 }
-
-

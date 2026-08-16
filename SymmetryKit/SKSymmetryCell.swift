@@ -30,7 +30,11 @@
  *************************************************************************************************************/
 
 import Foundation
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import simd
 import MathKit
 

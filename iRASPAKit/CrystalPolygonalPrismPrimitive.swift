@@ -29,11 +29,16 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import RenderKit
 import SymmetryKit
 import BinaryCodable
 import simd
+import MathKit
 
 public final class CrystalPolygonalPrismPrimitive: Primitive, UnitCellEditor, RKRenderCrystalPolygonalPrismObjectsSource, RKRenderUnitCellSource, Cloning
 {

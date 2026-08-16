@@ -83,8 +83,8 @@ class MetalMeasurementOrthographicImposterShader
   public func buildVertexBuffers(device: MTLDevice)
   {
     let quad: MetalQuadGeometry = MetalQuadGeometry()
-    vertexBuffer = device.makeBuffer(bytes: quad.vertices, length:MemoryLayout<RKVertex>.stride * quad.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: quad.indices, length:MemoryLayout<UInt16>.stride * quad.indices.count, options:.storageModeManaged)
+    vertexBuffer = device.makeBuffer(bytes: quad.vertices, length:MemoryLayout<RKVertex>.stride * quad.vertices.count, options:RKMetal.hostStorage)
+    indexBuffer = device.makeBuffer(bytes: quad.indices, length:MemoryLayout<UInt16>.stride * quad.indices.count, options:RKMetal.hostStorage)
     
     if let project: RKRenderDataSource = renderDataSource
     {
@@ -96,7 +96,7 @@ class MetalMeasurementOrthographicImposterShader
         
       if self.numberOfDrawnMeasurementAtoms > 0
       {
-        self.instanceBuffer = device.makeBuffer(bytes: atomData, length: atomData.count * MemoryLayout<RKInPerInstanceAttributesAtoms>.stride, options: .storageModeManaged)
+        self.instanceBuffer = device.makeBuffer(bytes: atomData, length: atomData.count * MemoryLayout<RKInPerInstanceAttributesAtoms>.stride, options: RKMetal.hostStorage)
       }
     }
   }

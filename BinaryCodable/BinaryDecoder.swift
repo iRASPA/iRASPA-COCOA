@@ -308,9 +308,9 @@ public extension BinaryDecoder
     return Data()
   }
   
-  func decode(_ type: Dictionary<String, NSColor>.Type) throws -> Dictionary<String, NSColor>
+  func decode(_ type: Dictionary<String, PlatformColor>.Type) throws -> Dictionary<String, PlatformColor>
   {
-    var dictionary: Dictionary<String, NSColor> = Dictionary<String, NSColor>()
+    var dictionary: Dictionary<String, PlatformColor> = Dictionary<String, PlatformColor>()
     let count: UInt32 = try self.decode(UInt32.self)
     if(count != UInt32(0xFFFFFFFF))
     {
@@ -318,14 +318,14 @@ public extension BinaryDecoder
       for _ in 0 ..< Int(count)
       {
         let decodedString = try self.decode(String.self)
-        let decodedValue = try self.decode(NSColor.self)
+        let decodedValue = try self.decode(PlatformColor.self)
         dictionary[decodedString] = decodedValue
       }
     }
     return dictionary
   }
   
-  func decode(_ type: NSColor.Type) throws -> NSColor
+  func decode(_ type: PlatformColor.Type) throws -> PlatformColor
   {
     var swappedSpec = Int8()
     try read(into: &swappedSpec)
@@ -351,21 +351,21 @@ public extension BinaryDecoder
     try read(into: &swappedP)
     let _ = UInt16(bigEndian: swappedP)
     
-    return NSColor(red: CGFloat(r)/65535.0, green: CGFloat(g)/65535.0, blue: CGFloat(b)/65535.0, alpha: CGFloat(a)/65535.0)
+    return PlatformColor(red: CGFloat(r)/65535.0, green: CGFloat(g)/65535.0, blue: CGFloat(b)/65535.0, alpha: CGFloat(a)/65535.0)
   }
   
   
-  func decode(_ type: Dictionary<String, NSColor>) throws -> Dictionary<String, NSColor>
+  func decode(_ type: Dictionary<String, PlatformColor>) throws -> Dictionary<String, PlatformColor>
   {
       let count: UInt32 = try self.decode(UInt32.self)
       //debugPrint("array count: \(count)")
-    var dictionary: Dictionary<String, NSColor> = [:]
+    var dictionary: Dictionary<String, PlatformColor> = [:]
       if(count != UInt32(0xFFFFFFFF))
       {
         for _ in 0 ..< Int(count)
         {
           let decodedString = try self.decode(String.self)
-          let decodedValue = try self.decode(NSColor.self)
+          let decodedValue = try self.decode(PlatformColor.self)
           dictionary[decodedString] = decodedValue
         }
       }

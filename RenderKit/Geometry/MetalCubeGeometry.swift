@@ -28,7 +28,11 @@
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import simd
 
 public class MetalCubeGeometry

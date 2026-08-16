@@ -39,6 +39,12 @@ import RenderKit
 import SymmetryKit
 import LogViewKit
 import ZIPFoundation
+import MathKit
+#if os(macOS)
+import CoreServices
+#else
+import MobileCoreServices
+#endif
 
 public let NSPasteboardTypeProjectTreeNode: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.iraspa")
 
@@ -256,27 +262,20 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
         }
       }
     
-      let projectTreeNodes: [ProjectTreeNode] = documentData.projectLocalRootNode.descendantNodes()
-      
-      if projectTreeNodes.count > 0
+      let roots: [ProjectTreeNode] = Array(documentData.projectLocalRootNode.childNodes)
+      guard !roots.isEmpty else { return nil }
+
+      for projectTreeNode in documentData.projectLocalRootNode.flattenedNodes()
       {
-        if let projectTreeNode: ProjectTreeNode = projectTreeNodes.first,
-           let entry: Entry = dictionary["nl.darkwing.iRASPA_Project_" + projectTreeNode.representedObject.fileNameUUID]?.first
+        if let entry: Entry = dictionary["nl.darkwing.iRASPA_Project_" + projectTreeNode.representedObject.fileNameUUID]?.first
         {
-          
           do
           {
             var readData: Data = Data(capacity: entry.uncompressedSize)
             let _ = try archive.extract(entry, consumer: { (data: Data) in
               readData.append(data)
             })
-            // store the untouched/unwrapped data in the project
             projectTreeNode.representedObject.data = readData
-          
-            projectTreeNode.unwrapLazyLocalPresentedObjectIfNeeded()
-            
-            self.init(treeNode: projectTreeNode)
-            return
           }
           catch
           {
@@ -284,6 +283,25 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
           }
         }
       }
+
+      if roots.count == 1, let only = roots.first
+      {
+        only.unwrapLazyLocalPresentedObjectIfNeeded()
+        self.init(treeNode: only)
+        return
+      }
+
+      let wrapper = ProjectTreeNode(displayName: "Imported", representedObject: iRASPAProject(group: ProjectGroup(name: "Imported")))
+      wrapper.isDropEnabled = true
+      wrapper.isExpanded = true
+      for child in roots
+      {
+        child.parentNode = nil
+        wrapper.childNodes.append(child)
+        child.parentNode = wrapper
+      }
+      self.init(treeNode: wrapper)
+      return
     }
     return nil
   }
@@ -323,7 +341,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, poscar data: Data, preview: Bool)
   {
-    guard let poscarParser: SKVASPXDATCARParser = try? SKVASPXDATCARParser(displayName: displayName, data: data) else {return nil}
+    guard let poscarParser: SKVASPPOSCARParser = try? SKVASPPOSCARParser(displayName: displayName, data: data) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -342,6 +360,39 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
     self.isEditable = true
   }
+
+  private convenience init?(displayName: String, cube data: Data, preview: Bool)
+  {
+    guard let parser = try? SKGaussianCubeParser(displayName: displayName, data: data) else { return nil }
+    try? parser.startParsing()
+    let scene: Scene = Scene(parser: parser.scene)
+    let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
+    let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+    self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+    self.isEditable = true
+  }
+
+  private convenience init?(displayName: String, vtk data: Data, preview: Bool)
+  {
+    guard let parser = try? SKVTKParser(displayName: displayName, data: data) else { return nil }
+    try? parser.startParsing()
+    let scene: Scene = Scene(parser: parser.scene)
+    let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
+    let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+    self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+    self.isEditable = true
+  }
+
+  private convenience init?(displayName: String, chgcar data: Data, preview: Bool)
+  {
+    guard let parser = try? SKVASPCHGCARParser(displayName: displayName, data: data) else { return nil }
+    try? parser.startParsing()
+    let scene: Scene = Scene(parser: parser.scene)
+    let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
+    let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+    self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+    self.isEditable = true
+  }
   
   public convenience init?(url: URL, preview: Bool)
   {
@@ -350,29 +401,59 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
 
     let displayName: String = url.deletingPathExtension().lastPathComponent
 
-    if #available(OSX 11.0, *)
+    if #available(macOS 11.0, iOS 14.0, *)
     {
-      guard let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
-            let type = resourceValues.contentType else {return nil}
-  
+      let type = (try? url.resourceValues(forKeys: [.contentTypeKey]))?.contentType
       switch(type)
       {
-      case _ where type.conforms(to: .irspdoc):
+      case _ where type?.conforms(to: .irspdoc) == true:
         self.init(irspdoc: data)
-      case _ where type.conforms(to: .iraspa):
+      case _ where type?.conforms(to: .iraspa) == true:
         self.init(iraspa: data)
-      case _ where type.conforms(to: .poscar) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
+      case _ where type?.conforms(to: .poscar) == true || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
         self.init(displayName: displayName, poscar: data, preview: preview)
       case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
         self.init(displayName: displayName, xdatcar: data, preview: preview)
-      case _ where type.conforms(to: .cif):
+      case _ where type?.conforms(to: .cif) == true:
         self.init(displayName: displayName, cif: data, preview: preview)
-      case _ where type.conforms(to: .pdb):
+      case _ where type?.conforms(to: .pdb) == true:
         self.init(displayName: displayName, pdb: data, preview: preview)
-      case _ where type.conforms(to: .xyz):
+      case _ where type?.conforms(to: .xyz) == true:
         self.init(displayName: displayName, xyz: data, preview: preview)
+      case _ where type?.conforms(to: .cube) == true:
+        self.init(displayName: displayName, cube: data, preview: preview)
+      case _ where type?.conforms(to: .vtk) == true:
+        self.init(displayName: displayName, vtk: data, preview: preview)
       default:
-        return nil
+        switch url.pathExtension.lowercased()
+        {
+        case "cif":
+          self.init(displayName: displayName, cif: data, preview: preview)
+        case "pdb", "ent":
+          self.init(displayName: displayName, pdb: data, preview: preview)
+        case "xyz":
+          self.init(displayName: displayName, xyz: data, preview: preview)
+        case "poscar":
+          self.init(displayName: displayName, poscar: data, preview: preview)
+        case "cube", "cub":
+          self.init(displayName: displayName, cube: data, preview: preview)
+        case "vtk":
+          self.init(displayName: displayName, vtk: data, preview: preview)
+        case "irspdoc":
+          self.init(irspdoc: data)
+        case "iraspa":
+          self.init(iraspa: data)
+        default:
+          let name = url.lastPathComponent.uppercased()
+          if name == "CHGCAR" || name == "LOCPOT" || name == "ELFCAR"
+          {
+            self.init(displayName: displayName, chgcar: data, preview: preview)
+          }
+          else
+          {
+            return nil
+          }
+        }
       }
     }
     else
@@ -610,7 +691,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       
       let displayName: String = url.deletingPathExtension().lastPathComponent
         
-      if #available(OSX 11.0, *)
+      if #available(macOS 11.0, iOS 14.0, *)
       {
         guard let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
               let type = resourceValues.contentType else {return nil}
@@ -1155,44 +1236,41 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     case .lazy:
       if self.representedObject.storageType == iRASPAProject.StorageType.local
       {
-        if let data = self.representedObject.data?.decompress(withAlgorithm: .lzma)
+        guard let rawData = self.representedObject.data, !rawData.isEmpty else {
+          throw ProjectTreeError.corruptedData
+        }
+        let data = rawData.decompress(withAlgorithm: .lzma) ?? rawData
+        do
         {
-          do
+          switch(self.representedObject.projectType)
           {
-            switch(self.representedObject.projectType)
-            {
-            case .material:
-              let projectStructureNode: ProjectStructureNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectStructureNode.self)
+          case .material:
+            let projectStructureNode: ProjectStructureNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectStructureNode.self)
             
-              // legacy for new file-format
-              projectStructureNode.fileName = self.representedObject.fileNameUUID
-              
-              self.representedObject = iRASPAProject(structureProject: projectStructureNode)
-              self.representedObject.nodeType = .leaf
-              self.representedObject.lazyStatus = .loaded
-              self.representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
-            case .group:
-              let projectGroupNode: ProjectGroup = try BinaryDecoder(data: [UInt8](data)).decode(ProjectGroup.self)
-              
-              // legacy for new file-format
-              projectGroupNode.fileName = self.representedObject.fileNameUUID
-              
-              self.representedObject = iRASPAProject(group: projectGroupNode)
-              self.representedObject.nodeType = .group
-              self.representedObject.lazyStatus = .loaded
-            default:
-              fatalError()
-              break
-            }
-          }
-          catch let error
-          {
-            LogQueue.shared.error(destination: nil, message: error.localizedDescription)
+            // legacy for new file-format
+            projectStructureNode.fileName = self.representedObject.fileNameUUID
+            
+            self.representedObject = iRASPAProject(structureProject: projectStructureNode)
+            self.representedObject.nodeType = .leaf
+            self.representedObject.lazyStatus = .loaded
+            self.representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
+          case .group:
+            let projectGroupNode: ProjectGroup = try BinaryDecoder(data: [UInt8](data)).decode(ProjectGroup.self)
+            
+            // legacy for new file-format
+            projectGroupNode.fileName = self.representedObject.fileNameUUID
+            
+            self.representedObject = iRASPAProject(group: projectGroupNode)
+            self.representedObject.nodeType = .group
+            self.representedObject.lazyStatus = .loaded
+          default:
+            fatalError()
           }
         }
-        else
+        catch let error
         {
-          throw ProjectTreeError.corruptedData
+          LogQueue.shared.error(destination: nil, message: error.localizedDescription)
+          throw error
         }
       }
       else if self.representedObject.storageType == iRASPAProject.StorageType.publicCloud

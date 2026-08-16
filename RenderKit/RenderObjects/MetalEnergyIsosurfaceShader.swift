@@ -32,6 +32,7 @@
 
 import Foundation
 import LogViewKit
+import MathKit
 import SymmetryKit
 import SimulationKit
 import simd
@@ -159,7 +160,7 @@ class MetalEnergyIsosurfaceShader
           for structure in structures
           {
             let renderLatticeVectors: [SIMD4<Float>] = structure.cell.renderTranslationVectors
-            let buffer: MTLBuffer = device.makeBuffer(bytes: renderLatticeVectors, length: MemoryLayout<SIMD4<Float>>.stride * renderLatticeVectors.count, options:.storageModeManaged)!
+            let buffer: MTLBuffer = device.makeBuffer(bytes: renderLatticeVectors, length: MemoryLayout<SIMD4<Float>>.stride * renderLatticeVectors.count, options:RKMetal.hostStorage)!
             sceneInstance.append(buffer)
           }
         }
@@ -286,6 +287,7 @@ class MetalEnergyIsosurfaceShader
   {
     if let _: RKRenderDataSource = renderDataSource
     {
+      buildVertexBuffers()
       var info: mach_timebase_info_data_t = mach_timebase_info_data_t()
       mach_timebase_info(&info)
       
@@ -348,17 +350,33 @@ class MetalEnergyIsosurfaceShader
             
             let startTime: UInt64  = mach_absolute_time()
             
-            do
+            if data.isEmpty
             {
-              if let buffer = try SKMetalMarchingCubes.constructIsoSurfaceVertexBuffer(device: device, commandQueue: commandQueue, data: data, isovalue: structure.adsorptionSurfaceIsoValue, dimensions: dimensions)
-              {
-                vertexBuffer[i][j] = buffer
-                structure.adsorptionSurfaceNumberOfTriangles = buffer.length / (3 * 3 * MemoryLayout<SIMD4<Float>>.stride)
-              }
+              LogQueue.shared.error(destination: windowController, message: "Energy grid for \(structure.displayName) is empty; no isosurface will be drawn.")
+              structure.adsorptionSurfaceNumberOfTriangles = 0
+              vertexBuffer[i][j] = nil
             }
-            catch
+            else
             {
-              LogQueue.shared.error(destination: windowController, message: error.localizedDescription)
+              do
+              {
+                if let buffer = try SKMetalMarchingCubes.constructIsoSurfaceVertexBuffer(device: device, commandQueue: commandQueue, data: data, isovalue: structure.adsorptionSurfaceIsoValue, dimensions: dimensions)
+                {
+                  vertexBuffer[i][j] = buffer
+                  structure.adsorptionSurfaceNumberOfTriangles = buffer.length / (3 * 3 * MemoryLayout<SIMD4<Float>>.stride)
+                  LogQueue.shared.info(destination: windowController, message: "Isosurface for \(structure.displayName): \(structure.adsorptionSurfaceNumberOfTriangles) triangles")
+                }
+                else
+                {
+                  vertexBuffer[i][j] = nil
+                  structure.adsorptionSurfaceNumberOfTriangles = 0
+                  LogQueue.shared.warning(destination: windowController, message: "Marching cubes produced 0 triangles for \(structure.displayName) at iso \(structure.adsorptionSurfaceIsoValue) K")
+                }
+              }
+              catch
+              {
+                LogQueue.shared.error(destination: windowController, message: error.localizedDescription)
+              }
             }
             
             let endTime: UInt64  = mach_absolute_time()
@@ -370,6 +388,7 @@ class MetalEnergyIsosurfaceShader
         }
       }
     }
+    completionHandler()
   }
   
 }

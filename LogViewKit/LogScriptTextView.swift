@@ -30,6 +30,8 @@
  *************************************************************************************************************/
 import Foundation
 
+#if os(macOS)
+
 public class LogScriptTextView: LineNumberView
 {
   public required init?(coder: NSCoder)
@@ -58,3 +60,4 @@ public class LogScriptTextView: LineNumberView
     //Swift.print("deinit: LogScriptNSTextView")
   }
 }
+#endif

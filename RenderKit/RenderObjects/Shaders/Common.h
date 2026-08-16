@@ -362,6 +362,17 @@ typedef struct StructureUniforms
   float4 ribbonDiffuseColor;
   float4 ribbonSpecularColor;
   //----------------------------------------  1136 bytes boundary
+  // Pad 144 bytes so stride is 1280 (multiple of 256) for constant-buffer offsets on iOS.
+  float4 padAlignment0;
+  float4 padAlignment1;
+  float4 padAlignment2;
+  float4 padAlignment3;
+  float4 padAlignment4;
+  float4 padAlignment5;
+  float4 padAlignment6;
+  float4 padAlignment7;
+  float4 padAlignment8;
+  //----------------------------------------  1280 bytes boundary
 } StructureUniforms;
 
 typedef struct IsosurfaceUniforms

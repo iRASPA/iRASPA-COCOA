@@ -8,6 +8,7 @@
 
 import Foundation
 import SymmetryKit
+import MathKit
 
 public enum NucleicAcidBackboneStyle: Int, Sendable
 {

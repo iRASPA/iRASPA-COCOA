@@ -66,8 +66,8 @@ class MetalUnitCellCylinderShader
   public func buildVertexBuffers(device: MTLDevice)
   {
     let unitCellCylinder: MetalBondCylinderGeometry = MetalBondCylinderGeometry()
-    vertexBuffer = device.makeBuffer(bytes: unitCellCylinder.vertices, length:MemoryLayout<RKVertex>.stride * unitCellCylinder.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: unitCellCylinder.indices, length:MemoryLayout<UInt16>.stride * unitCellCylinder.indices.count, options:.storageModeManaged)
+    vertexBuffer = device.makeBuffer(bytes: unitCellCylinder.vertices, length:MemoryLayout<RKVertex>.stride * unitCellCylinder.vertices.count, options:RKMetal.hostStorage)
+    indexBuffer = device.makeBuffer(bytes: unitCellCylinder.indices, length:MemoryLayout<UInt16>.stride * unitCellCylinder.indices.count, options:RKMetal.hostStorage)
     
     if let _: RKRenderDataSource = renderDataSource
     {
@@ -87,7 +87,7 @@ class MetalUnitCellCylinderShader
           {
             let unitCellCylinderPositions: [RKInPerInstanceAttributesBonds] = (structure as? RKRenderUnitCellSource)?.renderUnitCellCylinders ?? []
             
-            let buffer = unitCellCylinderPositions.isEmpty ? nil : device.makeBuffer(bytes: unitCellCylinderPositions, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * unitCellCylinderPositions.count, options:.storageModeManaged)
+            let buffer = unitCellCylinderPositions.isEmpty ? nil : device.makeBuffer(bytes: unitCellCylinderPositions, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * unitCellCylinderPositions.count, options:RKMetal.hostStorage)
             
             sceneInstance.append(buffer)
           }

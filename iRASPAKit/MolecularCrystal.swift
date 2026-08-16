@@ -37,6 +37,7 @@ import SymmetryKit
 import LogViewKit
 import SimulationKit
 import OperationKit
+import MathKit
 
 public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCellEditor, VolumetricDataEditor, SpaceGroupEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderVolumetricDataSource, Cloning
 {  
@@ -133,7 +134,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
@@ -199,7 +200,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
   {
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -372,7 +373,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
@@ -433,7 +434,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
   {
     var data: [RKInPerInstanceAttributesBonds] = []
      
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
      
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -499,7 +500,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
   
   public override func filterCartesianAtomPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
   {
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
    
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)

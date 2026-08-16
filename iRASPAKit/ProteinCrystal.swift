@@ -37,6 +37,7 @@ import SymmetryKit
 import LogViewKit
 import SimulationKit
 import OperationKit
+import MathKit
 
 public final class ProteinCrystal: Structure, AtomEditor, BondEditor, UnitCellEditor, VolumetricDataEditor, SpaceGroupEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderRibbonSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderVolumetricDataSource, Cloning
 {
@@ -444,7 +445,7 @@ public final class ProteinCrystal: Structure, AtomEditor, BondEditor, UnitCellEd
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
@@ -506,7 +507,7 @@ public final class ProteinCrystal: Structure, AtomEditor, BondEditor, UnitCellEd
   {
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -680,7 +681,7 @@ public final class ProteinCrystal: Structure, AtomEditor, BondEditor, UnitCellEd
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
@@ -742,7 +743,7 @@ public final class ProteinCrystal: Structure, AtomEditor, BondEditor, UnitCellEd
   {
     var data: [RKInPerInstanceAttributesBonds] = []
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -808,7 +809,7 @@ public final class ProteinCrystal: Structure, AtomEditor, BondEditor, UnitCellEd
    
   public override func filterCartesianAtomPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
   {
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
         
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)

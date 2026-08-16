@@ -32,6 +32,7 @@
 import Foundation
 import CloudKit
 import OperationKit
+import LogViewKit
 
 public class FetchRecordFromCloudOperation: FKGroupOperation, @unchecked Sendable
 {
@@ -56,6 +57,7 @@ public class FetchRecordFromCloudOperation: FKGroupOperation, @unchecked Sendabl
       
       if let error = error as? CKError
       {
+        LogQueue.shared.warning(destination: nil, message: "CloudKit fetch record \(recordID.recordName): \(error.localizedDescription) (\(error.code.rawValue))")
         self?.handleCloudKitFetchError(error: error, retryOperation: operation)
       }
       else
@@ -78,21 +80,19 @@ public class FetchRecordFromCloudOperation: FKGroupOperation, @unchecked Sendabl
     switch (error.code)
     {
     case .zoneBusy, .requestRateLimited, .serviceUnavailable, .networkFailure, .networkUnavailable, .resultsTruncated:
-      if self.retryAttempts < self.maximumRetryAttempts
+      if self.retryAttempts < self.maximumRetryAttempts,
+         let retrySecondsString = error.userInfo[CKErrorRetryAfterKey] as? String,
+         let retrySecondsDouble = Double(retrySecondsString)
       {
-        var retrySecondsDouble: Double = 3
-        if let retrySecondsString = error.userInfo[CKErrorRetryAfterKey] as? String
-        {
-          retrySecondsDouble = Double(retrySecondsString)!
-          self.retryAttempts += 1
-          let delayOperation = DelayOperation(interval: retrySecondsDouble)
-          retryOperation.addDependency(delayOperation)
-          self.addOperations([delayOperation,retryOperation])
-        }
-        
+        self.retryAttempts += 1
+        let delayOperation = DelayOperation(interval: retrySecondsDouble)
+        retryOperation.addDependency(delayOperation)
+        self.addOperations([delayOperation, retryOperation])
       }
-      break
-      //retryFetch(error, retryAfter: parseRetryTime(error), completionHandler: completionHandler)
+      else
+      {
+        self.finishWithError(error as NSError)
+      }
       
     case .badDatabase, .internalError, .badContainer, .missingEntitlement,
          .constraintViolation, .incompatibleVersion, .assetFileNotFound,
@@ -103,43 +103,22 @@ public class FetchRecordFromCloudOperation: FKGroupOperation, @unchecked Sendabl
       self.finishWithError(error as NSError)
       break
     case .unknownItem:
-      // Developer issue
-      // - Never delete CloudKit Record Types.
-      // - This issue will arise if you created some records of this type
-      //   and then deleted the type. Even if the records were also deleted,
-      //   you must keep the type around because deleted recordIDs are stored
-      //   along with type information. When fetching, this is unfortunately
-      //   checked.
-      // - A possible hack is to save a new record with the missing record type
-      //   name. This works because field information is not saved on deleted
-      //   record IDs. Unfortunately you might accidentally overwrite an existing
-      //   record type which will lead to further errors.
-      //completionHandler(error)
-      break
+      LogQueue.shared.warning(destination: nil, message: "CloudKit unknownItem — record missing in this environment (Debug uses Development DB).")
+      self.finishWithError(error as NSError)
     case .quotaExceeded, .operationCancelled:
-      // User issue. Provide alert.
-      //completionHandler(error)
-      break
+      self.finishWithError(error as NSError)
     case .limitExceeded, .partialFailure, .serverRecordChanged,
          .batchRequestFailed:
-      // Not possible in a fetch operation (I think).
-      //completionHandler(error)
-      break
+      self.finishWithError(error as NSError)
     case .notAuthenticated:
-      // Handled as condition of sync operation.
-      //completionHandler(error)
-      break
+      LogQueue.shared.warning(destination: nil, message: "CloudKit notAuthenticated — sign into iCloud on the Simulator.")
+      self.finishWithError(error as NSError)
     case .zoneNotFound, .userDeletedZone:
-      // Handled in PrepareZoneOperation.
-      //completionHandler(error)
-      break
+      self.finishWithError(error as NSError)
     case .changeTokenExpired:
-      // TODO: Determine correct handling
-      // CK Docs: The previousServerChangeToken value is too old and the client must re-sync from scratch
-      //completionHandler(error)
-      break
+      self.finishWithError(error as NSError)
     default:
-      break
+      self.finishWithError(error as NSError)
     }
   }
   

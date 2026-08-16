@@ -33,6 +33,7 @@ import Foundation
 import OperationKit
 import SimulationKit
 import SymmetryKit
+import MathKit
 
 public class ImportProjectOperation: FKGroupOperation, @unchecked Sendable
 {

@@ -28,7 +28,13 @@
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
+#if os(macOS)
 
 
 public class NSAlphaColorWell: NSColorWell
@@ -45,3 +51,4 @@ public class NSAlphaColorWell: NSColorWell
     NSColorPanel.shared.showsAlpha = false
   }
 }
+#endif

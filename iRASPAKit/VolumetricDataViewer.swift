@@ -32,6 +32,7 @@
 import Foundation
 import simd
 import RenderKit
+import MathKit
 
 
 public protocol VolumetricDataViewer: AnyObject

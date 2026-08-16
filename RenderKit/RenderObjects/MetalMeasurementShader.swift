@@ -57,7 +57,7 @@ class MetalMeasurementShader
       
       if self.numberOfDrawnMeasurementAtoms > 0
       {
-        self.instanceBuffer = device.makeBuffer(bytes: atomData, length: atomData.count * MemoryLayout<RKInPerInstanceAttributesAtoms>.stride, options: .storageModeManaged)
+        self.instanceBuffer = device.makeBuffer(bytes: atomData, length: atomData.count * MemoryLayout<RKInPerInstanceAttributesAtoms>.stride, options: RKMetal.hostStorage)
       }
     }
   }

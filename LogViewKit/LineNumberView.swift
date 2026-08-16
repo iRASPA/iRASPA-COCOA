@@ -31,6 +31,8 @@
 
 import Foundation
 
+#if os(macOS)
+
 open class LineNumberView : NSTextView
 {
   public var lineNumberRulerView: LineNumberRulerView?
@@ -100,3 +102,4 @@ open class LineNumberView : NSTextView
 
 
 
+#endif

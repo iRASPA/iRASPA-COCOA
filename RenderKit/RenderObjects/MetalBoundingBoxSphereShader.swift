@@ -65,14 +65,14 @@ class MetalBoundingBoxSphereShader
   public func buildVertexBuffers(device: MTLDevice)
   {
     let boundingBoxSphere: MetalSphereGeometry = MetalSphereGeometry()
-    vertexBuffer = device.makeBuffer(bytes: boundingBoxSphere.vertices, length:MemoryLayout<RKVertex>.stride * boundingBoxSphere.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: boundingBoxSphere.indices, length:MemoryLayout<UInt16>.stride * boundingBoxSphere.indices.count, options:.storageModeManaged)
+    vertexBuffer = device.makeBuffer(bytes: boundingBoxSphere.vertices, length:MemoryLayout<RKVertex>.stride * boundingBoxSphere.vertices.count, options:RKMetal.hostStorage)
+    indexBuffer = device.makeBuffer(bytes: boundingBoxSphere.indices, length:MemoryLayout<UInt16>.stride * boundingBoxSphere.indices.count, options:RKMetal.hostStorage)
     
     if let project: RKRenderDataSource = renderDataSource
     {
       let positions: [RKInPerInstanceAttributesAtoms] = project.renderBoundingBoxSpheres
       
-      instanceBuffer = positions.isEmpty ? nil : device.makeBuffer(bytes: positions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * positions.count, options:.storageModeManaged)
+      instanceBuffer = positions.isEmpty ? nil : device.makeBuffer(bytes: positions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * positions.count, options:RKMetal.hostStorage)
     }
   }
   

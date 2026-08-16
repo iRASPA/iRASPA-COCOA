@@ -29,7 +29,11 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import MetalKit
 import Metal
 import simd
@@ -772,7 +776,7 @@ public class MetalRenderer
         isosurfaceUniforms[i] = RKIsosurfaceUniforms(structure: structure)
       }
       
-      structureUniformBuffers = device.makeBuffer(bytes: structureUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structureUniforms.count,1), options:.storageModeManaged)
+      structureUniformBuffers = device.makeBuffer(bytes: structureUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structureUniforms.count,1), options:RKMetal.hostStorage)
     }
   }
   
@@ -795,7 +799,7 @@ public class MetalRenderer
       
       if(!isosurfaceUniforms.isEmpty)
       {
-        isosurfaceUniformBuffers = device.makeBuffer(bytes: isosurfaceUniforms, length: MemoryLayout<RKIsosurfaceUniforms>.stride * isosurfaceUniforms.count, options:.storageModeManaged)
+        isosurfaceUniformBuffers = device.makeBuffer(bytes: isosurfaceUniforms, length: MemoryLayout<RKIsosurfaceUniforms>.stride * isosurfaceUniforms.count, options:RKMetal.hostStorage)
       }
     }
   }
@@ -806,7 +810,7 @@ public class MetalRenderer
     if let project: RKRenderDataSource = renderDataSource
     {
       var lightUniforms: RKLightUniforms = RKLightUniforms(project: project)
-      lightUniformBuffers = device.makeBuffer(bytes: &lightUniforms.lights, length: 4 * MemoryLayout<RKLight>.stride, options:.storageModeManaged)
+      lightUniformBuffers = device.makeBuffer(bytes: &lightUniforms.lights, length: 4 * MemoryLayout<RKLight>.stride, options:RKMetal.hostStorage)
     }
   }
   
@@ -815,7 +819,7 @@ public class MetalRenderer
     if let project: RKRenderDataSource = renderDataSource
     {
       var globalAxesUniforms: RKGlobalAxesUniforms = RKGlobalAxesUniforms(project: project)
-      globalAxesUniformBuffers = device.makeBuffer(bytes: &globalAxesUniforms, length: MemoryLayout<RKGlobalAxesUniforms>.stride, options:.storageModeManaged)
+      globalAxesUniformBuffers = device.makeBuffer(bytes: &globalAxesUniforms, length: MemoryLayout<RKGlobalAxesUniforms>.stride, options:RKMetal.hostStorage)
     }
   }
 
@@ -846,6 +850,7 @@ public class MetalRenderer
 
   public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
   {
+    _ = renderQuality
     let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
     commandEncoder.label = "Scene command encoder"
     commandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
@@ -861,21 +866,13 @@ public class MetalRenderer
     self.localAxesShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
     
-    switch(renderQuality)
+    if let camera, camera.frustrumType == .perspective
     {
-    case .high, .picture:
-      self.atomShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-    case .medium, .low:
-      if let camera: RKCamera = camera
-      {
-        switch(camera.frustrumType)
-        {
-        case RKCamera.FrustrumType.orthographic:
-          self.atomOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-        case RKCamera.FrustrumType.perspective:
-          self.atomPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-        }
-      }
+      self.atomPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    }
+    else
+    {
+      self.atomOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     }
    
     self.metalCrystalEllipsoidShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
@@ -915,21 +912,15 @@ public class MetalRenderer
       
      
       
-      switch(renderQuality)
+      if camera.frustrumType == .orthographic
       {
-      case .high, .picture:
-        self.atomSelectionWorleyShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomShader: atomShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-        self.atomSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomShader: atomShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-      case .medium, .low:
-        switch(camera.frustrumType)
-        {
-        case RKCamera.FrustrumType.orthographic:
-          self.atomSelectionWorleyOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomOrthographicImposterShader: atomOrthographicImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-          self.atomSelectionStripedOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomOrthographicImposterShader: atomOrthographicImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-        case RKCamera.FrustrumType.perspective:
-          self.atomSelectionWorleyPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomPerspectiveImposterShader: atomPerspectiveImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-          self.atomSelectionStripedPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomPerspectiveImposterShader: atomPerspectiveImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-        }
+        self.atomSelectionWorleyOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomOrthographicImposterShader: atomOrthographicImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+        self.atomSelectionStripedOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomOrthographicImposterShader: atomOrthographicImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      }
+      else
+      {
+        self.atomSelectionWorleyPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomPerspectiveImposterShader: atomPerspectiveImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+        self.atomSelectionStripedPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomPerspectiveImposterShader: atomPerspectiveImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       }
     }
     
@@ -1032,28 +1023,22 @@ public class MetalRenderer
   func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
   {
     renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
+    backgroundShader.encodeManualDepthResolveIfNeeded(commandBuffer, size: size)
     
     renderSceneVolumeRenderedSurfacesWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderVolumeRenderedSurfacesPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
+    backgroundShader.encodeManualDepthResolveIfNeeded(commandBuffer, size: size)
    
     renderSceneTransparentWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderTransparentPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
     
     if let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor)
     {
-      switch(renderQuality)
+      if let camera, camera.frustrumType == .perspective
       {
-      case .high, .picture:
-        atomSelectionGlowShader.renderWithEncoder(commandEncoder, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-      case .medium, .low:
-        if let camera: RKCamera = camera
-        {
-        switch(camera.frustrumType)
-        {
-        case RKCamera.FrustrumType.orthographic:
-          atomSelectionGlowOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-        case RKCamera.FrustrumType.perspective:
-          atomSelectionGlowPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-          }
-        }
+        atomSelectionGlowPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      }
+      else
+      {
+        atomSelectionGlowOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       }
       
       internalBondSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceRenderer: internalBondSelectionShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
@@ -1103,7 +1088,7 @@ public class MetalRenderer
        let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
     {
       var uniforms: RKTransformationUniforms = self.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: 1.0, camera: camera)
-      let frameUniformBuffer: MTLBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)!
+      let frameUniformBuffer: MTLBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: RKMetal.hostStorage)!
       
       
       self.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: self.atomShader, atomOrthographicImposterShader: self.atomOrthographicImposterShader, ribbonShader: self.ribbonShader)
@@ -1123,7 +1108,7 @@ public class MetalRenderer
       }
       
       pictureTextureDescriptor.textureType = MTLTextureType.type2D
-      pictureTextureDescriptor.storageMode = MTLStorageMode.managed
+      pictureTextureDescriptor.storageMode = RKMetal.hostStorageMode
       pictureTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
       let pictureTexture: MTLTexture = device.makeTexture(descriptor: pictureTextureDescriptor)!
       pictureTexture.label = "scene resolved texture"
@@ -1169,7 +1154,7 @@ public class MetalRenderer
         if let pictureTextureBuffer: MTLBuffer = device.makeBuffer(length: dataLength, options: MTLResourceOptions()),
            let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()
         {
-          blitEncoder.synchronize(resource: pictureTexture)
+          RKMetal.synchronize(blitEncoder, resource: pictureTexture)
     
           blitEncoder.copy(from: pictureTexture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0,0, 0), sourceSize: MTLSizeMake(Int(size.width), Int(size.height), 1), to: pictureTextureBuffer, destinationOffset: 0, destinationBytesPerRow: bytesPerRow, destinationBytesPerImage: 0)
           blitEncoder.endEncoding()
@@ -1210,6 +1195,7 @@ public class MetalRenderer
       }
         
         
+      #if os(macOS)
       let imageRep: NSBitmapImageRep = NSBitmapImageRep(cgImage: cgImage)
       imageRep.size = NSMakeSize(CGFloat(imagePhysicalSizeInInches * 72), CGFloat(imagePhysicalSizeInInches * 72.0 * Double(size.height) / Double(size.width)))
         
@@ -1222,6 +1208,9 @@ public class MetalRenderer
         imageRepCMYK.size = NSMakeSize(CGFloat(imagePhysicalSizeInInches * 72), CGFloat(imagePhysicalSizeInInches * 72))
         return imageRepCMYK.tiffRepresentation(using: NSBitmapImageRep.TIFFCompression.lzw, factor: 1.0)!
       }
+      #else
+      return UIImage(cgImage: cgImage).pngData()
+      #endif
     }
     return nil
   }

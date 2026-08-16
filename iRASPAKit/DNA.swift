@@ -283,7 +283,7 @@ public final class DNA: Structure, AtomEditor, BondEditor, RKRenderAtomSource, R
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     // only use leaf-nodes
@@ -326,7 +326,7 @@ public final class DNA: Structure, AtomEditor, BondEditor, RKRenderAtomSource, R
     var index: Int = 0
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds](repeating: RKInPerInstanceAttributesBonds(), count: bondSetController.arrangedObjects.count * numberOfReplicas())
       
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     index = 0
@@ -386,7 +386,7 @@ public final class DNA: Structure, AtomEditor, BondEditor, RKRenderAtomSource, R
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.allSelectedNodes.compactMap{$0.representedObject}
@@ -427,7 +427,7 @@ public final class DNA: Structure, AtomEditor, BondEditor, RKRenderAtomSource, R
   {
     var data: [RKInPerInstanceAttributesBonds] = []
       
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondSetController.arrangedObjects[self.bondSetController.selectedObjects]
@@ -478,7 +478,7 @@ public final class DNA: Structure, AtomEditor, BondEditor, RKRenderAtomSource, R
    
   public override func filterCartesianAtomPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
   {
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     // only use leaf-nodes

@@ -31,6 +31,8 @@
 
 import Foundation
 
+#if os(macOS)
+
 public class PythonScriptTextView: LineNumberView
 {
   public var previousTextCount: Int = 0
@@ -135,3 +137,4 @@ public class PythonScriptTextView: LineNumberView
   }
  
 }
+#endif

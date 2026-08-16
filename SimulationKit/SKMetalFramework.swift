@@ -78,8 +78,7 @@ public class SKMetalFramework
     self.commandQueue = commandQueue
     
     let bundle: Bundle = Bundle(for: SKMetalFramework.self)
-    let file: String = bundle.path(forResource: "default", ofType: "metallib")!
-    defaultLibrary = try! self.device.makeLibrary(filepath: file)
+    defaultLibrary = RKMetal.loadDefaultLibrary(device: device, bundle: bundle)
   }
   
   public convenience init(device: MTLDevice, commandQueue: MTLCommandQueue, positions: [SIMD3<Double>], potentialParameters: [SIMD2<Double>], unitCell: double3x3, numberOfReplicas: SIMD3<Int32>)
@@ -177,13 +176,13 @@ public class SKMetalFramework
       var NumberOfReplicasBufferValue: Int32 = Int32(totalNumberOfReplicas)
       
       var cell3x3Float: float3x3 = float3x3(Double3x3: replicaCell)
-      let bufferAtomPositions: MTLBuffer = device.makeBuffer(bytes: pos, length: pos.count * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeManaged)!
-      let bufferGridPositions: MTLBuffer = device.makeBuffer(bytes: gridPos, length: gridPos.count * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeManaged)!
-      let bufferParameters: MTLBuffer = device.makeBuffer(bytes: parameters, length: parameters.count * MemoryLayout<SIMD2<Float>>.stride, options: .storageModeManaged)!
-      let bufferCell: MTLBuffer = device.makeBuffer(bytes: &cell3x3Float, length: MemoryLayout<float3x3>.stride, options: .storageModeManaged)!
+      let bufferAtomPositions: MTLBuffer = device.makeBuffer(bytes: pos, length: pos.count * MemoryLayout<SIMD4<Float>>.stride, options: RKMetal.hostStorage)!
+      let bufferGridPositions: MTLBuffer = device.makeBuffer(bytes: gridPos, length: gridPos.count * MemoryLayout<SIMD4<Float>>.stride, options: RKMetal.hostStorage)!
+      let bufferParameters: MTLBuffer = device.makeBuffer(bytes: parameters, length: parameters.count * MemoryLayout<SIMD2<Float>>.stride, options: RKMetal.hostStorage)!
+      let bufferCell: MTLBuffer = device.makeBuffer(bytes: &cell3x3Float, length: MemoryLayout<float3x3>.stride, options: RKMetal.hostStorage)!
       
-      let bufferReplicas: MTLBuffer = device.makeBuffer(bytes: &replicasBufferValue, length: totalNumberOfReplicas * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeManaged)!
-      let bufferNumberOfReplicas: MTLBuffer = device.makeBuffer(bytes: &NumberOfReplicasBufferValue, length: MemoryLayout<Int32>.stride, options: .storageModeManaged)!
+      let bufferReplicas: MTLBuffer = device.makeBuffer(bytes: &replicasBufferValue, length: totalNumberOfReplicas * MemoryLayout<SIMD4<Float>>.stride, options: RKMetal.hostStorage)!
+      let bufferNumberOfReplicas: MTLBuffer = device.makeBuffer(bytes: &NumberOfReplicasBufferValue, length: MemoryLayout<Int32>.stride, options: RKMetal.hostStorage)!
       let bufferOutput: MTLBuffer = device.makeBuffer(bytes: output, length: output.count * MemoryLayout<Float>.stride, options: .storageModeShared)!
       
       
@@ -194,7 +193,7 @@ public class SKMetalFramework
       let sizeOfWorkBatch: Int = 8192
       while(unitsOfWorkDone < totalNumberOfAtoms)
       {
-        var numberOfAtomsPerThreadgroup: Int = min(sizeOfWorkBatch,totalNumberOfAtoms-unitsOfWorkDone)
+        var numberOfAtomsPerThreadgroup: Int32 = Int32(min(sizeOfWorkBatch,totalNumberOfAtoms-unitsOfWorkDone))
         
         if let commandBuffer = commandQueue.makeCommandBuffer(),
            let commandEncoder = commandBuffer.makeComputeCommandEncoder()
@@ -210,10 +209,12 @@ public class SKMetalFramework
           commandEncoder.setBuffer(bufferReplicas, offset: 0, index: 6)
           commandEncoder.setBuffer(bufferOutput, offset: 0, index: 7)
         
-          let threadsPerGrid = MTLSize(width: Int(NumberOfGridPoints), height: 1, depth: 1)
+          // Prefer dispatchThreadgroups: dispatchThreads requires non-uniform
+          // threadgroup sizes, which the iOS Simulator (and some devices) lack.
           let threadExecutionWidth: Int = pipelineState.threadExecutionWidth
-          let threadsPerThreadgroup: MTLSize = MTLSizeMake(threadExecutionWidth, 1, 1)
-          commandEncoder.dispatchThreads(threadsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
+          let threadsPerThreadgroup = MTLSizeMake(threadExecutionWidth, 1, 1)
+          let threadgroupsPerGrid = MTLSize(width: NumberOfGridPoints / threadExecutionWidth, height: 1, depth: 1)
+          commandEncoder.dispatchThreadgroups(threadgroupsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
         
           commandEncoder.endEncoding()
         
@@ -236,10 +237,8 @@ public class SKMetalFramework
         }
       }
       
-      var outputData: [Float] = [Float](repeating: 0.0, count: sizeX * sizeY * sizeZ)
-      memcpy(&outputData, bufferOutput.contents(), outputData.count * MemoryLayout<Float>.stride)
-      
-      return outputData
+      let outputPointer = bufferOutput.contents().bindMemory(to: Float.self, capacity: sizeX * sizeY * sizeZ)
+      return Array(UnsafeBufferPointer(start: outputPointer, count: sizeX * sizeY * sizeZ))
     }
     return []
   }

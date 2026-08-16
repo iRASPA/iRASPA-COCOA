@@ -29,7 +29,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+import Foundation
 
 /**
  An `OperationObserver` that will cause the network activity indicator to appear

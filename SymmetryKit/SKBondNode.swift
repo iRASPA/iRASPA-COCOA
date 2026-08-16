@@ -32,6 +32,7 @@
 import Foundation
 import simd
 import BinaryCodable
+import MathKit
 
 public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, BinaryEncodable, BinaryDecodable
 {

@@ -32,6 +32,7 @@
 import Foundation
 import BinaryCodable
 import simd
+import MathKit
 
 public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
 {

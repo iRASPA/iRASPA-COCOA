@@ -204,9 +204,9 @@ public extension BinaryEncoder
     }
   }
   
-  func encode(_ value: NSColor)
+  func encode(_ value: PlatformColor)
   {
-    let color = value.usingColorSpace(NSColorSpace.deviceRGB) ?? NSColor.white
+    let color = value.usingColorSpace(NSColorSpace.deviceRGB) ?? PlatformColor.white
     self.encode(Int8(1))
     self.encode(UInt16(color.alphaComponent*65535.0))
     self.encode(UInt16(color.redComponent*65535.0))
@@ -226,7 +226,7 @@ public extension BinaryEncoder
     data.append(contentsOf: value)
   }
   
-  func encode(_ type: Dictionary<String, NSColor>)
+  func encode(_ type: Dictionary<String, PlatformColor>)
   {
     if(type.isEmpty)
     {

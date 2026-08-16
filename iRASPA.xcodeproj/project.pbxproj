@@ -7,6 +7,59 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A10IPADS0000000000000002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS0000000000000001 /* AppDelegate.swift */; };
+		A10IPADS0100000000000002 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS0100000000000001 /* SceneDelegate.swift */; };
+		A10IPADS0200000000000002 /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS0200000000000001 /* DocumentBrowserViewController.swift */; };
+		A10IPADS0300000000000002 /* iRASPAUIDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS0300000000000001 /* iRASPAUIDocument.swift */; };
+		A10IPADS0400000000000002 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS0400000000000001 /* MainSplitViewController.swift */; };
+		A10IPADS0500000000000002 /* ProjectTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS0500000000000001 /* ProjectTreeViewController.swift */; };
+		A10IPADS0600000000000002 /* RenderHostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS0600000000000001 /* RenderHostViewController.swift */; };
+		A10IPADS0700000000000002 /* AppearanceInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS0700000000000001 /* AppearanceInspectorViewController.swift */; };
+		A10IPADS0800000000000002 /* StructureInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS0800000000000001 /* StructureInspectorViewController.swift */; };
+		A10IPADS0900000000000002 /* CloudGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS0900000000000001 /* CloudGalleryViewController.swift */; };
+		A10IPADS1000000000000002 /* ExportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1000000000000001 /* ExportController.swift */; };
+		A10IPADS1100000000000002 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1100000000000001 /* LogViewController.swift */; };
+		A10IPADS1200000000000002 /* CameraInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1200000000000001 /* CameraInspectorViewController.swift */; };
+		A10IPADS1300000000000002 /* AtomDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1300000000000001 /* AtomDetailViewController.swift */; };
+		A10IPADS1400000000000002 /* MeasurementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1400000000000001 /* MeasurementViewController.swift */; };
+		A10IPADS1500000000000002 /* StructureSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1500000000000001 /* StructureSidebarViewController.swift */; };
+		A10IPADS1600000000000002 /* InspectorOutline.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1600000000000001 /* InspectorOutline.swift */; };
+		A10IPADS1700000000000002 /* InfoInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1700000000000001 /* InfoInspectorViewController.swift */; };
+		A10IPADS1800000000000002 /* ElementInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1800000000000001 /* ElementInspectorViewController.swift */; };
+		A10IPADS1800000000000004 /* AtomInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1800000000000003 /* AtomInspectorViewController.swift */; };
+		A10IPADS1800000000000006 /* BondInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1800000000000005 /* BondInspectorViewController.swift */; };
+		A10IPADS1800000000000008 /* ImportOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1800000000000007 /* ImportOptionsViewController.swift */; };
+		A10IPADFW00000000000001 /* SimulationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD48B1E26A80E00B8FE9B /* SimulationKit.framework */; };
+		A10IPADFW01000000000001 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
+		A10IPADFW02000000000001 /* RenderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD5121E26B2CC00B8FE9B /* RenderKit.framework */; };
+		A10IPADFW03000000000001 /* iRASPAKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD60F1E26B96A00B8FE9B /* iRASPAKit.framework */; };
+		A10IPADFW04000000000001 /* MathKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938388211E26A4FB00112FBA /* MathKit.framework */; };
+		A10IPADFW05000000000001 /* CatchObjectiveCExceptions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; };
+		A10IPADFW06000000000001 /* OperationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93BF25EF1EE71DC200128CD4 /* OperationKit.framework */; };
+		A10IPADFW07000000000001 /* LogViewKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B5EE601FC33588009922F2 /* LogViewKit.framework */; };
+		A10IPADFW08000000000001 /* ZIPFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F697B42181D9C1003273A8 /* ZIPFoundation.framework */; };
+		A10IPADFW09000000000001 /* BinaryCodable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F3A59D21874A15008E41A2 /* BinaryCodable.framework */; };
+		A10IPADFW00000000000002 /* SimulationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD48B1E26A80E00B8FE9B /* SimulationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10IPADFW01000000000002 /* SymmetryKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10IPADFW02000000000002 /* RenderKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD5121E26B2CC00B8FE9B /* RenderKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10IPADFW03000000000002 /* iRASPAKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD60F1E26B96A00B8FE9B /* iRASPAKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10IPADFW04000000000002 /* MathKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 938388211E26A4FB00112FBA /* MathKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10IPADFW05000000000002 /* CatchObjectiveCExceptions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10IPADFW06000000000002 /* OperationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93BF25EF1EE71DC200128CD4 /* OperationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10IPADFW07000000000002 /* LogViewKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93B5EE601FC33588009922F2 /* LogViewKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10IPADFW08000000000002 /* ZIPFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93F697B42181D9C1003273A8 /* ZIPFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10IPADFW09000000000002 /* BinaryCodable.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93F3A59D21874A15008E41A2 /* BinaryCodable.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A10IPADRES00000000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10IPAD000000000000000D /* Assets.xcassets */; };
+		A10IPADSAMP0000000000002 /* materials_sample.cif in Resources */ = {isa = PBXBuildFile; fileRef = A10IPADSAMP0000000000001 /* materials_sample.cif */; };
+		A10IPADSAMP0000000000004 /* 1D5H_sample.cif in Resources */ = {isa = PBXBuildFile; fileRef = A10IPADSAMP0000000000003 /* 1D5H_sample.cif */; };
+		A10IPADGAL00000000000001 /* Gallery.irspdoc in Resources */ = {isa = PBXBuildFile; fileRef = 93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */; };
+		A10METAL00000000000002 /* RKMetal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10METAL00000000000001 /* RKMetal.swift */; };
+		A10METAL00000000000004 /* RKMetal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10METAL00000000000003 /* RKMetal.swift */; };
+		A10MCUBE00000000000002 /* SKMarchingCubesTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10MCUBE00000000000001 /* SKMarchingCubesTables.swift */; };
+		A10PAD000000000000000008 /* AppKitStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10PAD000000000000000007 /* AppKitStubs.swift */; };
+		A10PAD000000000000000006 /* PlatformStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10PAD000000000000000005 /* PlatformStubs.swift */; };
+		A10PAD000000000000000004 /* DocumentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10PAD000000000000000003 /* DocumentContext.swift */; };
+		A10PAD000000000000000002 /* PlatformColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10PAD000000000000000001 /* PlatformColor.swift */; };
 		930090EF1EB86DD00050FBC6 /* SaveProjectToCloudOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930090EE1EB86DD00050FBC6 /* SaveProjectToCloudOperation.swift */; };
 		9300AE9C1F1FC93B0052DA45 /* CloudCoREMOFDatabase_v1.0.data in Resources */ = {isa = PBXBuildFile; fileRef = 9300AE9B1F1FC86B0052DA45 /* CloudCoREMOFDatabase_v1.0.data */; };
 		9300AEA51F2101EE0052DA45 /* CatchObjectiveCExceptions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; };
@@ -63,7 +116,7 @@
 		930DD5F71E26B65C00B8FE9B /* MetalSphereGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5F11E26B65C00B8FE9B /* MetalSphereGeometry.swift */; };
 		930DD5F81E26B65C00B8FE9B /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5F21E26B65C00B8FE9B /* MetalView.swift */; };
 		930DD5FA1E26B67B00B8FE9B /* RenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5F91E26B67B00B8FE9B /* RenderViewController.swift */; };
-		930DD5FD1E26B6AA00B8FE9B /* RenderKit.RenderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 930DD5FB1E26B6AA00B8FE9B /* RenderKit.RenderViewController.xib */; };
+		930DD5FD1E26B6AA00B8FE9B /* RenderKit.RenderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 930DD5FB1E26B6AA00B8FE9B /* RenderKit.RenderViewController.xib */; platformFilter = macos; };
 		930DD6001E26B6D400B8FE9B /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4B71E26A92C00B8FE9B /* Metal.framework */; };
 		930DD6021E26B6DD00B8FE9B /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD6011E26B6DD00B8FE9B /* MetalKit.framework */; };
 		930DD6031E26B6ED00B8FE9B /* MathKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938388211E26A4FB00112FBA /* MathKit.framework */; };
@@ -919,6 +972,97 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		A10SYMMATH0000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 938388201E26A4FB00112FBA;
+			remoteInfo = MathKit;
+		};
+		A10SYMBIN0000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93F3A59C21874A15008E41A2;
+			remoteInfo = BinaryCodable;
+		};
+		A10BINMATH0000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 938388201E26A4FB00112FBA;
+			remoteInfo = MathKit;
+		};
+		A10IPADDP00000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 930DD48A1E26A80E00B8FE9B;
+			remoteInfo = SimulationKit;
+		};
+		A10IPADDP01000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 930DD4BE1E26AA0100B8FE9B;
+			remoteInfo = SymmetryKit;
+		};
+		A10IPADDP02000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 930DD5111E26B2CC00B8FE9B;
+			remoteInfo = RenderKit;
+		};
+		A10IPADDP03000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 930DD60E1E26B96A00B8FE9B;
+			remoteInfo = iRASPAKit;
+		};
+		A10IPADDP04000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 938388201E26A4FB00112FBA;
+			remoteInfo = MathKit;
+		};
+		A10IPADDP05000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93CE77E91EA0EA3900D068E1;
+			remoteInfo = CatchObjectiveCExceptions;
+		};
+		A10IPADDP06000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93BF25EE1EE71DC200128CD4;
+			remoteInfo = OperationKit;
+		};
+		A10IPADDP07000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93B5EE5F1FC33588009922F2;
+			remoteInfo = LogViewKit;
+		};
+		A10IPADDP08000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93F697B32181D9C1003273A8;
+			remoteInfo = ZIPFoundation;
+		};
+		A10IPADDP09000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93F3A59C21874A15008E41A2;
+			remoteInfo = BinaryCodable;
+		};
 		9300AEAB1F2102220052DA45 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 938388001E26A4A800112FBA /* Project object */;
@@ -1373,6 +1517,41 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A10IPAD0000000000000001 /* iRASPA-iPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iRASPA-iPad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10IPAD000000000000000B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A10IPAD000000000000000C /* iRASPA-iPad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iRASPA-iPad.entitlements"; sourceTree = "<group>"; };
+		A10IPAD000000000000000D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A10IPADSAMP0000000000001 /* materials_sample.cif */ = {isa = PBXFileReference; lastKnownFileType = text; path = materials_sample.cif; sourceTree = "<group>"; };
+		A10IPADSAMP0000000000003 /* 1D5H_sample.cif */ = {isa = PBXFileReference; lastKnownFileType = text; path = 1D5H_sample.cif; sourceTree = "<group>"; };
+		A10IPADS0000000000000001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A10IPADS0100000000000001 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		A10IPADS0200000000000001 /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
+		A10IPADS0300000000000001 /* iRASPAUIDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAUIDocument.swift; sourceTree = "<group>"; };
+		A10IPADS0400000000000001 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
+		A10IPADS0500000000000001 /* ProjectTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTreeViewController.swift; sourceTree = "<group>"; };
+		A10IPADS0600000000000001 /* RenderHostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderHostViewController.swift; sourceTree = "<group>"; };
+		A10IPADS0700000000000001 /* AppearanceInspectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceInspectorViewController.swift; sourceTree = "<group>"; };
+		A10IPADS0800000000000001 /* StructureInspectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureInspectorViewController.swift; sourceTree = "<group>"; };
+		A10IPADS0900000000000001 /* CloudGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudGalleryViewController.swift; sourceTree = "<group>"; };
+		A10IPADS1000000000000001 /* ExportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportController.swift; sourceTree = "<group>"; };
+		A10IPADS1100000000000001 /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
+		A10IPADS1200000000000001 /* CameraInspectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraInspectorViewController.swift; sourceTree = "<group>"; };
+		A10IPADS1300000000000001 /* AtomDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomDetailViewController.swift; sourceTree = "<group>"; };
+		A10IPADS1400000000000001 /* MeasurementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementViewController.swift; sourceTree = "<group>"; };
+		A10IPADS1500000000000001 /* StructureSidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureSidebarViewController.swift; sourceTree = "<group>"; };
+		A10IPADS1600000000000001 /* InspectorOutline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorOutline.swift; sourceTree = "<group>"; };
+		A10IPADS1700000000000001 /* InfoInspectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoInspectorViewController.swift; sourceTree = "<group>"; };
+		A10IPADS1800000000000001 /* ElementInspectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementInspectorViewController.swift; sourceTree = "<group>"; };
+		A10IPADS1800000000000003 /* AtomInspectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomInspectorViewController.swift; sourceTree = "<group>"; };
+		A10IPADS1800000000000005 /* BondInspectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BondInspectorViewController.swift; sourceTree = "<group>"; };
+		A10IPADS1800000000000007 /* ImportOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportOptionsViewController.swift; sourceTree = "<group>"; };
+		A10METAL00000000000001 /* RKMetal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKMetal.swift; sourceTree = "<group>"; };
+		A10METAL00000000000003 /* RKMetal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKMetal.swift; sourceTree = "<group>"; };
+		A10MCUBE00000000000001 /* SKMarchingCubesTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMarchingCubesTables.swift; sourceTree = "<group>"; };
+		A10PAD000000000000000007 /* AppKitStubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitStubs.swift; sourceTree = "<group>"; };
+		A10PAD000000000000000005 /* PlatformStubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformStubs.swift; sourceTree = "<group>"; };
+		A10PAD000000000000000003 /* DocumentContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentContext.swift; sourceTree = "<group>"; };
+		A10PAD000000000000000001 /* PlatformColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformColor.swift; sourceTree = "<group>"; };
 		930090EE1EB86DD00050FBC6 /* SaveProjectToCloudOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveProjectToCloudOperation.swift; sourceTree = "<group>"; };
 		9300AE9B1F1FC86B0052DA45 /* CloudCoREMOFDatabase_v1.0.data */ = {isa = PBXFileReference; lastKnownFileType = file; path = CloudCoREMOFDatabase_v1.0.data; sourceTree = "<group>"; };
 		9303760125723891000F641D /* libffi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libffi.a; sourceTree = "<group>"; };
@@ -2753,6 +2932,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A10IPAD0000000000000002 /* iRASPA-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				A10IPADS0000000000000001 /* AppDelegate.swift */,
+				A10IPADS0100000000000001 /* SceneDelegate.swift */,
+				A10IPADS0200000000000001 /* DocumentBrowserViewController.swift */,
+				A10IPADS0300000000000001 /* iRASPAUIDocument.swift */,
+				A10IPADS0400000000000001 /* MainSplitViewController.swift */,
+				A10IPADS0500000000000001 /* ProjectTreeViewController.swift */,
+				A10IPADS0600000000000001 /* RenderHostViewController.swift */,
+				A10IPADS0700000000000001 /* AppearanceInspectorViewController.swift */,
+				A10IPADS0800000000000001 /* StructureInspectorViewController.swift */,
+				A10IPADS0900000000000001 /* CloudGalleryViewController.swift */,
+				A10IPADS1000000000000001 /* ExportController.swift */,
+				A10IPADS1100000000000001 /* LogViewController.swift */,
+				A10IPADS1200000000000001 /* CameraInspectorViewController.swift */,
+				A10IPADS1300000000000001 /* AtomDetailViewController.swift */,
+				A10IPADS1400000000000001 /* MeasurementViewController.swift */,
+				A10IPADS1500000000000001 /* StructureSidebarViewController.swift */,
+				A10IPADS1600000000000001 /* InspectorOutline.swift */,
+				A10IPADS1700000000000001 /* InfoInspectorViewController.swift */,
+				A10IPADS1800000000000001 /* ElementInspectorViewController.swift */,
+				A10IPADS1800000000000003 /* AtomInspectorViewController.swift */,
+				A10IPADS1800000000000005 /* BondInspectorViewController.swift */,
+				A10IPADS1800000000000007 /* ImportOptionsViewController.swift */,
+				A10IPADSAMP0000000000005 /* Samples */,
+				A10IPAD000000000000000D /* Assets.xcassets */,
+				A10IPAD000000000000000B /* Info.plist */,
+				A10IPAD000000000000000C /* iRASPA-iPad.entitlements */,
+			);
+			path = "iRASPA-iPad";
+			sourceTree = "<group>";
+		};
+		A10IPADSAMP0000000000005 /* Samples */ = {
+			isa = PBXGroup;
+			children = (
+				A10IPADSAMP0000000000001 /* materials_sample.cif */,
+				A10IPADSAMP0000000000003 /* 1D5H_sample.cif */,
+			);
+			path = Samples;
+			sourceTree = "<group>";
+		};
 		930DD48C1E26A80E00B8FE9B /* SimulationKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -2762,7 +2983,9 @@
 				930DD4B01E26A8BC00B8FE9B /* ComputeEnergyGrid.metal */,
 				939C5692234A3BC1009A9BB2 /* MarchingCubes3D.metal */,
 				930DD4AC1E26A89D00B8FE9B /* SKMetalFramework.swift */,
+				A10METAL00000000000001 /* RKMetal.swift */,
 				939E7F4C276F2FF100CC654D /* SKMetalMarchingCubes.swift */,
+				A10MCUBE00000000000001 /* SKMarchingCubesTables.swift */,
 				937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */,
 				937807DC21C598AA00EC4466 /* SKVoidFraction.swift */,
 				937807DE21C598E200EC4466 /* SKNitrogenSurfaceArea.swift */,
@@ -2870,6 +3093,7 @@
 		930DD5131E26B2CC00B8FE9B /* RenderKit */ = {
 			isa = PBXGroup;
 			children = (
+				A10METAL00000000000003 /* RKMetal.swift */,
 				939B749126CE8E62001E3AC8 /* VerticesDefinitions */,
 				939B749026CE8E45001E3AC8 /* RenderObjects */,
 				939B748F26CE8DFF001E3AC8 /* Geometry */,
@@ -2898,6 +3122,8 @@
 		930DD6101E26B96A00B8FE9B /* iRASPAKit */ = {
 			isa = PBXGroup;
 			children = (
+				A10PAD000000000000000005 /* PlatformStubs.swift */,
+				A10PAD000000000000000003 /* DocumentContext.swift */,
 				930DD6111E26B96A00B8FE9B /* iRASPAKit.h */,
 				93B1ED68261E3866002E9069 /* Localizable.strings */,
 				930DD6351E26B9F500B8FE9B /* Timer.swift */,
@@ -3453,6 +3679,7 @@
 			isa = PBXGroup;
 			children = (
 				9383880A1E26A4A800112FBA /* iRASPA */,
+				A10IPAD0000000000000002 /* iRASPA-iPad */,
 				933F4F161FADF4D000753D08 /* iRASPA-CLI */,
 				930DD6101E26B96A00B8FE9B /* iRASPAKit */,
 				930DD5131E26B2CC00B8FE9B /* RenderKit */,
@@ -3483,6 +3710,7 @@
 			isa = PBXGroup;
 			children = (
 				938388081E26A4A800112FBA /* iRASPA.app */,
+				A10IPAD0000000000000001 /* iRASPA-iPad.app */,
 				938388211E26A4FB00112FBA /* MathKit.framework */,
 				930DD48B1E26A80E00B8FE9B /* SimulationKit.framework */,
 				930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */,
@@ -3644,6 +3872,8 @@
 		939B205B1EF2C81A0061DE8D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A10PAD000000000000000007 /* AppKitStubs.swift */,
+				A10PAD000000000000000001 /* PlatformColor.swift */,
 				939B205C1EF2C8370061DE8D /* simd_quatd.swift */,
 				936DE11B21DA7F470023E7C8 /* Array.swift */,
 				939B20721EF2D0920061DE8D /* Int32.swift */,
@@ -4344,6 +4574,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				A10SYMMATH0000000000002 /* PBXTargetDependency */,
+				A10SYMBIN0000000000002 /* PBXTargetDependency */,
 				93B5EE781FC3380C009922F2 /* PBXTargetDependency */,
 				9300AEAC1F2102220052DA45 /* PBXTargetDependency */,
 			);
@@ -4698,6 +4930,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A10BINMATH0000000000003 /* PBXTargetDependency */,
 			);
 			name = BinaryCodable;
 			productName = BinaryCodable;
@@ -4722,6 +4955,35 @@
 			productReference = 93F697B42181D9C1003273A8 /* ZIPFoundation.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		A10IPAD0000000000000003 /* iRASPA-iPad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10IPAD0000000000000008 /* Build configuration list for PBXNativeTarget "iRASPA-iPad" */;
+			buildPhases = (
+				A10IPAD0000000000000004 /* Sources */,
+				A10IPAD0000000000000005 /* Frameworks */,
+				A10IPAD0000000000000006 /* Resources */,
+				A10IPAD0000000000000007 /* Embed Frameworks */,
+				A10IPADRSIGN00000000001 /* Resign Simulator for CloudKit */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A10IPADDP00000000000001 /* PBXTargetDependency */,
+				A10IPADDP01000000000001 /* PBXTargetDependency */,
+				A10IPADDP02000000000001 /* PBXTargetDependency */,
+				A10IPADDP03000000000001 /* PBXTargetDependency */,
+				A10IPADDP04000000000001 /* PBXTargetDependency */,
+				A10IPADDP05000000000001 /* PBXTargetDependency */,
+				A10IPADDP06000000000001 /* PBXTargetDependency */,
+				A10IPADDP07000000000001 /* PBXTargetDependency */,
+				A10IPADDP08000000000001 /* PBXTargetDependency */,
+				A10IPADDP09000000000001 /* PBXTargetDependency */,
+			);
+			name = "iRASPA-iPad";
+			productName = "iRASPA-iPad";
+			productReference = A10IPAD0000000000000001 /* iRASPA-iPad.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -4733,6 +4995,11 @@
 				LastUpgradeCheck = 2610;
 				ORGANIZATIONNAME = "David Dubbeldam";
 				TargetAttributes = {
+					A10IPAD0000000000000003 = {
+						CreatedOnToolsVersion = 16.0;
+						DevelopmentTeam = 24U2ZRZ6SC;
+						ProvisioningStyle = Automatic;
+					};
 					930DD48A1E26A80E00B8FE9B = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 24U2ZRZ6SC;
@@ -4893,6 +5160,7 @@
 			projectRoot = "";
 			targets = (
 				938388071E26A4A800112FBA /* iRASPA */,
+				A10IPAD0000000000000003 /* iRASPA-iPad */,
 				93BF30B91FB3704500FFCCB0 /* iRASPA-CLI */,
 				930DD60E1E26B96A00B8FE9B /* iRASPAKit */,
 				930DD5111E26B2CC00B8FE9B /* RenderKit */,
@@ -5115,6 +5383,31 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A10IPADRSIGN00000000001 /* Resign Simulator for CloudKit */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Scripts/resign_simulator_icloud.sh",
+				"$(TARGET_TEMP_DIR)/$(FULL_PRODUCT_NAME)-Simulated.xcent",
+			);
+			name = "Resign Simulator for CloudKit";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(WRAPPER_NAME)/_CodeSignature/CodeResources",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Scripts/resign_simulator_icloud.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		930DD4861E26A80E00B8FE9B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -5131,6 +5424,8 @@
 				937807DD21C598AA00EC4466 /* SKVoidFraction.swift in Sources */,
 				93426FD71F8CCC030034F0BF /* SKForceFieldSets.swift in Sources */,
 				930DD4AE1E26A89D00B8FE9B /* SKMetalFramework.swift in Sources */,
+				A10METAL00000000000002 /* RKMetal.swift in Sources */,
+				A10MCUBE00000000000002 /* SKMarchingCubesTables.swift in Sources */,
 				93426FD51F8CB9650034F0BF /* SKForceFieldSet.swift in Sources */,
 				939E7F4D276F2FF100CC654D /* SKMetalMarchingCubes.swift in Sources */,
 			);
@@ -5327,6 +5622,7 @@
 				93793B0F21C815BF004CAD9C /* MetalBlurHorizontalShader.swift in Sources */,
 				93793B2121CA8570004CAD9C /* MetalAtomSelectionGlowPictureShader.swift in Sources */,
 				930DD5F61E26B65C00B8FE9B /* MetalRenderer.swift in Sources */,
+				A10METAL00000000000004 /* RKMetal.swift in Sources */,
 				931000602483DC9C009CD836 /* MetalEllipsoidPrimitiveSelectionStripedShader.swift in Sources */,
 				93793B3721D944FF004CAD9C /* RKStructureUniforms.swift in Sources */,
 				93C0CB071F00001000A002 /* RibbonAOLayout.swift in Sources */,
@@ -5378,6 +5674,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10PAD000000000000000006 /* PlatformStubs.swift in Sources */,
+				A10PAD000000000000000004 /* DocumentContext.swift in Sources */,
 				930DD64B1E26BA5D00B8FE9B /* Structure.swift in Sources */,
 				930DD6641E26BAFC00B8FE9B /* Scene.swift in Sources */,
 				932A1C941F967D62000A0037 /* AngleNumberFormatter.swift in Sources */,
@@ -5658,6 +5956,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10PAD000000000000000008 /* AppKitStubs.swift in Sources */,
+				A10PAD000000000000000002 /* PlatformColor.swift in Sources */,
 				93F7511026C13D78005796C4 /* float3.swift in Sources */,
 				9383885A1E26A64200112FBA /* int3x3.swift in Sources */,
 				935105551F16558B002F424C /* int4x3.swift in Sources */,
@@ -5812,9 +6112,151 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A10IPAD0000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10IPADS0000000000000002 /* AppDelegate.swift in Sources */,
+				A10IPADS0100000000000002 /* SceneDelegate.swift in Sources */,
+				A10IPADS0200000000000002 /* DocumentBrowserViewController.swift in Sources */,
+				A10IPADS0300000000000002 /* iRASPAUIDocument.swift in Sources */,
+				A10IPADS0400000000000002 /* MainSplitViewController.swift in Sources */,
+				A10IPADS0500000000000002 /* ProjectTreeViewController.swift in Sources */,
+				A10IPADS0600000000000002 /* RenderHostViewController.swift in Sources */,
+				A10IPADS0700000000000002 /* AppearanceInspectorViewController.swift in Sources */,
+				A10IPADS0800000000000002 /* StructureInspectorViewController.swift in Sources */,
+				A10IPADS0900000000000002 /* CloudGalleryViewController.swift in Sources */,
+				A10IPADS1000000000000002 /* ExportController.swift in Sources */,
+				A10IPADS1100000000000002 /* LogViewController.swift in Sources */,
+				A10IPADS1200000000000002 /* CameraInspectorViewController.swift in Sources */,
+				A10IPADS1300000000000002 /* AtomDetailViewController.swift in Sources */,
+				A10IPADS1400000000000002 /* MeasurementViewController.swift in Sources */,
+				A10IPADS1500000000000002 /* StructureSidebarViewController.swift in Sources */,
+				A10IPADS1600000000000002 /* InspectorOutline.swift in Sources */,
+				A10IPADS1700000000000002 /* InfoInspectorViewController.swift in Sources */,
+				A10IPADS1800000000000002 /* ElementInspectorViewController.swift in Sources */,
+				A10IPADS1800000000000004 /* AtomInspectorViewController.swift in Sources */,
+				A10IPADS1800000000000006 /* BondInspectorViewController.swift in Sources */,
+				A10IPADS1800000000000008 /* ImportOptionsViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10IPAD0000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10IPADFW00000000000001 /* SimulationKit.framework in Frameworks */,
+				A10IPADFW01000000000001 /* SymmetryKit.framework in Frameworks */,
+				A10IPADFW02000000000001 /* RenderKit.framework in Frameworks */,
+				A10IPADFW03000000000001 /* iRASPAKit.framework in Frameworks */,
+				A10IPADFW04000000000001 /* MathKit.framework in Frameworks */,
+				A10IPADFW05000000000001 /* CatchObjectiveCExceptions.framework in Frameworks */,
+				A10IPADFW06000000000001 /* OperationKit.framework in Frameworks */,
+				A10IPADFW07000000000001 /* LogViewKit.framework in Frameworks */,
+				A10IPADFW08000000000001 /* ZIPFoundation.framework in Frameworks */,
+				A10IPADFW09000000000001 /* BinaryCodable.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10IPAD0000000000000006 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10IPADRES00000000000001 /* Assets.xcassets in Resources */,
+				A10IPADSAMP0000000000002 /* materials_sample.cif in Resources */,
+				A10IPADSAMP0000000000004 /* 1D5H_sample.cif in Resources */,
+				A10IPADGAL00000000000001 /* Gallery.irspdoc in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10IPAD0000000000000007 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A10IPADFW00000000000002 /* SimulationKit.framework in Embed Frameworks */,
+				A10IPADFW01000000000002 /* SymmetryKit.framework in Embed Frameworks */,
+				A10IPADFW02000000000002 /* RenderKit.framework in Embed Frameworks */,
+				A10IPADFW03000000000002 /* iRASPAKit.framework in Embed Frameworks */,
+				A10IPADFW04000000000002 /* MathKit.framework in Embed Frameworks */,
+				A10IPADFW05000000000002 /* CatchObjectiveCExceptions.framework in Embed Frameworks */,
+				A10IPADFW06000000000002 /* OperationKit.framework in Embed Frameworks */,
+				A10IPADFW07000000000002 /* LogViewKit.framework in Embed Frameworks */,
+				A10IPADFW08000000000002 /* ZIPFoundation.framework in Embed Frameworks */,
+				A10IPADFW09000000000002 /* BinaryCodable.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A10SYMMATH0000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 938388201E26A4FB00112FBA /* MathKit */;
+			targetProxy = A10SYMMATH0000000000001 /* PBXContainerItemProxy */;
+		};
+		A10SYMBIN0000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93F3A59C21874A15008E41A2 /* BinaryCodable */;
+			targetProxy = A10SYMBIN0000000000001 /* PBXContainerItemProxy */;
+		};
+		A10BINMATH0000000000003 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 938388201E26A4FB00112FBA /* MathKit */;
+			targetProxy = A10BINMATH0000000000002 /* PBXContainerItemProxy */;
+		};
+		A10IPADDP00000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 930DD48A1E26A80E00B8FE9B /* SimulationKit */;
+			targetProxy = A10IPADDP00000000000002 /* PBXContainerItemProxy */;
+		};
+		A10IPADDP01000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 930DD4BE1E26AA0100B8FE9B /* SymmetryKit */;
+			targetProxy = A10IPADDP01000000000002 /* PBXContainerItemProxy */;
+		};
+		A10IPADDP02000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 930DD5111E26B2CC00B8FE9B /* RenderKit */;
+			targetProxy = A10IPADDP02000000000002 /* PBXContainerItemProxy */;
+		};
+		A10IPADDP03000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 930DD60E1E26B96A00B8FE9B /* iRASPAKit */;
+			targetProxy = A10IPADDP03000000000002 /* PBXContainerItemProxy */;
+		};
+		A10IPADDP04000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 938388201E26A4FB00112FBA /* MathKit */;
+			targetProxy = A10IPADDP04000000000002 /* PBXContainerItemProxy */;
+		};
+		A10IPADDP05000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93CE77E91EA0EA3900D068E1 /* CatchObjectiveCExceptions */;
+			targetProxy = A10IPADDP05000000000002 /* PBXContainerItemProxy */;
+		};
+		A10IPADDP06000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93BF25EE1EE71DC200128CD4 /* OperationKit */;
+			targetProxy = A10IPADDP06000000000002 /* PBXContainerItemProxy */;
+		};
+		A10IPADDP07000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93B5EE5F1FC33588009922F2 /* LogViewKit */;
+			targetProxy = A10IPADDP07000000000002 /* PBXContainerItemProxy */;
+		};
+		A10IPADDP08000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93F697B32181D9C1003273A8 /* ZIPFoundation */;
+			targetProxy = A10IPADDP08000000000002 /* PBXContainerItemProxy */;
+		};
+		A10IPADDP09000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93F3A59C21874A15008E41A2 /* BinaryCodable */;
+			targetProxy = A10IPADDP09000000000002 /* PBXContainerItemProxy */;
+		};
 		9300AEAC1F2102220052DA45 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 93CE77E91EA0EA3900D068E1 /* CatchObjectiveCExceptions */;
@@ -6579,6 +7021,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -6589,6 +7032,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SimulationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -6618,6 +7068,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -6627,6 +7078,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SimulationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6654,6 +7112,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -6662,6 +7121,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -6691,6 +7157,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -6699,6 +7166,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6726,6 +7200,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -6736,6 +7211,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.RenderKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -6765,6 +7247,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -6774,6 +7257,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.RenderKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6803,6 +7293,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -6812,6 +7303,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -6842,6 +7340,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -6851,6 +7350,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7368,6 +7874,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -7376,6 +7883,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -7405,6 +7919,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -7413,6 +7928,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7571,6 +8093,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -7579,6 +8102,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -7612,6 +8142,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -7620,6 +8151,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7648,6 +8186,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -7656,6 +8195,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -7685,6 +8231,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -7693,6 +8240,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7785,6 +8339,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -7793,6 +8348,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -7821,6 +8383,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -7829,6 +8392,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -7989,6 +8559,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -7998,6 +8569,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -8032,6 +8610,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -8040,6 +8619,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -8073,6 +8659,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -8082,6 +8669,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -8116,6 +8710,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 2.3.7;
@@ -8124,9 +8719,82 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SDKROOT = auto;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]" = "RenderKit.RenderViewController.xib";
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "RenderKit.RenderViewController.xib";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A10IPAD0000000000000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "iRASPA-iPad/iRASPA-iPad.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphonesimulator*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGNING_REQUIRED = YES;
+				CURRENT_PROJECT_VERSION = 148;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "iRASPA-iPad/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.3.7;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		A10IPAD000000000000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "iRASPA-iPad/iRASPA-iPad.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphonesimulator*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGNING_REQUIRED = YES;
+				CURRENT_PROJECT_VERSION = 148;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "iRASPA-iPad/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.3.7;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};
@@ -8318,6 +8986,15 @@
 			buildConfigurations = (
 				93F697BD2181D9C1003273A8 /* Debug */,
 				93F697BE2181D9C1003273A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10IPAD0000000000000008 /* Build configuration list for PBXNativeTarget "iRASPA-iPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10IPAD0000000000000009 /* Debug */,
+				A10IPAD000000000000000A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -10739,7 +10739,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonAmbientColor = newValue ?? NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
 
@@ -10752,7 +10752,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonDiffuseColor = newValue ?? NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
 
@@ -10765,7 +10765,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? ProteinRibbonStructureEditor)?.ribbonSpecularColor = newValue ?? NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
 
@@ -10986,7 +10986,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomAmbientColor = newValue ?? NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -10999,7 +10999,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomDiffuseColor = newValue ?? NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -11012,7 +11012,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomSpecularColor = newValue ?? NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -11275,7 +11275,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondAmbientColor = newValue ?? NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
     }
   }
   
@@ -11288,7 +11288,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondDiffuseColor = newValue ?? NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondDiffuseColor = newValue ?? NSColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)})
     }
   }
   
@@ -11301,7 +11301,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondSpecularColor = newValue ?? NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
     }
   }
   
@@ -11461,7 +11461,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? UnitCellEditor)?.unitCellDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? UnitCellEditor)?.unitCellDiffuseColor = newValue ?? NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
     }
   }
   

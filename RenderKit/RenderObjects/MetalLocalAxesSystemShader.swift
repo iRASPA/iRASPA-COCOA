@@ -113,8 +113,8 @@ class MetalLocalAxesShader
               case RKLocalAxes.Style.cylinderRGB:
                 axesGeometry = MetalAxesSystemDefaultGeometry(center: RKGlobalAxes.CenterType.cube, centerRadius: width, centerColor: SIMD4<Float>(1.0,1.0,1.0,1.0), arrowHeight: length, arrowRadius: width, arrowColorX: SIMD4<Float>(1.0,0.0,0.0,1.0), arrowColorY: SIMD4<Float>(0.0,1.0,0.0,1.0), arrowColorZ: SIMD4<Float>(0.0,0.0,1.0,1.0), tipHeight: 1.0, tipRadius: 0.0, tipColorX: SIMD4<Float>(1.0,0.0,0.0,1.0), tipColorY: SIMD4<Float>(0.0,1.0,0.0,1.0), tipColorZ: SIMD4<Float>(0.0,0.0,1.0,1.0), tipVisibility: false, aspectRatio: 1.0, sectorCount: 41)
               }
-              vertexBufferArray.append(device.makeBuffer(bytes: axesGeometry.vertices, length:MemoryLayout<RKPrimitiveVertex>.stride * axesGeometry.vertices.count, options:.storageModeManaged))
-              indexBufferArray.append(device.makeBuffer(bytes: axesGeometry.indices, length:MemoryLayout<UInt16>.stride * axesGeometry.indices.count, options:.storageModeManaged))
+              vertexBufferArray.append(device.makeBuffer(bytes: axesGeometry.vertices, length:MemoryLayout<RKPrimitiveVertex>.stride * axesGeometry.vertices.count, options:RKMetal.hostStorage))
+              indexBufferArray.append(device.makeBuffer(bytes: axesGeometry.indices, length:MemoryLayout<UInt16>.stride * axesGeometry.indices.count, options:RKMetal.hostStorage))
             }
           }
           vertexBuffer.append(vertexBufferArray)

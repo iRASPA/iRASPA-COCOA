@@ -32,6 +32,7 @@
 import Foundation
 import CloudKit
 import OperationKit
+import LogViewKit
 
 public class ImportChildNodesOfParentRecordIDOperation: FKGroupOperation, @unchecked Sendable
 {
@@ -55,6 +56,10 @@ public class ImportChildNodesOfParentRecordIDOperation: FKGroupOperation, @unche
         })
         copyOperation.addDependency(fetchChildNodesOperation)
         self?.addOperation(copyOperation)
+      }
+      else
+      {
+        LogQueue.shared.warning(destination: nil, message: "CloudKit parent record not found: \(parentRecordID.recordName) (missing entitlement, wrong environment, or unsigned Simulator build)")
       }
     })
     adapterOperation.addDependency(fetchRecordOperation)

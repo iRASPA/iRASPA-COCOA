@@ -32,6 +32,7 @@
 
 import Foundation
 import MetalKit
+import MathKit
 
 public class MetalBackgroundShader
 {
@@ -52,6 +53,20 @@ public class MetalBackgroundShader
   public var vertexBuffer: MTLBuffer! = nil
   public var indexBuffer: MTLBuffer! = nil
   public var samplerState: MTLSamplerState! = nil
+
+  /// iOS/tvOS GPUs reject MSAA resolve of `depth32Float_stencil8`; Mac supports it.
+  private var supportsHardwareDepthResolve: Bool
+  {
+    #if os(iOS) || os(tvOS)
+    return false
+    #else
+    return true
+    #endif
+  }
+
+  private var depthResolvePipeLine: MTLRenderPipelineState! = nil
+  private var depthResolveDepthState: MTLDepthStencilState! = nil
+  private var depthResolvePassDescriptor: MTLRenderPassDescriptor! = nil
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
@@ -91,13 +106,38 @@ public class MetalBackgroundShader
     {
       fatalError("Error occurred when creating render pipeline state \(error)")
     }
+
+    if !supportsHardwareDepthResolve
+    {
+      let resolveDescriptor = MTLRenderPipelineDescriptor()
+      resolveDescriptor.colorAttachments[0].pixelFormat = .invalid
+      resolveDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+      resolveDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+      resolveDescriptor.sampleCount = 1
+      resolveDescriptor.vertexFunction = library.makeFunction(name: "backgroundQuadVertex")
+      resolveDescriptor.fragmentFunction = library.makeFunction(name: "depthMSAAResolveFragment")
+      resolveDescriptor.vertexDescriptor = vertexDescriptor
+      do
+      {
+        self.depthResolvePipeLine = try device.makeRenderPipelineState(descriptor: resolveDescriptor)
+      }
+      catch
+      {
+        fatalError("Error occurred when creating depth-resolve pipeline state \(error)")
+      }
+
+      let depthStateDescriptor = MTLDepthStencilDescriptor()
+      depthStateDescriptor.depthCompareFunction = .always
+      depthStateDescriptor.isDepthWriteEnabled = true
+      self.depthResolveDepthState = device.makeDepthStencilState(descriptor: depthStateDescriptor)
+    }
   }
   
   public func buildVertexBuffers(device: MTLDevice)
   {
     let quad: MetalQuadGeometry = MetalQuadGeometry()
-    vertexBuffer = device.makeBuffer(bytes: quad.vertices, length:MemoryLayout<RKVertex>.stride * quad.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: quad.indices, length:MemoryLayout<UInt16>.stride * quad.indices.count, options:.storageModeManaged)
+    vertexBuffer = device.makeBuffer(bytes: quad.vertices, length:MemoryLayout<RKVertex>.stride * quad.vertices.count, options:RKMetal.hostStorage)
+    indexBuffer = device.makeBuffer(bytes: quad.indices, length:MemoryLayout<UInt16>.stride * quad.indices.count, options:RKMetal.hostStorage)
   }
   
   
@@ -146,8 +186,10 @@ public class MetalBackgroundShader
     sceneDepthTextureDescriptor.textureType = MTLTextureType.type2DMultisample
     sceneDepthTextureDescriptor.sampleCount = maximumNumberOfSamples
     sceneDepthTextureDescriptor.storageMode = MTLStorageMode.private
-    sceneDepthTextureDescriptor.usage = MTLTextureUsage.renderTarget
-    //sceneDepthTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
+    // On iOS the MSAA depth is sampled by the manual resolve pass.
+    sceneDepthTextureDescriptor.usage = supportsHardwareDepthResolve
+      ? MTLTextureUsage.renderTarget
+      : [MTLTextureUsage.renderTarget, MTLTextureUsage.shaderRead]
     sceneDepthTexture = device.makeTexture(descriptor: sceneDepthTextureDescriptor)
     sceneDepthTexture.label = "scene multisampled depth texture"
     
@@ -170,9 +212,18 @@ public class MetalBackgroundShader
     let sceneMSAAdepthAttachment: MTLRenderPassDepthAttachmentDescriptor = sceneRenderPassDescriptor.depthAttachment
     sceneMSAAdepthAttachment.texture = sceneDepthTexture
     sceneMSAAdepthAttachment.loadAction = MTLLoadAction.clear
-    sceneMSAAdepthAttachment.storeAction = .storeAndMultisampleResolve
-    sceneMSAAdepthAttachment.resolveTexture = sceneResolvedDepthTexture
     sceneMSAAdepthAttachment.clearDepth = 1.0
+    if supportsHardwareDepthResolve
+    {
+      sceneMSAAdepthAttachment.storeAction = .storeAndMultisampleResolve
+      sceneMSAAdepthAttachment.resolveTexture = sceneResolvedDepthTexture
+    }
+    else
+    {
+      // Keep color MSAA; store MSAA depth and resolve it manually afterwards.
+      sceneMSAAdepthAttachment.storeAction = .store
+      sceneMSAAdepthAttachment.resolveTexture = nil
+    }
     
     let sceneMSAAstencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderPassDescriptor.stencilAttachment
     sceneMSAAstencilAttachment.texture = sceneDepthTexture
@@ -191,8 +242,16 @@ public class MetalBackgroundShader
     let sceneVolumeRenderedSurfacesDepthAttachment: MTLRenderPassDepthAttachmentDescriptor = sceneRenderVolumeRenderedSurfacesPassDescriptor.depthAttachment
     sceneVolumeRenderedSurfacesDepthAttachment.texture = sceneDepthTexture
     sceneVolumeRenderedSurfacesDepthAttachment.loadAction = MTLLoadAction.load
-    sceneVolumeRenderedSurfacesDepthAttachment.storeAction = .storeAndMultisampleResolve
-    sceneVolumeRenderedSurfacesDepthAttachment.resolveTexture = sceneResolvedDepthTexture
+    if supportsHardwareDepthResolve
+    {
+      sceneVolumeRenderedSurfacesDepthAttachment.storeAction = .storeAndMultisampleResolve
+      sceneVolumeRenderedSurfacesDepthAttachment.resolveTexture = sceneResolvedDepthTexture
+    }
+    else
+    {
+      sceneVolumeRenderedSurfacesDepthAttachment.storeAction = .store
+      sceneVolumeRenderedSurfacesDepthAttachment.resolveTexture = nil
+    }
     
     let sceneVolumeRenderedSurfaceStencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderVolumeRenderedSurfacesPassDescriptor.stencilAttachment
     sceneVolumeRenderedSurfaceStencilAttachment.texture = sceneDepthTexture
@@ -220,6 +279,42 @@ public class MetalBackgroundShader
     sceneTransparentMSAAstencilAttachment.loadAction = MTLLoadAction.dontCare
     sceneTransparentMSAAstencilAttachment.storeAction = MTLStoreAction.dontCare
     sceneMSAAstencilAttachment.clearStencil = 0
+
+    if !supportsHardwareDepthResolve
+    {
+      let resolvePass = MTLRenderPassDescriptor()
+      resolvePass.depthAttachment.texture = sceneResolvedDepthTexture
+      resolvePass.depthAttachment.loadAction = .dontCare
+      resolvePass.depthAttachment.storeAction = .store
+      resolvePass.depthAttachment.clearDepth = 1.0
+      resolvePass.stencilAttachment.texture = sceneResolvedDepthTexture
+      resolvePass.stencilAttachment.loadAction = .dontCare
+      resolvePass.stencilAttachment.storeAction = .dontCare
+      depthResolvePassDescriptor = resolvePass
+    }
+  }
+
+  /// Copies MSAA depth sample 0 into `sceneResolvedDepthTexture` when the GPU
+  /// cannot hardware-resolve `depth32Float_stencil8` (iOS/tvOS). Color MSAA is unchanged.
+  public func encodeManualDepthResolveIfNeeded(_ commandBuffer: MTLCommandBuffer, size: CGSize)
+  {
+    guard !supportsHardwareDepthResolve,
+          let depthResolvePipeLine,
+          let depthResolveDepthState,
+          let depthResolvePassDescriptor,
+          let sceneDepthTexture,
+          let vertexBuffer,
+          let indexBuffer else { return }
+
+    guard let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: depthResolvePassDescriptor) else { return }
+    encoder.label = "Manual MSAA depth resolve"
+    encoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
+    encoder.setRenderPipelineState(depthResolvePipeLine)
+    encoder.setDepthStencilState(depthResolveDepthState)
+    encoder.setFragmentTexture(sceneDepthTexture, index: 0)
+    encoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+    encoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: 4, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0)
+    encoder.endEncoding()
   }
   
   func reloadBackgroundImage(device: MTLDevice)
@@ -280,19 +375,10 @@ public class MetalBackgroundShader
     let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.premultipliedFirst.rawValue)
     let context: CGContext = CGContext(data: nil, width: 1024, height: 1024, bitsPerComponent: 8, bytesPerRow: 1024 * 4, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)!
     
-    let graphicsContext: NSGraphicsContext = NSGraphicsContext(cgContext: context, flipped: false)
-    NSGraphicsContext.saveGraphicsState()
-    
-    NSGraphicsContext.current = graphicsContext
-    //NSGraphicsContext.setCurrent(graphicsContext)
-    
-    graphicsContext.cgContext.setFillColor(NSColor.white.cgColor)
-    //CGContextSetRGBFillColor(graphicsContext.CGContext, 0.227,0.251,0.337,0.8)
-    graphicsContext.cgContext.fill(NSMakeRect(0, 0, 1024, 1024))
+    context.setFillColor(NSColor.white.cgColor)
+    context.fill(CGRect(x: 0, y: 0, width: 1024, height: 1024))
     
     let image: CGImage = context.makeImage()!
-    
-    NSGraphicsContext.restoreGraphicsState()
     
     return image
   }
@@ -303,17 +389,10 @@ public class MetalBackgroundShader
     let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.premultipliedFirst.rawValue)
     let context: CGContext = CGContext(data: nil, width: 1024, height: 1024, bitsPerComponent: 8, bytesPerRow: 1024 * 4, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)!
     
-    let graphicsContext: NSGraphicsContext = NSGraphicsContext(cgContext: context, flipped: false)
-    NSGraphicsContext.saveGraphicsState()
-    
-    NSGraphicsContext.current = graphicsContext
-    
-    graphicsContext.cgContext.setFillColor(NSColor(white: 1.0, alpha: 0.99).cgColor)
-    graphicsContext.cgContext.fill(NSMakeRect(0, 0, 1024, 1024))
+    context.setFillColor(NSColor(white: 1.0, alpha: 0.99).cgColor)
+    context.fill(CGRect(x: 0, y: 0, width: 1024, height: 1024))
     
     let image: CGImage = context.makeImage()!
-    
-    NSGraphicsContext.restoreGraphicsState()
     
     return image
   }

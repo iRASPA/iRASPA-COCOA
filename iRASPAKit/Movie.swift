@@ -36,6 +36,11 @@ import RenderKit
 import MathKit
 import LogViewKit
 import simd
+#if os(macOS)
+import CoreServices
+#else
+import MobileCoreServices
+#endif
 
 
 fileprivate let movieSingleFrameIcon: NSImage = NSImage(named: "MovieSingleFrameIcon")!
@@ -439,7 +444,7 @@ public final class Movie: NSObject, ObjectViewer, NSPasteboardWriting, NSPastebo
     
       let displayName: String = url.deletingPathExtension().lastPathComponent
         
-      if #available(OSX 11.0, *)
+      if #available(macOS 11.0, iOS 14.0, *)
       {
         guard let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
               let type = resourceValues.contentType else {return nil}

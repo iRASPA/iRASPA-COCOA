@@ -29,21 +29,31 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 import MetalKit
 import MathKit
 import SimulationKit
 import simd
 
 
-class MetalView: MTKView
+public class MetalView: MTKView
 {
   var edrSupport: CGFloat = 1.0
   weak var renderCameraSource: RKRenderCameraSource?
   var renderQuality: RKRenderQuality = .high
   var onCycleRibbonAODebugMode: (() -> Void)? = nil
+  #if os(iOS)
+  public var onTapPoint: ((CGPoint) -> Void)? = nil
+  #endif
+  #if os(macOS)
   private var ribbonDebugOverlay: NSTextField? = nil
+  #endif
   
+  #if os(macOS)
   func updateRibbonDebugOverlay(text: String?, visible: Bool)
   {
     if ribbonDebugOverlay == nil
@@ -66,10 +76,11 @@ class MetalView: MTKView
     ribbonDebugOverlay?.stringValue = text ?? ""
     ribbonDebugOverlay?.isHidden = !visible
   }
+  #endif
   
   var trackball: RKTrackBall = RKTrackBall()
-  var startPoint: NSPoint? = NSPoint()
-  var panStartPoint: NSPoint? = NSPoint()
+  var startPoint: CGPoint? = CGPoint()
+  var panStartPoint: CGPoint? = CGPoint()
   
   enum Tracking
   {
@@ -94,6 +105,7 @@ class MetalView: MTKView
     return tracking == .other
   }
  
+  #if os(macOS)
   // the MetalView is initialized from the XIB file
   required init(coder: NSCoder)
   {
@@ -121,7 +133,7 @@ class MetalView: MTKView
   @objc func screenParametersDidChange(notification: NSNotification)
   {
     let screen: NSScreen? = self.window?.screen
-    if #available(OSX 10.15, *)
+    if #available(macOS 10.15, iOS 13.0, *)
     {
       self.edrSupport = screen?.maximumPotentialExtendedDynamicRangeColorComponentValue ?? 1.0
     }
@@ -131,8 +143,133 @@ class MetalView: MTKView
       self.edrSupport = 1.0
     }
   }
+  #else
+  public override init(frame frameRect: CGRect, device: MTLDevice?)
+  {
+    super.init(frame: frameRect, device: device)
+    configureMetal()
+    addCameraGestures()
+  }
+  
+  public required init(coder: NSCoder)
+  {
+    super.init(coder: coder)
+    configureMetal()
+    addCameraGestures()
+  }
+  
+  private func configureMetal()
+  {
+    self.isPaused = false
+    self.enableSetNeedsDisplay = false
+    self.autoResizeDrawable = true
+    self.autoresizesSubviews = true
+    self.colorPixelFormat = MTLPixelFormat.bgra8Unorm
+    self.depthStencilPixelFormat = MTLPixelFormat.invalid
+    self.framebufferOnly = true
+    self.clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1)
+    self.isMultipleTouchEnabled = true
+  }
+  
+  private func addCameraGestures()
+  {
+    let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+    pan.maximumNumberOfTouches = 1
+    addGestureRecognizer(pan)
+    let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
+    addGestureRecognizer(pinch)
+    let twoFinger = UIPanGestureRecognizer(target: self, action: #selector(handleTwoFingerPan(_:)))
+    twoFinger.minimumNumberOfTouches = 2
+    twoFinger.maximumNumberOfTouches = 2
+    addGestureRecognizer(twoFinger)
+    let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+    addGestureRecognizer(tap)
+  }
+  
+  @objc private func handlePan(_ gesture: UIPanGestureRecognizer)
+  {
+    let location = trackballPoint(from: gesture.location(in: self))
+    switch gesture.state
+    {
+    case .began:
+      startPoint = location
+      self.renderCameraSource?.renderCamera?.trackBallRotation = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
+      trackball.start(x: location.x, y: location.y, originX: 0.0, originY: 0.0, width: self.bounds.size.width, height: self.bounds.size.height)
+      tracking = .other
+      self.renderQuality = RKRenderQuality.medium
+    case .changed:
+      if startPoint != nil
+      {
+        self.renderCameraSource?.renderCamera?.trackBallRotation = trackball.rollToTrackball(x: location.x, y: location.y)
+        self.setNeedsDisplay()
+      }
+    case .ended, .cancelled:
+      if startPoint != nil
+      {
+        self.renderCameraSource?.renderCamera?.trackBallRotation = trackball.rollToTrackball(x: location.x, y: location.y)
+        if let trackBallRotation = self.renderCameraSource?.renderCamera?.trackBallRotation,
+           let worldRotation = self.renderCameraSource?.renderCamera?.worldRotation
+        {
+          self.renderCameraSource?.renderCamera?.worldRotation = simd_normalize(simd_mul(trackBallRotation, worldRotation))
+        }
+      }
+      self.renderCameraSource?.renderCamera?.trackBallRotation = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
+      startPoint = nil
+      tracking = .none
+      self.renderQuality = RKRenderQuality.high
+      self.setNeedsDisplay()
+    default:
+      break
+    }
+  }
+
+  private func trackballPoint(from location: CGPoint) -> CGPoint
+  {
+    return CGPoint(x: location.x, y: bounds.height - location.y)
+  }
+  
+  @objc private func handleTwoFingerPan(_ gesture: UIPanGestureRecognizer)
+  {
+    let location = trackballPoint(from: gesture.location(in: self))
+    switch gesture.state
+    {
+    case .began:
+      panStartPoint = location
+    case .changed:
+      if let panStartPoint = panStartPoint,
+         let distance = self.renderCameraSource?.renderCamera?.distance
+      {
+        let panX = Double(panStartPoint.x - location.x) * distance.z / 1500.0
+        let panY = Double(panStartPoint.y - location.y) * distance.z / 1500.0
+        self.renderCameraSource?.renderCamera?.pan(x: panX, y: panY)
+      }
+      panStartPoint = location
+      self.setNeedsDisplay()
+    default:
+      panStartPoint = nil
+    }
+  }
+  
+  @objc private func handlePinch(_ gesture: UIPinchGestureRecognizer)
+  {
+    if gesture.state == .changed
+    {
+      let delta = Double((gesture.scale - 1.0) * 8.0)
+      self.renderCameraSource?.renderCamera?.increaseDistance(delta)
+      gesture.scale = 1.0
+      self.setNeedsDisplay()
+    }
+  }
+  
+  @objc private func handleTap(_ gesture: UITapGestureRecognizer)
+  {
+    onTapPoint?(gesture.location(in: self))
+    self.setNeedsDisplay()
+  }
+  #endif
   
   
+  #if os(macOS)
   // MARK: Mouse control
   // =====================================================================
    
@@ -205,7 +342,7 @@ class MetalView: MTKView
     switch(tracking)
     {
     case .panning:
-      let location: NSPoint  = self.convert(event.locationInWindow, from: nil)
+      let location: CGPoint  = self.convert(event.locationInWindow, from: nil)
       if let panStartPoint = panStartPoint,
          let distance: SIMD3<Double> = self.renderCameraSource?.renderCamera?.distance
       {
@@ -218,7 +355,7 @@ class MetalView: MTKView
        
       self.layer?.setNeedsDisplay()
     case .trucking:
-      let location: NSPoint  = self.convert(event.locationInWindow, from: nil)
+      let location: CGPoint  = self.convert(event.locationInWindow, from: nil)
       if let panStartPoint = panStartPoint,
          let distance: SIMD3<Double> = self.renderCameraSource?.renderCamera?.distance
       {
@@ -240,7 +377,7 @@ class MetalView: MTKView
   {
     super.mouseDragged(with: theEvent)
      
-    let location: NSPoint  = self.convert(theEvent.locationInWindow, from: nil)
+    let location: CGPoint  = self.convert(theEvent.locationInWindow, from: nil)
      
     self.renderQuality = RKRenderQuality.medium
      
@@ -274,7 +411,7 @@ class MetalView: MTKView
   {
     super.mouseUp(with: theEvent)
     
-    let location: NSPoint  = self.convert(theEvent.locationInWindow, from: nil)
+    let location: CGPoint  = self.convert(theEvent.locationInWindow, from: nil)
     
     switch(tracking)
     {
@@ -415,24 +552,30 @@ class MetalView: MTKView
 
     super.keyDown(with: theEvent)
   }
+  #endif
   
   let autoRotationTimerQueue = DispatchQueue(label: "nl.darkwing.timer.autorotation", attributes: .concurrent)
   var autoRotationTimer: DispatchSourceTimer?
   
   private func cameraDidChange()
   {
+    #if os(macOS)
     let notification: Notification = Notification(name: Notification.Name(CameraNotificationStrings.didChangeNotification), object: self.window?.windowController)
+    #else
+    let notification: Notification = Notification(name: Notification.Name(CameraNotificationStrings.didChangeNotification), object: self)
+    #endif
     NotificationQueue(notificationCenter: NotificationCenter.default).enqueue(notification, postingStyle: NotificationQueue.PostingStyle.whenIdle)
   }
   
-  override func cancelOperation(_ sender: Any?)
+  #if os(macOS)
+  public override func cancelOperation(_ sender: Any?)
   {
     // cancel previous timer if any
     autoRotationTimer?.cancel()
   }
   
   // shift-option-up
-  override func moveParagraphBackwardAndModifySelection(_ sender: Any?)
+  public override func moveParagraphBackwardAndModifySelection(_ sender: Any?)
   {
     // cancel previous timer if any
     autoRotationTimer?.cancel()
@@ -462,7 +605,7 @@ class MetalView: MTKView
   }
   
   // shift-option-down
-  override func moveParagraphForwardAndModifySelection(_ sender: Any?)
+  public override func moveParagraphForwardAndModifySelection(_ sender: Any?)
   {
     // cancel previous timer if any
     autoRotationTimer?.cancel()
@@ -492,7 +635,7 @@ class MetalView: MTKView
   }
   
   // shift-option-left
-  override func moveWordLeftAndModifySelection(_ sender: Any?)
+  public override func moveWordLeftAndModifySelection(_ sender: Any?)
   {
     // cancel previous timer if any
     autoRotationTimer?.cancel()
@@ -522,7 +665,7 @@ class MetalView: MTKView
   }
   
   // shift-option-right
-  override func moveWordRightAndModifySelection(_ sender: Any?)
+  public override func moveWordRightAndModifySelection(_ sender: Any?)
   {
     // cancel previous timer if any
     autoRotationTimer?.cancel()
@@ -551,16 +694,17 @@ class MetalView: MTKView
     autoRotationTimer?.resume()
   }
   
-  override var isOpaque: Bool { return true }
+  public override var isOpaque: Bool { return true }
 
-  override var acceptsFirstResponder: Bool { return true }
-  override func becomeFirstResponder() -> Bool
+  public override var acceptsFirstResponder: Bool { return true }
+  public override func becomeFirstResponder() -> Bool
   {
     return true
   }
   
-  override func resignFirstResponder() -> Bool
+  public override func resignFirstResponder() -> Bool
   {
     return true
   }
+  #endif
 }

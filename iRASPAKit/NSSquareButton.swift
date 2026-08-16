@@ -29,7 +29,13 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
+#if os(macOS)
 
 public class NSSquareButton: NSButton
 {
@@ -43,3 +49,4 @@ public class NSSquareButton: NSButton
   
 }
 
+#endif
