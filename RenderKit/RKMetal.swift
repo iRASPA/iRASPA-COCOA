@@ -11,6 +11,9 @@ import Metal
 
 enum RKMetal
 {
+  // Draw bonds as ray-traced cylinder imposters (default) instead of tessellated cylinder meshes.
+  static var drawBondsAsImposters: Bool = true
+
   static var hostStorage: MTLResourceOptions
   {
     #if os(macOS)
