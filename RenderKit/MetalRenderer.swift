@@ -151,6 +151,7 @@ public class MetalRenderer
   var globalAxesUniformBuffers: MTLBuffer! = nil
   
   public weak var renderDataSource: RKRenderDataSource?
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   
   public init()
@@ -194,6 +195,8 @@ public class MetalRenderer
   
   func setDataSources(renderDataSource: RKRenderDataSource, renderStructures: [[RKRenderObject]])
   {
+    self.renderStructures = renderStructures
+    
     backgroundShader.renderDataSource = renderDataSource
     
     globalAxesSystemShader.renderDataSource = renderDataSource
@@ -918,6 +921,37 @@ public class MetalRenderer
     commandEncoder.endEncoding()
   }
   
+  // Transparent objects must be composited back-to-front (farthest from the camera first),
+  // otherwise the blending between overlapping transparent movies is incorrect.
+  // Returns (sceneIndex, movieIndex, structureIndex) tuples where structureIndex is the flat
+  // index used as offset into the structure/isosurface uniform buffers.
+  func backToFrontRenderOrder(camera: RKCamera?) -> [(sceneIndex: Int, movieIndex: Int, structureIndex: Int)]
+  {
+    var items: [(sceneIndex: Int, movieIndex: Int, structureIndex: Int, depth: Double)] = []
+    var index: Int = 0
+    for i in 0..<self.renderStructures.count
+    {
+      let structures: [RKRenderObject] = self.renderStructures[i]
+      for (j, structure) in structures.enumerated()
+      {
+        var depth: Double = 0.0
+        if let camera = camera
+        {
+          let center: SIMD3<Double> = structure.cell.boundingBox.center
+          let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: center, withTranslation: structure.origin)
+          let worldCenter: SIMD4<Double> = modelMatrix * SIMD4<Double>(x: center.x, y: center.y, z: center.z, w: 1.0)
+          let viewCenter: SIMD4<Double> = camera.modelViewMatrix * worldCenter
+          depth = viewCenter.z
+        }
+        items.append((sceneIndex: i, movieIndex: j, structureIndex: index, depth: depth))
+        index = index + 1
+      }
+    }
+    // the camera looks along the negative z-axis in view space, so the most negative
+    // view-space z is farthest away and must be drawn first
+    return items.sorted{$0.depth < $1.depth}.map{(sceneIndex: $0.sceneIndex, movieIndex: $0.movieIndex, structureIndex: $0.structureIndex)}
+  }
+  
   public func renderSceneVolumeRenderedSurfacesWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
   {
     let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
@@ -926,7 +960,10 @@ public class MetalRenderer
     commandEncoder.setCullMode(MTLCullMode.back)
     commandEncoder.setFrontFacing(MTLWinding.clockwise)
     
-    self.volumeRenderedSurfaceShader.renderVolumeRenderedSurfacesWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
+    for item in backToFrontRenderOrder(camera: camera)
+    {
+      self.volumeRenderedSurfaceShader.renderVolumeRenderedSurfacesWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
+    }
     
     commandEncoder.endEncoding()
   }
@@ -939,17 +976,21 @@ public class MetalRenderer
     commandEncoder.setCullMode(MTLCullMode.back)
     commandEncoder.setFrontFacing(MTLWinding.clockwise)
     
-    self.volumeRenderedSurfaceShader.renderVolumeRenderedVolumetricDataWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
-    //self.RASPADensityVolumeShader.renderRASPADensityWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
-    
-    self.isosurfaceShader.renderTransparentIsosurfacesWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-  
-    self.metalCrystalEllipsoidShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-    self.metalCrystalCylinderShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-    self.metalCrystalPolygonalPrismShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-    self.metalEllipsoidShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-    self.metalCylinderShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-    self.metalPolygonalPrismShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    // Draw all transparent objects back-to-front per structure (movie), interleaving the
+    // shader types, so that overlapping transparent objects from different movies blend correctly.
+    for item in backToFrontRenderOrder(camera: camera)
+    {
+      self.volumeRenderedSurfaceShader.renderVolumeRenderedVolumetricDataWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
+      
+      self.isosurfaceShader.renderTransparentIsosurfacesWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
+      self.metalCrystalEllipsoidShader.renderTransparentWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+      self.metalCrystalCylinderShader.renderTransparentWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+      self.metalCrystalPolygonalPrismShader.renderTransparentWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+      self.metalEllipsoidShader.renderTransparentWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+      self.metalCylinderShader.renderTransparentWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+      self.metalPolygonalPrismShader.renderTransparentWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    }
       
     if let _: RKCamera = camera
     {

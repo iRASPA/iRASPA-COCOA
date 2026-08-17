@@ -204,130 +204,113 @@ class MetalEnergyVolumeRenderedSurfaceShader
   }
   
   
-  public func renderVolumeRenderedSurfacesWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, isosurfaceUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, depthTexture: MTLTexture!, size: CGSize)
+  // Draws the volume-rendered surface (RASPA_PES transfer function) of a single structure.
+  // Called by MetalRenderer in back-to-front order so overlapping transparent volumes blend correctly.
+  public func renderVolumeRenderedSurfacesWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, sceneIndex: Int, movieIndex: Int, structureIndex: Int, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, isosurfaceUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, depthTexture: MTLTexture!, size: CGSize)
   {
-    if let _: RKRenderDataSource = renderDataSource
-    {
-      commandEncoder.setRenderPipelineState(surfacePipeLine)
-      commandEncoder.setCullMode(MTLCullMode.back)
-      #if os(macOS)
-      commandEncoder.setDepthClipMode(.clamp)
-      #endif
-      
-      // for transparent surface:
-      // disable depth-buffer updates (depth-buffer testing is still active)
-      // the depth buffer maintains the relationship between opaque and transparent objects,
-      // but does not prevent the transparent objects from occluding each other.
-      commandEncoder.setDepthStencilState(self.depthState)
-      
-      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 1)
-      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 2)
-      commandEncoder.setVertexBuffer(isosurfaceUniformBuffers, offset: 0, index: 3)
-      commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-      
-      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
-      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 1)
-      commandEncoder.setFragmentBuffer(isosurfaceUniformBuffers, offset: 0, index: 2)
-      
-      var index = 0
-      for i in 0..<self.renderStructures.count
-      {
-        let structures: [RKRenderObject] = self.renderStructures[i]
-        
-        for (j,structure) in structures.enumerated()
-        {
-          if let structure: RKRenderVolumetricDataSource = structure as? RKRenderVolumetricDataSource,
-             let vertexBuffer = vertexBuffer,
-             let indexBuffer = indexBuffer,
-             let texture = textureData[i][j],
-             let textureTransferFunction = textureTransferFunction,
-             let depthTexture = depthTexture,
-             structure.adsorptionSurfaceRenderingMethod == .volumeRendering,
-             structure.adsorptionVolumeTransferFunction == .RASPA_PES
-          {
-            if (structure.isVisible && structure.drawAdsorptionSurface)
-            {
-              commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-              commandEncoder.setVertexBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 2)
-              commandEncoder.setVertexBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 1)
-              commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
-              commandEncoder.setFragmentTexture(texture, index: 0)
-              commandEncoder.setFragmentTexture(depthTexture, index: 1)
-              commandEncoder.setFragmentTexture(textureTransferFunction, index: 2)
-              commandEncoder.setFragmentSamplerState(samplerTextureData, index: 0)
-              commandEncoder.setFragmentSamplerState(samplerTextureTransferData, index: 1)
-              
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: 34, indexType: MTLIndexType.uint16, indexBuffer: indexBuffer, indexBufferOffset: 0)
-            }
-          }
-          index = index + 1
-        }
-      }
-    }
+    guard let _: RKRenderDataSource = renderDataSource,
+          sceneIndex < self.renderStructures.count,
+          movieIndex < self.renderStructures[sceneIndex].count,
+          sceneIndex < self.textureData.count,
+          movieIndex < self.textureData[sceneIndex].count,
+          let structure: RKRenderVolumetricDataSource = self.renderStructures[sceneIndex][movieIndex] as? RKRenderVolumetricDataSource,
+          let vertexBuffer = vertexBuffer,
+          let indexBuffer = indexBuffer,
+          let texture = textureData[sceneIndex][movieIndex],
+          let textureTransferFunction = textureTransferFunction,
+          let depthTexture = depthTexture,
+          structure.adsorptionSurfaceRenderingMethod == .volumeRendering,
+          structure.adsorptionVolumeTransferFunction == .RASPA_PES,
+          structure.isVisible && structure.drawAdsorptionSurface else {return}
+    
+    commandEncoder.setRenderPipelineState(surfacePipeLine)
+    commandEncoder.setCullMode(MTLCullMode.back)
+    #if os(macOS)
+    commandEncoder.setDepthClipMode(.clamp)
+    #endif
+    
+    // for transparent surface:
+    // disable depth-buffer updates (depth-buffer testing is still active)
+    // the depth buffer maintains the relationship between opaque and transparent objects,
+    // but does not prevent the transparent objects from occluding each other.
+    commandEncoder.setDepthStencilState(self.depthState)
+    
+    commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+    commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 1)
+    commandEncoder.setVertexBuffer(structureUniformBuffers, offset: structureIndex*MemoryLayout<RKStructureUniforms>.stride, index: 2)
+    commandEncoder.setVertexBuffer(isosurfaceUniformBuffers, offset: structureIndex*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 3)
+    commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
+    
+    commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
+    commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: structureIndex*MemoryLayout<RKStructureUniforms>.stride, index: 1)
+    commandEncoder.setFragmentBuffer(isosurfaceUniformBuffers, offset: structureIndex*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
+    
+    commandEncoder.setFragmentTexture(texture, index: 0)
+    commandEncoder.setFragmentTexture(depthTexture, index: 1)
+    commandEncoder.setFragmentTexture(textureTransferFunction, index: 2)
+    commandEncoder.setFragmentSamplerState(samplerTextureData, index: 0)
+    commandEncoder.setFragmentSamplerState(samplerTextureTransferData, index: 1)
+    
+    commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: 34, indexType: MTLIndexType.uint16, indexBuffer: indexBuffer, indexBufferOffset: 0)
+    
+    #if os(macOS)
+    commandEncoder.setDepthClipMode(.clip)
+    #endif
   }
   
-  public func renderVolumeRenderedVolumetricDataWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, isosurfaceUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, depthTexture: MTLTexture!, size: CGSize)
+  // Draws the volume-rendered volumetric data (non-RASPA_PES transfer functions) of a single structure.
+  // Called by MetalRenderer in back-to-front order so overlapping transparent volumes blend correctly.
+  public func renderVolumeRenderedVolumetricDataWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, sceneIndex: Int, movieIndex: Int, structureIndex: Int, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, isosurfaceUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, depthTexture: MTLTexture!, size: CGSize)
   {
-    if let _: RKRenderDataSource = renderDataSource
-    {
-      commandEncoder.setRenderPipelineState(transparentPipeLine)
-      commandEncoder.setCullMode(MTLCullMode.back)
-      #if os(macOS)
-      commandEncoder.setDepthClipMode(.clamp)
-      #endif
-      
-      // for transparent surface:
-      // disable depth-buffer updates (depth-buffer testing is still active)
-      // the depth buffer maintains the relationship between opaque and transparent objects,
-      // but does not prevent the transparent objects from occluding each other.
-      commandEncoder.setDepthStencilState(self.transparentDepthState)
-      
-      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 1)
-      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 2)
-      commandEncoder.setVertexBuffer(isosurfaceUniformBuffers, offset: 0, index: 3)
-      commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-      
-      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
-      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 1)
-      commandEncoder.setFragmentBuffer(isosurfaceUniformBuffers, offset: 0, index: 2)
-      
-      var index = 0
-      for i in 0..<self.renderStructures.count
-      {
-        let structures: [RKRenderObject] = self.renderStructures[i]
-        
-        for (j,structure) in structures.enumerated()
-        {
-          if let structure: RKRenderVolumetricDataSource = structure as? RKRenderVolumetricDataSource,
-             let vertexBuffer = vertexBuffer,
-             let indexBuffer = indexBuffer,
-             let texture = textureData[i][j],
-             let textureTransferFunction = textureTransferFunction,
-             let depthTexture = depthTexture,
-             structure.adsorptionSurfaceRenderingMethod == .volumeRendering,
-             structure.adsorptionVolumeTransferFunction != .RASPA_PES
-          {
-            if (structure.isVisible && structure.drawAdsorptionSurface)
-            {
-              commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-              commandEncoder.setVertexBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 2)
-              commandEncoder.setVertexBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 1)
-              commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
-              commandEncoder.setFragmentTexture(texture, index: 0)
-              commandEncoder.setFragmentTexture(depthTexture, index: 1)
-              commandEncoder.setFragmentTexture(textureTransferFunction, index: 2)
-              commandEncoder.setFragmentSamplerState(samplerTextureData, index: 0)
-              commandEncoder.setFragmentSamplerState(samplerTextureTransferData, index: 1)
-              
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: 34, indexType: MTLIndexType.uint16, indexBuffer: indexBuffer, indexBufferOffset: 0)
-            }
-          }
-          index = index + 1
-        }
-      }
-    }
+    guard let _: RKRenderDataSource = renderDataSource,
+          sceneIndex < self.renderStructures.count,
+          movieIndex < self.renderStructures[sceneIndex].count,
+          sceneIndex < self.textureData.count,
+          movieIndex < self.textureData[sceneIndex].count,
+          let structure: RKRenderVolumetricDataSource = self.renderStructures[sceneIndex][movieIndex] as? RKRenderVolumetricDataSource,
+          let vertexBuffer = vertexBuffer,
+          let indexBuffer = indexBuffer,
+          let texture = textureData[sceneIndex][movieIndex],
+          let textureTransferFunction = textureTransferFunction,
+          let depthTexture = depthTexture,
+          structure.adsorptionSurfaceRenderingMethod == .volumeRendering,
+          structure.adsorptionVolumeTransferFunction != .RASPA_PES,
+          structure.isVisible && structure.drawAdsorptionSurface else {return}
+    
+    commandEncoder.setRenderPipelineState(transparentPipeLine)
+    commandEncoder.setCullMode(MTLCullMode.back)
+    #if os(macOS)
+    commandEncoder.setDepthClipMode(.clamp)
+    #endif
+    
+    // for transparent surface:
+    // disable depth-buffer updates (depth-buffer testing is still active)
+    // the depth buffer maintains the relationship between opaque and transparent objects,
+    // but does not prevent the transparent objects from occluding each other.
+    // Correct mutual occlusion is achieved by drawing the structures back-to-front.
+    commandEncoder.setDepthStencilState(self.transparentDepthState)
+    
+    commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+    commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 1)
+    commandEncoder.setVertexBuffer(structureUniformBuffers, offset: structureIndex*MemoryLayout<RKStructureUniforms>.stride, index: 2)
+    commandEncoder.setVertexBuffer(isosurfaceUniformBuffers, offset: structureIndex*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 3)
+    commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
+    
+    commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
+    commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: structureIndex*MemoryLayout<RKStructureUniforms>.stride, index: 1)
+    commandEncoder.setFragmentBuffer(isosurfaceUniformBuffers, offset: structureIndex*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
+    
+    commandEncoder.setFragmentTexture(texture, index: 0)
+    commandEncoder.setFragmentTexture(depthTexture, index: 1)
+    commandEncoder.setFragmentTexture(textureTransferFunction, index: 2)
+    commandEncoder.setFragmentSamplerState(samplerTextureData, index: 0)
+    commandEncoder.setFragmentSamplerState(samplerTextureTransferData, index: 1)
+    
+    commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: 34, indexType: MTLIndexType.uint16, indexBuffer: indexBuffer, indexBufferOffset: 0)
+    
+    #if os(macOS)
+    commandEncoder.setDepthClipMode(.clip)
+    #endif
   }
   
   func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?

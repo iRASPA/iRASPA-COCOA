@@ -216,59 +216,45 @@ class MetalEnergyIsosurfaceShader
   
   
   
-  public func renderTransparentIsosurfacesWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, isosurfaceUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
+  // Draws the transparent isosurface of a single structure.
+  // Called by MetalRenderer in back-to-front order so overlapping transparent surfaces blend correctly.
+  public func renderTransparentIsosurfacesWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, sceneIndex: Int, movieIndex: Int, structureIndex: Int, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, isosurfaceUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
   {
-    if let _: RKRenderDataSource = renderDataSource
-    {
-      commandEncoder.setRenderPipelineState(transparentPipeLine)
-      
-      // for transparent surface:
-      // disable depth-buffer updates (depth-buffer testing is still active)
-      // the depth buffer maintains the relationship between opaque and transparent objects,
-      // but does not prevent the transparent objects from occluding each other.
-      commandEncoder.setDepthStencilState(self.transparentDepthState)
-      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
-      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
-      commandEncoder.setVertexBuffer(isosurfaceUniformBuffers, offset: 0, index: 4)
-      commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 5)
-      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
-      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 1)
-      commandEncoder.setFragmentBuffer(isosurfaceUniformBuffers, offset: 0, index: 2)
-      
-      var index = 0
-      for i in 0..<self.renderStructures.count
-      {
-        let structures: [RKRenderObject] = self.renderStructures[i]
-        
-        for (j,structure) in structures.enumerated()
-        {
-          if let structure: RKRenderVolumetricDataSource = structure as? RKRenderVolumetricDataSource,
-             let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: i, movieIndex: j),
-             let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
-             structure.drawAdsorptionSurface,
-             structure.adsorptionSurfaceRenderingMethod == .isoSurface
-          {
-            let vertexCount: Int = 3 * structure.adsorptionSurfaceNumberOfTriangles
-            if (structure.isVisible && structure.adsorptionSurfaceOpacity<=0.99999 && vertexCount>0)
-            {
-              commandEncoder.setVertexBuffer(isosurfaceVertexBuffer, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(instanceIsosurfaceVertexBuffer, offset: 0, index: 1)
-              commandEncoder.setVertexBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setVertexBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 4)
-              commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 1)
-              commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
-              
-              commandEncoder.setCullMode(MTLCullMode.front)
-              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<SIMD4<Float>>.stride)
-              
-              commandEncoder.setCullMode(MTLCullMode.back)
-              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<SIMD4<Float>>.stride)
-            }
-          }
-          index = index + 1
-        }
-      }
-    }
+    guard let _: RKRenderDataSource = renderDataSource,
+          sceneIndex < self.renderStructures.count,
+          movieIndex < self.renderStructures[sceneIndex].count,
+          let structure: RKRenderVolumetricDataSource = self.renderStructures[sceneIndex][movieIndex] as? RKRenderVolumetricDataSource,
+          let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: sceneIndex, movieIndex: movieIndex),
+          let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: sceneIndex, movieIndex: movieIndex),
+          structure.drawAdsorptionSurface,
+          structure.adsorptionSurfaceRenderingMethod == .isoSurface else {return}
+    
+    let vertexCount: Int = 3 * structure.adsorptionSurfaceNumberOfTriangles
+    guard structure.isVisible && structure.adsorptionSurfaceOpacity<=0.99999 && vertexCount>0 else {return}
+    
+    commandEncoder.setRenderPipelineState(transparentPipeLine)
+    
+    // for transparent surface:
+    // disable depth-buffer updates (depth-buffer testing is still active)
+    // the depth buffer maintains the relationship between opaque and transparent objects,
+    // but does not prevent the transparent objects from occluding each other.
+    // Correct mutual occlusion is achieved by drawing the structures back-to-front.
+    commandEncoder.setDepthStencilState(self.transparentDepthState)
+    commandEncoder.setVertexBuffer(isosurfaceVertexBuffer, offset: 0, index: 0)
+    commandEncoder.setVertexBuffer(instanceIsosurfaceVertexBuffer, offset: 0, index: 1)
+    commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+    commandEncoder.setVertexBuffer(structureUniformBuffers, offset: structureIndex*MemoryLayout<RKStructureUniforms>.stride, index: 3)
+    commandEncoder.setVertexBuffer(isosurfaceUniformBuffers, offset: structureIndex*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 4)
+    commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 5)
+    commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
+    commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: structureIndex*MemoryLayout<RKStructureUniforms>.stride, index: 1)
+    commandEncoder.setFragmentBuffer(isosurfaceUniformBuffers, offset: structureIndex*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
+    
+    commandEncoder.setCullMode(MTLCullMode.front)
+    commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<SIMD4<Float>>.stride)
+    
+    commandEncoder.setCullMode(MTLCullMode.back)
+    commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<SIMD4<Float>>.stride)
   }
   
   func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?

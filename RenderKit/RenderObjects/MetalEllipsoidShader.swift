@@ -200,51 +200,36 @@ class MetalEllipsoidShader
     }
   }
   
-  public func renderTransparentWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
+  // Draws the transparent ellipsoid primitives of a single structure.
+  // Called by MetalRenderer in back-to-front order so overlapping transparent objects blend correctly.
+  public func renderTransparentWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, sceneIndex: Int, movieIndex: Int, structureIndex: Int, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
   {
-    if (self.renderStructures.joined().compactMap{$0 as? RKRenderEllipsoidObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
-    {
-      commandEncoder.setDepthStencilState(transparentDepthState)
-      commandEncoder.setRenderPipelineState(transparentPipeLine)
-      commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
-      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
-      commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 1)
-      commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 2)
-      commandEncoder.setFragmentSamplerState(samplerState, index: 0)
-      
-      var index = 0
-      for i in 0..<self.renderStructures.count
-      {
-        let structures: [RKRenderObject] = self.renderStructures[i]
-        
-        for (j,structure) in structures.enumerated()
-        {
-          if let structure: RKRenderEllipsoidObjectsSource = structure as? RKRenderEllipsoidObjectsSource,
-            let buffer: MTLBuffer = self.metalBuffer(instanceBuffers, sceneIndex: i, movieIndex: j)
-          {
-            let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-            
-            if (structure.drawAtoms && structure.isVisible && structure.primitiveOpacity<=0.99999 && (numberOfAtoms > 0) )
-            {
-              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.setFragmentTexture(ambientOcclusionTextures[i][j], index: 0)
-              
-              commandEncoder.setCullMode(MTLCullMode.front)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
-              
-              commandEncoder.setCullMode(MTLCullMode.back)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
-            }
-          }
-          index = index + 1
-        }
-      }
-    }
+    guard sceneIndex < self.renderStructures.count,
+          movieIndex < self.renderStructures[sceneIndex].count,
+          let structure: RKRenderEllipsoidObjectsSource = self.renderStructures[sceneIndex][movieIndex] as? RKRenderEllipsoidObjectsSource,
+          let buffer: MTLBuffer = self.metalBuffer(instanceBuffers, sceneIndex: sceneIndex, movieIndex: movieIndex) else {return}
+    
+    let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+    guard structure.drawAtoms && structure.isVisible && structure.primitiveOpacity<=0.99999 && (numberOfAtoms > 0) else {return}
+    
+    commandEncoder.setDepthStencilState(transparentDepthState)
+    commandEncoder.setRenderPipelineState(transparentPipeLine)
+    commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+    commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+    commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+    commandEncoder.setVertexBuffer(structureUniformBuffers, offset: structureIndex * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+    commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
+    commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: structureIndex * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+    commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 1)
+    commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 2)
+    commandEncoder.setFragmentSamplerState(samplerState, index: 0)
+    commandEncoder.setFragmentTexture(ambientOcclusionTextures[sceneIndex][movieIndex], index: 0)
+    
+    commandEncoder.setCullMode(MTLCullMode.front)
+    commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+    
+    commandEncoder.setCullMode(MTLCullMode.back)
+    commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
   }
   
   func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?
