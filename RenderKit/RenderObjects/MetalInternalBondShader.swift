@@ -38,20 +38,12 @@ class MetalInternalBondShader
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderObject]] = [[]]
   
-  var pipeLine: MTLRenderPipelineState! = nil
   var imposterPipeLine: MTLRenderPipelineState! = nil
+  var perPixelImposterPipeLine: MTLRenderPipelineState! = nil
   var instanceBufferAllBonds: [[MTLBuffer?]] = []
-  var indexBufferSingleBonds: MTLBuffer! = nil
-  var vertexBufferSingleBonds: MTLBuffer! = nil
   var instanceBufferSingleBonds: [[MTLBuffer?]] = []
-  var indexBufferDoubleBonds: MTLBuffer! = nil
-  var vertexBufferDoubleBonds: MTLBuffer! = nil
   var instanceBufferDoubleBonds: [[MTLBuffer?]] = []
-  var indexBufferPartialDoubleBonds: MTLBuffer! = nil
-  var vertexBufferPartialDoubleBonds: MTLBuffer! = nil
   var instanceBufferPartialDoubleBonds: [[MTLBuffer?]] = []
-  var indexBufferTripleBonds: MTLBuffer! = nil
-  var vertexBufferTripleBonds: MTLBuffer! = nil
   var instanceBufferTripleBonds: [[MTLBuffer?]] = []
   var samplerState: MTLSamplerState! = nil
   
@@ -76,23 +68,6 @@ class MetalInternalBondShader
     }
     samplerState = device.makeSamplerState(descriptor: pSamplerDescriptor!)
     
-    let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "BondCylinderVertexShader")!
-    pipelineDescriptor.sampleCount = maximumNumberOfSamples
-    pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "BondCylinderFragmentShader")!
-    pipelineDescriptor.vertexDescriptor = vertexDescriptor
-    do
-    {
-      self.pipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-    }
-    catch
-    {
-      fatalError("Error occurred when creating render pipeline state \(error)")
-    }
-    
     // imposter pipeline: the hull vertices are generated from the vertex-id, so no vertex descriptor is needed
     let imposterPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     imposterPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
@@ -109,28 +84,23 @@ class MetalInternalBondShader
     {
       fatalError("Error occurred when creating render pipeline state \(error)")
     }
+    
+    // "fast" per-pixel quality mode: identical shading, but interpolated at the pixel
+    // center so the fragment shader runs once per pixel even under MSAA
+    imposterPipelineDescriptor.fragmentFunction = library.makeFunction(name: "BondCylinderImposterPerPixelFragmentShader")!
+    do
+    {
+      self.perPixelImposterPipeLine = try device.makeRenderPipelineState(descriptor: imposterPipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating render pipeline state \(error)")
+    }
   }
   
   
   public func buildVertexBuffers(device: MTLDevice)
   {
-    let cylinderSingleBond: MetalCappedSingleBondCylinderGeometry = MetalCappedSingleBondCylinderGeometry()
-    vertexBufferSingleBonds = device.makeBuffer(bytes: cylinderSingleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderSingleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferSingleBonds = device.makeBuffer(bytes: cylinderSingleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderSingleBond.indices.count, options:RKMetal.hostStorage)
-    
-    let cylinderDoubleBond: MetalCappedDoubleBondCylinderGeometry = MetalCappedDoubleBondCylinderGeometry()
-    vertexBufferDoubleBonds = device.makeBuffer(bytes: cylinderDoubleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderDoubleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferDoubleBonds = device.makeBuffer(bytes: cylinderDoubleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderDoubleBond.indices.count, options:RKMetal.hostStorage)
-    
-    let cylinderPartialDoubleBond: MetalCappedSingleBondCylinderGeometry = MetalCappedSingleBondCylinderGeometry()
-    vertexBufferPartialDoubleBonds = device.makeBuffer(bytes: cylinderPartialDoubleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderPartialDoubleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferPartialDoubleBonds = device.makeBuffer(bytes: cylinderPartialDoubleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderPartialDoubleBond.indices.count, options:RKMetal.hostStorage)
-    
-    let cylinderTripleBond: MetalCappedTripleBondCylinderGeometry = MetalCappedTripleBondCylinderGeometry()
-    vertexBufferTripleBonds = device.makeBuffer(bytes: cylinderTripleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderTripleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferTripleBonds = device.makeBuffer(bytes: cylinderTripleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderTripleBond.indices.count, options:RKMetal.hostStorage)
-    
-       
     if let _: RKRenderDataSource = renderDataSource
     {
       instanceBufferAllBonds = []
@@ -191,13 +161,9 @@ class MetalInternalBondShader
     // draw internal bonds
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderBondSource}.reduce(false, {$0 || $1.drawBonds}))
     {
-      let useImposters: Bool = RKMetal.drawBondsAsImposters
-      commandEncoder.setRenderPipelineState(useImposters ? imposterPipeLine : pipeLine)
-      if useImposters
-      {
-        // the imposter hull is generated in the vertex shader with view-dependent winding
-        commandEncoder.setCullMode(MTLCullMode.none)
-      }
+      commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? imposterPipeLine : perPixelImposterPipeLine)
+      // the imposter hull is generated in the vertex shader with view-dependent winding
+      commandEncoder.setCullMode(MTLCullMode.none)
       
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
@@ -208,7 +174,6 @@ class MetalInternalBondShader
       commandEncoder.setFragmentSamplerState(samplerState, index: 0)
       
       var index: Int = 0
-      commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -225,7 +190,7 @@ class MetalInternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
-              MetalInternalBondShader.drawBonds(commandEncoder, useImposters: useImposters, indexBuffer: indexBufferSingleBonds, imposterVertexCount: 18, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -233,7 +198,6 @@ class MetalInternalBondShader
       }
       
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -250,7 +214,7 @@ class MetalInternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
-              MetalInternalBondShader.drawBonds(commandEncoder, useImposters: useImposters, indexBuffer: indexBufferSingleBonds, imposterVertexCount: 18, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -258,7 +222,6 @@ class MetalInternalBondShader
       }
       
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferDoubleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -276,7 +239,7 @@ class MetalInternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
-              MetalInternalBondShader.drawBonds(commandEncoder, useImposters: useImposters, indexBuffer: indexBufferDoubleBonds, imposterVertexCount: 36, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 36, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -284,7 +247,6 @@ class MetalInternalBondShader
       }
       
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -302,7 +264,7 @@ class MetalInternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
-              MetalInternalBondShader.drawBonds(commandEncoder, useImposters: useImposters, indexBuffer: indexBufferPartialDoubleBonds, imposterVertexCount: 18, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -310,7 +272,6 @@ class MetalInternalBondShader
       }
       
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferTripleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -328,17 +289,14 @@ class MetalInternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
-              MetalInternalBondShader.drawBonds(commandEncoder, useImposters: useImposters, indexBuffer: indexBufferTripleBonds, imposterVertexCount: 54, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 54, instanceCount: instanceCount)
             }
           }
           index = index + 1
         }
       }
       
-      if useImposters
-      {
-        commandEncoder.setCullMode(MTLCullMode.back)
-      }
+      commandEncoder.setCullMode(MTLCullMode.back)
     }
   }
   
@@ -355,15 +313,8 @@ class MetalInternalBondShader
   }
   
   // imposters use 18 hull-vertices per (sub-)cylinder, generated in the vertex shader
-  static func drawBonds(_ commandEncoder: MTLRenderCommandEncoder, useImposters: Bool, indexBuffer: MTLBuffer, imposterVertexCount: Int, instanceCount: Int)
+  static func drawBonds(_ commandEncoder: MTLRenderCommandEncoder, imposterVertexCount: Int, instanceCount: Int)
   {
-    if useImposters
-    {
-      commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: imposterVertexCount, instanceCount: instanceCount)
-    }
-    else
-    {
-      commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
-    }
+    commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: imposterVertexCount, instanceCount: instanceCount)
   }
 }

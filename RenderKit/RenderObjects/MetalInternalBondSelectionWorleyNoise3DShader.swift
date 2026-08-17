@@ -37,15 +37,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderObject]] = [[]]
   
-  var vertexBufferSingleBonds: MTLBuffer! = nil
-  var indexBufferSingleBonds: MTLBuffer! = nil
-  var vertexBufferDoubleBonds: MTLBuffer! = nil
-  var indexBufferDoubleBonds: MTLBuffer! = nil
-  var vertexBufferPartialDoubleBonds: MTLBuffer! = nil
-  var indexBufferPartialDoubleBonds: MTLBuffer! = nil
-  var vertexBufferTripleBonds: MTLBuffer! = nil
-  var indexBufferTripleBonds: MTLBuffer! = nil
-  var pipeLine: MTLRenderPipelineState! = nil
+  var imposterPipeLine: MTLRenderPipelineState! = nil
   var transparentDepthState: MTLDepthStencilState! = nil
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
@@ -55,24 +47,24 @@ class MetalInternalBondSelectionWorleyNoise3DShader
     transparentDepthStateDescriptor.isDepthWriteEnabled = false
     transparentDepthState = device.makeDepthStencilState(descriptor: transparentDepthStateDescriptor)
     
-    let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "internalBondSelectionWorleyNoise3DCylinderVertexShader")!
-    pipelineDescriptor.sampleCount = maximumNumberOfSamples
-    pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    pipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
-    pipelineDescriptor.colorAttachments[0].rgbBlendOperation = MTLBlendOperation.add;
-    pipelineDescriptor.colorAttachments[0].alphaBlendOperation = MTLBlendOperation.add;
-    pipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactor.one;
-    pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
-    pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
-    pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "internalBondSelectionWorleyNoise3DCylinderFragmentShader")!
-    pipelineDescriptor.vertexDescriptor = vertexDescriptor
+    // imposter pipeline: the hull vertices are generated from the vertex-id, so no vertex descriptor is needed
+    let imposterPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    imposterPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
+    imposterPipelineDescriptor.vertexFunction = library.makeFunction(name: "internalBondSelectionImposterVertexShader")!
+    imposterPipelineDescriptor.sampleCount = maximumNumberOfSamples
+    imposterPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
+    imposterPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
+    imposterPipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
+    imposterPipelineDescriptor.colorAttachments[0].rgbBlendOperation = MTLBlendOperation.add;
+    imposterPipelineDescriptor.colorAttachments[0].alphaBlendOperation = MTLBlendOperation.add;
+    imposterPipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactor.one;
+    imposterPipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
+    imposterPipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
+    imposterPipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
+    imposterPipelineDescriptor.fragmentFunction = library.makeFunction(name: "internalBondSelectionWorleyNoise3DImposterFragmentShader")!
     do
     {
-      self.pipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+      self.imposterPipeLine = try device.makeRenderPipelineState(descriptor: imposterPipelineDescriptor)
     }
     catch
     {
@@ -80,34 +72,17 @@ class MetalInternalBondSelectionWorleyNoise3DShader
     }
   }
   
-  public func buildVertexBuffers(device: MTLDevice)
-  {
-    let cylinderSingleBond: MetalCappedSingleBondCylinderGeometry = MetalCappedSingleBondCylinderGeometry()
-    vertexBufferSingleBonds = device.makeBuffer(bytes: cylinderSingleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderSingleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferSingleBonds = device.makeBuffer(bytes: cylinderSingleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderSingleBond.indices.count, options:RKMetal.hostStorage)
-    
-    let cylinderDoubleBond: MetalCappedDoubleBondCylinderGeometry = MetalCappedDoubleBondCylinderGeometry()
-    vertexBufferDoubleBonds = device.makeBuffer(bytes: cylinderDoubleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderDoubleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferDoubleBonds = device.makeBuffer(bytes: cylinderDoubleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderDoubleBond.indices.count, options:RKMetal.hostStorage)
-    
-    let cylinderPartialDoubleBond: MetalCappedDoubleBondCylinderGeometry = MetalCappedDoubleBondCylinderGeometry()
-    vertexBufferPartialDoubleBonds = device.makeBuffer(bytes: cylinderPartialDoubleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderPartialDoubleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferDoubleBonds = device.makeBuffer(bytes: cylinderPartialDoubleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderPartialDoubleBond.indices.count, options:RKMetal.hostStorage)
-    
-    let cylinderTripleBond: MetalCappedTripleBondCylinderGeometry = MetalCappedTripleBondCylinderGeometry()
-    vertexBufferTripleBonds = device.makeBuffer(bytes: cylinderTripleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderTripleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferTripleBonds = device.makeBuffer(bytes: cylinderTripleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderTripleBond.indices.count, options:RKMetal.hostStorage)
-  }
-  
   public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, instanceRenderer: MetalInternalBondSelectionShader, bondShader: MetalInternalBondShader, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
   {
     // draw internal bonds
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderBondSource}.reduce(false, {$0 || $1.drawBonds}))
     {
-      commandEncoder.setRenderPipelineState(pipeLine)
+      commandEncoder.setRenderPipelineState(imposterPipeLine)
       
       commandEncoder.setDepthStencilState(self.transparentDepthState)
-      commandEncoder.setCullMode(MTLCullMode.back)
+      // the imposter hull is generated in the vertex shader with view-dependent winding
+      // the imposter hull is generated in the vertex shader with view-dependent winding
+      commandEncoder.setCullMode(MTLCullMode.none)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
@@ -116,7 +91,6 @@ class MetalInternalBondSelectionWorleyNoise3DShader
       commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 2)
       
       var index: Int = 0
-      commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -133,7 +107,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
             
-              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferSingleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferSingleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -141,7 +115,6 @@ class MetalInternalBondSelectionWorleyNoise3DShader
       }
       
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -158,7 +131,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
             
-              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferSingleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferSingleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -166,7 +139,6 @@ class MetalInternalBondSelectionWorleyNoise3DShader
       }
       
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferDoubleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -183,7 +155,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
             
-              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferDoubleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferDoubleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 36, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -191,7 +163,6 @@ class MetalInternalBondSelectionWorleyNoise3DShader
       }
       
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferTripleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -208,7 +179,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
             
-              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferTripleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferTripleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 54, instanceCount: instanceCount)
             }
           }
           index = index + 1

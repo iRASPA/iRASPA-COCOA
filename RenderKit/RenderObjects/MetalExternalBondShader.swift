@@ -38,31 +38,15 @@ class MetalExternalBondShader
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderObject]] = [[]]
   
-  var pipeLine: MTLRenderPipelineState! = nil
   var imposterPipeLine: MTLRenderPipelineState! = nil
-  var stencilPipeLine: MTLRenderPipelineState! = nil
+  var perPixelImposterPipeLine: MTLRenderPipelineState! = nil
   var instanceBufferAllBonds: [[MTLBuffer?]] = []
-  var indexBufferSingleBonds: MTLBuffer! = nil
-  var vertexBufferSingleBonds: MTLBuffer! = nil
   var instanceBufferSingleBonds: [[MTLBuffer?]] = []
-  var indexBufferDoubleBonds: MTLBuffer! = nil
-  var vertexBufferDoubleBonds: MTLBuffer! = nil
   var instanceBufferDoubleBonds: [[MTLBuffer?]] = []
-  var indexBufferPartialDoubleBonds: MTLBuffer! = nil
-  var vertexBufferPartialDoubleBonds: MTLBuffer! = nil
   var instanceBufferPartialDoubleBonds: [[MTLBuffer?]] = []
-  var indexBufferTripleBonds: MTLBuffer! = nil
-  var vertexBufferTripleBonds: MTLBuffer! = nil
   var instanceBufferTripleBonds: [[MTLBuffer?]] = []
   var samplerState: MTLSamplerState! = nil
   var depthState: MTLDepthStencilState! = nil
-  var depthStencilStateWriteFalse: MTLDepthStencilState! = nil
-  var stencilDescriptorWriteFalse: MTLDepthStencilState! = nil
-  var depthStencilStateWriteTrue: MTLDepthStencilState! = nil
-  
-  var boxPipeLine: MTLRenderPipelineState! = nil
-  var boxIndexBuffer: MTLBuffer! = nil
-  var boxVertexBuffer: MTLBuffer! = nil
   
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
@@ -91,51 +75,6 @@ class MetalExternalBondShader
     depthStateDesc.isDepthWriteEnabled = true
     depthState = device.makeDepthStencilState(descriptor: depthStateDesc)
     
-    let stencilDescriptorWriteFalse: MTLStencilDescriptor = MTLStencilDescriptor()
-    stencilDescriptorWriteFalse.stencilFailureOperation = MTLStencilOperation.keep
-    stencilDescriptorWriteFalse.depthFailureOperation = MTLStencilOperation.invert
-    stencilDescriptorWriteFalse.depthStencilPassOperation = MTLStencilOperation.invert
-    stencilDescriptorWriteFalse.stencilCompareFunction = MTLCompareFunction.always
-    stencilDescriptorWriteFalse.writeMask = 0x1
-    
-    let depthStencilStateDescWriteFalse: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
-    depthStencilStateDescWriteFalse.frontFaceStencil = stencilDescriptorWriteFalse
-    depthStencilStateDescWriteFalse.backFaceStencil = stencilDescriptorWriteFalse
-    depthStencilStateDescWriteFalse.depthCompareFunction = MTLCompareFunction.lessEqual
-    depthStencilStateDescWriteFalse.isDepthWriteEnabled = false
-    self.depthStencilStateWriteFalse = device.makeDepthStencilState(descriptor: depthStencilStateDescWriteFalse)
-    
-    let stencilDescriptorWriteTrue: MTLStencilDescriptor = MTLStencilDescriptor()
-    stencilDescriptorWriteTrue.stencilFailureOperation = MTLStencilOperation.keep
-    stencilDescriptorWriteTrue.depthFailureOperation = MTLStencilOperation.zero
-    stencilDescriptorWriteTrue.depthStencilPassOperation = MTLStencilOperation.zero
-    stencilDescriptorWriteTrue.stencilCompareFunction = MTLCompareFunction.equal
-    stencilDescriptorWriteTrue.readMask = 0x1
-    
-    let depthStencilStateDescWriteTrue: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
-    depthStencilStateDescWriteTrue.frontFaceStencil = stencilDescriptorWriteTrue
-    depthStencilStateDescWriteTrue.backFaceStencil = stencilDescriptorWriteTrue
-    depthStencilStateDescWriteTrue.depthCompareFunction = MTLCompareFunction.lessEqual
-    depthStencilStateDescWriteTrue.isDepthWriteEnabled = true
-    self.depthStencilStateWriteTrue = device.makeDepthStencilState(descriptor: depthStencilStateDescWriteTrue)
-    
-    let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "ExternalBondCylinderVertexShader")!
-    pipelineDescriptor.sampleCount = maximumNumberOfSamples
-    pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "ExternalBondCylinderFragmentShader")!
-    pipelineDescriptor.vertexDescriptor = vertexDescriptor
-    do
-    {
-      self.pipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-    }
-    catch
-    {
-      fatalError("Error occurred when creating render pipeline state \(error)")
-    }
-    
     // imposter pipeline: the hull vertices are generated from the vertex-id, so no vertex descriptor is needed
     let imposterPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     imposterPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
@@ -153,36 +92,12 @@ class MetalExternalBondShader
       fatalError("Error occurred when creating render pipeline state \(error)")
     }
     
-    let stencilPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    stencilPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    stencilPipelineDescriptor.colorAttachments[0].writeMask = MTLColorWriteMask()
-    stencilPipelineDescriptor.vertexFunction = library.makeFunction(name: "StencilExternalBondCylinderVertexShader")!
-    stencilPipelineDescriptor.sampleCount = maximumNumberOfSamples
-    stencilPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    stencilPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    stencilPipelineDescriptor.fragmentFunction = library.makeFunction(name: "StencilExternalBondCylinderFragmentShader")!
-    stencilPipelineDescriptor.vertexDescriptor = vertexDescriptor
+    // "fast" per-pixel quality mode: identical shading, but interpolated at the pixel
+    // center so the fragment shader runs once per pixel even under MSAA
+    imposterPipelineDescriptor.fragmentFunction = library.makeFunction(name: "ExternalBondCylinderImposterPerPixelFragmentShader")!
     do
     {
-      self.stencilPipeLine = try device.makeRenderPipelineState(descriptor: stencilPipelineDescriptor)
-    }
-    catch
-    {
-      fatalError("Error occurred when creating render pipeline state \(error)")
-    }
-    
-    let boxPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    boxPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    boxPipelineDescriptor.vertexFunction = library.makeFunction(name: "boxVertexShader")!
-    boxPipelineDescriptor.sampleCount = maximumNumberOfSamples
-    boxPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    boxPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    boxPipelineDescriptor.fragmentFunction = library.makeFunction(name: "boxFragmentShader")!
-    boxPipelineDescriptor.vertexDescriptor = vertexDescriptor
-    
-    do
-    {
-      self.boxPipeLine = try device.makeRenderPipelineState(descriptor: boxPipelineDescriptor)
+      self.perPixelImposterPipeLine = try device.makeRenderPipelineState(descriptor: imposterPipelineDescriptor)
     }
     catch
     {
@@ -192,22 +107,6 @@ class MetalExternalBondShader
   
   public func buildVertexBuffers(device: MTLDevice)
   {
-    let cylinderSingleBond: MetalCappedSingleBondCylinderGeometry = MetalCappedSingleBondCylinderGeometry()
-    vertexBufferSingleBonds = device.makeBuffer(bytes: cylinderSingleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderSingleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferSingleBonds = device.makeBuffer(bytes: cylinderSingleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderSingleBond.indices.count, options:RKMetal.hostStorage)
-    
-    let cylinderDoubleBond: MetalCappedDoubleBondCylinderGeometry = MetalCappedDoubleBondCylinderGeometry()
-    vertexBufferDoubleBonds = device.makeBuffer(bytes: cylinderDoubleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderDoubleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferDoubleBonds = device.makeBuffer(bytes: cylinderDoubleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderDoubleBond.indices.count, options:RKMetal.hostStorage)
-    
-    let cylinderPartialDoubleBond: MetalCappedSingleBondCylinderGeometry = MetalCappedSingleBondCylinderGeometry()
-    vertexBufferPartialDoubleBonds = device.makeBuffer(bytes: cylinderPartialDoubleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderPartialDoubleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferPartialDoubleBonds = device.makeBuffer(bytes: cylinderPartialDoubleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderPartialDoubleBond.indices.count, options:RKMetal.hostStorage)
-    
-    let cylinderTripleBond: MetalCappedTripleBondCylinderGeometry = MetalCappedTripleBondCylinderGeometry()
-    vertexBufferTripleBonds = device.makeBuffer(bytes: cylinderTripleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderTripleBond.vertices.count, options:RKMetal.hostStorage)
-    indexBufferTripleBonds = device.makeBuffer(bytes: cylinderTripleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderTripleBond.indices.count, options:RKMetal.hostStorage)
-    
     if let _: RKRenderDataSource = renderDataSource
     {
       instanceBufferAllBonds = []
@@ -261,26 +160,17 @@ class MetalExternalBondShader
         instanceBufferTripleBonds.append(sceneInstanceTripleBonds)
       }
     }
-    
-    let box: MetalBoxGeometry = MetalBoxGeometry()
-    boxVertexBuffer = device.makeBuffer(bytes: box.vertices, length:MemoryLayout<RKVertex>.stride * box.vertices.count, options:RKMetal.hostStorage)
-    boxIndexBuffer = device.makeBuffer(bytes: box.indices, length:MemoryLayout<UInt16>.stride * box.indices.count, options:RKMetal.hostStorage)
-    
   }
   
   public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
   {
-    let useImposters: Bool = RKMetal.drawBondsAsImposters
     
     // draw "external" bonds (bonds extending out of the box, and must be clipped)
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderBondSource}.reduce(false, {$0 || ($1.drawBonds && $1.hasExternalBonds)}))
     {
-      commandEncoder.setRenderPipelineState(useImposters ? imposterPipeLine : pipeLine)
-      if useImposters
-      {
-        // the imposter hull is generated in the vertex shader with view-dependent winding
-        commandEncoder.setCullMode(MTLCullMode.none)
-      }
+      commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? imposterPipeLine : perPixelImposterPipeLine)
+      // the imposter hull is generated in the vertex shader with view-dependent winding
+      commandEncoder.setCullMode(MTLCullMode.none)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
@@ -290,7 +180,6 @@ class MetalExternalBondShader
       commandEncoder.setFragmentSamplerState(samplerState, index: 0)
       
       var index: Int = 0
-      commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -308,7 +197,7 @@ class MetalExternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
-              MetalInternalBondShader.drawBonds(commandEncoder, useImposters: useImposters, indexBuffer: indexBufferSingleBonds, imposterVertexCount: 18, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -317,7 +206,6 @@ class MetalExternalBondShader
       
       // draw single bonds
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -334,7 +222,7 @@ class MetalExternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
-              MetalInternalBondShader.drawBonds(commandEncoder, useImposters: useImposters, indexBuffer: indexBufferSingleBonds, imposterVertexCount: 18, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -343,7 +231,6 @@ class MetalExternalBondShader
       
       // draw double bonds
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferDoubleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -360,7 +247,7 @@ class MetalExternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
-              MetalInternalBondShader.drawBonds(commandEncoder, useImposters: useImposters, indexBuffer: indexBufferDoubleBonds, imposterVertexCount: 36, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 36, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -369,7 +256,6 @@ class MetalExternalBondShader
       
       // draw partial bonds
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -386,7 +272,7 @@ class MetalExternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
-              MetalInternalBondShader.drawBonds(commandEncoder, useImposters: useImposters, indexBuffer: indexBufferPartialDoubleBonds, imposterVertexCount: 18, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
           index = index + 1
@@ -395,7 +281,6 @@ class MetalExternalBondShader
       
       // draw triple bonds
       index = 0
-      commandEncoder.setVertexBuffer(vertexBufferTripleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderObject] = self.renderStructures[i]
@@ -412,288 +297,14 @@ class MetalExternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
-              MetalInternalBondShader.drawBonds(commandEncoder, useImposters: useImposters, indexBuffer: indexBufferTripleBonds, imposterVertexCount: 54, instanceCount: instanceCount)
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 54, instanceCount: instanceCount)
             }
           }
           index = index + 1
         }
       }
       
-      if useImposters
-      {
-        commandEncoder.setCullMode(MTLCullMode.back)
-      }
-    }
-    
-    // draw caps ond the bonds
-    // (in imposter-mode the caps are ray-traced analytically in the imposter fragment
-    //  shader, so the stencil-based cap pass is skipped entirely)
-    if (!useImposters && self.renderStructures.joined().compactMap{$0 as? RKRenderBondSource}.reduce(false, {$0 || ($1.drawBonds && $1.hasExternalBonds)}))
-    {
-      // draw caps for all single bonds in 'unity'-mode
-      var index: Int = 0
-      for i in 0..<self.renderStructures.count
-      {
-        let structures: [RKRenderObject] = self.renderStructures[i]
-        
-        for (j,structure) in structures.enumerated()
-        {
-          if let structure = structure as? RKRenderBondSource,
-             let buffer: MTLBuffer = self.metalBuffer(instanceBufferAllBonds, sceneIndex: i, movieIndex: j)
-          {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
-            if (structure.isUnity && structure.isVisible && structure.drawBonds &&  instanceCount > 0)
-            {
-              commandEncoder.setRenderPipelineState(stencilPipeLine)
-              commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
-              commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
-              commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-              commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-              commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
-              commandEncoder.setDepthStencilState(self.depthStencilStateWriteFalse)
-              commandEncoder.setStencilReferenceValue(UInt32(1))
-              commandEncoder.setCullMode(MTLCullMode.none)
-              //commandEncoder.setFragmentSamplerState(quadSamplerState, atIndex: 0)
-            
-              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferSingleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferSingleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
-            
-            
-              commandEncoder.setRenderPipelineState(boxPipeLine)
-              commandEncoder.setVertexBuffer(boxVertexBuffer, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 1)
-              commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 2)
-              commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 3)
-              commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-              commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
-            
-              commandEncoder.setDepthStencilState(self.depthStencilStateWriteTrue)
-              commandEncoder.setStencilReferenceValue(UInt32(1))
-              commandEncoder.setCullMode(MTLCullMode.back)
-            
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 2)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: boxIndexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: boxIndexBuffer, indexBufferOffset: 0)
-            }
-          }
-          index = index + 1
-        }
-      }
-      
-      // draw caps on single bonds
-      index = 0
-      for i in 0..<self.renderStructures.count
-      {
-        let structures: [RKRenderObject] = self.renderStructures[i]
-        
-        for (j,structure) in structures.enumerated()
-        {
-          if let structure = structure as? RKRenderBondSource,
-             let buffer: MTLBuffer = self.metalBuffer(instanceBufferSingleBonds, sceneIndex: i, movieIndex: j)
-          {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
-            if (!structure.isUnity && structure.isVisible && structure.drawBonds &&  instanceCount > 0)
-            {
-              commandEncoder.setRenderPipelineState(stencilPipeLine)
-              commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
-              commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
-              commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-              commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-              commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
-              commandEncoder.setDepthStencilState(self.depthStencilStateWriteFalse)
-              commandEncoder.setStencilReferenceValue(UInt32(1))
-              commandEncoder.setCullMode(MTLCullMode.none)
-              //commandEncoder.setFragmentSamplerState(quadSamplerState, atIndex: 0)
-            
-              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferSingleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferSingleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
-            
-            
-              commandEncoder.setRenderPipelineState(boxPipeLine)
-              commandEncoder.setVertexBuffer(boxVertexBuffer, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 1)
-              commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 2)
-              commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 3)
-              commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-              commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
-            
-              commandEncoder.setDepthStencilState(self.depthStencilStateWriteTrue)
-              commandEncoder.setStencilReferenceValue(UInt32(1))
-              commandEncoder.setCullMode(MTLCullMode.back)
-            
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 2)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: boxIndexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: boxIndexBuffer, indexBufferOffset: 0)
-            }
-          }
-          index = index + 1
-        }
-      }
-      
-      // draw caps on double bonds
-      index = 0
-      for i in 0..<self.renderStructures.count
-      {
-        let structures: [RKRenderObject] = self.renderStructures[i]
-        
-        for (j,structure) in structures.enumerated()
-        {
-          if let structure = structure as? RKRenderBondSource,
-             let buffer: MTLBuffer = self.metalBuffer(instanceBufferDoubleBonds, sceneIndex: i, movieIndex: j)
-          {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
-            if (!structure.isUnity && structure.isVisible && structure.drawBonds &&  instanceCount > 0)
-            {
-              commandEncoder.setRenderPipelineState(stencilPipeLine)
-              commandEncoder.setVertexBuffer(vertexBufferDoubleBonds, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
-              commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
-              commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-              commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-              commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
-              commandEncoder.setDepthStencilState(self.depthStencilStateWriteFalse)
-              commandEncoder.setStencilReferenceValue(UInt32(1))
-              commandEncoder.setCullMode(MTLCullMode.none)
-              //commandEncoder.setFragmentSamplerState(quadSamplerState, atIndex: 0)
-            
-              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferDoubleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferDoubleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
-            
-            
-              commandEncoder.setRenderPipelineState(boxPipeLine)
-              commandEncoder.setVertexBuffer(boxVertexBuffer, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 1)
-              commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 2)
-              commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 3)
-              commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-              commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
-            
-              commandEncoder.setDepthStencilState(self.depthStencilStateWriteTrue)
-              commandEncoder.setStencilReferenceValue(UInt32(1))
-              commandEncoder.setCullMode(MTLCullMode.back)
-            
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 2)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: boxIndexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: boxIndexBuffer, indexBufferOffset: 0)
-            }
-          }
-          index = index + 1
-        }
-      }
-      
-      // draw caps on partial double bonds
-      index = 0
-      for i in 0..<self.renderStructures.count
-      {
-        let structures: [RKRenderObject] = self.renderStructures[i]
-        
-        for (j,structure) in structures.enumerated()
-        {
-          if let structure = structure as? RKRenderBondSource,
-             let buffer: MTLBuffer = self.metalBuffer(instanceBufferPartialDoubleBonds, sceneIndex: i, movieIndex: j)
-          {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
-            if (!structure.isUnity && structure.isVisible && structure.drawBonds &&  instanceCount > 0)
-            {
-              commandEncoder.setRenderPipelineState(stencilPipeLine)
-              commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
-              commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
-              commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-              commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-              commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
-              commandEncoder.setDepthStencilState(self.depthStencilStateWriteFalse)
-              commandEncoder.setStencilReferenceValue(UInt32(1))
-              commandEncoder.setCullMode(MTLCullMode.none)
-              //commandEncoder.setFragmentSamplerState(quadSamplerState, atIndex: 0)
-            
-              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferDoubleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferDoubleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
-            
-            
-              commandEncoder.setRenderPipelineState(boxPipeLine)
-              commandEncoder.setVertexBuffer(boxVertexBuffer, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 1)
-              commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 2)
-              commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 3)
-              commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-              commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
-            
-              commandEncoder.setDepthStencilState(self.depthStencilStateWriteTrue)
-              commandEncoder.setStencilReferenceValue(UInt32(1))
-              commandEncoder.setCullMode(MTLCullMode.back)
-            
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 2)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: boxIndexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: boxIndexBuffer, indexBufferOffset: 0)
-            }
-          }
-          index = index + 1
-        }
-      }
-      
-      // draw caps on triple bonds
-      index = 0
-      for i in 0..<self.renderStructures.count
-      {
-        let structures: [RKRenderObject] = self.renderStructures[i]
-        
-        for (j,structure) in structures.enumerated()
-        {
-          if let structure = structure as? RKRenderBondSource,
-             let buffer: MTLBuffer = self.metalBuffer(instanceBufferTripleBonds, sceneIndex: i, movieIndex: j)
-          {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
-            if (!structure.isUnity && structure.isVisible && structure.drawBonds &&  instanceCount > 0)
-            {
-              commandEncoder.setRenderPipelineState(stencilPipeLine)
-              commandEncoder.setVertexBuffer(vertexBufferTripleBonds, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
-              commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
-              commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-              commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-              commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
-              commandEncoder.setDepthStencilState(self.depthStencilStateWriteFalse)
-              commandEncoder.setStencilReferenceValue(UInt32(1))
-              commandEncoder.setCullMode(MTLCullMode.none)
-              //commandEncoder.setFragmentSamplerState(quadSamplerState, atIndex: 0)
-            
-              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferTripleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferTripleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
-            
-            
-              commandEncoder.setRenderPipelineState(boxPipeLine)
-              commandEncoder.setVertexBuffer(boxVertexBuffer, offset: 0, index: 0)
-              commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 1)
-              commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 2)
-              commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 3)
-              commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-              commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
-            
-              commandEncoder.setDepthStencilState(self.depthStencilStateWriteTrue)
-              commandEncoder.setStencilReferenceValue(UInt32(1))
-              commandEncoder.setCullMode(MTLCullMode.back)
-            
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 2)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: boxIndexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: boxIndexBuffer, indexBufferOffset: 0)
-            }
-          }
-          index = index + 1
-        }
-      }
+      commandEncoder.setCullMode(MTLCullMode.back)
     }
     
     commandEncoder.setDepthStencilState(self.depthState)

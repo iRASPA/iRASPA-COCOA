@@ -465,8 +465,6 @@ float taylorInvSqrt(float r);
 
 float3 rgb2hsv(float3 c);
 float3 hsv2rgb(float3 c);
-float frontFacing(float4 pos0, float4 pos1, float4 pos2);
-
 float2 cellular2D(float2 P, float jitter);
 float2 cellular3D(float3 P, float jitter);
 

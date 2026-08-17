@@ -88,11 +88,9 @@ public class MetalRenderer
   
   var atomSelectionShader: MetalAtomSelectionShader = MetalAtomSelectionShader()
   
-  var atomSelectionWorleyShader: MetalAtomSelectionWorleyNoise3DShader = MetalAtomSelectionWorleyNoise3DShader()
   var atomSelectionWorleyOrthographicImposterShader: MetalAtomSelectionWorleyNoise3DOrthographicImposterShader = MetalAtomSelectionWorleyNoise3DOrthographicImposterShader()
   var atomSelectionWorleyPerspectiveImposterShader: MetalAtomSelectionWorleyNoise3DPerspectiveImposterShader = MetalAtomSelectionWorleyNoise3DPerspectiveImposterShader()
   
-  var atomSelectionStripedShader: MetalAtomSelectionStripesShader = MetalAtomSelectionStripesShader()
   var atomSelectionStripedOrthographicImposterShader: MetalAtomSelectionStripesOrthographicImposterShader = MetalAtomSelectionStripesOrthographicImposterShader()
   var atomSelectionStripedPerspectiveImposterShader: MetalAtomSelectionStripesPerspectiveImposterShader = MetalAtomSelectionStripesPerspectiveImposterShader()
   
@@ -136,7 +134,6 @@ public class MetalRenderer
   
   var quadShader: MetalQuadShader = MetalQuadShader()
   
-  var atomSelectionGlowPictureShader: MetalAtomSelectionGlowPictureShader = MetalAtomSelectionGlowPictureShader()
   var blurHorizontalPictureShader: MetalBlurHorizontalPictureShader =  MetalBlurHorizontalPictureShader()
   var blurVerticalPictureShader: MetalBlurVerticalPictureShader =  MetalBlurVerticalPictureShader()
   
@@ -258,15 +255,11 @@ public class MetalRenderer
     atomSelectionShader.renderDataSource = renderDataSource
     atomSelectionShader.renderStructures = renderStructures
     
-    atomSelectionWorleyShader.renderDataSource = renderDataSource
-    atomSelectionWorleyShader.renderStructures = renderStructures
     atomSelectionWorleyOrthographicImposterShader.renderDataSource = renderDataSource
     atomSelectionWorleyOrthographicImposterShader.renderStructures = renderStructures
     atomSelectionWorleyPerspectiveImposterShader.renderDataSource = renderDataSource
     atomSelectionWorleyPerspectiveImposterShader.renderStructures = renderStructures
     
-    atomSelectionStripedShader.renderDataSource = renderDataSource
-    atomSelectionStripedShader.renderStructures = renderStructures
     atomSelectionStripedOrthographicImposterShader.renderDataSource = renderDataSource
     atomSelectionStripedOrthographicImposterShader.renderStructures = renderStructures
     atomSelectionStripedPerspectiveImposterShader.renderDataSource = renderDataSource
@@ -278,9 +271,6 @@ public class MetalRenderer
     atomSelectionGlowOrthographicImposterShader.renderStructures = renderStructures
     atomSelectionGlowPerspectiveImposterShader.renderDataSource = renderDataSource
     atomSelectionGlowPerspectiveImposterShader.renderStructures = renderStructures
-    
-    atomSelectionGlowPictureShader.renderDataSource = renderDataSource
-    atomSelectionGlowPictureShader.renderStructures = renderStructures
     
     internalBondSelectionShader.renderDataSource = renderDataSource
     internalBondSelectionShader.renderStructures = renderStructures
@@ -519,7 +509,6 @@ public class MetalRenderer
     globalAxesSystemShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     localAxesShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
-    atomShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomOrthographicImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomPerspectiveImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
@@ -549,15 +538,12 @@ public class MetalRenderer
     
     measurementPerspectiveImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
-    atomSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomSelectionGlowOrthographicImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomSelectionGlowPerspectiveImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
-    atomSelectionWorleyShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomSelectionWorleyOrthographicImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomSelectionWorleyPerspectiveImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
-    atomSelectionStripedShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomSelectionStripedOrthographicImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomSelectionStripedPerspectiveImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
@@ -577,7 +563,6 @@ public class MetalRenderer
     
     quadShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
-    atomSelectionGlowPictureShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     blurHorizontalPictureShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     blurVerticalPictureShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
@@ -668,35 +653,23 @@ public class MetalRenderer
     
     atomSelectionShader.buildInstanceBuffers(device: device)
     
-    atomSelectionWorleyShader.buildVertexBuffers(device: device)
     atomSelectionWorleyOrthographicImposterShader.buildVertexBuffers(device: device)
     atomSelectionWorleyPerspectiveImposterShader.buildVertexBuffers(device: device)
     
-    atomSelectionStripedShader.buildVertexBuffers(device: device)
     atomSelectionStripedOrthographicImposterShader.buildVertexBuffers(device: device)
     atomSelectionStripedPerspectiveImposterShader.buildVertexBuffers(device: device)
     
-    atomSelectionGlowShader.buildVertexBuffers(device: device)
     atomSelectionGlowOrthographicImposterShader.buildVertexBuffers(device: device)
     atomSelectionGlowPerspectiveImposterShader.buildVertexBuffers(device: device)
     
     internalBondSelectionShader.buildInstanceBuffers(device: device)
     externalBondSelectionShader.buildInstanceBuffers(device: device)
     
-    internalBondSelectionWorleyShader.buildVertexBuffers(device: device)
-    internalBondSelectionGlowShader.buildVertexBuffers(device: device)
-    internalBondSelectionStripedShader.buildVertexBuffers(device: device)
-    
-    externalBondSelectionWorleyShader.buildVertexBuffers(device: device)
-    externalBondSelectionGlowShader.buildVertexBuffers(device: device)
-    externalBondSelectionStripedShader.buildVertexBuffers(device: device)
-    
     blurHorizontalShader.buildVertexBuffers(device: device)
     blurVerticalShader.buildVertexBuffers(device: device)
   
     quadShader.buildVertexBuffers(device: device)
     
-    atomSelectionGlowPictureShader.buildVertexBuffers(device: device)
     blurHorizontalPictureShader.buildVertexBuffers(device: device)
     blurVerticalPictureShader.buildVertexBuffers(device: device)
     
@@ -850,7 +823,11 @@ public class MetalRenderer
 
   public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
   {
-    _ = renderQuality
+    // "fast" imposter mode while interacting (rotating, panning, zooming): the render
+    // quality drops to medium/low during interaction, and the imposters are then shaded
+    // per-pixel; per-sample anti-aliased shading is used for high-quality still frames
+    // and pictures. Applies to all imposter passes of this frame (scene and glow).
+    RKMetal.perSampleImposterShading = (renderQuality == .high || renderQuality == .picture)
     let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
     commandEncoder.label = "Scene command encoder"
     commandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))

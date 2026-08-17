@@ -33,509 +33,6 @@
 #include "Common.h"
 using namespace metal;
 
-// works for both orthogonal and perspective
-float frontFacing(float4 pos0, float4 pos1, float4 pos2)
-{
-  return pos0.x*pos1.y - pos1.x*pos0.y + pos1.x*pos2.y - pos2.x*pos1.y + pos2.x*pos0.y - pos0.x*pos2.y;
-}
-
-struct InternalBondVertexShaderOut
-{
-  float4 position [[position]];
-  float4 color1 [[ flat ]];
-  float4 color2 [[ flat ]];
-  float4 mix;
-  float4 ambient;
-  float4 specular;
-  float3 N;
-  float3 L;
-  float3 V;
-};
-
-
-vertex InternalBondVertexShaderOut BondCylinderVertexShader(const device InPerVertex *vertices [[buffer(0)]],
-                                                const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
-                                                constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                                constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                                constant LightUniforms& lightUniforms [[buffer(4)]],
-                                                uint vid [[vertex_id]],
-                                                uint iid [[instance_id]])
-{
-  float3 v1,v2;
-  InternalBondVertexShaderOut vert;
-  
-  float4 scale = positions[iid].scale;
-  float4 pos =  vertices[vid].position;
-  
-  float4 pos1 = positions[iid].position1;
-  float4 pos2 = positions[iid].position2;
-  
-  float3 dr = (pos2 - pos1).xyz;
-  float bondLength = length(dr);
-  
-  vert.mix.x = clamp(structureUniforms.atomScaleFactor,0.0,3.7) * scale.x;
-  vert.mix.y = vertices[vid].position.y;  // range 0.0..1.0
-  vert.mix.z = 1.0 - clamp(structureUniforms.atomScaleFactor,0.0,3.7) * scale.z;
-  vert.mix.w = scale.x/scale.z;
-  
-  
-  scale.x = structureUniforms.bondScaling;
-  scale.y = bondLength;
-  scale.z = structureUniforms.bondScaling;
-  scale.w = 1.0;
-  
-  dr = normalize(dr);
-  v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
-  v2 = normalize(cross(dr,v1));
-  
-  float4x4 orientationMatrix=float4x4(float4(v2.x,v2.y,v2.z,0),
-                                      float4(dr.x,dr.y,dr.z,0),
-                                      float4(v1.x,v1.y,v1.z,0),
-                                      float4(0,0,0,1));
-  
-  
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
-  if (structureUniforms.bondColorMode == 0)
-  {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor* positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color2;
-   
-  }
-  else
-  {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color2;
-  }
-  
-  
-  vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * orientationMatrix * vertices[vid].normal).xyz;
-  
-  
-  float4 P =  frameUniforms.viewMatrix *  structureUniforms.modelMatrix * float4((orientationMatrix * (scale * pos) + pos1).xyz,1.0);
-  
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
-  
-  // Calculate view vector
-  vert.V = -P.xyz;
-  
-  vert.position = frameUniforms.mvpMatrix *  structureUniforms.modelMatrix * (orientationMatrix * (scale * pos) + pos1);
-  
-  return vert;
-}
-
-
-
-fragment float4 BondCylinderFragmentShader(InternalBondVertexShaderOut vert [[stage_in]],
-                                           constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                           constant LightUniforms& lightUniforms [[buffer(1)]])
-{
-  // Normalize the incoming N and L vectors
-  float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
-  float3 V = normalize(vert.V);
-  
-  // Calculate R locally
-  float3 R = reflect(-L, N);
-  
-  float4 ambient = vert.ambient;
-  float4 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess + structureUniforms.bondShininess) * vert.specular;
-  float4 diffuse = max(dot(N, L), 0.0);
-  //float t = clamp((vert.mix.y - vert.mix.x)/(vert.mix.z - vert.mix.x), 0.0, 1.0);
-  float t = vert.mix.y;
-
-  switch(structureUniforms.bondColorMode)
-  {
-    case 0:
-      diffuse *= lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
-      break;
-    case 1:
-      diffuse *= (t < 0.5 ? vert.color1 : vert.color2);
-      break;
-    case 2:
-      diffuse *= mix(vert.color1,vert.color2,smoothstep(0.0,1.0,t));
-      break;
-  }
-  
-  float4 color= float4(ambient.xyz + diffuse.xyz + specular.xyz, 1.0);
-  
-  if (structureUniforms.bondHDR)
-  {
-    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.bondHDRExposure);
-    vLdrColor.a = 1.0;
-    color= vLdrColor;
-  }
-  
-  
-  float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.bondHue;
-  hsv.y = hsv.y * structureUniforms.bondSaturation;
-  hsv.z = hsv.z * structureUniforms.bondValue;
-  return float4(hsv2rgb(hsv),1.0);
-}
-
-
-struct ExternalBondVertexShaderOut
-{
-  float4 position [[position]];
-  float4 color1 [[ flat ]];
-  float4 color2 [[ flat ]];
-  float4 mix;
-  
-  float4 ambient;
-  float4 specular;
-  float3 N;
-  float3 L;
-  float3 V;
-  
-  float clipDistance0 [[ center_perspective ]];
-  float clipDistance1 [[ center_perspective ]];
-  float clipDistance2 [[ center_perspective ]];
-  float clipDistance3 [[ center_perspective ]];
-  float clipDistance4 [[ center_perspective ]];
-  float clipDistance5 [[ center_perspective ]];
-};
-
-vertex ExternalBondVertexShaderOut ExternalBondCylinderVertexShader(const device InPerVertex *vertices [[buffer(0)]],
-                                                const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
-                                                constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                                constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                                constant LightUniforms& lightUniforms [[buffer(4)]],
-                                                uint vid [[vertex_id]],
-                                                uint iid [[instance_id]])
-{
-  float3 v1,v2;
-  ExternalBondVertexShaderOut vert;
-  
-  float4 scale = positions[iid].scale;
-  float4 pos =  vertices[vid].position;
-  
-  float4 pos1 = positions[iid].position1;
-  float4 pos2 = positions[iid].position2;
-  
-  float3 dr = (pos1 - pos2).xyz;
-  float bondLength = length(dr);
-  
-  vert.mix.x = clamp(structureUniforms.atomScaleFactor,0.0,0.7) * scale.x;
-  vert.mix.y = vertices[vid].position.y;  // range 0.0..1.0
-  vert.mix.z = 1.0 - clamp(structureUniforms.atomScaleFactor,0.0,0.7) * scale.z;
-  vert.mix.w = scale.x/scale.z;
-  
-  
-  scale.x = structureUniforms.bondScaling;
-  scale.y = bondLength;
-  scale.z = structureUniforms.bondScaling;
-  scale.w = 1.0;
-  
-  dr = normalize(dr);
-  v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
-  //if ((dr.z !=0 ) && (-dr.x != dr.y ))
-  //  v1=normalize(float3(-dr.y-dr.z,dr.x,dr.x));
-  //else
-  //  v1=normalize(float3(dr.z,dr.z,-dr.x-dr.y));
-  v2 = normalize(cross(dr,v1));
-  
-  
-  float4x4 orientationMatrix=float4x4(float4(-v1.x,-v1.y,-v1.z,0),
-                                      float4(-dr.x,-dr.y,-dr.z,0),
-                                      float4(-v2.x,-v2.y,-v2.z,0),
-                                      float4(0,0,0,1));
-  
-  
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
-  if (structureUniforms.bondColorMode == 0)
-  {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor* positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color2;
-    
-  }
-  else
-  {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color2;
-  }
-  
-  vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * orientationMatrix * vertices[vid].normal).xyz;
-  
-  float4 P =  frameUniforms.viewMatrix *  structureUniforms.modelMatrix * float4((orientationMatrix * (scale * pos) + pos1).xyz,1.0);
-  
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
-  
-  // Calculate view vector
-  vert.V = -P.xyz;
-  
-  float4 vertexPos =  (orientationMatrix * (scale * pos) + pos1);
-
-  vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * vertexPos;
-  
-  vert.clipDistance0 = dot(structureUniforms.clipPlaneLeft,vertexPos);
-  vert.clipDistance1 = dot(structureUniforms.clipPlaneRight,vertexPos);
-  vert.clipDistance2 = dot(structureUniforms.clipPlaneTop,vertexPos);
-  
-  vert.clipDistance3 = dot(structureUniforms.clipPlaneBottom,vertexPos);
-  vert.clipDistance4 = dot(structureUniforms.clipPlaneFront,vertexPos);
-  vert.clipDistance5 = dot(structureUniforms.clipPlaneBack,vertexPos);
-  
-  return vert;
-}
-
-fragment float4 ExternalBondCylinderFragmentShader(ExternalBondVertexShaderOut vert [[stage_in]],
-                                                   constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                                   constant LightUniforms& lightUniforms [[buffer(1)]])
-{
-  // Normalize the incoming N and L vectors
-  float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
-  float3 V = normalize(vert.V);
-  
-  // Calculate R locally
-  float3 R = reflect(-L, N);
-  
-  float4 ambient = vert.ambient;
-  float4 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess + structureUniforms.bondShininess) * vert.specular;
-  float4 diffuse = max(dot(N, L), 0.0);
-  //float t = clamp((vert.mix.y - vert.mix.x)/(vert.mix.z - vert.mix.x),0.0,1.0);
-  float t = vert.mix.y;
-  
-  // [[ clip_distance ]] appears to working only for two clipping planes
-  // work-around: brute-force 'discard_fragment'
-  if (vert.clipDistance0 < 0.0) discard_fragment();
-  if (vert.clipDistance1 < 0.0) discard_fragment();
-  if (vert.clipDistance2 < 0.0) discard_fragment();
-  if (vert.clipDistance3 < 0.0) discard_fragment();
-  if (vert.clipDistance4 < 0.0) discard_fragment();
-  if (vert.clipDistance5 < 0.0) discard_fragment();
-  
-  
-  switch(structureUniforms.bondColorMode)
-  {
-    case 0:
-      diffuse *= lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
-      break;
-    case 1:
-      diffuse *= (t < 0.5 ? vert.color1 : vert.color2);
-      break;
-    case 2:
-      diffuse *= mix(vert.color1,vert.color2,smoothstep(0.0,1.0,t));
-      break;
-  }
-  
-  float4 color= float4(ambient.xyz + diffuse.xyz + specular.xyz, 1.0);
-  
-  if (structureUniforms.bondHDR)
-  {
-    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.bondHDRExposure);
-    vLdrColor.a = 1.0;
-    color= vLdrColor;
-  }
-  
-  
-  float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.bondHue;
-  hsv.y = hsv.y * structureUniforms.bondSaturation;
-  hsv.z = hsv.z * structureUniforms.bondValue;
-  return float4(hsv2rgb(hsv),1.0);
-}
-
-
-struct StencilExternalBondVertexShaderOut
-{
-  float4 position [[position]];
-  
-  float clipDistance0 [[ center_perspective ]];
-  float clipDistance1 [[ center_perspective ]];
-  float clipDistance2 [[ center_perspective ]];
-  float clipDistance3 [[ center_perspective ]];
-  float clipDistance4 [[ center_perspective ]];
-  float clipDistance5 [[ center_perspective ]];
-};
-
-
-vertex StencilExternalBondVertexShaderOut StencilExternalBondCylinderVertexShader(const device InPerVertex *vertices [[buffer(0)]],
-                                                                           const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
-                                                                           constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                                                           constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                                                           constant LightUniforms& lightUniforms [[buffer(4)]],
-                                                                           uint vid [[vertex_id]],
-                                                                           uint iid [[instance_id]])
-{
-  float3 v1,v2;
-  StencilExternalBondVertexShaderOut vert;
-  
-  float4 scale = positions[iid].scale;
-  float4 pos =  vertices[vid].position;
-  
-  float4 pos1 = positions[iid].position1;
-  float4 pos2 = positions[iid].position2;
-  
-  float3 dr = (pos1 - pos2).xyz;
-  float bondLength = length(dr);
-  
-  scale.x = structureUniforms.bondScaling;
-  scale.y = bondLength;
-  scale.z = structureUniforms.bondScaling;
-  scale.w = 1.0;
-  
-  dr = normalize(dr);
-  v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
-  v2 = normalize(cross(dr,v1));
-   
-  float4x4 orientationMatrix=float4x4(float4(-v1.x,-v1.y,-v1.z,0),
-                                      float4(-dr.x,-dr.y,-dr.z,0),
-                                      float4(-v2.x,-v2.y,-v2.z,0),
-                                      float4(0,0,0,1));
-  
-  float4 vertexPos =  (orientationMatrix * (scale * pos) + pos1);
-  
-  vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * vertexPos;
-  
-  // compute 3 reference points to determine front- or backfacing
-  float4x4 matrix = frameUniforms.mvpMatrix *  structureUniforms.modelMatrix * structureUniforms.boxMatrix;
-  float4 boxPosition0 = matrix * float4(0.0, 0.0, 0.0, 1.0);
-  float4 boxPosition1 = matrix * float4(1.0, 0.0, 0.0, 1.0);
-  float4 boxPosition2 = matrix * float4(1.0, 1.0, 0.0, 1.0);
-  float4 boxPosition3 = matrix * float4(0.0, 1.0, 0.0, 1.0);
-  float4 boxPosition4 = matrix * float4(0.0, 0.0, 1.0, 1.0);
-  float4 boxPosition5 = matrix * float4(1.0, 0.0, 1.0, 1.0);
-  float4 boxPosition6 = matrix * float4(1.0, 1.0, 1.0, 1.0);
-  float4 boxPosition7 = matrix * float4(0.0, 1.0, 1.0, 1.0);
-  
-  
-  // perspective division
-  boxPosition0 = boxPosition0/boxPosition0.w;
-  boxPosition1 = boxPosition1/boxPosition1.w;
-  boxPosition2 = boxPosition2/boxPosition2.w;
-  boxPosition3 = boxPosition3/boxPosition3.w;
-  boxPosition4 = boxPosition4/boxPosition4.w;
-  boxPosition5 = boxPosition5/boxPosition5.w;
-  boxPosition6 = boxPosition6/boxPosition6.w;
-  boxPosition7 = boxPosition7/boxPosition7.w;
-  
-  float leftFrontfacing = frontFacing(boxPosition0, boxPosition3, boxPosition7);
-  float rightFrontfacing = frontFacing(boxPosition1, boxPosition5, boxPosition2);
-  
-  float topFrontFacing = frontFacing(boxPosition3, boxPosition2, boxPosition7);
-  float bottomFrontFacing = frontFacing(boxPosition0, boxPosition4, boxPosition1);
-  
-  float frontFrontFacing = frontFacing(boxPosition4, boxPosition6, boxPosition5);
-  float backFrontFacing = frontFacing(boxPosition0, boxPosition1, boxPosition2);
-  
-  
-  vert.clipDistance0 = (leftFrontfacing<0.0) ? dot(structureUniforms.clipPlaneLeft,vertexPos) : 0.0;
-  vert.clipDistance1 = (rightFrontfacing<0.0) ? dot(structureUniforms.clipPlaneRight,vertexPos) : 0.0;
-  
-  vert.clipDistance2 = (topFrontFacing<0.0) ? dot(structureUniforms.clipPlaneTop,vertexPos) : 0.0;
-  vert.clipDistance3 = (bottomFrontFacing<0.0) ? dot(structureUniforms.clipPlaneBottom,vertexPos) : 0.0;
-  
-  vert.clipDistance4 = (frontFrontFacing<0.0) ? dot(structureUniforms.clipPlaneFront,vertexPos) : 0.0;
-  vert.clipDistance5 = (backFrontFacing<0.0) ? dot(structureUniforms.clipPlaneBack,vertexPos) : 0.0;
-  
-  return vert;
-}
-
-
-
-fragment float4 StencilExternalBondCylinderFragmentShader(StencilExternalBondVertexShaderOut vert [[stage_in]],
-                                           constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                           constant LightUniforms& lightUniforms [[buffer(1)]])
-
-{
-   // [[ clip_distance ]] appears to working only for two clipping planes
-  // work-around: brute-force 'discard_fragment'
-  if (vert.clipDistance0 < 0.0) discard_fragment();
-  if (vert.clipDistance1 < 0.0) discard_fragment();
-  if (vert.clipDistance2 < 0.0) discard_fragment();
-  if (vert.clipDistance3 < 0.0) discard_fragment();
-  if (vert.clipDistance4 < 0.0) discard_fragment();
-  if (vert.clipDistance5 < 0.0) discard_fragment();
-  
-  // any color-write will do
-  return float4(1.0,1.0,1.0,1);
-}
-
-
-
-// Inputs from vertex shader
-struct BoxVertexOut
-{
-  float4 position [[position]];
-  float4 ambient;
-  float4 diffuse;
-  float4 specular;
-
-  float3 N;
-  float3 L;
-  float3 V;
-};
-
-vertex BoxVertexOut boxVertexShader(const device InPerVertex *vertices [[buffer(0)]],
-                                    constant FrameUniforms& frameUniforms [[buffer(1)]],
-                                    constant StructureUniforms& structureUniforms [[buffer(2)]],
-                                    constant LightUniforms& lightUniforms [[buffer(3)]],
-                                    uint vid [[vertex_id]],
-                                    uint iid [[instance_id]])
-{
-  BoxVertexOut vert;
-  
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
-  vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
-  
-  
-  // Calculate normal in view-space
-  vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * vertices[vid].normal).xyz;
-  
-  float4 P = frameUniforms.viewMatrix * structureUniforms.modelMatrix * structureUniforms.boxMatrix * vertices[vid].position;
-  
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
-  
-  // Calculate view vector
-  vert.V = -P.xyz;
-  
-  vert.position = frameUniforms.projectionMatrix * P;
-  
-  return vert;
-}
-
-fragment float4 boxFragmentShader(BoxVertexOut vert [[stage_in]],
-                                  constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                  constant LightUniforms& lightUniforms [[buffer(1)]])
-{
-  // Normalize the incoming N, L and V vectors
-  float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
-  //float3 V = normalize(vert.V);
-  
-  // Calculate R locally
-  //float3 R = reflect(-L, N);
-  
-  float4 ambient = vert.ambient;
-  //float4 specular = pow(max(dot(R, V), 0.0), lightUniforms.lights[0].shininess + structureUniforms.bondShininess) * vert.specular;
-  float4 diffuse = max(dot(N, L), 0.0) * vert.diffuse;
-
-  
-  // Compute the diffuse and specular components for each fragment
-  float4 color= float4(ambient.xyz + diffuse.xyz, 1.0);
-  
-  if (structureUniforms.bondHDR)
-  {
-    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.bondHDRExposure);
-    vLdrColor.a = 1.0;
-    color= vLdrColor;
-  }
-  
-  float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.bondHue;
-  hsv.y = hsv.y * structureUniforms.bondSaturation;
-  hsv.z = hsv.z * structureUniforms.bondValue;
-  return float4(hsv2rgb(hsv),1.0);
-}
-
-
 // MARK: Bond cylinder imposters
 // =============================================================================
 // Ray-traced cylinder imposters (ported from the RibbonRendering cylinder
@@ -572,6 +69,24 @@ constant float3 bondImposterHullOffsets[18] =
 };
 
 struct BondCylinderImposterVertexShaderOut
+{
+  float4 position [[position]];
+  float4 color1 [[ flat ]];
+  float4 color2 [[ flat ]];
+  float4 ambient [[ flat ]];
+  float4 specular [[ flat ]];
+  // sample-interpolated: forces per-sample execution of the fragment shader, so the
+  // ray-traced silhouette, discards and depth are anti-aliased by MSAA
+  float3 frag_pos [[ sample_perspective ]];
+  float3 pointA [[ flat ]];
+  float3 pointB [[ flat ]];
+  float radius [[ flat ]];
+};
+
+// fragment-input variant of BondCylinderImposterVertexShaderOut (matched to the vertex
+// output by member name) with default center interpolation: the "fast" per-pixel
+// quality mode, shading once per pixel even under MSAA
+struct BondCylinderImposterPerPixelFragmentShaderIn
 {
   float4 position [[position]];
   float4 color1 [[ flat ]];
@@ -832,10 +347,11 @@ vertex BondCylinderImposterVertexShaderOut BondCylinderImposterVertexShader(cons
   return vert;
 }
 
-fragment FragOutput BondCylinderImposterFragmentShader(BondCylinderImposterVertexShaderOut vert [[stage_in]],
-                                           constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                           constant LightUniforms& lightUniforms [[buffer(1)]],
-                                           constant FrameUniforms& frameUniforms [[buffer(2)]])
+template <typename VertexIn>
+static FragOutput BondCylinderImposterFragmentImpl(VertexIn vert,
+                                                   constant StructureUniforms& structureUniforms,
+                                                   constant LightUniforms& lightUniforms,
+                                                   constant FrameUniforms& frameUniforms)
 {
   FragOutput output;
   
@@ -893,6 +409,25 @@ fragment FragOutput BondCylinderImposterFragmentShader(BondCylinderImposterVerte
   
   return output;
 }
+
+fragment FragOutput BondCylinderImposterFragmentShader(BondCylinderImposterVertexShaderOut vert [[stage_in]],
+                                                       constant StructureUniforms& structureUniforms [[buffer(0)]],
+                                                       constant LightUniforms& lightUniforms [[buffer(1)]],
+                                                       constant FrameUniforms& frameUniforms [[buffer(2)]])
+{
+  return BondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms);
+}
+
+// "fast" per-pixel variant: identical shading, but with center interpolation the
+// fragment shader runs once per pixel even under MSAA
+fragment FragOutput BondCylinderImposterPerPixelFragmentShader(BondCylinderImposterPerPixelFragmentShaderIn vert [[stage_in]],
+                                                               constant StructureUniforms& structureUniforms [[buffer(0)]],
+                                                               constant LightUniforms& lightUniforms [[buffer(1)]],
+                                                               constant FrameUniforms& frameUniforms [[buffer(2)]])
+{
+  return BondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms);
+}
+
 
 
 vertex BondCylinderImposterVertexShaderOut ExternalBondCylinderImposterVertexShader(const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
@@ -955,10 +490,11 @@ vertex BondCylinderImposterVertexShaderOut ExternalBondCylinderImposterVertexSha
   return vert;
 }
 
-fragment FragOutput ExternalBondCylinderImposterFragmentShader(BondCylinderImposterVertexShaderOut vert [[stage_in]],
-                                           constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                           constant LightUniforms& lightUniforms [[buffer(1)]],
-                                           constant FrameUniforms& frameUniforms [[buffer(2)]])
+template <typename VertexIn>
+static FragOutput ExternalBondCylinderImposterFragmentImpl(VertexIn vert,
+                                                           constant StructureUniforms& structureUniforms,
+                                                           constant LightUniforms& lightUniforms,
+                                                           constant FrameUniforms& frameUniforms)
 {
   FragOutput output;
   
@@ -1019,3 +555,617 @@ fragment FragOutput ExternalBondCylinderImposterFragmentShader(BondCylinderImpos
   
   return output;
 }
+
+fragment FragOutput ExternalBondCylinderImposterFragmentShader(BondCylinderImposterVertexShaderOut vert [[stage_in]],
+                                                               constant StructureUniforms& structureUniforms [[buffer(0)]],
+                                                               constant LightUniforms& lightUniforms [[buffer(1)]],
+                                                               constant FrameUniforms& frameUniforms [[buffer(2)]])
+{
+  return ExternalBondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms);
+}
+
+// "fast" per-pixel variant: identical shading, but with center interpolation the
+// fragment shader runs once per pixel even under MSAA
+fragment FragOutput ExternalBondCylinderImposterPerPixelFragmentShader(BondCylinderImposterPerPixelFragmentShaderIn vert [[stage_in]],
+                                                                       constant StructureUniforms& structureUniforms [[buffer(0)]],
+                                                                       constant LightUniforms& lightUniforms [[buffer(1)]],
+                                                                       constant FrameUniforms& frameUniforms [[buffer(2)]])
+{
+  return ExternalBondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms);
+}
+
+
+// MARK: Bond cylinder imposter picking
+// =============================================================================
+// Picking counterparts of the bond imposters: the same hull and ray-tracing,
+// but the fragment shader writes the picking identifiers and the exact surface
+// depth instead of a shaded color.
+
+struct BondCylinderPickingImposterVertexShaderOut
+{
+  float4 position [[position]];
+  float3 frag_pos;
+  float3 pointA [[ flat ]];
+  float3 pointB [[ flat ]];
+  float radius [[ flat ]];
+  int instanceId [[ flat ]];
+};
+
+struct BondCylinderPickingImposterFragOutput
+{
+  uint4 albedo [[color(0)]];
+  float depth [[depth(any)]];
+};
+
+vertex BondCylinderPickingImposterVertexShaderOut PickingInternalBondCylinderImposterVertexShader(const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
+                                                constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                uint vid [[vertex_id]],
+                                                uint iid [[instance_id]])
+{
+  BondCylinderPickingImposterVertexShaderOut vert;
+  
+  float4 pos1 = positions[iid].position1;
+  float4 pos2 = positions[iid].position2;
+  
+  vert.instanceId = positions[iid].tag;
+  
+  // sub-cylinder displacement for double/triple bonds (all bonds drawn as single cylinders in 'unity'-mode)
+  float radiusFactor;
+  int type = structureUniforms.isUnity ? 0 : positions[iid].type;
+  float2 offset = bondImposterSubCylinderOffset(type, vid / 18, radiusFactor);
+  
+  float3 dr = normalize((pos2 - pos1).xyz);
+  float3 v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
+  float3 v2 = normalize(cross(dr, v1));
+  
+  // model x-axis maps to v2, model z-axis maps to v1 (matches the orientationMatrix of BondCylinderVertexShader)
+  float3 displacement = structureUniforms.bondScaling * (offset.x * v2 + offset.y * v1);
+  float radius = structureUniforms.bondScaling * radiusFactor;
+  
+  float4x4 mv = frameUniforms.viewMatrix * structureUniforms.modelMatrix;
+  float3 a = (mv * float4(pos1.xyz + displacement, 1.0)).xyz;
+  float3 b = (mv * float4(pos2.xyz + displacement, 1.0)).xyz;
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 posEye = bondImposterHullPosition(a, b, radius, vid, orthographic);
+  
+  vert.frag_pos = posEye;
+  vert.pointA = a;
+  vert.pointB = b;
+  vert.radius = radius;
+  vert.position = frameUniforms.projectionMatrix * float4(posEye, 1.0);
+  
+  // invisible bonds have w set to -1, leading to clipping of the entire hull
+  if (pos1.w < 0.0 || pos2.w < 0.0)
+  {
+    vert.position = float4(0.0, 0.0, 0.0, -1.0);
+  }
+  
+  return vert;
+}
+
+fragment BondCylinderPickingImposterFragOutput PickingInternalBondCylinderImposterFragmentShader(BondCylinderPickingImposterVertexShaderOut vert [[stage_in]],
+                                           constant StructureUniforms& structureUniforms [[buffer(0)]],
+                                           constant FrameUniforms& frameUniforms [[buffer(1)]])
+{
+  BondCylinderPickingImposterFragOutput output;
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 ro = orthographic ? float3(vert.frag_pos.xy, 0.0) : float3(0.0);
+  float3 rd = orthographic ? float3(0.0, 0.0, -1.0) : normalize(vert.frag_pos);
+  
+  float3 N;
+  float ct;
+  float t = bondImposterIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, N, ct);
+  if (t < 0.0) discard_fragment();
+  
+  float3 pos = ro + t * rd;
+  float4 screen_pos = frameUniforms.projectionMatrix * float4(pos, 1.0);
+  output.depth = screen_pos.z / screen_pos.w;
+  
+  output.albedo = uint4(2,0,structureUniforms.structureIdentifier, vert.instanceId);
+  return output;
+}
+
+vertex BondCylinderPickingImposterVertexShaderOut PickingExternalBondCylinderImposterVertexShader(const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
+                                                constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                uint vid [[vertex_id]],
+                                                uint iid [[instance_id]])
+{
+  BondCylinderPickingImposterVertexShaderOut vert;
+  
+  float4 pos1 = positions[iid].position1;
+  float4 pos2 = positions[iid].position2;
+  
+  vert.instanceId = positions[iid].tag;
+  
+  // sub-cylinder displacement for double/triple bonds (all bonds drawn as single cylinders in 'unity'-mode)
+  float radiusFactor;
+  int type = structureUniforms.isUnity ? 0 : positions[iid].type;
+  float2 offset = bondImposterSubCylinderOffset(type, vid / 18, radiusFactor);
+  
+  float3 dr = normalize((pos1 - pos2).xyz);
+  float3 v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
+  float3 v2 = normalize(cross(dr, v1));
+  
+  // model x-axis maps to -v1, model z-axis maps to -v2 (matches the orientationMatrix of ExternalBondCylinderVertexShader)
+  float3 displacement = structureUniforms.bondScaling * (offset.x * (-v1) + offset.y * (-v2));
+  float radius = structureUniforms.bondScaling * radiusFactor;
+  
+  float4x4 mv = frameUniforms.viewMatrix * structureUniforms.modelMatrix;
+  float3 a = (mv * float4(pos1.xyz + displacement, 1.0)).xyz;
+  float3 b = (mv * float4(pos2.xyz + displacement, 1.0)).xyz;
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 posEye = bondImposterHullPosition(a, b, radius, vid, orthographic);
+  
+  vert.frag_pos = posEye;
+  vert.pointA = a;
+  vert.pointB = b;
+  vert.radius = radius;
+  vert.position = frameUniforms.projectionMatrix * float4(posEye, 1.0);
+  
+  // invisible bonds have w set to -1, leading to clipping of the entire hull
+  if (pos1.w < 0.0 || pos2.w < 0.0)
+  {
+    vert.position = float4(0.0, 0.0, 0.0, -1.0);
+  }
+  
+  return vert;
+}
+
+fragment BondCylinderPickingImposterFragOutput PickingExternalBondCylinderImposterFragmentShader(BondCylinderPickingImposterVertexShaderOut vert [[stage_in]],
+                                           constant StructureUniforms& structureUniforms [[buffer(0)]],
+                                           constant FrameUniforms& frameUniforms [[buffer(1)]])
+{
+  BondCylinderPickingImposterFragOutput output;
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 ro = orthographic ? float3(vert.frag_pos.xy, 0.0) : float3(0.0);
+  float3 rd = orthographic ? float3(0.0, 0.0, -1.0) : normalize(vert.frag_pos);
+  
+  // ray-trace the capped cylinder clipped at the unit cell (matches the rendered surface)
+  float4x4 toStructure = structureUniforms.inverseModelMatrix * frameUniforms.viewMatrixInverse;
+  float3 N;
+  float ct;
+  float t = bondImposterClippedIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, toStructure, structureUniforms, N, ct);
+  if (t < 0.0) discard_fragment();
+  
+  float3 pos = ro + t * rd;
+  float4 screen_pos = frameUniforms.projectionMatrix * float4(pos, 1.0);
+  output.depth = screen_pos.z / screen_pos.w;
+  
+  output.albedo = uint4(2,0,structureUniforms.structureIdentifier, vert.instanceId);
+  return output;
+}
+
+// MARK: Bond cylinder imposter selection
+// =============================================================================
+// Selection counterparts of the bond imposters (glow, striped, worley-noise).
+// The hull is inflated by the bond-selection scaling. The striped and
+// worley-noise patterns need the model-space coordinates of the hit point on
+// the unit cylinder; these are reconstructed from the eye-space directions of
+// the cylinder model x/z axes (axisX/axisZ) and the fraction ct along the axis.
+
+struct BondSelectionImposterVertexShaderOut
+{
+  float4 position [[position]];
+  float4 color1 [[ flat ]];
+  float4 color2 [[ flat ]];
+  float4 ambient [[ flat ]];
+  float4 specular [[ flat ]];
+  // center-interpolated: the selection effects don't need the per-sample anti-aliased
+  // treatment of the main bond imposters, so they always shade once per pixel
+  float3 frag_pos;
+  float3 pointA [[ flat ]];
+  float3 pointB [[ flat ]];
+  float radius [[ flat ]];
+  float3 axisX [[ flat ]];
+  float3 axisZ [[ flat ]];
+};
+
+vertex BondSelectionImposterVertexShaderOut internalBondSelectionImposterVertexShader(const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
+                                                constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                constant LightUniforms& lightUniforms [[buffer(4)]],
+                                                uint vid [[vertex_id]],
+                                                uint iid [[instance_id]])
+{
+  BondSelectionImposterVertexShaderOut vert;
+  
+  float4 pos1 = positions[iid].position1;
+  float4 pos2 = positions[iid].position2;
+  
+  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
+  vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+  if (structureUniforms.bondColorMode == 0)
+  {
+    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color1;
+    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color2;
+  }
+  else
+  {
+    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color1;
+    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color2;
+  }
+  
+  // sub-cylinder displacement for double/triple bonds (all bonds drawn as single cylinders in 'unity'-mode)
+  float radiusFactor;
+  int type = structureUniforms.isUnity ? 0 : positions[iid].type;
+  float2 offset = bondImposterSubCylinderOffset(type, vid / 18, radiusFactor);
+  
+  float3 dr = normalize((pos2 - pos1).xyz);
+  float3 v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
+  float3 v2 = normalize(cross(dr, v1));
+  
+  // model x-axis maps to v2, model z-axis maps to v1 (matches the orientationMatrix of BondCylinderVertexShader)
+  float3 displacement = structureUniforms.bondScaling * (offset.x * v2 + offset.y * v1);
+  float radius = structureUniforms.bondScaling * radiusFactor * 1.01 * structureUniforms.bondSelectionScaling;
+  
+  float4x4 mv = frameUniforms.viewMatrix * structureUniforms.modelMatrix;
+  float3 a = (mv * float4(pos1.xyz + displacement, 1.0)).xyz;
+  float3 b = (mv * float4(pos2.xyz + displacement, 1.0)).xyz;
+  
+  vert.axisX = normalize((mv * float4(v2, 0.0)).xyz);
+  vert.axisZ = normalize((mv * float4(v1, 0.0)).xyz);
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 posEye = bondImposterHullPosition(a, b, radius, vid, orthographic);
+  
+  vert.frag_pos = posEye;
+  vert.pointA = a;
+  vert.pointB = b;
+  vert.radius = radius;
+  vert.position = frameUniforms.projectionMatrix * float4(posEye, 1.0);
+  
+  // invisible bonds have w set to -1, leading to clipping of the entire hull
+  if (pos1.w < 0.0 || pos2.w < 0.0)
+  {
+    vert.position = float4(0.0, 0.0, 0.0, -1.0);
+  }
+  
+  return vert;
+}
+
+vertex BondSelectionImposterVertexShaderOut externalBondSelectionImposterVertexShader(const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
+                                                constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                constant LightUniforms& lightUniforms [[buffer(4)]],
+                                                uint vid [[vertex_id]],
+                                                uint iid [[instance_id]])
+{
+  BondSelectionImposterVertexShaderOut vert;
+  
+  float4 pos1 = positions[iid].position1;
+  float4 pos2 = positions[iid].position2;
+  
+  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
+  vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+  if (structureUniforms.bondColorMode == 0)
+  {
+    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color1;
+    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color2;
+  }
+  else
+  {
+    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color1;
+    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color2;
+  }
+  
+  // sub-cylinder displacement for double/triple bonds (all bonds drawn as single cylinders in 'unity'-mode)
+  float radiusFactor;
+  int type = structureUniforms.isUnity ? 0 : positions[iid].type;
+  float2 offset = bondImposterSubCylinderOffset(type, vid / 18, radiusFactor);
+  
+  float3 dr = normalize((pos1 - pos2).xyz);
+  float3 v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
+  float3 v2 = normalize(cross(dr, v1));
+  
+  // model x-axis maps to -v1, model z-axis maps to -v2 (matches the orientationMatrix of ExternalBondCylinderVertexShader)
+  float3 displacement = structureUniforms.bondScaling * (offset.x * (-v1) + offset.y * (-v2));
+  float radius = structureUniforms.bondScaling * radiusFactor * 1.01 * structureUniforms.bondSelectionScaling;
+  
+  float4x4 mv = frameUniforms.viewMatrix * structureUniforms.modelMatrix;
+  float3 a = (mv * float4(pos1.xyz + displacement, 1.0)).xyz;
+  float3 b = (mv * float4(pos2.xyz + displacement, 1.0)).xyz;
+  
+  vert.axisX = normalize((mv * float4(-v1, 0.0)).xyz);
+  vert.axisZ = normalize((mv * float4(-v2, 0.0)).xyz);
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 posEye = bondImposterHullPosition(a, b, radius, vid, orthographic);
+  
+  vert.frag_pos = posEye;
+  vert.pointA = a;
+  vert.pointB = b;
+  vert.radius = radius;
+  vert.position = frameUniforms.projectionMatrix * float4(posEye, 1.0);
+  
+  // invisible bonds have w set to -1, leading to clipping of the entire hull
+  if (pos1.w < 0.0 || pos2.w < 0.0)
+  {
+    vert.position = float4(0.0, 0.0, 0.0, -1.0);
+  }
+  
+  return vert;
+}
+
+// shared shading of the selection surface color (glow and worley-noise variants)
+static float4 bondSelectionImposterShade(BondSelectionImposterVertexShaderOut vert,
+                                         constant StructureUniforms& structureUniforms,
+                                         constant LightUniforms& lightUniforms,
+                                         float3 pos, float3 N, float ct)
+{
+  float3 L = normalize((lightUniforms.lights[0].position - float4(pos, 1.0) * lightUniforms.lights[0].position.w).xyz);
+  float3 V = normalize(-pos);
+  float3 R = reflect(-L, N);
+  
+  float4 ambient = vert.ambient;
+  float4 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess + structureUniforms.bondShininess) * vert.specular;
+  float4 diffuse = max(dot(N, L), 0.0);
+  
+  switch(structureUniforms.bondColorMode)
+  {
+    case 0:
+      diffuse *= lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
+      break;
+    case 1:
+      diffuse *= (ct < 0.5 ? vert.color1 : vert.color2);
+      break;
+    case 2:
+      diffuse *= mix(vert.color1,vert.color2,smoothstep(0.0,1.0,ct));
+      break;
+  }
+  
+  return ambient + diffuse + specular;
+}
+
+// model-space coordinates of the hit point on the unit cylinder (x,z on the unit
+// circle for mantle hits, y = ct in 0..1), matching the Model_N of the mesh path
+static float3 bondSelectionImposterModelCoords(BondSelectionImposterVertexShaderOut vert, float3 pos, float ct)
+{
+  float3 axisPos = mix(vert.pointA, vert.pointB, ct);
+  float3 pr = (pos - axisPos) / vert.radius;
+  return float3(dot(pr, vert.axisX), ct, dot(pr, vert.axisZ));
+}
+
+fragment FragOutput internalBondSelectionGlowImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  FragOutput output;
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 ro = orthographic ? float3(vert.frag_pos.xy, 0.0) : float3(0.0);
+  float3 rd = orthographic ? float3(0.0, 0.0, -1.0) : normalize(vert.frag_pos);
+  
+  float3 N;
+  float ct;
+  float t = bondImposterIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, N, ct);
+  if (t < 0.0) discard_fragment();
+  
+  float3 pos = ro + t * rd;
+  float4 screen_pos = frameUniforms.projectionMatrix * float4(pos, 1.0);
+  output.depth = screen_pos.z / screen_pos.w;
+  
+  float4 color = float4(bondSelectionImposterShade(vert, structureUniforms, lightUniforms, pos, N, ct).xyz, 1.0);
+  
+  if (structureUniforms.bondHDR)
+  {
+    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.bondHDRExposure);
+    vLdrColor.a = 1.0;
+    color= vLdrColor;
+  }
+  
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
+  output.albedo = float4(color.xyz * bloomLevel, bloomLevel);
+  return output;
+}
+
+
+fragment FragOutput internalBondSelectionStripedImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  FragOutput output;
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 ro = orthographic ? float3(vert.frag_pos.xy, 0.0) : float3(0.0);
+  float3 rd = orthographic ? float3(0.0, 0.0, -1.0) : normalize(vert.frag_pos);
+  
+  float3 N;
+  float ct;
+  float t = bondImposterIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, N, ct);
+  if (t < 0.0) discard_fragment();
+  
+  float3 pos = ro + t * rd;
+  float4 screen_pos = frameUniforms.projectionMatrix * float4(pos, 1.0);
+  output.depth = screen_pos.z / screen_pos.w;
+  
+  float3 t1 = bondSelectionImposterModelCoords(vert, pos, ct);
+  float2 st = float2(0.5 + 0.5 * atan2(t1.x, t1.z)/3.141592653589793, t1.y);
+  float uDensity = structureUniforms.bondSelectionStripesDensity;
+  float frequency = structureUniforms.bondSelectionStripesFrequency;
+  if (fract(st.x*frequency) >= uDensity && fract(st.y*frequency) >= uDensity)
+    discard_fragment();
+  
+  float3 L = normalize((lightUniforms.lights[0].position - float4(pos, 1.0) * lightUniforms.lights[0].position.w).xyz);
+  float4 color = max(dot(N, L), 0.0) * float4(1.0,1.0,0.0,1.0);
+  
+  if (structureUniforms.bondHDR)
+  {
+    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.bondHDRExposure);
+    color= vLdrColor;
+  }
+  
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
+  output.albedo = float4(color.xyz * bloomLevel, bloomLevel);
+  return output;
+}
+
+
+fragment FragOutput internalBondSelectionWorleyNoise3DImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  FragOutput output;
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 ro = orthographic ? float3(vert.frag_pos.xy, 0.0) : float3(0.0);
+  float3 rd = orthographic ? float3(0.0, 0.0, -1.0) : normalize(vert.frag_pos);
+  
+  float3 N;
+  float ct;
+  float t = bondImposterIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, N, ct);
+  if (t < 0.0) discard_fragment();
+  
+  float3 pos = ro + t * rd;
+  float4 screen_pos = frameUniforms.projectionMatrix * float4(pos, 1.0);
+  output.depth = screen_pos.z / screen_pos.w;
+  
+  float3 t1 = bondSelectionImposterModelCoords(vert, pos, ct);
+  float frequency = structureUniforms.bondSelectionWorleyNoise3DFrequency;
+  float jitter = structureUniforms.bondSelectionWorleyNoise3DJitter;
+  float2 F = cellular3D(frequency*float3(t1.x,2.0*t1.y,t1.z), jitter);
+  float n = F.y-F.x;
+  
+  float4 color = n * bondSelectionImposterShade(vert, structureUniforms, lightUniforms, pos, N, ct);
+  
+  if (structureUniforms.bondHDR)
+  {
+    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.bondHDRExposure);
+    vLdrColor.a = 1.0;
+    color= vLdrColor;
+  }
+  
+  float intensity = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
+  output.albedo = float4(color.xyz * intensity, intensity);
+  return output;
+}
+
+
+fragment FragOutput externalBondSelectionGlowImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  FragOutput output;
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 ro = orthographic ? float3(vert.frag_pos.xy, 0.0) : float3(0.0);
+  float3 rd = orthographic ? float3(0.0, 0.0, -1.0) : normalize(vert.frag_pos);
+  
+  float4x4 toStructure = structureUniforms.inverseModelMatrix * frameUniforms.viewMatrixInverse;
+  float3 N;
+  float ct;
+  float t = bondImposterClippedIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, toStructure, structureUniforms, N, ct);
+  if (t < 0.0) discard_fragment();
+  
+  float3 pos = ro + t * rd;
+  float4 screen_pos = frameUniforms.projectionMatrix * float4(pos, 1.0);
+  output.depth = screen_pos.z / screen_pos.w;
+  
+  float4 color = float4(bondSelectionImposterShade(vert, structureUniforms, lightUniforms, pos, N, ct).xyz, 1.0);
+  
+  if (structureUniforms.bondHDR)
+  {
+    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.bondHDRExposure);
+    vLdrColor.a = 1.0;
+    color= vLdrColor;
+  }
+  
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
+  output.albedo = float4(color.xyz * bloomLevel, bloomLevel);
+  return output;
+}
+
+
+fragment FragOutput externalBondSelectionStripedImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  FragOutput output;
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 ro = orthographic ? float3(vert.frag_pos.xy, 0.0) : float3(0.0);
+  float3 rd = orthographic ? float3(0.0, 0.0, -1.0) : normalize(vert.frag_pos);
+  
+  float4x4 toStructure = structureUniforms.inverseModelMatrix * frameUniforms.viewMatrixInverse;
+  float3 N;
+  float ct;
+  float t = bondImposterClippedIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, toStructure, structureUniforms, N, ct);
+  if (t < 0.0) discard_fragment();
+  
+  float3 pos = ro + t * rd;
+  float4 screen_pos = frameUniforms.projectionMatrix * float4(pos, 1.0);
+  output.depth = screen_pos.z / screen_pos.w;
+  
+  float3 t1 = bondSelectionImposterModelCoords(vert, pos, ct);
+  float2 st = float2(0.5 + 0.5 * atan2(t1.x, t1.z)/3.141592653589793, t1.y);
+  float uDensity = structureUniforms.bondSelectionStripesDensity;
+  float frequency = structureUniforms.bondSelectionStripesFrequency;
+  if (fract(st.x*frequency) >= uDensity && fract(st.y*frequency) >= uDensity)
+    discard_fragment();
+  
+  float3 L = normalize((lightUniforms.lights[0].position - float4(pos, 1.0) * lightUniforms.lights[0].position.w).xyz);
+  float4 color = max(dot(N, L), 0.0) * float4(1.0,1.0,0.0,1.0);
+  
+  if (structureUniforms.bondHDR)
+  {
+    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.bondHDRExposure);
+    color= vLdrColor;
+  }
+  
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
+  output.albedo = float4(color.xyz * bloomLevel, bloomLevel);
+  return output;
+}
+
+
+fragment FragOutput externalBondSelectionWorleyNoise3DImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  FragOutput output;
+  
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
+  float3 ro = orthographic ? float3(vert.frag_pos.xy, 0.0) : float3(0.0);
+  float3 rd = orthographic ? float3(0.0, 0.0, -1.0) : normalize(vert.frag_pos);
+  
+  float4x4 toStructure = structureUniforms.inverseModelMatrix * frameUniforms.viewMatrixInverse;
+  float3 N;
+  float ct;
+  float t = bondImposterClippedIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, toStructure, structureUniforms, N, ct);
+  if (t < 0.0) discard_fragment();
+  
+  float3 pos = ro + t * rd;
+  float4 screen_pos = frameUniforms.projectionMatrix * float4(pos, 1.0);
+  output.depth = screen_pos.z / screen_pos.w;
+  
+  float3 t1 = bondSelectionImposterModelCoords(vert, pos, ct);
+  float frequency = structureUniforms.bondSelectionWorleyNoise3DFrequency;
+  float jitter = structureUniforms.bondSelectionWorleyNoise3DJitter;
+  float2 F = cellular3D(frequency*float3(t1.x,2.0*t1.y,t1.z), jitter);
+  float n = F.y-F.x;
+  
+  float4 color = n * bondSelectionImposterShade(vert, structureUniforms, lightUniforms, pos, N, ct);
+  
+  if (structureUniforms.bondHDR)
+  {
+    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.bondHDRExposure);
+    vLdrColor.a = 1.0;
+    color= vLdrColor;
+  }
+  
+  float intensity = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
+  output.albedo = float4(color.xyz * intensity, intensity);
+  return output;
+}
+

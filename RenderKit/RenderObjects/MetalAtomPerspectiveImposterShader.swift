@@ -38,6 +38,7 @@ class MetalAtomPerspectiveImposterShader
   var renderStructures: [[RKRenderObject]] = [[]]
   
   var pipeLine: MTLRenderPipelineState! = nil
+  var perPixelPipeLine: MTLRenderPipelineState! = nil
   var indexBuffer: MTLBuffer! = nil
   var vertexBuffer: MTLBuffer! = nil
   var samplerState: MTLSamplerState! = nil
@@ -79,6 +80,18 @@ class MetalAtomPerspectiveImposterShader
     {
       fatalError("Error occurred when creating render pipeline state \(error)")
     }
+    
+    // "fast" per-pixel quality mode: identical shading, but interpolated at the pixel
+    // center so the fragment shader runs once per pixel even under MSAA
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSphereImposterPerspectivePerPixelFragmentShader")!
+    do
+    {
+      self.perPixelPipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating render pipeline state \(error)")
+    }
   }
   
   public func buildVertexBuffers(device: MTLDevice)
@@ -95,7 +108,7 @@ class MetalAtomPerspectiveImposterShader
     {
       commandEncoder.setCullMode(MTLCullMode.back)
       
-      commandEncoder.setRenderPipelineState(pipeLine)
+      commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? pipeLine : perPixelPipeLine)
       
       commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)

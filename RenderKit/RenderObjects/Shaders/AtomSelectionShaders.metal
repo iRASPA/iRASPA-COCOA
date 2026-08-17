@@ -47,37 +47,6 @@ struct GlowVertexShaderOut
 };
 
 
-vertex GlowVertexShaderOut AtomGlowSphereVertexShader(const device InPerVertex *vertices [[buffer(0)]],
-                                                      const device InPerInstanceAttributes *positions [[buffer(1)]],
-                                                      constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                                      constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                                      constant LightUniforms& lightUniforms [[buffer(4)]],
-                                                      uint vid [[vertex_id]],
-                                                      uint iid [[instance_id]])
-{
-  GlowVertexShaderOut vert;
-  
-  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
-  float4 pos =  scale * vertices[vid].position + positions[iid].position;
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-  vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
-  
-  vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * pos;
-  return vert;
-}
-
-fragment float4 AtomGlowSphereFragmentShader(GlowVertexShaderOut vert [[stage_in]],
-                                             constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                             constant FrameUniforms& frameUniforms [[buffer(1)]],
-                                             constant LightUniforms& lightUniforms [[buffer(2)]])
-{
-  return float4(structureUniforms.atomSelectionIntensity * (vert.ambient.xyz + vert.diffuse.xyz), 1.0);
-}
-
-
-
-
 vertex GlowVertexShaderOut AtomGlowSphereImposterOrthographicVertexShader(const device InPerVertex *vertices [[buffer(0)]],
                                                                           const device InPerInstanceAttributes *positions [[buffer(1)]],
                                                                           constant FrameUniforms& frameUniforms [[buffer(2)]],
@@ -298,83 +267,6 @@ fragment float4 blurFragmentShader(BlurVertexShaderOut vert [[stage_in]],
 }
 
 
-// Mark: Worley noise 3D full
-
-vertex AtomSphereVertexShaderOut AtomSelectionWorleyNoise3DSphereVertexShader(const device InPerVertex *vertices [[buffer(0)]],
-                                                        const device InPerInstanceAttributes *positions [[buffer(1)]],
-                                                        constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                                        constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                                        constant LightUniforms& lightUniforms [[buffer(4)]],
-                                                        uint vid [[vertex_id]],
-                                                        uint iid [[instance_id]])
-{
-  AtomSphereVertexShaderOut vert;
-  
-  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
-  float4 pos =  scale * vertices[vid].position + positions[iid].position;
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-  vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
-  
-  
-  vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * vertices[vid].normal).xyz;
-  vert.Model_N = vertices[vid].normal.xyz;
-  
-  float4 P =  frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
-  
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
-  
-  // Calculate view vector
-  vert.V = -P.xyz;
-  
-  vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * pos;
-  
-  return vert;
-}
-
-fragment float4 AtomSelectionWorleyNoise3DSphereFragmentShader(AtomSphereVertexShaderOut vert [[stage_in]],
-                                         constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                         constant FrameUniforms& frameUniforms [[buffer(1)]],
-                                         constant LightUniforms& lightUniforms [[buffer(2)]])
-{
-  // Normalize the incoming N, L and V vectors
-  float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
-  float3 V = normalize(vert.V);
-  
-  // Calculate R locally
-  float3 R = reflect(-L, N);
-  
-  // Compute the diffuse and specular components for each fragment
-  float4 ambient = vert.ambient;
-  float4 diffuse = max(dot(N, L), 0.0) * vert.diffuse;
-  float4 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess + structureUniforms.atomShininess) * vert.specular;
-  
-  float3 t1 = vert.Model_N;
-  
-  float frequency = structureUniforms.atomSelectionWorleyNoise3DFrequency;
-  float jitter = structureUniforms.atomSelectionWorleyNoise3DJitter;
-  float2 F = cellular3D(frequency*float3(t1.x,t1.z,t1.y), jitter);
-  float n = F.y-F.x;
-  
-  float4 color = n * (ambient + diffuse + specular);
-  
-  if (structureUniforms.atomHDR)
-  {
-    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.atomHDRExposure);
-    color= vLdrColor;
-  }
-  
-  float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.atomHue;
-  hsv.y = hsv.y * structureUniforms.atomSaturation;
-  hsv.z = hsv.z * structureUniforms.atomValue;
-  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
-  return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
-}
-
-
 // Mark: Worley noise 3D orthographic
 
 vertex AtomSphereImposterVertexShaderOut AtomSelectionWorleyNoise3DOrthographicVertexShader(const device InPerVertex *vertices [[buffer(0)]],
@@ -591,75 +483,6 @@ fragment FragOutput AtomSelectionWorleyNoise3DPerspectiveFragmentShader(AtomSphe
   
   return output;
 }
-
-// Mark: Stripes 3D full
-
-vertex AtomSphereVertexShaderOut AtomSelectionStripedSphereVertexShader(const device InPerVertex *vertices [[buffer(0)]],
-                                                                        const device InPerInstanceAttributes *positions [[buffer(1)]],
-                                                                        constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                                                        constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                                                        constant LightUniforms& lightUniforms [[buffer(4)]],
-                                                                        uint vid [[vertex_id]],
-                                                                        uint iid [[instance_id]])
-{
-  AtomSphereVertexShaderOut vert;
-  
-  float4 scale = structureUniforms.atomSelectionScaling * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
-  float4 pos =  scale * vertices[vid].position + positions[iid].position;
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-  vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
-  
-  
-  vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * vertices[vid].normal).xyz;
-  vert.Model_N = vertices[vid].normal.xyz;
-  
-  float4 P =  frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
-  
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
-  
-  // Calculate view vector
-  vert.V = -P.xyz;
-  
-  vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * pos;
-  
-  return vert;
-}
-
-fragment float4 AtomSelectionStripedSphereFragmentShader(AtomSphereVertexShaderOut vert [[stage_in]],
-                                                               constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                                               constant FrameUniforms& frameUniforms [[buffer(1)]],
-                                                               constant LightUniforms& lightUniforms [[buffer(2)]])
-{
-  // Normalize the incoming N, L and V vectors
-  float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
-  
-  float4 color = max(dot(N, L), 0.0) * float4(1.0,1.0,0.0,1.0);
-  
-  float3 t1 = vert.Model_N;
-  
-  float2  st = float2(0.5 + 0.5 * atan2(t1.z, t1.x)/3.141592653589793, 0.5 - asin(t1.y)/3.141592653589793);
-  float uDensity = structureUniforms.atomSelectionStripesDensity;
-  float frequency = structureUniforms.atomSelectionStripesFrequency;
-  if (fract(st.x*frequency) >= uDensity && fract(st.y*frequency) >= uDensity)
-    discard_fragment();
-  
-  if (structureUniforms.atomHDR)
-  {
-    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.atomHDRExposure);
-    color= vLdrColor;
-  }
-  
-  float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.atomHue;
-  hsv.y = hsv.y * structureUniforms.atomSaturation;
-  hsv.z = hsv.z * structureUniforms.atomValue;
-  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
-  return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
-}
-
 
 // Mark: Stripes orthographic
 

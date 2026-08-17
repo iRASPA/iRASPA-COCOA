@@ -33,133 +33,6 @@
 #include "Common.h"
 using namespace metal;
 
-vertex AtomSphereVertexShaderOut AtomSphereVertexShader(const device InPerVertex *vertices [[buffer(0)]],
-                                              const device InPerInstanceAttributes *positions [[buffer(1)]],
-                                              constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                              constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                              constant LightUniforms& lightUniforms [[buffer(4)]],
-                                              uint vid [[vertex_id]],
-                                              uint iid [[instance_id]])
-{
-  AtomSphereVertexShaderOut vert;
-  
-  float4 scale = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
-  float4 pos =  scale * vertices[vid].position + positions[iid].position;
-  if (structureUniforms.colorAtomsWithBondColor)
-  {
-    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
-    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
-    vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
-  }
-  else
-  {
-    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-    vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
-  }
-  
-
-  vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * vertices[vid].normal).xyz;
-  vert.Model_N = vertices[vid].normal.xyz;
-  
-  float4 P =  frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
-  
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
-            
-  // Calculate view vector
-  vert.V = -P.xyz;
-  
-  vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * pos;
-  
-  uint patchNumber=structureUniforms.ambientOcclusionPatchNumber;
-  vert.k1=iid%patchNumber;
-  vert.k2=iid/patchNumber;
-  
-  if(structureUniforms.clipAtomsAtUnitCell)
-  {
-    vert.clippingDistance0 = dot(structureUniforms.clipPlaneBack,pos);
-    vert.clippingDistance1 = dot(structureUniforms.clipPlaneBottom,pos);
-    vert.clippingDistance2 = dot(structureUniforms.clipPlaneLeft,pos);
-    
-    vert.clippingDistance3 = dot(structureUniforms.clipPlaneFront,pos);
-    vert.clippingDistance4 = dot(structureUniforms.clipPlaneTop,pos);
-    vert.clippingDistance5 = dot(structureUniforms.clipPlaneRight,pos);
-  }
-  
-  return vert;
-}
-
-
-
-static float2 textureCoordinateForSphereSurfacePositionNew(float3 sphereSurfacePosition)
-{
-  float3 absoluteSphereSurfacePosition = fabs(sphereSurfacePosition);
-  float d = absoluteSphereSurfacePosition.x + absoluteSphereSurfacePosition.y + absoluteSphereSurfacePosition.z;
-  
-  return (sphereSurfacePosition.z > 0.0) ? sphereSurfacePosition.xy / d : float2(sign(sphereSurfacePosition.x) * ( 1.0 - absoluteSphereSurfacePosition.y/ d),sign(sphereSurfacePosition.y) * ( 1.0 - absoluteSphereSurfacePosition.x/ d));
-}
-
-
-fragment float4 AtomSphereFragmentShader(AtomSphereVertexShaderOut vert [[stage_in]],
-                                         constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                         constant FrameUniforms& frameUniforms [[buffer(1)]],
-                                         constant LightUniforms& lightUniforms [[buffer(2)]],
-                                         texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
-                                         sampler           shadowMapSampler [[ sampler(0) ]])
-{
-  // Normalize the incoming N, L and V vectors
-  float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
-  float3 V = normalize(vert.V);
-  
-  if(structureUniforms.clipAtomsAtUnitCell)
-  {
-    if (vert.clippingDistance0 < 0.0) discard_fragment();
-    if (vert.clippingDistance1 < 0.0) discard_fragment();
-    if (vert.clippingDistance2 < 0.0) discard_fragment();
-    if (vert.clippingDistance3 < 0.0) discard_fragment();
-    if (vert.clippingDistance4 < 0.0) discard_fragment();
-    if (vert.clippingDistance5 < 0.0) discard_fragment();
-  }
-  
-  // Calculate R locally
-  float3 R = reflect(-L, N);
-  
-  // Compute the diffuse and specular components for each fragment
-  float3 ambient = vert.ambient.xyz;
-  float3 diffuse = max(dot(N, L), 0.0) * vert.diffuse.xyz;
-  float3 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess + structureUniforms.atomShininess) * vert.specular.xyz;
-
-  
-  float ao = 1.0;
-  
-  if (structureUniforms.ambientOcclusion)
-  {
-    float patchSize=structureUniforms.ambientOcclusionPatchSize;
-    float3 t1 = vert.Model_N;
-    float2 m2 = (float2(patchSize*(vert.k1+0.5),patchSize*(vert.k2+0.5))+0.5*(patchSize-1.0)*(textureCoordinateForSphereSurfacePositionNew(t1)))*structureUniforms.ambientOcclusionInverseTextureSize;
-    
-    ao = ambientOcclusionTexture.sample(shadowMapSampler, m2).r;
-  }
-  
-  float4 color= float4(ao * (ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
-  
-  if (structureUniforms.atomHDR)
-  {
-    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.atomHDRExposure);
-    vLdrColor.a = 1.0;
-    color= vLdrColor;
-  }
-  
-  float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.atomHue;
-  hsv.y = hsv.y * structureUniforms.atomSaturation;
-  hsv.z = hsv.z * structureUniforms.atomValue;
-  return float4(hsv2rgb(hsv),1.0);
-}
-
-
 // Mark: Sphere-imposter orthographic
 
 
@@ -235,12 +108,65 @@ static float2 textureCoordinateForSphereSurfacePosition(float3 sphereSurfacePosi
   return (sphereSurfacePosition.z > 0.0) ? sphereSurfacePosition.xy / d : float2(sign(sphereSurfacePosition.x) * ( 1.0 - absoluteSphereSurfacePosition.y/ d),sign(sphereSurfacePosition.y) * ( 1.0 - absoluteSphereSurfacePosition.x/ d));
 }
 
-fragment FragOutput AtomSphereImposterOrthographicFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
-                                                                 constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                                 constant StructureUniforms& structureUniforms [[buffer(1)]],
-                                                                 constant LightUniforms& lightUniforms [[buffer(2)]],
-                                                                 texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
-                                                                 sampler          ambientOcclusionSampler [[ sampler(0) ]])
+// fragment-input variant of AtomSphereImposterVertexShaderOut (matched to the vertex
+// output by member name) with the ray-defining members interpolated per-sample: this
+// forces per-sample execution of the fragment shader, so the ray-traced silhouette,
+// clipping and depth are anti-aliased by MSAA
+typedef struct AtomSphereImposterFragmentShaderIn
+{
+  float4 position [[position]];
+  float4 eye_position;
+  float4 instancePosition [[ flat ]];
+  float2 texcoords [[ sample_perspective ]];
+  float4 ambient [[ flat ]];
+  float4 diffuse [[ flat ]];
+  float4 specular [[ flat ]];
+  float3 frag_pos [[ sample_perspective ]];
+  float3 frag_center [[ flat ]];
+  float3 N;
+  float3 L;
+  float3 V;
+  float4 sphere_radius [[ flat ]];
+  float k1 [[ flat ]];
+  float k2 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix1 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix2 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix3 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix4 [[ flat ]];
+} AtomSphereImposterFragmentShaderIn;
+
+// per-pixel ("fast") variant of AtomSphereImposterFragmentShaderIn: identical layout,
+// but with default center interpolation the fragment shader runs once per pixel under MSAA
+typedef struct AtomSphereImposterPerPixelFragmentShaderIn
+{
+  float4 position [[position]];
+  float4 eye_position;
+  float4 instancePosition [[ flat ]];
+  float2 texcoords;
+  float4 ambient [[ flat ]];
+  float4 diffuse [[ flat ]];
+  float4 specular [[ flat ]];
+  float3 frag_pos;
+  float3 frag_center [[ flat ]];
+  float3 N;
+  float3 L;
+  float3 V;
+  float4 sphere_radius [[ flat ]];
+  float k1 [[ flat ]];
+  float k2 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix1 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix2 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix3 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix4 [[ flat ]];
+} AtomSphereImposterPerPixelFragmentShaderIn;
+
+template <typename VertexIn>
+static FragOutput AtomSphereImposterOrthographicFragmentImpl(VertexIn vert,
+                                                             constant FrameUniforms& frameUniforms,
+                                                             constant StructureUniforms& structureUniforms,
+                                                             constant LightUniforms& lightUniforms,
+                                                             texture2d<half>  ambientOcclusionTexture,
+                                                             sampler          ambientOcclusionSampler)
 {
   FragOutput output;
   
@@ -317,6 +243,29 @@ fragment FragOutput AtomSphereImposterOrthographicFragmentShader(AtomSphereImpos
   return output;
 }
 
+fragment FragOutput AtomSphereImposterOrthographicFragmentShader(AtomSphereImposterFragmentShaderIn vert [[stage_in]],
+                                                                 constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                 constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                 constant LightUniforms& lightUniforms [[buffer(2)]],
+                                                                 texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
+                                                                 sampler          ambientOcclusionSampler [[ sampler(0) ]])
+{
+  return AtomSphereImposterOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler);
+}
+
+// "fast" per-pixel variant: identical shading, but with center interpolation the
+// fragment shader runs once per pixel even under MSAA
+fragment FragOutput AtomSphereImposterOrthographicPerPixelFragmentShader(AtomSphereImposterPerPixelFragmentShaderIn vert [[stage_in]],
+                                                                         constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                         constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                         constant LightUniforms& lightUniforms [[buffer(2)]],
+                                                                         texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
+                                                                         sampler          ambientOcclusionSampler [[ sampler(0) ]])
+{
+  return AtomSphereImposterOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler);
+}
+
+
 
 // Mark: Sphere-imposter perspective
 
@@ -379,12 +328,13 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterPerspectiveVertexShad
   return vert;
 }
 
-fragment FragOutput AtomSphereImposterPerspectiveFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
-                                                                constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                                constant StructureUniforms& structureUniforms [[buffer(1)]],
-                                                                constant LightUniforms& lightUniforms [[buffer(2)]],
-                                                                texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
-                                                                sampler          ambientOcclusionSampler [[ sampler(0) ]])
+template <typename VertexIn>
+static FragOutput AtomSphereImposterPerspectiveFragmentImpl(VertexIn vert,
+                                                            constant FrameUniforms& frameUniforms,
+                                                            constant StructureUniforms& structureUniforms,
+                                                            constant LightUniforms& lightUniforms,
+                                                            texture2d<half>  ambientOcclusionTexture,
+                                                            sampler          ambientOcclusionSampler)
 {
   FragOutput output;
   
@@ -465,6 +415,29 @@ fragment FragOutput AtomSphereImposterPerspectiveFragmentShader(AtomSphereImpost
   
   return output;
 }
+
+fragment FragOutput AtomSphereImposterPerspectiveFragmentShader(AtomSphereImposterFragmentShaderIn vert [[stage_in]],
+                                                                constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                constant LightUniforms& lightUniforms [[buffer(2)]],
+                                                                texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
+                                                                sampler          ambientOcclusionSampler [[ sampler(0) ]])
+{
+  return AtomSphereImposterPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler);
+}
+
+// "fast" per-pixel variant: identical shading, but with center interpolation the
+// fragment shader runs once per pixel even under MSAA
+fragment FragOutput AtomSphereImposterPerspectivePerPixelFragmentShader(AtomSphereImposterPerPixelFragmentShaderIn vert [[stage_in]],
+                                                                        constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                        constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                        constant LightUniforms& lightUniforms [[buffer(2)]],
+                                                                        texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
+                                                                        sampler          ambientOcclusionSampler [[ sampler(0) ]])
+{
+  return AtomSphereImposterPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler);
+}
+
 
 
 

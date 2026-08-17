@@ -11,8 +11,11 @@ import Metal
 
 enum RKMetal
 {
-  // Draw bonds as ray-traced cylinder imposters (default) instead of tessellated cylinder meshes.
-  static var drawBondsAsImposters: Bool = true
+  // Shade the ray-traced imposters per-sample under MSAA, anti-aliasing their
+  // silhouettes, clipping and depth. Set to false for a "fast" quality mode that
+  // shades once per pixel (MSAA then only smooths the hull edges, not the
+  // ray-traced edges).
+  static var perSampleImposterShading: Bool = true
 
   static var hostStorage: MTLResourceOptions
   {

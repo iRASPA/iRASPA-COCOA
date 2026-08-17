@@ -32,6 +32,8 @@
 
 import Foundation
 
+// The glow effect itself is drawn by the imposter glow shaders; this class only owns
+// the off-screen glow textures and render-pass descriptor those shaders render into.
 class MetalAtomSelectionGlowShader
 {
   var renderDataSource: RKRenderDataSource? = nil
@@ -40,46 +42,6 @@ class MetalAtomSelectionGlowShader
   var atomSelectionGlowRenderPassDescriptor: MTLRenderPassDescriptor! = nil
   var atomSelectionGlowTexture: MTLTexture! = nil
   var atomSelectionGlowResolveTexture: MTLTexture! = nil
-
-  
-  var indexBuffer: MTLBuffer! = nil
-  var vertexBuffer: MTLBuffer! = nil
-  var pipeLineState: MTLRenderPipelineState! = nil
-  var depthState: MTLDepthStencilState! = nil
-  
-  public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
-  {
-    let depthStateDesc: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
-    depthStateDesc.depthCompareFunction = MTLCompareFunction.lessEqual
-    depthStateDesc.isDepthWriteEnabled = true
-    depthState = device.makeDepthStencilState(descriptor: depthStateDesc)
-    
-    let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "AtomGlowSphereVertexShader")!
-    pipelineDescriptor.sampleCount = maximumNumberOfSamples
-    pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomGlowSphereFragmentShader")!
-    pipelineDescriptor.vertexDescriptor = vertexDescriptor
-    
-    do
-    {
-      self.pipeLineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-    }
-    catch
-    {
-      fatalError("Error occurred when creating render pipeline state \(error)")
-    }
-  }
-  
-  public func buildVertexBuffers(device: MTLDevice)
-  {
-    let sphere: MetalSphereGeometry = MetalSphereGeometry()
-    
-    vertexBuffer = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:RKMetal.hostStorage)
-    indexBuffer = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:RKMetal.hostStorage)
-  }
   
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int, sceneDepthTexture: MTLTexture)
   {
@@ -115,66 +77,5 @@ class MetalAtomSelectionGlowShader
     glowAtomsStencilAttachment.loadAction = MTLLoadAction.clear
     glowAtomsStencilAttachment.storeAction = MTLStoreAction.dontCare
     glowAtomsStencilAttachment.clearStencil = 0
-  }
-  
-  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, instanceBuffer: [[MTLBuffer?]], frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?,  size: CGSize)
-  {
-    if let _: RKRenderDataSource = renderDataSource
-    {
-      //let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: atomSelectionGlowRenderPassDescriptor)!
-      commandEncoder.label = "Glow command encoder"
-      commandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
-      commandEncoder.setDepthStencilState(depthState)
-      commandEncoder.setCullMode(MTLCullMode.back)
-      commandEncoder.setFrontFacing(MTLWinding.clockwise)
-      
-      commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
-      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
-      commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 1)
-      commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 2)
-        
-        
-      var index = 0
-      for i in 0..<self.renderStructures.count
-      {
-        let structures: [RKRenderObject] = self.renderStructures[i]
-          
-        for (j,structure) in structures.enumerated()
-        {
-          if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
-             let buffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j)
-          {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-            
-            if (structure.atomSelectionStyle == .glow && structure.drawAtoms && structure.isVisible &&  (instanceCount > 0) )
-            {
-              commandEncoder.setRenderPipelineState(pipeLineState)
-              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
-              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-                
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
-            }
-          }
-          index = index + 1
-        }
-      }
-      //commandEncoder.endEncoding()
-    }
-  }
-  
-  func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?
-  {
-    if sceneIndex < buffer.count
-    {
-      if movieIndex < buffer[sceneIndex].count
-      {
-        return buffer[sceneIndex][movieIndex]
-      }
-    }
-    return nil
   }
 }
