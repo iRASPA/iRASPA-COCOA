@@ -34,6 +34,21 @@ import BinaryCodable
 import simd
 import MathKit
 
+/// Monotonic counter bumped whenever atom visibility flags or the shape of an atom tree change.
+/// Consumers that derive expensive data from the tree (such as the ribbon visibility mask, which
+/// would otherwise be recomputed for every draw call) cache it against this generation. Both the
+/// mutations and the reads happen on the main thread, the same assumption the tree itself makes.
+private var atomVisibilityGeneration: Int = 0
+
+public func skAtomVisibilityGeneration() -> Int
+{
+  return atomVisibilityGeneration
+}
+
+public func skInvalidateAtomVisibilityGeneration()
+{
+  atomVisibilityGeneration += 1
+}
 
 public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertible, BinaryDecodable, BinaryEncodable, Copying
 {
@@ -58,6 +73,12 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
   // atom properties (bonds are visible depending on whether the atoms of the bonds are visible)
   public var isFixed: Bool3 = Bool3(false, false, false)
   public var isVisible: Bool = true
+  {
+    didSet
+    {
+      skInvalidateAtomVisibilityGeneration()
+    }
+  }
   public var isVisibleEnabled: Bool = true
   
   public var serialNumber: Int = 0

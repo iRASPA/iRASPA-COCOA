@@ -72,6 +72,7 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
   public var ribbonSpecularIntensity: Double = 1.0
   public var ribbonShininess: Double = 6.0
   public private(set) var ribbonMesh: RKRibbonMesh = RKRibbonMesh()
+  private let ribbonVisibilityCache: ProteinRibbonVisibilityCache = ProteinRibbonVisibilityCache()
   public var ribbonAmbientOcclusionPatchNumber: Int = 1
   public var ribbonAmbientOcclusionPatchSize: Int = 16
   public var ribbonAmbientOcclusionTextureSize: Int = 256
@@ -136,114 +137,27 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
   
   public var ribbonUsesSegmentVisibility: Bool
   {
-    if !ribbonMesh.segmentAlphaCarbonTags.isEmpty
-    {
-      return ribbonMesh.segmentAlphaCarbonTags.count == ribbonMesh.segmentDrawRanges.count
-    }
-    return ProteinRibbonSegmentSupport.segmentTreeNodesAlignWithDrawRanges(atomTreeController,
-                                                                           drawRangeCount: ribbonMesh.segmentDrawRanges.count)
+    return ribbonVisibilityCache.usesSegmentVisibility(mesh: ribbonMesh, controller: atomTreeController)
   }
   
   public var ribbonUsesResidueVisibility: Bool
   {
-    // Mesh residue ranges are 1:1 with Cα tags; tree residue groups can outnumber them
-    // (HETATM, single-sample residues skipped in the sweep). Prefer tags so R/A visibility works.
-    if !ribbonMesh.residueAlphaCarbonTags.isEmpty
-    {
-      return ribbonMesh.residueAlphaCarbonTags.count == ribbonMesh.residueDrawRanges.count
-    }
-    return ProteinRibbonSegmentSupport.residueTreeNodesAlignWithDrawRanges(atomTreeController,
-                                                                           drawRangeCount: ribbonMesh.residueDrawRanges.count)
+    return ribbonVisibilityCache.usesResidueVisibility(mesh: ribbonMesh, controller: atomTreeController)
   }
   
   public func isRibbonSegmentDrawRangeVisible(at index: Int) -> Bool
   {
-    guard ribbonUsesSegmentVisibility else {return true}
-    if !ribbonMesh.segmentAlphaCarbonTags.isEmpty
-    {
-      guard index >= 0 && index < ribbonMesh.segmentAlphaCarbonTags.count else {return true}
-      let tag: Int = ribbonMesh.segmentAlphaCarbonTags[index]
-      guard let segmentNode: SKAtomTreeNode = ProteinRibbonSegmentSupport.segmentTreeNode(forAtomTag: tag,
-                                                                                            in: atomTreeController) else {return true}
-      return ProteinRibbonSegmentSupport.isRibbonSegmentVisible(segmentNode)
-    }
-    let segmentNodes: [SKAtomTreeNode] = ProteinRibbonSegmentSupport.orderedSegmentTreeNodes(in: atomTreeController)
-    guard index >= 0 && index < segmentNodes.count else {return true}
-    return ProteinRibbonSegmentSupport.isRibbonSegmentVisible(segmentNodes[index])
+    return ribbonVisibilityCache.isSegmentDrawRangeVisible(at: index, mesh: ribbonMesh, controller: atomTreeController)
   }
   
   public func isRibbonResidueDrawRangeVisible(at index: Int) -> Bool
   {
-    guard ribbonUsesResidueVisibility else {return true}
-    if !ribbonMesh.residueAlphaCarbonTags.isEmpty
-    {
-      guard index >= 0 && index < ribbonMesh.residueAlphaCarbonTags.count else {return true}
-      let tag: Int = ribbonMesh.residueAlphaCarbonTags[index]
-      guard let residueNode: SKAtomTreeNode = ProteinRibbonSegmentSupport.residueTreeNode(forAtomTag: tag,
-                                                                                            in: atomTreeController) else {return true}
-      return ProteinRibbonSegmentSupport.isRibbonResidueVisible(residueNode)
-    }
-    let residueNodes: [SKAtomTreeNode] = ProteinRibbonSegmentSupport.orderedResidueTreeNodes(in: atomTreeController)
-    guard index >= 0 && index < residueNodes.count else {return true}
-    return ProteinRibbonSegmentSupport.isRibbonResidueVisible(residueNodes[index])
+    return ribbonVisibilityCache.isResidueDrawRangeVisible(at: index, mesh: ribbonMesh, controller: atomTreeController)
   }
   
   public func ribbonDrawRangesForEncoding() -> [RKRibbonChainDrawRange]
   {
-    return drawRangesForEncoding(mesh: ribbonMesh)
-  }
-  
-  private func drawRangesForEncoding(mesh: RKRibbonMesh) -> [RKRibbonChainDrawRange]
-  {
-    if ribbonUsesResidueVisibility && !mesh.residueDrawRanges.isEmpty
-    {
-      let visible: [Bool]
-      if mesh.residueAlphaCarbonTags.count == mesh.residueDrawRanges.count
-      {
-        visible = ProteinRibbonSegmentSupport.residueVisibilityMask(forAtomTags: mesh.residueAlphaCarbonTags,
-                                                                    in: atomTreeController)
-      }
-      else if ribbonMesh.residueAlphaCarbonTags.count == mesh.residueDrawRanges.count
-      {
-        visible = ProteinRibbonSegmentSupport.residueVisibilityMask(forAtomTags: ribbonMesh.residueAlphaCarbonTags,
-                                                                    in: atomTreeController)
-      }
-      else
-      {
-        return mesh.chainDrawRanges
-      }
-      if visible.allSatisfy({$0})
-      {
-        return mesh.chainDrawRanges
-      }
-      return RKRibbonMesh.mergedVisibleDrawRanges(mesh.residueDrawRanges, visible: visible)
-    }
-    
-    if ribbonUsesSegmentVisibility && !mesh.segmentDrawRanges.isEmpty
-    {
-      let visible: [Bool]
-      if mesh.segmentAlphaCarbonTags.count == mesh.segmentDrawRanges.count
-      {
-        visible = ProteinRibbonSegmentSupport.segmentVisibilityMask(forAtomTags: mesh.segmentAlphaCarbonTags,
-                                                                    in: atomTreeController)
-      }
-      else if ribbonMesh.segmentAlphaCarbonTags.count == mesh.segmentDrawRanges.count
-      {
-        visible = ProteinRibbonSegmentSupport.segmentVisibilityMask(forAtomTags: ribbonMesh.segmentAlphaCarbonTags,
-                                                                    in: atomTreeController)
-      }
-      else
-      {
-        return mesh.chainDrawRanges
-      }
-      if visible.allSatisfy({$0})
-      {
-        return mesh.chainDrawRanges
-      }
-      return RKRibbonMesh.mergedVisibleDrawRanges(mesh.segmentDrawRanges, visible: visible)
-    }
-    
-    return mesh.chainDrawRanges
+    return ribbonVisibilityCache.drawRangesForEncoding(mesh: ribbonMesh, controller: atomTreeController)
   }
   
   public var renderSelectedRibbonSegmentDrawRangeIndices: Set<Int>
@@ -399,6 +313,7 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
                                                 parameters: meshParameters,
                                                 secondaryStructureMethod: ribbonSecondaryStructureMethod)
     ribbonAmbientOcclusionStripHeight = meshParameters.crossSectionRingResolution
+    ribbonVisibilityCache.invalidate()
   }
   
   public override var colorAtomsWithBondColor: Bool

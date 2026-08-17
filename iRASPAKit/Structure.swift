@@ -52,6 +52,13 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   private static var classVersionNumber: Int = 10
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
+  {
+    didSet
+    {
+      // Undo paths swap in a whole tree, which changes visibility without touching a single node.
+      skInvalidateAtomVisibilityGeneration()
+    }
+  }
   public var bondSetController: SKBondSetController = SKBondSetController()
   
   // MARK: protocol RKRenderAtomSource implementation

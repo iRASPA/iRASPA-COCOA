@@ -22,6 +22,7 @@ import Foundation
 import simd
 import MathKit
 import SymmetryKit
+import RenderKit
 
 /// Contiguous secondary-structure segment along one chain (N→C), aligned with the atom-tree and ribbon mesh.
 public struct ProteinRibbonResidueSegment: Sendable
@@ -486,75 +487,159 @@ public enum ProteinRibbonSegmentSupport
     return nodesByTag
   }
   
-  /// Resolves residue group nodes for Cα tags stored on the ribbon mesh (1:1 with residue draw ranges).
-  public static func residueTreeNodes(forAtomTags alphaCarbonTags: [Int],
-                                      in controller: SKAtomTreeController) -> [SKAtomTreeNode?]
+  public struct RibbonVisibilityMasks
   {
-    let nodesByTag: [Int: SKAtomTreeNode] = leafNodesByTag(in: controller)
-    return alphaCarbonTags.map
-    { tag in
-      guard tag >= 0, let leaf: SKAtomTreeNode = nodesByTag[tag] else {return nil}
-      return enclosingResidueGroupNode(for: leaf)
-    }
+    public var residues: [Bool] = []
+    public var segments: [Bool] = []
   }
   
-  /// Resolves secondary-structure segment nodes for Cα tags stored on the ribbon mesh.
-  public static func segmentTreeNodes(forAtomTags alphaCarbonTags: [Int],
-                                      in controller: SKAtomTreeController) -> [SKAtomTreeNode?]
+  /// Both masks from a single tree walk. An empty tag list yields an empty mask, so a caller that
+  /// only drives one of the two pays for one walk and nothing more.
+  public static func visibilityMasks(residueAlphaCarbonTags: [Int],
+                                     segmentAlphaCarbonTags: [Int],
+                                     in controller: SKAtomTreeController) -> RibbonVisibilityMasks
   {
+    guard !residueAlphaCarbonTags.isEmpty || !segmentAlphaCarbonTags.isEmpty else {return RibbonVisibilityMasks()}
+    
     let nodesByTag: [Int: SKAtomTreeNode] = leafNodesByTag(in: controller)
-    return alphaCarbonTags.map
-    { tag in
-      guard tag >= 0, let leaf: SKAtomTreeNode = nodesByTag[tag] else {return nil}
-      return enclosingSecondaryStructureSegmentNode(for: leaf)
-    }
-  }
-  
-  public static func residueTreeNode(forAtomTag tag: Int,
-                                     in controller: SKAtomTreeController) -> SKAtomTreeNode?
-  {
-    guard tag >= 0 else {return nil}
-    for leaf in controller.flattenedLeafNodes()
+    
+    func mask(forTags tags: [Int], enclosing: (SKAtomTreeNode) -> SKAtomTreeNode?) -> [Bool]
     {
-      if leaf.representedObject.tag == tag
-      {
-        return enclosingResidueGroupNode(for: leaf)
+      return tags.map
+      { tag in
+        guard tag >= 0, let leaf: SKAtomTreeNode = nodesByTag[tag],
+              let node: SKAtomTreeNode = enclosing(leaf) else {return true}
+        return isRibbonHierarchyNodeVisible(node)
       }
     }
-    return nil
+    
+    var masks: RibbonVisibilityMasks = RibbonVisibilityMasks()
+    masks.residues = mask(forTags: residueAlphaCarbonTags, enclosing: enclosingResidueGroupNode)
+    masks.segments = mask(forTags: segmentAlphaCarbonTags, enclosing: enclosingSecondaryStructureSegmentNode)
+    return masks
   }
   
-  public static func segmentTreeNode(forAtomTag tag: Int,
-                                     in controller: SKAtomTreeController) -> SKAtomTreeNode?
+  /// Mask for an already-resolved node list, used when the ribbon mesh carries no Cα tags and the
+  /// draw ranges line up with the tree groups by count alone.
+  public static func visibilityMask(forNodes nodes: [SKAtomTreeNode]) -> [Bool]
   {
-    guard tag >= 0 else {return nil}
-    for leaf in controller.flattenedLeafNodes()
+    return nodes.map {isRibbonHierarchyNodeVisible($0)}
+  }
+}
+
+/// Which ribbon pieces the atom tree currently hides. Resolving this means walking the tree, so it is
+/// cached against the atom visibility generation rather than recomputed for every draw call. Shared by
+/// `Protein` and `ProteinCrystal`, which drive identical ribbon visibility.
+public final class ProteinRibbonVisibilityCache
+{
+  private var generation: Int = -1
+  private var residueDrawRangeCount: Int = 0
+  private var segmentDrawRangeCount: Int = 0
+  private var residueVisibility: [Bool] = []
+  private var segmentVisibility: [Bool] = []
+  private var cachedUsesResidueVisibility: Bool = false
+  private var cachedUsesSegmentVisibility: Bool = false
+  private var cachedEncodingDrawRanges: [RKRibbonChainDrawRange] = []
+  
+  public init()
+  {
+  }
+  
+  /// Call whenever the ribbon mesh is replaced: the draw ranges and Cα tags it is keyed on change.
+  public func invalidate()
+  {
+    generation = -1
+  }
+  
+  public func usesResidueVisibility(mesh: RKRibbonMesh, controller: SKAtomTreeController) -> Bool
+  {
+    refreshIfNeeded(mesh: mesh, controller: controller)
+    return cachedUsesResidueVisibility
+  }
+  
+  public func usesSegmentVisibility(mesh: RKRibbonMesh, controller: SKAtomTreeController) -> Bool
+  {
+    refreshIfNeeded(mesh: mesh, controller: controller)
+    return cachedUsesSegmentVisibility
+  }
+  
+  public func isResidueDrawRangeVisible(at index: Int, mesh: RKRibbonMesh, controller: SKAtomTreeController) -> Bool
+  {
+    refreshIfNeeded(mesh: mesh, controller: controller)
+    guard cachedUsesResidueVisibility else {return true}
+    guard index >= 0 && index < residueVisibility.count else {return true}
+    return residueVisibility[index]
+  }
+  
+  public func isSegmentDrawRangeVisible(at index: Int, mesh: RKRibbonMesh, controller: SKAtomTreeController) -> Bool
+  {
+    refreshIfNeeded(mesh: mesh, controller: controller)
+    guard cachedUsesSegmentVisibility else {return true}
+    guard index >= 0 && index < segmentVisibility.count else {return true}
+    return segmentVisibility[index]
+  }
+  
+  public func drawRangesForEncoding(mesh: RKRibbonMesh, controller: SKAtomTreeController) -> [RKRibbonChainDrawRange]
+  {
+    refreshIfNeeded(mesh: mesh, controller: controller)
+    return cachedEncodingDrawRanges
+  }
+  
+  private func refreshIfNeeded(mesh: RKRibbonMesh, controller: SKAtomTreeController)
+  {
+    let currentGeneration: Int = skAtomVisibilityGeneration()
+    if generation == currentGeneration && residueDrawRangeCount == mesh.residueDrawRanges.count &&
+       segmentDrawRangeCount == mesh.segmentDrawRanges.count
     {
-      if leaf.representedObject.tag == tag
+      return
+    }
+    
+    generation = currentGeneration
+    residueDrawRangeCount = mesh.residueDrawRanges.count
+    segmentDrawRangeCount = mesh.segmentDrawRanges.count
+    
+    // Mesh residue ranges are 1:1 with Cα tags; tree residue groups can outnumber them (HETATM,
+    // single-sample residues skipped in the sweep). Prefer tags so R/A visibility works.
+    let hasResidueTags: Bool = !mesh.residueAlphaCarbonTags.isEmpty
+    let hasSegmentTags: Bool = !mesh.segmentAlphaCarbonTags.isEmpty
+    cachedUsesResidueVisibility = hasResidueTags
+      ? mesh.residueAlphaCarbonTags.count == residueDrawRangeCount
+      : ProteinRibbonSegmentSupport.residueTreeNodesAlignWithDrawRanges(controller, drawRangeCount: residueDrawRangeCount)
+    cachedUsesSegmentVisibility = hasSegmentTags
+      ? mesh.segmentAlphaCarbonTags.count == segmentDrawRangeCount
+      : ProteinRibbonSegmentSupport.segmentTreeNodesAlignWithDrawRanges(controller, drawRangeCount: segmentDrawRangeCount)
+    
+    let masks: ProteinRibbonSegmentSupport.RibbonVisibilityMasks =
+      ProteinRibbonSegmentSupport.visibilityMasks(residueAlphaCarbonTags: cachedUsesResidueVisibility && hasResidueTags ? mesh.residueAlphaCarbonTags : [],
+                                                  segmentAlphaCarbonTags: cachedUsesSegmentVisibility && hasSegmentTags ? mesh.segmentAlphaCarbonTags : [],
+                                                  in: controller)
+    residueVisibility = masks.residues
+    segmentVisibility = masks.segments
+    
+    if cachedUsesResidueVisibility && !hasResidueTags
+    {
+      residueVisibility = ProteinRibbonSegmentSupport.visibilityMask(forNodes: ProteinRibbonSegmentSupport.orderedResidueTreeNodes(in: controller))
+    }
+    if cachedUsesSegmentVisibility && !hasSegmentTags
+    {
+      segmentVisibility = ProteinRibbonSegmentSupport.visibilityMask(forNodes: ProteinRibbonSegmentSupport.orderedSegmentTreeNodes(in: controller))
+    }
+    
+    // Residue ranges win when they drive visibility, exactly as the per-frame path used to decide.
+    cachedEncodingDrawRanges = mesh.chainDrawRanges
+    if cachedUsesResidueVisibility && residueDrawRangeCount > 0
+    {
+      if residueVisibility.count == residueDrawRangeCount && !residueVisibility.allSatisfy({$0})
       {
-        return enclosingSecondaryStructureSegmentNode(for: leaf)
+        cachedEncodingDrawRanges = RKRibbonMesh.mergedVisibleDrawRanges(mesh.residueDrawRanges, visible: residueVisibility)
       }
     }
-    return nil
-  }
-  
-  public static func residueVisibilityMask(forAtomTags alphaCarbonTags: [Int],
-                                           in controller: SKAtomTreeController) -> [Bool]
-  {
-    return residueTreeNodes(forAtomTags: alphaCarbonTags, in: controller).map
-    { node in
-      guard let residueNode: SKAtomTreeNode = node else {return true}
-      return isRibbonResidueVisible(residueNode)
-    }
-  }
-  
-  public static func segmentVisibilityMask(forAtomTags alphaCarbonTags: [Int],
-                                           in controller: SKAtomTreeController) -> [Bool]
-  {
-    return segmentTreeNodes(forAtomTags: alphaCarbonTags, in: controller).map
-    { node in
-      guard let segmentNode: SKAtomTreeNode = node else {return true}
-      return isRibbonSegmentVisible(segmentNode)
+    else if cachedUsesSegmentVisibility && segmentDrawRangeCount > 0
+    {
+      if segmentVisibility.count == segmentDrawRangeCount && !segmentVisibility.allSatisfy({$0})
+      {
+        cachedEncodingDrawRanges = RKRibbonMesh.mergedVisibleDrawRanges(mesh.segmentDrawRanges, visible: segmentVisibility)
+      }
     }
   }
 }

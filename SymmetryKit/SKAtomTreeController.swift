@@ -60,6 +60,7 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
       {
         child.parentNode = hiddenRootNode
       }
+      skInvalidateAtomVisibilityGeneration()
     }
   }
   
@@ -200,8 +201,7 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
       node.isImplicitelySelected = parent!.isImplicitelySelected
       parent!.updateFilteredChildren(filterPredicate)
     }
-    
-    
+    skInvalidateAtomVisibilityGeneration()
   }
   
   public func removeNode(_ node: SKAtomTreeNode)
@@ -212,6 +212,7 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
       
       parentNode.updateFilteredChildren(filterPredicate)
     }
+    skInvalidateAtomVisibilityGeneration()
   }
   
   public func childrenForItem(_ item: SKAtomTreeNode?)-> [SKAtomTreeNode]
@@ -253,6 +254,7 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
     let parent: SKAtomTreeNode = hiddenRootNode.descendantNodeAtIndexPath(indexPath.dropLast())!
     
     node.insert(inParent: parent, atIndex: index)
+    skInvalidateAtomVisibilityGeneration()
   }
   
   public func appendNode(_ node: SKAtomTreeNode!, atArrangedObjectIndexPath indexPath: IndexPath)
@@ -260,6 +262,7 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
     let parent: SKAtomTreeNode = hiddenRootNode.descendantNodeAtIndexPath(indexPath)!
     
     node.append(inParent: parent)
+    skInvalidateAtomVisibilityGeneration()
   }
   
   public func removeNodeAtArrangedObjectIndexPath(_ indexPath: IndexPath)
@@ -324,6 +327,7 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
       node.removeFromParent()
     }
     self.selectedTreeNodes = Set()
+    skInvalidateAtomVisibilityGeneration()
   }
   
   public func setSelectedNodes(_ objects: [SKAtomTreeNode])
