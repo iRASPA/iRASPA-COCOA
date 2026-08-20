@@ -42,7 +42,7 @@ import MathKit
 
 public final class ProteinCrystal: Structure, AtomEditor, BondEditor, UnitCellEditor, VolumetricDataEditor, SpaceGroupEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderRibbonSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderVolumetricDataSource, Cloning
 {
-  private static var classVersionNumber: Int = 8
+  private static var classVersionNumber: Int = 9
   
   public var spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
   public var backbone: ProteinBackbone = ProteinBackbone()
@@ -2394,6 +2394,10 @@ public final class ProteinCrystal: Structure, AtomEditor, BondEditor, UnitCellEd
     {
       encoder.encode(ribbonEdgeCueing.rawValue)
     }
+    if ProteinCrystal.classVersionNumber >= 9
+    {
+      encoder.encode(drawRibbon)
+    }
     
     super.binaryEncode(to: encoder)
   }
@@ -2486,6 +2490,11 @@ public final class ProteinCrystal: Structure, AtomEditor, BondEditor, UnitCellEd
       // Written before the cueing existed, so it never carried any, and Fancy is now the style without
       // them: what such a ribbon has always looked like.
       self.ribbonEdgeCueing = .off
+    }
+
+    if readVersionNumber >= 9
+    {
+      self.drawRibbon = try decoder.decode(Bool.self)
     }
     
     try super.init(fromBinary: decoder)

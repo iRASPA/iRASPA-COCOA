@@ -42,7 +42,7 @@ import OperationKit
 
 public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderRibbonSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, Cloning
 {
-  private static var classVersionNumber: Int = 8
+  private static var classVersionNumber: Int = 9
   
   public var backbone: ProteinBackbone = ProteinBackbone()
   public var drawRibbon: Bool = true
@@ -1390,6 +1390,10 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
     {
       encoder.encode(ribbonEdgeCueing.rawValue)
     }
+    if Protein.classVersionNumber >= 9
+    {
+      encoder.encode(drawRibbon)
+    }
     super.binaryEncode(to: encoder)
   }
   
@@ -1478,6 +1482,11 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
       // Written before the cueing existed, so it never carried any, and Fancy is now the style without
       // them: what such a ribbon has always looked like.
       self.ribbonEdgeCueing = .off
+    }
+
+    if readVersionNumber >= 9
+    {
+      self.drawRibbon = try decoder.decode(Bool.self)
     }
     
     try super.init(fromBinary: decoder)

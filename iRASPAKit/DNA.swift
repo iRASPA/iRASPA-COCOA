@@ -42,7 +42,7 @@ import OperationKit
 
 public final class DNA: Structure, AtomEditor, BondEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderRibbonSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, Cloning, DNARibbonStructureEditor
 {
-  private static var classVersionNumber: Int = 2
+  private static var classVersionNumber: Int = 3
   
   public var backbone: DNABackbone = DNABackbone()
   public var drawRibbon: Bool = true
@@ -1322,6 +1322,10 @@ public final class DNA: Structure, AtomEditor, BondEditor, RKRenderAtomSource, R
     {
       encoder.encode(ribbonEdgeCueing.rawValue)
     }
+    if DNA.classVersionNumber >= 3
+    {
+      encoder.encode(drawRibbon)
+    }
     super.binaryEncode(to: encoder)
   }
   
@@ -1367,6 +1371,11 @@ public final class DNA: Structure, AtomEditor, BondEditor, RKRenderAtomSource, R
     if readVersionNumber >= 2
     {
       ribbonEdgeCueing = RKEdgeCueing(rawValue: try decoder.decode(Int.self)) ?? .off
+    }
+
+    if readVersionNumber >= 3
+    {
+      drawRibbon = try decoder.decode(Bool.self)
     }
     
     try super.init(fromBinary: decoder)

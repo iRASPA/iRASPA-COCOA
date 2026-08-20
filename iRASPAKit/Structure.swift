@@ -3388,7 +3388,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.atomTreeController.tag()
     encoder.encode(atomTreeController)
     
-    encoder.encode((self.atomRepresentationStyle == RepresentationStyle.licorice || self.atomRepresentationType == RepresentationType.unity) ? true : drawAtoms)
+    encoder.encode(drawAtoms)
     
     encoder.encode(atomRepresentationType.rawValue)
     encoder.encode(atomRepresentationStyle.rawValue)
