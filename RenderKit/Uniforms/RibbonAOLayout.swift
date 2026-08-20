@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -106,6 +106,19 @@ extension RKRenderObject
     let textureHeight: Int = ribbonSource?.ribbonAmbientOcclusionTextureHeight ?? 0
     let maxSamples: Int = ribbonSource?.ribbonMaxSplineSampleCount ?? 0
     return NSString(string: "ribbon-ao-v36-seam-edge-\(textureWidth)x\(textureHeight)-rings-\(maxSamples)-ribbonAO-\(ribbonAOEnabled)-atomShadows-\(includeAtomShadows)-\(ObjectIdentifier(self).hashValue)")
+  }
+  
+  /// The bake of the bonds' own occlusion depends on the bond radius and on whether the atoms are drawn to
+  /// occlude them, neither of which the structure's identity alone would catch.
+  var bondAmbientOcclusionCacheKey: NSString
+  {
+    let atomSource: RKRenderAtomSource? = self as? RKRenderAtomSource
+    let includeAtomShadows: Bool = (atomSource?.atomAmbientOcclusion ?? false) && (atomSource?.drawAtoms ?? false)
+    let bondSource: RKRenderBondSource? = self as? RKRenderBondSource
+    let textureSize: Int = bondSource?.bondAmbientOcclusionTextureSize ?? 0
+    let scale: Double = bondSource?.bondScaleFactor ?? 0.0
+    let unity: Bool = bondSource?.isUnity ?? false
+    return NSString(string: "bond-ao-v1-\(textureSize)-scale-\(scale)-unity-\(unity)-atomShadows-\(includeAtomShadows)-\(ObjectIdentifier(self).hashValue)")
   }
 }
 

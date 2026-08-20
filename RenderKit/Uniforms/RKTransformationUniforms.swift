@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -57,12 +58,19 @@ public struct RKTransformationUniforms
   public var padMatrix: float4x4 = float4x4()
   
   var cameraPosition: SIMD4<Float> = SIMD4<Float>()
-  var padVector3: SIMD4<Float> = SIMD4<Float>()
+
+  /// Contour line strength, contour width in pixels, halo strength and halo radius in pixels. See
+  /// `edgeCueing` in Common.h.
+  public var edgeCueing: SIMD4<Float> = SIMD4<Float>()
   // moved 'numberOfMultiSamplePoints' to here (for downsampling when no structures are present)
   public var numberOfMultiSamplePoints: Int32 = 8;
-  var padvector41: Float = 0.0
-  var padvector42: Float = 0.0
-  var padvector43: Float = 0.0
+
+  /// Depth steps at which the two cues reach full effect, in scene units.
+  public var edgeCueingContourDepth: Float = 0.0
+  public var edgeCueingHaloDepth: Float = 0.0
+
+  /// Whether the cues read the tracer's depth instead of the rasterizer's. See Common.h.
+  public var edgeCueingUsesTracedDepth: Float = 0.0
   
   public var bloomLevel: Float = 1.0
   public var bloomPulse: Float = 1.0
@@ -105,6 +113,14 @@ public struct RKTransformationUniforms
       }
       let camera_position: SIMD4<Double> = (modifiedCameraViewMatrix * camera.modelMatrix).inverse * SIMD4<Double>(0.0, 0.0, 0.0, 1.0)
       self.cameraPosition = SIMD4<Float>(x: camera_position.x,y: camera_position.y,z: camera_position.z,w: 1.0)
+
+      // Both edge cues judge a depth step against a reference, and what counts as a large step is a
+      // question about this structure rather than a fixed number of Angstrom: a step that separates two
+      // strands of a small protein would pass unnoticed inside a zeolite. Tying the reference to the
+      // size of the scene lets one setting suit either.
+      let sceneRadius: Double = max(camera.boundingBox.boundingSphereRadius, 1.0)
+      self.edgeCueingContourDepth = Float(0.04 * sceneRadius)
+      self.edgeCueingHaloDepth = Float(0.15 * sceneRadius)
     }
   }
 }

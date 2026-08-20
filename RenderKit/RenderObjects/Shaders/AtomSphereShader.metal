@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -53,15 +54,15 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterOrthographicVertexSha
   
   if (structureUniforms.colorAtomsWithBondColor)
   {
-    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
-    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
-    vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+    vert.ambient = structureUniforms.bondAmbientColor;
+    vert.diffuse = structureUniforms.bondDiffuseColor;
+    vert.specular = structureUniforms.bondSpecularColor;
   }
   else
   {
-    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-    vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
+    vert.ambient = structureUniforms.atomAmbientColor * positions[iid].ambient;
+    vert.diffuse = structureUniforms.atomDiffuseColor * positions[iid].diffuse;
+    vert.specular = structureUniforms.atomSpecularColor * positions[iid].specular;
   }
   
   vert.N = float3(0,0,1);
@@ -77,7 +78,6 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterOrthographicVertexSha
   vert.eye_position = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
   
   // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - vert.eye_position*lightUniforms.lights[0].position.w).xyz;
   
   // Calculate view vector
   vert.V = -vert.eye_position.xyz;
@@ -124,7 +124,6 @@ typedef struct AtomSphereImposterFragmentShaderIn
   float3 frag_pos [[ sample_perspective ]];
   float3 frag_center [[ flat ]];
   float3 N;
-  float3 L;
   float3 V;
   float4 sphere_radius [[ flat ]];
   float k1 [[ flat ]];
@@ -149,7 +148,6 @@ typedef struct AtomSphereImposterPerPixelFragmentShaderIn
   float3 frag_pos;
   float3 frag_center [[ flat ]];
   float3 N;
-  float3 L;
   float3 V;
   float4 sphere_radius [[ flat ]];
   float k1 [[ flat ]];
@@ -166,7 +164,8 @@ static FragOutput AtomSphereImposterOrthographicFragmentImpl(VertexIn vert,
                                                              constant StructureUniforms& structureUniforms,
                                                              constant LightUniforms& lightUniforms,
                                                              texture2d<half>  ambientOcclusionTexture,
-                                                             sampler          ambientOcclusionSampler)
+                                                             sampler          ambientOcclusionSampler,
+                                                             texture2d<uint>  shadowMask)
 {
   FragOutput output;
   
@@ -197,22 +196,20 @@ static FragOutput AtomSphereImposterOrthographicFragmentImpl(VertexIn vert,
   }
   
   
+  float4 surfaceEyePosition = pos;
   pos = frameUniforms.projectionMatrix * pos;
   output.depth = (pos.z / pos.w);
   
   
-  // Normalize the incoming N, L and V vectors
   float3 N = float3(x,y,z);
-  float3 L = normalize(vert.L);
   float3 V = normalize(vert.V);
   
-  // Calculate R locally
-  float3 R = reflect(-L, N);
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, V, surfaceEyePosition, structureUniforms.atomShininess,
+                                               shadowMaskAtFragment(shadowMask, vert.position));
   
-  // Compute the diffuse and specular components for each fragment
-  float3 ambient = vert.ambient.xyz;
-  float3 diffuse = max(dot(N, L), 0.0) * vert.diffuse.xyz;
-  float3 specular = pow(max(dot(R, V), 0.0), lightUniforms.lights[0].shininess + structureUniforms.atomShininess) * vert.specular.xyz;
+  float3 ambient = lighting.ambient * vert.ambient.xyz;
+  float3 diffuse = lighting.diffuse * vert.diffuse.xyz;
+  float3 specular = lighting.specular * vert.specular.xyz;
   
   float ao = 1.0;
   
@@ -225,7 +222,9 @@ static FragOutput AtomSphereImposterOrthographicFragmentImpl(VertexIn vert,
     ao = ambientOcclusionTexture.sample(ambientOcclusionSampler, m2).r;
   }
   
-  float4 color= float4(ao * (ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
+  // see the note on ambientOcclusionStrength in Common.h
+  float aoDirect = mix(1.0, ao, clamp(structureUniforms.ambientOcclusionStrength, 0.0, 1.0));
+  float4 color= float4(ao * ambient.xyz + aoDirect * (diffuse.xyz + specular.xyz), 1.0);
     
   if (structureUniforms.atomHDR)
   {
@@ -248,9 +247,10 @@ fragment FragOutput AtomSphereImposterOrthographicFragmentShader(AtomSphereImpos
                                                                  constant StructureUniforms& structureUniforms [[buffer(1)]],
                                                                  constant LightUniforms& lightUniforms [[buffer(2)]],
                                                                  texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
-                                                                 sampler          ambientOcclusionSampler [[ sampler(0) ]])
+                                                                 sampler          ambientOcclusionSampler [[ sampler(0) ]],
+                                                                 texture2d<uint>  shadowMask [[ texture(1) ]])
 {
-  return AtomSphereImposterOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler);
+  return AtomSphereImposterOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
 }
 
 // "fast" per-pixel variant: identical shading, but with center interpolation the
@@ -260,9 +260,10 @@ fragment FragOutput AtomSphereImposterOrthographicPerPixelFragmentShader(AtomSph
                                                                          constant StructureUniforms& structureUniforms [[buffer(1)]],
                                                                          constant LightUniforms& lightUniforms [[buffer(2)]],
                                                                          texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
-                                                                         sampler          ambientOcclusionSampler [[ sampler(0) ]])
+                                                                         sampler          ambientOcclusionSampler [[ sampler(0) ]],
+                                                                        texture2d<uint>  shadowMask [[ texture(1) ]])
 {
-  return AtomSphereImposterOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler);
+  return AtomSphereImposterOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
 }
 
 
@@ -283,15 +284,15 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterPerspectiveVertexShad
   
   if (structureUniforms.colorAtomsWithBondColor)
   {
-    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
-    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
-    vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+    vert.ambient = structureUniforms.bondAmbientColor;
+    vert.diffuse = structureUniforms.bondDiffuseColor;
+    vert.specular = structureUniforms.bondSpecularColor;
   }
   else
   {
-    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-    vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
+    vert.ambient = structureUniforms.atomAmbientColor * positions[iid].ambient;
+    vert.diffuse = structureUniforms.atomDiffuseColor * positions[iid].diffuse;
+    vert.specular = structureUniforms.atomSpecularColor * positions[iid].specular;
   }
   
   vert.N = float3(0,0,1);
@@ -307,7 +308,6 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterPerspectiveVertexShad
   vert.eye_position = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
   
   // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - vert.eye_position*lightUniforms.lights[0].position.w).xyz;
   
   // Calculate view vector
   vert.V = -vert.eye_position.xyz;
@@ -334,7 +334,8 @@ static FragOutput AtomSphereImposterPerspectiveFragmentImpl(VertexIn vert,
                                                             constant StructureUniforms& structureUniforms,
                                                             constant LightUniforms& lightUniforms,
                                                             texture2d<half>  ambientOcclusionTexture,
-                                                            sampler          ambientOcclusionSampler)
+                                                            sampler          ambientOcclusionSampler,
+                                                            texture2d<uint>  shadowMask)
 {
   FragOutput output;
   
@@ -372,18 +373,14 @@ static FragOutput AtomSphereImposterPerspectiveFragmentImpl(VertexIn vert,
     if (dot(structureUniforms.clipPlaneBack,position)< 0.0) discard_fragment();
   }
   
-  // Normalize the incoming N, L and V vectors
-  //float3 N = float3(x,y,z);
-  float3 L = normalize(vert.L);
   float3 V = normalize(vert.V);
   
-  // Calculate R locally
-  float3 R = reflect(-L, N);
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, V, float4(hit, 1.0), structureUniforms.atomShininess,
+                                                shadowMaskAtFragment(shadowMask, vert.position));
   
-  // Compute the diffuse and specular components for each fragment
-  float3 ambient = vert.ambient.xyz;
-  float3 diffuse = max(dot(N, L), 0.0) * vert.diffuse.xyz;
-  float3 specular = pow(max(dot(R, V), 0.0), lightUniforms.lights[0].shininess + structureUniforms.atomShininess) * vert.specular.xyz;
+  float3 ambient = lighting.ambient * vert.ambient.xyz;
+  float3 diffuse = lighting.diffuse * vert.diffuse.xyz;
+  float3 specular = lighting.specular * vert.specular.xyz;
   
   float ao = 1.0;
   
@@ -397,7 +394,9 @@ static FragOutput AtomSphereImposterPerspectiveFragmentImpl(VertexIn vert,
     ao = ambientOcclusionTexture.sample(ambientOcclusionSampler, m2).r;
   }
   
-  float4 color= float4(ao * (ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
+  // see the note on ambientOcclusionStrength in Common.h
+  float aoDirect = mix(1.0, ao, clamp(structureUniforms.ambientOcclusionStrength, 0.0, 1.0));
+  float4 color= float4(ao * ambient.xyz + aoDirect * (diffuse.xyz + specular.xyz), 1.0);
   
   if (structureUniforms.atomHDR)
   {
@@ -421,9 +420,10 @@ fragment FragOutput AtomSphereImposterPerspectiveFragmentShader(AtomSphereImpost
                                                                 constant StructureUniforms& structureUniforms [[buffer(1)]],
                                                                 constant LightUniforms& lightUniforms [[buffer(2)]],
                                                                 texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
-                                                                sampler          ambientOcclusionSampler [[ sampler(0) ]])
+                                                                sampler          ambientOcclusionSampler [[ sampler(0) ]],
+                                                                texture2d<uint>  shadowMask [[ texture(1) ]])
 {
-  return AtomSphereImposterPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler);
+  return AtomSphereImposterPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
 }
 
 // "fast" per-pixel variant: identical shading, but with center interpolation the
@@ -433,9 +433,10 @@ fragment FragOutput AtomSphereImposterPerspectivePerPixelFragmentShader(AtomSphe
                                                                         constant StructureUniforms& structureUniforms [[buffer(1)]],
                                                                         constant LightUniforms& lightUniforms [[buffer(2)]],
                                                                         texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
-                                                                        sampler          ambientOcclusionSampler [[ sampler(0) ]])
+                                                                        sampler          ambientOcclusionSampler [[ sampler(0) ]],
+                                                                        texture2d<uint>  shadowMask [[ texture(1) ]])
 {
-  return AtomSphereImposterPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler);
+  return AtomSphereImposterPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
 }
 
 

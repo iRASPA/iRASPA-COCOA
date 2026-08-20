@@ -1661,6 +1661,7 @@
                                                                                 <gridRow id="Rbn-Sp-Rw0"/>
                                                                                 <gridRow id="Rbn-Rp-St0"/>
                                                                                 <gridRow id="wdk-nU-O50"/>
+                                                                                <gridRow id="cuePr-rw-000"/>
                                                                             </rows>
                                                                             <columns>
                                                                                 <gridColumn xPlacement="trailing" id="LvD-dJ-v35"/>
@@ -1747,6 +1748,7 @@
                                                                                                 <items>
                                                                                                     <menuItem title="Default" state="on" id="Rbn-Rp-Def"/>
                                                                                                     <menuItem title="Fancy" id="Rbn-Rp-Fcy"/>
+                                                                                                    <menuItem title="Illustrative" id="Rbn-Rp-Ill"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>
@@ -1782,6 +1784,36 @@
                                                                                         </popUpButtonCell>
                                                                                         <connections>
                                                                                             <action selector="changeRibbonColorSet:" target="A5d-Ag-J3w" id="Rbn-CS-Act"/>
+                                                                                        </connections>
+                                                                                    </popUpButton>
+                                                                                </gridCell>
+                                                                                <gridCell row="cuePr-rw-000" column="LvD-dJ-v35" id="cuePr-gc-lbl">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="cuePr-tf-lbl">
+                                                                                        <rect key="frame" x="-1" y="0.0" width="129" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Edge Cueing" id="cuePr-tc-lbl">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="cuePr-rw-000" column="9xt-ak-DD6" id="cuePr-gc-pop">
+                                                                                    <popUpButton key="contentView" tag="6" horizontalHuggingPriority="210" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="cuePr-pu-pop" userLabel="Edge Cueing" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
+                                                                                        <rect key="frame" x="156" y="0.0" width="311" height="24"/>
+                                                                                        <popUpButtonCell key="cell" type="push" title="None" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="cuePr-it-em0" id="cuePr-pc-pop">
+                                                                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                                                            <font key="font" metaFont="message"/>
+                                                                                            <menu key="menu" id="cuePr-mn-pop">
+                                                                                                <items>
+                                                                                                    <menuItem title="None" state="on" id="cuePr-it-em0"/>
+                                                                                                    <menuItem title="Contour lines" id="cuePr-it-em1"/>
+                                                                                                    <menuItem title="Halos" id="cuePr-it-em2"/>
+                                                                                                    <menuItem title="Contour lines and halos" id="cuePr-it-em3"/>
+                                                                                                </items>
+                                                                                            </menu>
+                                                                                        </popUpButtonCell>
+                                                                                        <connections>
+                                                                                            <action selector="changeRibbonEdgeCueing:" target="A5d-Ag-J3w" id="cuePr-ac-000"/>
                                                                                         </connections>
                                                                                     </popUpButton>
                                                                                 </gridCell>
@@ -2577,6 +2609,7 @@
                                                                                 <gridRow id="Bae-U5-vZc"/>
                                                                                 <gridRow id="Ttk-u3-aJh"/>
                                                                                 <gridRow id="Ehh-Lu-nkk"/>
+                                                                                <gridRow id="cueDn-rw-000"/>
                                                                             </rows>
                                                                             <columns>
                                                                                 <gridColumn xPlacement="trailing" id="p59-It-ugm"/>
@@ -2663,6 +2696,7 @@
                                                                                                 <items>
                                                                                                     <menuItem title="Default" state="on" id="K4d-7p-KV4"/>
                                                                                                     <menuItem title="Fancy" id="xHM-ax-0K0"/>
+                                                                                                    <menuItem title="Illustrative" id="Dna-Rp-Ill"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>
@@ -2698,6 +2732,36 @@
                                                                                         </popUpButtonCell>
                                                                                         <connections>
                                                                                             <action selector="changeRibbonColorSet:" target="A5d-Ag-J3w" id="F99-dA-ADw"/>
+                                                                                        </connections>
+                                                                                    </popUpButton>
+                                                                                </gridCell>
+                                                                                <gridCell row="cueDn-rw-000" column="p59-It-ugm" id="cueDn-gc-lbl">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="cueDn-tf-lbl">
+                                                                                        <rect key="frame" x="-1" y="0.0" width="129" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Edge Cueing" id="cueDn-tc-lbl">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="cueDn-rw-000" column="X1o-RE-25O" id="cueDn-gc-pop">
+                                                                                    <popUpButton key="contentView" tag="6" horizontalHuggingPriority="210" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="cueDn-pu-pop" userLabel="Edge Cueing" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
+                                                                                        <rect key="frame" x="156" y="0.0" width="311" height="24"/>
+                                                                                        <popUpButtonCell key="cell" type="push" title="None" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="cueDn-it-em0" id="cueDn-pc-pop">
+                                                                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                                                            <font key="font" metaFont="message"/>
+                                                                                            <menu key="menu" id="cueDn-mn-pop">
+                                                                                                <items>
+                                                                                                    <menuItem title="None" state="on" id="cueDn-it-em0"/>
+                                                                                                    <menuItem title="Contour lines" id="cueDn-it-em1"/>
+                                                                                                    <menuItem title="Halos" id="cueDn-it-em2"/>
+                                                                                                    <menuItem title="Contour lines and halos" id="cueDn-it-em3"/>
+                                                                                                </items>
+                                                                                            </menu>
+                                                                                        </popUpButtonCell>
+                                                                                        <connections>
+                                                                                            <action selector="changeRibbonEdgeCueing:" target="A5d-Ag-J3w" id="cueDn-ac-000"/>
                                                                                         </connections>
                                                                                     </popUpButton>
                                                                                 </gridCell>
@@ -3495,6 +3559,7 @@
                                                                                 <gridRow id="Kep-Py-0Xm"/>
                                                                                 <gridRow id="rhh-m2-OvQ"/>
                                                                                 <gridRow id="pw1-Io-Vor"/>
+                                                                                <gridRow id="cueAt-rw-000"/>
                                                                             </rows>
                                                                             <columns>
                                                                                 <gridColumn xPlacement="trailing" id="LaK-e2-eHw"/>
@@ -3552,6 +3617,7 @@
                                                                                                 <items>
                                                                                                     <menuItem title="Default" state="on" id="4hE-df-ALQ"/>
                                                                                                     <menuItem title="Fancy" id="uwl-dE-KfA"/>
+                                                                                                    <menuItem title="QuteMol" id="Atm-Rp-QtM"/>
                                                                                                     <menuItem title="Licorice" id="6mE-0U-P7u"/>
                                                                                                     <menuItem title="Objects" id="ehx-ML-HSl"/>
                                                                                                 </items>
@@ -3677,6 +3743,36 @@
                                                                                         </popUpButtonCell>
                                                                                         <connections>
                                                                                             <action selector="changeRepresentationForceFieldOrder:" target="A5d-Ag-J3w" id="f7b-Ls-OS3"/>
+                                                                                        </connections>
+                                                                                    </popUpButton>
+                                                                                </gridCell>
+                                                                                <gridCell row="cueAt-rw-000" column="LaK-e2-eHw" id="cueAt-gc-lbl">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="cueAt-tf-lbl">
+                                                                                        <rect key="frame" x="-1" y="0.0" width="129" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Edge Cueing" id="cueAt-tc-lbl">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="cueAt-rw-000" column="3Uk-rQ-ItM" id="cueAt-gc-pop">
+                                                                                    <popUpButton key="contentView" tag="7" horizontalHuggingPriority="210" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="cueAt-pu-pop" userLabel="Edge Cueing" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
+                                                                                        <rect key="frame" x="156" y="0.0" width="311" height="24"/>
+                                                                                        <popUpButtonCell key="cell" type="push" title="None" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="cueAt-it-em0" id="cueAt-pc-pop">
+                                                                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                                                            <font key="font" metaFont="message"/>
+                                                                                            <menu key="menu" id="cueAt-mn-pop">
+                                                                                                <items>
+                                                                                                    <menuItem title="None" state="on" id="cueAt-it-em0"/>
+                                                                                                    <menuItem title="Contour lines" id="cueAt-it-em1"/>
+                                                                                                    <menuItem title="Halos" id="cueAt-it-em2"/>
+                                                                                                    <menuItem title="Contour lines and halos" id="cueAt-it-em3"/>
+                                                                                                </items>
+                                                                                            </menu>
+                                                                                        </popUpButtonCell>
+                                                                                        <connections>
+                                                                                            <action selector="changeAtomEdgeCueing:" target="A5d-Ag-J3w" id="cueAt-ac-000"/>
                                                                                         </connections>
                                                                                     </popUpButton>
                                                                                 </gridCell>
@@ -6723,9 +6819,6 @@
                                                                     <subviews>
                                                                         <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" xPlacement="leading" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="12" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3CR-6v-xde">
                                                                             <rect key="frame" x="0.0" y="0.0" width="467" height="318"/>
-                                                                            <constraints>
-                                                                                <constraint firstItem="mO4-IF-dw9" firstAttribute="firstBaseline" secondItem="PYf-Wy-QFt" secondAttribute="firstBaseline" id="QxB-KN-cLR"/>
-                                                                            </constraints>
                                                                             <rows>
                                                                                 <gridRow id="NL1-8V-Zgc"/>
                                                                                 <gridRow id="gMc-x2-nbe"/>

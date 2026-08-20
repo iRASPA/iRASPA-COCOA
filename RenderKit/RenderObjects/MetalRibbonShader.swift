@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -47,10 +48,9 @@ class MetalRibbonShader
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor, maximumNumberOfSamples: Int)
   {
-    let depthStateDesc: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
-    depthStateDesc.depthCompareFunction = MTLCompareFunction.lessEqual
-    depthStateDesc.isDepthWriteEnabled = true
-    depthState = device.makeDepthStencilState(descriptor: depthStateDesc)
+    // Records which cues this geometry asked for in the scene's stencil, for the compositing pass to
+    // read back. See `stencilValue` on RKEdgeCueing.
+    depthState = RKEdgeCueing.cueingDepthStencilState(device: device)
     
     let pSamplerDescriptor: MTLSamplerDescriptor? = MTLSamplerDescriptor()
     if let sampler = pSamplerDescriptor
@@ -140,9 +140,12 @@ class MetalRibbonShader
                                 structureUniformBuffers: MTLBuffer?,
                                 lightUniformBuffers: MTLBuffer?,
                                 ambientOcclusionTextures: [[MTLTexture]],
+                                shadowMask: MTLTexture,
                                 size: CGSize)
   {
     commandEncoder.setDepthStencilState(depthState)
+    // one mask for the whole pass; only the per-structure occlusion map changes between draws
+    commandEncoder.setFragmentTexture(shadowMask, index: 1)
     commandEncoder.setRenderPipelineState(pipeLine)
     commandEncoder.setCullMode(MTLCullMode.none)
     commandEncoder.setFrontFacing(MTLWinding.clockwise)
@@ -185,6 +188,8 @@ class MetalRibbonShader
           debugUniforms.viewportHeight = Int32(size.height)
           commandEncoder.setFragmentBytes(&debugUniforms, length: MemoryLayout<RibbonAODebugUniforms>.stride, index: 3)
           
+          commandEncoder.setStencilReferenceValue(ribbonSource.ribbonEdgeCueing.stencilValue)
+
           let drawRanges: [RKRibbonChainDrawRange] = ribbonSource.ribbonDrawRangesForEncoding()
           commandEncoder.setVertexBuffer(ribbonVertexBuffer, offset: 0, index: 0)
           for chainRange in drawRanges

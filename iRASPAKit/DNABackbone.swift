@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
 
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
 
  DNA backbone trace follows PyMOL cartoon_nucleic_acid_mode 4 (O5' / phosphate / O3' centerline, C2'/C3' orientation).
  *************************************************************************************************************/

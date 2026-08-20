@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -49,10 +50,9 @@ class MetalCrystalEllipsoidShader
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
-    let depthStateDesc: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
-    depthStateDesc.depthCompareFunction = MTLCompareFunction.lessEqual
-    depthStateDesc.isDepthWriteEnabled = true
-    depthState = device.makeDepthStencilState(descriptor: depthStateDesc)
+    // Clears the cueing mask where this draws in front of an atom or a ribbon, see
+    // `clearingDepthStencilState` on RKEdgeCueing.
+    depthState = RKEdgeCueing.clearingDepthStencilState(device: device)
     
     let transparentDepthStateDescriptor: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
     transparentDepthStateDescriptor.depthCompareFunction = MTLCompareFunction.lessEqual
@@ -163,6 +163,7 @@ class MetalCrystalEllipsoidShader
       commandEncoder.setCullMode(MTLCullMode.back)
       
       commandEncoder.setDepthStencilState(depthState)
+      commandEncoder.setStencilReferenceValue(0)
       commandEncoder.setRenderPipelineState(opaquePipeLine)
       commandEncoder.setVertexBuffer(vertexBuffers, offset: 0, index: 0)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)

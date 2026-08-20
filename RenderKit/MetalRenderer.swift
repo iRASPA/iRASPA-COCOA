@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -75,12 +76,22 @@ public class MetalRenderer
     get {ribbonShader.aoDebugMode}
     set {ribbonShader.aoDebugMode = newValue}
   }
+
     
+  /// Clears the cueing mask behind the geometry that writes it. See `renderSceneWithEncoder`.
+  var clearingDepthState: MTLDepthStencilState! = nil
+
   var textShader: MetalTextShader = MetalTextShader()
   
   var pickingShader: MetalPickingShader = MetalPickingShader()
   
   var ambientOcclusionShader: MetalAmbientOcclusionShader = MetalAmbientOcclusionShader()
+  
+  public var pathTracerShader: MetalPathTracerShader = MetalPathTracerShader()
+
+  /// How the last picture was rendered. The picture and movie services run out of process,
+  /// where the log window does not exist, so they hand this back to the application.
+  private(set) public var lastPictureDiagnostic: String = "no picture has been rendered"
   
   var measurementShader: MetalMeasurementShader = MetalMeasurementShader()
   var measurementOrthographicImposterShader: MetalMeasurementOrthographicImposterShader = MetalMeasurementOrthographicImposterShader()
@@ -247,6 +258,11 @@ public class MetalRenderer
     
     ambientOcclusionShader.renderDataSource = renderDataSource
     ambientOcclusionShader.renderStructures = renderStructures
+    
+    pathTracerShader.renderDataSource = renderDataSource
+    pathTracerShader.renderStructures = renderStructures
+    // the acceleration structures bake the geometry of the structures they were built from
+    pathTracerShader.invalidateGeometry()
     
     measurementShader.renderDataSource = renderDataSource
     measurementShader.renderStructures = renderStructures
@@ -493,6 +509,8 @@ public class MetalRenderer
   
   public func buildPipeLines(device: MTLDevice, _ library: MTLLibrary, maximumNumberOfSamples: Int)
   {
+    clearingDepthState = RKEdgeCueing.clearingDepthStencilState(device: device)
+
     let vertexDescriptor = MTLVertexDescriptor()
     vertexDescriptor.attributes[0].offset = 0;
     vertexDescriptor.attributes[0].format = .float4
@@ -534,6 +552,8 @@ public class MetalRenderer
     textShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     ambientOcclusionShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    
+    pathTracerShader.buildPipeLine(device: device, library: library)
     
     measurementShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
@@ -727,7 +747,6 @@ public class MetalRenderer
   
   public func buildStructureUniforms(device: MTLDevice)
   {
-    
     if let project: RKRenderDataSource = renderDataSource
     {
       var structureUniforms: [RKStructureUniforms] = [RKStructureUniforms](repeating: RKStructureUniforms(), count: max(project.renderStructures.count,1))
@@ -746,9 +765,12 @@ public class MetalRenderer
           index += 1
         }
       }*/
+      let ambientOcclusionStrength: Float = Float(min(max(project.renderAmbientOcclusionStrength, 0.0), 1.0))
+
       for (i,structure) in project.renderStructures.enumerated()
       {
         structureUniforms[i] = RKStructureUniforms(structureIdentifier: i, structure: structure)
+        structureUniforms[i].ambientOcclusionStrength = ambientOcclusionStrength
         isosurfaceUniforms[i] = RKIsosurfaceUniforms(structure: structure)
       }
       
@@ -785,8 +807,9 @@ public class MetalRenderer
   {
     if let project: RKRenderDataSource = renderDataSource
     {
-      var lightUniforms: RKLightUniforms = RKLightUniforms(project: project)
-      lightUniformBuffers = device.makeBuffer(bytes: &lightUniforms.lights, length: 4 * MemoryLayout<RKLight>.stride, options:RKMetal.hostStorage)
+      let lightUniforms: RKLightUniforms = RKLightUniforms(project: project)
+      let bytes: [UInt8] = lightUniforms.packed()
+      lightUniformBuffers = device.makeBuffer(bytes: bytes, length: bytes.count, options:RKMetal.hostStorage)
     }
   }
   
@@ -799,7 +822,9 @@ public class MetalRenderer
     }
   }
 
-  public func transformUniforms(maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat, camera: RKCamera?) -> RKTransformationUniforms
+  /// `pathTracing` says where the edge cueing is to look for the depth of the finished scene, the
+  /// rasterizer's depth attachment holding no molecular geometry when the tracer draws it.
+  public func transformUniforms(maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat, camera: RKCamera?, pathTracing: Bool = false) -> RKTransformationUniforms
   {
     if let project: RKRenderDataSource = renderDataSource,
        let camera: RKCamera = camera
@@ -812,7 +837,10 @@ public class MetalRenderer
       let axesViewMatrix = camera.axesModelViewMatrix
       let isOrthographic = camera.isOrthographic
       
-      return RKTransformationUniforms(camera: camera, projectionMatrix: projectionMatrix, viewMatrix: viewMatrix, modelMatrix: modelMatrix,  axesProjectionMatrix: axesProjectionMatrix, axesViewMatrix: axesViewMatrix, isOrthographic: isOrthographic, bloomLevel: camera.bloomLevel, bloomPulse: camera.bloomPulse, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
+      var uniforms: RKTransformationUniforms = RKTransformationUniforms(camera: camera, projectionMatrix: projectionMatrix, viewMatrix: viewMatrix, modelMatrix: modelMatrix,  axesProjectionMatrix: axesProjectionMatrix, axesViewMatrix: axesViewMatrix, isOrthographic: isOrthographic, bloomLevel: camera.bloomLevel, bloomPulse: camera.bloomPulse, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
+      uniforms.edgeCueing = RKEdgeCueing.parameters
+      uniforms.edgeCueingUsesTracedDepth = pathTracing ? 1.0 : 0.0
+      return uniforms
     }
     else
     {
@@ -824,13 +852,23 @@ public class MetalRenderer
   // MARK: Rendering
   // =====================================================================
 
-  public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
+  /// When `suppressMolecularGeometry` is set, the atom, bond and ribbon passes (and their
+  /// selection overlays) are skipped because the path tracer draws that geometry instead.
+  /// Everything else — background, isosurfaces, unit cell, primitives, text, axes — is
+  /// still rasterized, and its depth is what the path-traced result is composited against.
+  public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, suppressMolecularGeometry: Bool = false)
   {
     // "fast" imposter mode while interacting (rotating, panning, zooming): the render
     // quality drops to medium/low during interaction, and the imposters are then shaded
     // per-pixel; per-sample anti-aliased shading is used for high-quality still frames
     // and pictures. Applies to all imposter passes of this frame (scene and glow).
     RKMetal.perSampleImposterShading = (renderQuality == .high || renderQuality == .picture)
+
+    // Falls back to the all-lit texel when no mask was traced, so the molecular shaders can read it
+    // unconditionally rather than branching on whether shadows are on.
+    buildAllLitShadowMask(device: commandBuffer.device)
+    guard let shadowMask: MTLTexture = activeShadowMask else {return}
+
     let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
     commandEncoder.label = "Scene command encoder"
     commandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
@@ -841,18 +879,36 @@ public class MetalRenderer
     
     self.isosurfaceShader.renderOpaqueIsosurfaceWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
-    self.ribbonShader.renderWithEncoder(commandEncoder, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.ribbonTextures, size: size)
+    if !suppressMolecularGeometry
+    {
+      self.ribbonShader.renderWithEncoder(commandEncoder, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.ribbonTextures, shadowMask: shadowMask, size: size)
+
+    // Only the atoms, the bonds and the ribbons claim the cueing mask. Everything after them clears it
+    // where it draws in front, so that a contour never appears along a unit cell edge, not even where
+    // that edge crosses an atom. See `clearingDepthStencilState` on RKEdgeCueing.
+    commandEncoder.setDepthStencilState(clearingDepthState)
+    commandEncoder.setStencilReferenceValue(0)
+    }
     
     self.localAxesShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
     
-    if let camera, camera.frustrumType == .perspective
+    if !suppressMolecularGeometry
     {
-      self.atomPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-    }
-    else
-    {
-      self.atomOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+      if let camera, camera.frustrumType == .perspective
+      {
+        self.atomPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, shadowMask: shadowMask, size: size)
+      }
+      else
+      {
+        self.atomOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, shadowMask: shadowMask, size: size)
+      }
+
+    // Only the atoms, the bonds and the ribbons claim the cueing mask. Everything after them clears it
+    // where it draws in front, so that a contour never appears along a unit cell edge, not even where
+    // that edge crosses an atom. See `clearingDepthStencilState` on RKEdgeCueing.
+    commandEncoder.setDepthStencilState(clearingDepthState)
+    commandEncoder.setStencilReferenceValue(0)
     }
    
     self.metalCrystalEllipsoidShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
@@ -862,9 +918,18 @@ public class MetalRenderer
     self.metalCylinderShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     self.metalPolygonalPrismShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     
-    self.internalBondShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-    
-    self.externalBondShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+    if !suppressMolecularGeometry
+    {
+      self.internalBondShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.bondTextures, shadowMask: shadowMask, size: size)
+      
+      self.externalBondShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.bondTextures, shadowMask: shadowMask, size: size)
+
+    // Only the atoms, the bonds and the ribbons claim the cueing mask. Everything after them clears it
+    // where it draws in front, so that a contour never appears along a unit cell edge, not even where
+    // that edge crosses an atom. See `clearingDepthStencilState` on RKEdgeCueing.
+    commandEncoder.setDepthStencilState(clearingDepthState)
+    commandEncoder.setStencilReferenceValue(0)
+    }
     
     self.unitCellCylinderShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     self.unitCellSphereShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
@@ -873,7 +938,7 @@ public class MetalRenderer
     self.boundingBoxSphereShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, lightUniformBuffers: lightUniformBuffers, size: size)
     
     
-    if let camera: RKCamera = camera
+    if let camera: RKCamera = camera, !suppressMolecularGeometry
     {
       // draw bonds before atoms
       self.internalBondSelectionWorleyShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: internalBondSelectionShader, bondShader: internalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
@@ -1038,9 +1103,18 @@ public class MetalRenderer
                                                   skipRibbonPicking: skipRibbonPicking)
   }
   
-  func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
+  func drawOffScreen(commandBuffer: MTLCommandBuffer, commandQueue: MTLCommandQueue? = nil, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, suppressMolecularGeometry: Bool = false)
   {
-    renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
+    // has to precede the scene pass in this same command buffer: the molecular shaders read the mask
+    encodeShadowMask(device: commandBuffer.device,
+                     commandQueue: commandQueue,
+                     commandBuffer: commandBuffer,
+                     frameUniformBuffer: frameUniformBuffer,
+                     size: size,
+                     renderQuality: renderQuality,
+                     pathTracing: suppressMolecularGeometry)
+
+    renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, suppressMolecularGeometry: suppressMolecularGeometry)
     backgroundShader.encodeManualDepthResolveIfNeeded(commandBuffer, size: size)
     
     renderSceneVolumeRenderedSurfacesWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderVolumeRenderedSurfacesPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
@@ -1089,9 +1163,140 @@ public class MetalRenderer
    
   }
   
-  func drawOnScreen(commandBuffer: MTLCommandBuffer, renderPass: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize)
+  /// Composites the finished scene onto the drawable. `sourceTexture` overrides the rasterized
+  /// scene texture, which is how the path-traced image reaches the screen; its depth arrives with it,
+  /// through the tracer's composite depth buffer.
+  func drawOnScreen(commandBuffer: MTLCommandBuffer, renderPass: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, sourceTexture: MTLTexture? = nil, tracedDepthBuffer: MTLBuffer? = nil, tracedCueMaskBuffer: MTLBuffer? = nil)
   {
-    quadShader.renderWithEncoder(commandBuffer, renderPass: renderPass, frameUniformBuffer: frameUniformBuffer, sceneResolveTexture: backgroundShader.sceneResolveTexture, blurVerticalTexture: blurVerticalShader.blurVerticalTexture, size: size)
+    quadShader.renderWithEncoder(commandBuffer, renderPass: renderPass, frameUniformBuffer: frameUniformBuffer, sceneResolveTexture: sourceTexture ?? backgroundShader.sceneResolveTexture, blurVerticalTexture: blurVerticalShader.blurVerticalTexture, sceneDepthTexture: backgroundShader.sceneResolvedDepthTexture, sceneCueMaskTexture: backgroundShader.sceneStencilTexture, tracedDepthBuffer: tracedDepthBuffer, tracedCueMaskBuffer: tracedCueMaskBuffer, size: size)
+  }
+
+  // MARK: -
+  // MARK: Interactive path tracing
+
+  /// Whether the interactive frame loop should path trace the molecular geometry instead of
+  /// rasterizing it. Every frame traces, moving or not, so the appearance never switches between
+  /// the two renderers mid-interaction.
+  public func isInteractivePathTracing(device: MTLDevice) -> Bool
+  {
+    return RKRenderSettings.shared.interactiveRenderMode == RKRenderMode.rayTracing && MetalPathTracerShader.isSupported(device: device)
+  }
+
+  /// Traces `samplesThisFrame` more samples of the molecular geometry into the running average
+  /// and composites them over the rasterized scene, all inside the caller's command buffer.
+  /// Returns the texture to present, or nil when the path tracer could not run and the caller
+  /// should fall back to the rasterized image.
+  public func encodeInteractivePathTracer(device: MTLDevice,
+                                          commandQueue: MTLCommandQueue,
+                                          commandBuffer: MTLCommandBuffer,
+                                          frameUniformBuffer: MTLBuffer,
+                                          size: CGSize,
+                                          samplesThisFrame: Int) -> MTLTexture?
+  {
+    // the sample and bounce budgets are a property of this machine, but the occlusion strength is a
+    // look and belongs to the project, so that the view previews what an export would produce
+    var settings: RKPathTracerSettings = RKRenderSettings.shared.interactivePathTracerSettings
+    if let project: RKRenderDataSource = renderDataSource
+    {
+      settings.ambientOcclusionStrength = Float(min(max(project.renderAmbientOcclusionStrength, 0.0), 1.0))
+    }
+
+    return pathTracerShader.encodeInteractive(device: device,
+                                              commandQueue: commandQueue,
+                                              commandBuffer: commandBuffer,
+                                              size: size,
+                                              settings: settings,
+                                              samplesThisFrame: samplesThisFrame,
+                                              frameUniformBuffer: frameUniformBuffer,
+                                              structureUniformBuffers: structureUniformBuffers,
+                                              lightUniformBuffers: lightUniformBuffers,
+                                              sceneColorTexture: backgroundShader.sceneResolveTexture,
+                                              sceneDepthTexture: backgroundShader.sceneResolvedDepthTexture)
+  }
+
+  /// Drops the cached acceleration structures, so the next path-traced frame repacks the scene.
+  public func invalidatePathTracerGeometry()
+  {
+    pathTracerShader.invalidateGeometry()
+  }
+
+  // MARK: Shadows
+  // =====================================================================
+
+  /// Stands in for the shadow mask when shadows are off or cannot be traced. A single texel with
+  /// every light bit set, so the molecular shaders read "nothing is in shadow" and light the scene
+  /// exactly as they did before shadows existed.
+  private var allLitShadowMask: MTLTexture? = nil
+
+  /// The mask the molecular passes of this frame should read.
+  private var shadowMaskForFrame: MTLTexture? = nil
+
+  private func buildAllLitShadowMask(device: MTLDevice)
+  {
+    guard allLitShadowMask == nil else {return}
+
+    let descriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.r8Uint, width: 1, height: 1, mipmapped: false)
+    descriptor.usage = MTLTextureUsage.shaderRead
+    guard let texture: MTLTexture = device.makeTexture(descriptor: descriptor) else {return}
+    texture.label = "all-lit shadow mask"
+
+    var allLit: UInt8 = 0xFF
+    texture.replace(region: MTLRegionMake2D(0, 0, 1, 1), mipmapLevel: 0, withBytes: &allLit, bytesPerRow: 1)
+    allLitShadowMask = texture
+  }
+
+  /// Whether the scene wants ray-traced shadows, has a light able to cast one, and is on a device that
+  /// can trace them. The light test is what keeps the default-on setting free under the camera-light
+  /// rig, whose lights all shine along the line of sight.
+  ///
+  /// An export traces them wherever it is run, so that the picture a document describes does not depend
+  /// on the machine it is opened on; a frame of the render view asks the machine-wide setting first,
+  /// which is off by default where the rays would be traced in a shader.
+  public func tracesShadows(device: MTLDevice, renderQuality: RKRenderQuality) -> Bool
+  {
+    guard let project: RKRenderDataSource = renderDataSource, project.renderShadows else {return false}
+    guard renderQuality == RKRenderQuality.picture || RKRenderSettings.shared.interactiveShadows else {return false}
+    guard project.renderLights.contains(where: {$0.castsShadows}) else {return false}
+    return MetalPathTracerShader.isSupported(device: device) && pathTracerShader.canTraceShadows
+  }
+
+  /// Works out which lights reach each pixel and keeps the answer for the molecular passes of this
+  /// frame. Must be encoded into the same command buffer as the scene, before it.
+  ///
+  /// Skipped when the path tracer is drawing the molecular geometry itself: it casts its own shadow
+  /// rays, and a mask for shaders that are not running would be wasted work.
+  public func encodeShadowMask(device: MTLDevice,
+                               commandQueue: MTLCommandQueue?,
+                               commandBuffer: MTLCommandBuffer,
+                               frameUniformBuffer: MTLBuffer,
+                               size: CGSize,
+                               renderQuality: RKRenderQuality,
+                               pathTracing: Bool)
+  {
+    buildAllLitShadowMask(device: device)
+    shadowMaskForFrame = nil
+
+    guard let commandQueue = commandQueue, !pathTracing, tracesShadows(device: device, renderQuality: renderQuality) else {return}
+
+    shadowMaskForFrame = pathTracerShader.encodeShadowMask(device: device,
+                                                           commandQueue: commandQueue,
+                                                           commandBuffer: commandBuffer,
+                                                           size: size,
+                                                           frameUniformBuffer: frameUniformBuffer,
+                                                           structureUniformBuffers: structureUniformBuffers,
+                                                           lightUniformBuffers: lightUniformBuffers)
+  }
+
+  /// The mask the molecular passes read. Falls back to the all-lit texel whenever a mask was not
+  /// traced, which is what keeps the shaders free of a "shadows enabled" branch.
+  private var activeShadowMask: MTLTexture?
+  {
+    return shadowMaskForFrame ?? allLitShadowMask
+  }
+
+  public var pathTracerAccumulatedSampleCount: Int
+  {
+    return pathTracerShader.accumulatedSampleCount
   }
   
  
@@ -1099,22 +1304,78 @@ public class MetalRenderer
   // MARK: Make Pictures
   
 
-  public func renderPictureData(device: MTLDevice, size: CGSize, camera: RKCamera, imageQuality: RKImageQuality, renderQuality: RKRenderQuality) -> Data?
+  public func renderPictureData(device: MTLDevice, size: CGSize, camera: RKCamera, imageQuality: RKImageQuality, renderQuality: RKRenderQuality, renderMode: RKRenderMode = .rasterization, pathTracerSettings: RKPathTracerSettings = .standard) -> Data?
   {
     if let _: RKRenderDataSource = renderDataSource,
        let commandQueue: MTLCommandQueue = device.makeCommandQueue(),
        let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
     {
-      var uniforms: RKTransformationUniforms = self.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: 1.0, camera: camera)
+      let pathTracing: Bool = (renderMode == .rayTracing) && MetalPathTracerShader.isSupported(device: device)
+
+      var uniforms: RKTransformationUniforms = self.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: 1.0, camera: camera, pathTracing: pathTracing)
       let frameUniformBuffer: MTLBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: RKMetal.hostStorage)!
       
       
-      self.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: self.atomShader, atomOrthographicImposterShader: self.atomOrthographicImposterShader, ribbonShader: self.ribbonShader)
+      self.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: self.atomShader, atomOrthographicImposterShader: self.atomOrthographicImposterShader, ribbonShader: self.ribbonShader, internalBondShader: self.internalBondShader, externalBondShader: self.externalBondShader)
+      // The bake is what decides how the occlusion atlases are laid out, and the shaders read that layout
+      // from the structure's uniforms, so those have to be built after it rather than before. The
+      // interactive path already orders the two this way.
+      self.buildStructureUniforms(device: device)
     
       self.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
       self.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
       
-      self.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
+      if renderMode == .rayTracing && !pathTracing
+      {
+        lastPictureDiagnostic = "ray tracing was requested but \(device.name) does not support it, rasterized instead"
+        LogQueue.shared.warning(destination: nil, message: lastPictureDiagnostic)
+      }
+      else
+      {
+        lastPictureDiagnostic = "rasterized on \(device.name)"
+      }
+      LogQueue.shared.verbose(destination: nil, message: "Rendering picture with \(pathTracing ? "path tracing" : "rasterization")")
+      
+      // Atoms, bonds and ribbons are left out of the raster pass when path tracing, so the
+      // scene depth buffer holds only the primitives the path tracer does not handle and
+      // the composite becomes a plain depth comparison.
+      self.drawOffScreen(commandBuffer: commandBuffer, commandQueue: commandQueue, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, suppressMolecularGeometry: pathTracing)
+      commandBuffer.commit()
+      
+      // Everything below reads the rasterized scene, so it goes into a second command
+      // buffer; ordering is guaranteed because it is submitted to the same queue.
+      var sourceTexture: MTLTexture? = backgroundShader.sceneResolveTexture
+      var tracedDepthBuffer: MTLBuffer? = nil
+      var tracedCueMaskBuffer: MTLBuffer? = nil
+      if pathTracing
+      {
+        let traced: MTLTexture? = self.pathTracerShader.render(device: device,
+                                                              commandQueue: commandQueue,
+                                                              size: size,
+                                                              settings: pathTracerSettings,
+                                                              frameUniformBuffer: frameUniformBuffer,
+                                                              structureUniformBuffers: structureUniformBuffers,
+                                                              lightUniformBuffers: lightUniformBuffers,
+                                                              sceneColorTexture: backgroundShader.sceneResolveTexture,
+                                                              sceneDepthTexture: backgroundShader.sceneResolvedDepthTexture)
+        lastPictureDiagnostic = "path tracer on \(device.name): \(pathTracerShader.lastStatus)"
+
+        if let traced = traced
+        {
+          sourceTexture = traced
+          tracedDepthBuffer = pathTracerShader.compositeDepthBuffer
+          tracedCueMaskBuffer = pathTracerShader.compositeCueMaskBuffer
+        }
+        else if let fallbackCommandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
+        {
+          // the path tracer could not run (no traceable geometry, or a resource failure):
+          // rasterize the molecular geometry after all so the picture is not left empty
+          self.drawOffScreen(commandBuffer: fallbackCommandBuffer, commandQueue: commandQueue, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
+          fallbackCommandBuffer.commit()
+        }
+      }
+      
+      guard let resolveCommandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer() else {return nil}
       
       let pictureTextureDescriptor: MTLTextureDescriptor
       switch(imageQuality)
@@ -1138,7 +1399,7 @@ public class MetalRenderer
       pictureColorAttachment.clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1.0)
       pictureColorAttachment.storeAction = MTLStoreAction.store
       
-      if let quadCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: picturePassDescriptor)
+      if let quadCommandEncoder: MTLRenderCommandEncoder = resolveCommandBuffer.makeRenderCommandEncoder(descriptor: picturePassDescriptor)
       {
         quadCommandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
         quadCommandEncoder.label = "Quad Pass Encoder"
@@ -1150,10 +1411,19 @@ public class MetalRenderer
           quadCommandEncoder.setRenderPipelineState(quadShader.quadPipeLine)
         }
     
+        // A trace that was asked for can still fail, and the scene is then rasterized after all, so
+        // where the edge cueing looks for its depth is settled here rather than up with the request.
+        var compositeUniforms: RKTransformationUniforms = self.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: 1.0, camera: camera, pathTracing: tracedDepthBuffer != nil)
+        let compositeUniformBuffer: MTLBuffer? = device.makeBuffer(bytes: &compositeUniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: RKMetal.hostStorage)
+
         quadCommandEncoder.setVertexBuffer(quadShader.vertexBuffer, offset: 0, index: 0)
-        quadCommandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
-        quadCommandEncoder.setFragmentTexture(backgroundShader.sceneResolveTexture, index: 0)
+        quadCommandEncoder.setFragmentBuffer(compositeUniformBuffer ?? frameUniformBuffer, offset: 0, index: 0)
+        quadCommandEncoder.setFragmentBuffer(tracedDepthBuffer ?? quadShader.placeholderDepthBuffer, offset: 0, index: 1)
+        quadCommandEncoder.setFragmentBuffer(tracedCueMaskBuffer ?? quadShader.placeholderCueMaskBuffer, offset: 0, index: 2)
+        quadCommandEncoder.setFragmentTexture(sourceTexture, index: 0)
         quadCommandEncoder.setFragmentTexture(blurVerticalShader.blurVerticalTexture, index: 1)
+        quadCommandEncoder.setFragmentTexture(backgroundShader.sceneResolvedDepthTexture, index: 2)
+        quadCommandEncoder.setFragmentTexture(backgroundShader.sceneStencilTexture, index: 3)
         quadCommandEncoder.setFragmentSamplerState(quadShader.quadSamplerState, index: 0)
         quadCommandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: 4, indexType: .uint16, indexBuffer: quadShader.indexBuffer, indexBufferOffset: 0)
         quadCommandEncoder.endEncoding()
@@ -1170,15 +1440,15 @@ public class MetalRenderer
           dataLength = bytesPerRow * Int(size.height)
         }
         if let pictureTextureBuffer: MTLBuffer = device.makeBuffer(length: dataLength, options: MTLResourceOptions()),
-           let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()
+           let blitEncoder: MTLBlitCommandEncoder = resolveCommandBuffer.makeBlitCommandEncoder()
         {
           RKMetal.synchronize(blitEncoder, resource: pictureTexture)
     
           blitEncoder.copy(from: pictureTexture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0,0, 0), sourceSize: MTLSizeMake(Int(size.width), Int(size.height), 1), to: pictureTextureBuffer, destinationOffset: 0, destinationBytesPerRow: bytesPerRow, destinationBytesPerImage: 0)
           blitEncoder.endEncoding()
     
-          commandBuffer.commit()
-          commandBuffer.waitUntilCompleted()
+          resolveCommandBuffer.commit()
+          resolveCommandBuffer.waitUntilCompleted()
     
           return Data(bytes: pictureTextureBuffer.contents().assumingMemoryBound(to: UInt8.self), count: pictureTextureBuffer.length)
         }
@@ -1187,9 +1457,9 @@ public class MetalRenderer
     return nil
   }
   
-  public func renderPicture(device: MTLDevice, size: CGSize, imagePhysicalSizeInInches: Double, camera: RKCamera, imageQuality: RKImageQuality, renderQuality: RKRenderQuality) -> Data?
+  public func renderPicture(device: MTLDevice, size: CGSize, imagePhysicalSizeInInches: Double, camera: RKCamera, imageQuality: RKImageQuality, renderQuality: RKRenderQuality, renderMode: RKRenderMode = .rasterization, pathTracerSettings: RKPathTracerSettings = .standard) -> Data?
   {
-    if let data: Data = self.renderPictureData(device: device, size: size, camera: camera, imageQuality: imageQuality, renderQuality: renderQuality)
+    if let data: Data = self.renderPictureData(device: device, size: size, camera: camera, imageQuality: imageQuality, renderQuality: renderQuality, renderMode: renderMode, pathTracerSettings: pathTracerSettings)
     {
       let cgImage: CGImage
       switch(imageQuality)

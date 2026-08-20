@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -54,10 +55,9 @@ class MetalGlobalAxesSystemShader
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
-    let clearDepthStateDescriptor: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
-    clearDepthStateDescriptor.depthCompareFunction = MTLCompareFunction.always
-    clearDepthStateDescriptor.isDepthWriteEnabled = true
-    clearDepthState = device.makeDepthStencilState(descriptor: clearDepthStateDescriptor)
+    // The widget sits over whatever was drawn there, so it clears the cueing mask along with the depth,
+    // see `clearingDepthStencilState` on RKEdgeCueing.
+    clearDepthState = RKEdgeCueing.cueingDepthStencilState(device: device, depthCompareFunction: MTLCompareFunction.always)
     
     let backgroundPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     backgroundPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
@@ -84,10 +84,7 @@ class MetalGlobalAxesSystemShader
       fatalError("Error occurred when creating render pipeline state \(error)")
     }
     
-    let depthStateDescriptor: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
-    depthStateDescriptor.depthCompareFunction = MTLCompareFunction.lessEqual
-    depthStateDescriptor.isDepthWriteEnabled = true
-    depthState = device.makeDepthStencilState(descriptor: depthStateDescriptor)
+    depthState = RKEdgeCueing.clearingDepthStencilState(device: device)
     
     let axesPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     axesPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
@@ -249,6 +246,7 @@ class MetalGlobalAxesSystemShader
       #endif
       commandEncoder.setRenderPipelineState(self.backgroundPipeline)
       commandEncoder.setDepthStencilState(clearDepthState)
+    commandEncoder.setStencilReferenceValue(0)
       commandEncoder.setVertexBuffer(vertexTextBuffer, offset: 0, index: 0)
       commandEncoder.setVertexBuffer(globalAxesUniformBuffers, offset: 0, index: 1)
       commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)

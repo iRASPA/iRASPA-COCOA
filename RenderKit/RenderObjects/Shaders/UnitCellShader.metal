@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -41,7 +42,6 @@ struct UnitCellVertexShaderOut
   float4 specular [[ flat ]];
   
   float3 N;
-  float3 L;
   float3 V;
 };
 
@@ -60,9 +60,9 @@ vertex UnitCellVertexShaderOut UnitCellSphereVertexShader(const device InPerVert
   scale.xyz *= structureUniforms.unitCellScaling;
 
   float4 pos =  float4((scale * vertices[vid].position + positions[iid].position).xyz,1.0);
-  vert.ambient = lightUniforms.lights[0].ambient * positions[iid].ambient;
-  vert.diffuse = lightUniforms.lights[0].diffuse * positions[iid].diffuse;
-  vert.specular = lightUniforms.lights[0].specular * positions[iid].specular;
+  vert.ambient = positions[iid].ambient;
+  vert.diffuse = positions[iid].diffuse;
+  vert.specular = positions[iid].specular;
   
   vert.N = (frameUniforms.normalMatrix * vertices[vid].normal).xyz;
   
@@ -70,8 +70,6 @@ vertex UnitCellVertexShaderOut UnitCellSphereVertexShader(const device InPerVert
   
   vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * pos;
   
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
   
   // Calculate view vector
   vert.V = -P.xyz;
@@ -85,22 +83,21 @@ vertex UnitCellVertexShaderOut UnitCellSphereVertexShader(const device InPerVert
 fragment float4 UnitCellSphereFragmentShader(UnitCellVertexShaderOut vert [[stage_in]],
                                              constant StructureUniforms& structureUniforms [[buffer(0)]],
                                              constant FrameUniforms& frameUniforms [[buffer(1)]],
+                                             constant LightUniforms& lightUniforms [[buffer(2)]],
                                              texture2d<half>  ambientOcclusionTexture     [[ texture(0) ]],
                                              sampler           shadowMapSampler [[ sampler(0) ]])
 {
-  // Normalize the incoming N, L and V vectors
+  // Normalize the incoming N vector
   float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
-  //float3 V = normalize(vert.V);
   
-  // Calculate R locally
-  //float3 R = reflect(-L, N);
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, normalize(vert.V), float4(-vert.V, 1.0), 0.0);
   
   // Compute the diffuse and specular components for each fragment
-  float3 diffuse = max(dot(N, L), 0.0) * vert.diffuse.xyz;
+  float3 ambient = GUIDE_GEOMETRY_AMBIENT * lighting.ambient * vert.diffuse.xyz;
+  float3 diffuse = lighting.diffuse * vert.diffuse.xyz;
   
   float ao = 1.0;
-  float4 color= float4(ao * (structureUniforms.unitCellColor.xyz * diffuse.xyz), 1.0);
+  float4 color= float4(ao * (structureUniforms.unitCellColor.xyz * (ambient.xyz + diffuse.xyz)), 1.0);
                        
   
   float3 hsv = rgb2hsv(color.xyz);
@@ -123,9 +120,9 @@ vertex UnitCellVertexShaderOut UnitCellCylinderVertexShader(const device InPerVe
   float3 v1,v2;
   UnitCellVertexShaderOut vert;
   
-  vert.ambient = lightUniforms.lights[0].ambient;
-  vert.diffuse = lightUniforms.lights[0].diffuse;
-  vert.specular = lightUniforms.lights[0].specular;
+  vert.ambient = float4(1.0);
+  vert.diffuse = float4(1.0);
+  vert.specular = float4(1.0);
   
   float4 scale = positions[iid].scale;
   float4 pos =  scale * float4((vertices[vid].position).xyz,1.0);
@@ -162,8 +159,6 @@ vertex UnitCellVertexShaderOut UnitCellCylinderVertexShader(const device InPerVe
   
   vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * float4((orientationMatrix * (scale * pos) + pos1).xyz,1.0);
   
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
   
   
   return vert;
@@ -173,16 +168,19 @@ vertex UnitCellVertexShaderOut UnitCellCylinderVertexShader(const device InPerVe
 
 fragment float4 UnitCellCylinderFragmentShader(UnitCellVertexShaderOut vert [[stage_in]],
                                            constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                           constant FrameUniforms& frameUniforms [[buffer(1)]])
+                                           constant FrameUniforms& frameUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
 
 {
-  // Normalize the incoming N and L vectors
+  // Normalize the incoming N vector
   float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
   
-  float3 diffuse = max(dot(N, L), 0.0) * vert.diffuse.xyz;
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, normalize(vert.V), float4(-vert.V, 1.0), 0.0);
+  
+  float3 ambient = GUIDE_GEOMETRY_AMBIENT * lighting.ambient * vert.diffuse.xyz;
+  float3 diffuse = lighting.diffuse * vert.diffuse.xyz;
   float ao = 1.0;
-  float4 color= float4(ao * (structureUniforms.unitCellColor.xyz * diffuse.xyz), 1.0);
+  float4 color= float4(ao * (structureUniforms.unitCellColor.xyz * (ambient.xyz + diffuse.xyz)), 1.0);
   
   float3 hsv = rgb2hsv(color.xyz);
   hsv.x = hsv.x * structureUniforms.atomHue;

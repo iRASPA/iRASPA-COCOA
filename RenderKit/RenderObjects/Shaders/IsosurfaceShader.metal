@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -46,7 +47,6 @@ struct IsosurfaceVertexShaderOut
 {
   float4 position [[position]];
   float3 N;
-  float3 L;
   float3 V;
 };
 
@@ -70,8 +70,6 @@ vertex IsosurfaceVertexShaderOut IsosurfaceVertexShader(const device IsosurfaceI
   
   float4 P = frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
   
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
   
   // Calculate view vector
   vert.V = -P.xyz;
@@ -86,11 +84,11 @@ fragment float4 IsosurfaceFragmentShader(IsosurfaceVertexShaderOut vert [[stage_
                                          constant FrameUniforms& frameUniforms [[buffer(0)]],
                                          constant StructureUniforms& structureUniforms [[buffer(1)]],
                                          constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
+                                         constant LightUniforms& lightUniforms [[buffer(3)]],
                                          bool frontfacing [[ front_facing ]])
 {
-  // Normalize the incoming N, L and V vectors
+  // Normalize the incoming N and V vectors
   float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
   float3 V = normalize(vert.V);
   
   
@@ -101,10 +99,10 @@ fragment float4 IsosurfaceFragmentShader(IsosurfaceVertexShaderOut vert [[stage_
   
   if (!frontfacing)
   {
-    float3 R = reflect(-L, -N);
-    ambient = isosurfaceUniforms.ambientBackSide;
-    diffuse = max(dot(-N, L), 0.0) * isosurfaceUniforms.diffuseBackSide;
-    specular = pow(max(dot(R, V), 0.0), isosurfaceUniforms.shininessBackSide) * isosurfaceUniforms.specularBackSide;
+    LightingWeights lighting = accumulateLighting(lightUniforms, -N, V, float4(-vert.V, 1.0), isosurfaceUniforms.shininessBackSide);
+    ambient = float4(lighting.ambient, 1.0) * isosurfaceUniforms.ambientBackSide;
+    diffuse = float4(lighting.diffuse, 1.0) * isosurfaceUniforms.diffuseBackSide;
+    specular = float4(lighting.specular, 1.0) * isosurfaceUniforms.specularBackSide;
     
     color = float4((ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
     if (isosurfaceUniforms.backHDR)
@@ -116,10 +114,10 @@ fragment float4 IsosurfaceFragmentShader(IsosurfaceVertexShaderOut vert [[stage_
   }
   else
   {
-    float3 R = reflect(-L, N);
-    ambient = isosurfaceUniforms.ambientFrontSide;
-    diffuse = max(dot(N, L), 0.0) * isosurfaceUniforms.diffuseFrontSide;
-    specular = pow(max(dot(R, V), 0.0), isosurfaceUniforms.shininessFrontSide) * isosurfaceUniforms.specularFrontSide;
+    LightingWeights lighting = accumulateLighting(lightUniforms, N, V, float4(-vert.V, 1.0), isosurfaceUniforms.shininessFrontSide);
+    ambient = float4(lighting.ambient, 1.0) * isosurfaceUniforms.ambientFrontSide;
+    diffuse = float4(lighting.diffuse, 1.0) * isosurfaceUniforms.diffuseFrontSide;
+    specular = float4(lighting.specular, 1.0) * isosurfaceUniforms.specularFrontSide;
     
     color= float4((ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
     if (isosurfaceUniforms.frontHDR)

@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -41,7 +42,7 @@ import MathKit
 
 public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor, VolumetricDataEditor, SpaceGroupEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderRibbonSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderVolumetricDataSource, Cloning, DNARibbonStructureEditor
 {
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
   
   public var spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
   public var backbone: DNABackbone = DNABackbone()
@@ -70,6 +71,9 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
   public var ribbonDiffuseIntensity: Double = 1.0
   public var ribbonSpecularIntensity: Double = 0.5
   public var ribbonShininess: Double = 4.0
+
+  /// Contour lines and halos drawn where the ribbons of this structure meet something else.
+  public var ribbonEdgeCueing: RKEdgeCueing = .off
   public private(set) var ribbonMesh: RKRibbonMesh = RKRibbonMesh()
   public var ribbonAmbientOcclusionPatchNumber: Int = 1
   public var ribbonAmbientOcclusionPatchSize: Int = 16
@@ -155,7 +159,7 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
     self.drawUnitCell = true
     self.drawAtoms = false
     self.drawBonds = false
-    applyFancyRibbonAppearance()
+    applyIllustrativeRibbonAppearance()
     reComputeBoundingBox()
     rebuildBackbone()
   }
@@ -2317,6 +2321,10 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
     encoder.encode(ribbonDiffuseIntensity)
     encoder.encode(ribbonSpecularIntensity)
     encoder.encode(ribbonShininess)
+    if DNACrystal.classVersionNumber >= 2
+    {
+      encoder.encode(ribbonEdgeCueing.rawValue)
+    }
     super.binaryEncode(to: encoder)
   }
   
@@ -2361,6 +2369,11 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
     ribbonDiffuseIntensity = try decoder.decode(Double.self)
     ribbonSpecularIntensity = try decoder.decode(Double.self)
     ribbonShininess = try decoder.decode(Double.self)
+
+    if readVersionNumber >= 2
+    {
+      ribbonEdgeCueing = RKEdgeCueing(rawValue: try decoder.decode(Int.self)) ?? .off
+    }
     
     try super.init(fromBinary: decoder)
     _ = DNAAtomTreeBuilder.applyHierarchyIfNeeded(to: self.atomTreeController)

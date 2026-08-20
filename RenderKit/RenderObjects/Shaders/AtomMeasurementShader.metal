@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -46,9 +47,9 @@ vertex AtomSphereImposterVertexShaderOut AtomMeasurementSphereImposterOrthograph
   AtomSphereImposterVertexShaderOut vert;
   
   float4 scale = 1.01*structureUniforms.atomScaleFactor * positions[iid].scale;
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-  vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
+  vert.ambient = structureUniforms.atomAmbientColor * positions[iid].ambient;
+  vert.diffuse = structureUniforms.atomDiffuseColor * positions[iid].diffuse;
+  vert.specular = structureUniforms.atomSpecularColor * positions[iid].specular;
   
   vert.N = float3(0,0,1);
   
@@ -61,8 +62,6 @@ vertex AtomSphereImposterVertexShaderOut AtomMeasurementSphereImposterOrthograph
   
   vert.eye_position = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
   
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - vert.eye_position*lightUniforms.lights[0].position.w).xyz;
   
   // Calculate view vector
   vert.V = -vert.eye_position.xyz;
@@ -106,17 +105,20 @@ fragment FragOutput AtomMeasurementSphereImposterOrthographicFragmentShader(Atom
   
   float4 pos = vert.eye_position;
   pos.z += vert.sphere_radius.z*z;
+  float4 surfaceEyePosition = pos;
   pos = frameUniforms.projectionMatrix * pos;
   output.depth = (pos.z / pos.w);
   
   
-  // Normalize the incoming N, L and V vectors
+  // Normalize the incoming N and V vectors
   float3 N = float3(x,y,z);
-  float3 L = normalize(vert.L);
+  float3 V = normalize(vert.V);
+  
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, V, surfaceEyePosition, structureUniforms.atomShininess);
   
   // Compute the diffuse and specular components for each fragment
-  float3 ambient = vert.ambient.xyz;
-  float3 diffuse = max(dot(N, L), 0.0) * vert.diffuse.xyz;
+  float3 ambient = lighting.ambient * vert.ambient.xyz;
+  float3 diffuse = lighting.diffuse * vert.diffuse.xyz;
   
   output.albedo = float4((ambient.xyz + diffuse.xyz) * 0.8, 0.8);
   
@@ -136,9 +138,9 @@ vertex AtomSphereImposterVertexShaderOut AtomMeasurementSphereImposterPerspectiv
   AtomSphereImposterVertexShaderOut vert;
   
   float4 scale = 1.01 * structureUniforms.atomScaleFactor * positions[iid].scale;
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-  vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
+  vert.ambient = structureUniforms.atomAmbientColor * positions[iid].ambient;
+  vert.diffuse = structureUniforms.atomDiffuseColor * positions[iid].diffuse;
+  vert.specular = structureUniforms.atomSpecularColor * positions[iid].specular;
   
   float4x4 ambientOcclusionTransformMatrix = transpose(frameUniforms.normalMatrix * structureUniforms.modelMatrix);
   vert.ambientOcclusionTransformMatrix1 = ambientOcclusionTransformMatrix[0];
@@ -184,9 +186,12 @@ fragment FragOutput AtomMeasurementSphereImposterPerspectiveFragmentShader(AtomS
   float4 screen_pos = frameUniforms.projectionMatrix * float4(hit, 1.0);
   output.depth = screen_pos.z / screen_pos.w ;
   
-  // Normalize the incoming N, L and V vectors
+  // this imposter's vertex shader leaves vert.V unassigned, so the view vector is taken from the hit
+  // point, which is in eye space with the camera at the origin
   float3 N = normalize(hit - vert.frag_center);
-  float3 L = normalize(vert.L);
+  float3 V = normalize(-hit);
+  
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, V, float4(hit, 1.0), structureUniforms.atomShininess);
   
   float4x4 ambientOcclusionTransformMatrix = float4x4(vert.ambientOcclusionTransformMatrix1,vert.ambientOcclusionTransformMatrix2,vert.ambientOcclusionTransformMatrix3,vert.ambientOcclusionTransformMatrix4);
   float3 t3 = (ambientOcclusionTransformMatrix * float4(N,1.0)).xyz;
@@ -197,8 +202,8 @@ fragment FragOutput AtomMeasurementSphereImposterPerspectiveFragmentShader(AtomS
     discard_fragment();
   
   // Compute the diffuse and specular components for each fragment
-  float3 ambient = vert.ambient.xyz;
-  float3 diffuse = max(dot(N, L), 0.0) * vert.diffuse.xyz;
+  float3 ambient = lighting.ambient * vert.ambient.xyz;
+  float3 diffuse = lighting.diffuse * vert.diffuse.xyz;
   
   output.albedo = float4((ambient.xyz + diffuse.xyz) * 0.8, 0.8);
   

@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -36,7 +37,13 @@ import MathKit
 
 public struct RKLight
 {
-  public var position: SIMD4<Float> = SIMD4<Float>(x:0.0, y:0.0, z: 100.0, w: 0.0)  // w=0 directional light, w=1.0 positional light
+  /// Defined in eye space, so the light travels with the camera. w=0 directional, w=1 positional.
+  ///
+  /// Offset up and to the left of the view axis rather than sitting on it: a light exactly at the
+  /// camera puts its brightest point where the viewer is already looking and reduces the diffuse term
+  /// to `N·V`, which flattens the surfaces whose shape one is trying to read. Roughly 27 degrees off
+  /// axis is the usual key-light placement.
+  public var position: SIMD4<Float> = SIMD4<Float>(x: -30.0, y: 40.0, z: 100.0, w: 0.0)
   public var ambient: SIMD4<Float> = SIMD4<Float>(color: NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
   public var diffuse: SIMD4<Float> = SIMD4<Float>(color: NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
   public var specular: SIMD4<Float> = SIMD4<Float>(color: NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
@@ -50,8 +57,11 @@ public struct RKLight
   
   public var spotExponent: Float = 1.0
   public var shininess: Float = 4.0
-  public var pad1: Float = 0.0
-  public var pad2: Float = 0.0
+  /// See `lightType` in Common.h.
+  public var lightType: Float = 0.0
+  /// See `enabled` in Common.h. Defaults to off: the uniform holds a slot for every photographic role,
+  /// and a project supplying fewer lights than that must not have the leftover slots shining full white.
+  public var enabled: Float = 0.0
   
   public var pad3: Float = 0.0
   public var pad4: Float = 0.0

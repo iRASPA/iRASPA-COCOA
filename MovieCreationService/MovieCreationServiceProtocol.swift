@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -35,5 +36,8 @@ import iRASPAKit
 
 @objc public protocol MovieCreationProtocol
 {
+  /// The ray-tracing settings arrive as part of `project`. The service runs in its own process with
+  /// its own user defaults domain, so anything it needs has to travel with the request rather than
+  /// be read back from the preferences.
   func makeVideo(project: ProjectStructureNode, camera: RKCamera, size: NSSize, withReply reply: @escaping (URL) -> Void)
 }

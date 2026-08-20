@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  Sequoia-inspired Cα geometry classifier (Khalife, Malliavin & Liberti, Bioinformatics Advances 2021).
  The published Sequoia method classifies residues with a message-passing neural network over a k-nearest

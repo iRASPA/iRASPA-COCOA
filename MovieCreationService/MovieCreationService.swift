@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -39,12 +40,19 @@ class MovieCreationService: NSObject, MovieCreationProtocol
 {
   private var myContext = 0
   
+  /// Apply to every frame of the movie, so they are read once when the request arrives.
+  var renderMode: RKRenderMode = RKRenderMode.rasterization
+  var pathTracerSettings: RKPathTracerSettings = RKPathTracerSettings.standard
+
   var isWaitingForInputReady: Bool = false
   var writeSemaphore: DispatchSemaphore! = DispatchSemaphore(value: 0)
   var assetInput: AVAssetWriterInput? = nil
   
   func makeVideo(project: ProjectStructureNode, camera: RKCamera, size: NSSize, withReply reply: @escaping (URL) -> Void)
   {
+    self.renderMode = project.pictureRenderMode
+    self.pathTracerSettings = project.picturePathTracerSettings
+
     project.setInitialSelectionIfNeeded()
     project.renderBackgroundCachedImage = project.drawGradientCGImage()
     camera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
@@ -223,7 +231,7 @@ class MovieCreationService: NSObject, MovieCreationProtocol
       var renderTexture: CVMetalTexture? = nil
       CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, coreVideoTextureCache!, pixelBuffer, nil, MTLPixelFormat.bgra8Unorm, Int(size.width), Int(size.height), 0, &renderTexture)
           
-      if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera, imageQuality: .rgb_8_bits,renderQuality: .picture)
+      if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera, imageQuality: .rgb_8_bits,renderQuality: .picture, renderMode: self.renderMode, pathTracerSettings: self.pathTracerSettings)
       {
         CVPixelBufferLockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
         if let destPixels: UnsafeMutablePointer<UInt8> = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: UInt8.self)

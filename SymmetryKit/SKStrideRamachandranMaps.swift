@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  STRIDE Ramachandran probability maps adapted from Frishman & Argos, Proteins 23:566-579 (1995).
  Original STRIDE implementation (C) 1992-1994 Dmitrij Frishman, MIT License.

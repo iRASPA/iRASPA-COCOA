@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -3261,14 +3262,17 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           connection.resume()
 
           let service = connection.remoteObjectProxyWithErrorHandler { error in
-              print("Received error:", error)
+              LogQueue.shared.error(destination: nil, message: "Picture creation service failed: \(error)")
           } as? PictureCreationProtocol
           
           if let camera = project.renderCamera,
              let url = savePanel.url
           {
-            service?.makePicture(project: project, camera: camera, size: size) { imageData in
+            LogQueue.shared.info(destination: nil, message: "Requesting a \(Int(size.width))x\(Int(size.height)) picture from the picture creation service using \(project.pictureRenderMode == .rayTracing ? "path tracing with \(project.picturePathTracerSettings.sampleCount) samples per pixel" : "rasterization")")
+
+            service?.makePicture(project: project, camera: camera, size: size) { imageData, diagnostic in
               DispatchQueue.main.async(execute: {
+                LogQueue.shared.info(destination: nil, message: "Picture creation service: \(diagnostic)")
                 try? imageData.write(to: url, options: [Data.WritingOptions.atomic])
               })
             }

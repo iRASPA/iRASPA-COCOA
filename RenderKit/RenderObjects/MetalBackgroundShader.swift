@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -49,6 +50,15 @@ public class MetalBackgroundShader
   var sceneDepthTexture: MTLTexture! = nil
   var sceneResolveTexture: MTLTexture! = nil
   var sceneResolvedDepthTexture: MTLTexture! = nil
+
+  /// The stencil half of `sceneDepthTexture`, seen as an integer texture so that the compositing pass
+  /// can read it.
+  ///
+  /// Read multisampled and unresolved, one sample per pixel, which sidesteps stencil resolve entirely
+  /// and so behaves the same on the platforms that cannot resolve `depth32Float_stencil8`. What it
+  /// carries is which cues the surface at that pixel asked for, and taking that from a single sample
+  /// leaves it a pixel ragged at a silhouette, which does not show behind a cue several pixels wide.
+  var sceneStencilTexture: MTLTexture! = nil
   
   public var vertexBuffer: MTLBuffer! = nil
   public var indexBuffer: MTLBuffer! = nil
@@ -187,11 +197,14 @@ public class MetalBackgroundShader
     sceneDepthTextureDescriptor.sampleCount = maximumNumberOfSamples
     sceneDepthTextureDescriptor.storageMode = MTLStorageMode.private
     // On iOS the MSAA depth is sampled by the manual resolve pass.
-    sceneDepthTextureDescriptor.usage = supportsHardwareDepthResolve
-      ? MTLTextureUsage.renderTarget
-      : [MTLTextureUsage.renderTarget, MTLTextureUsage.shaderRead]
+    // `shaderRead` for the manual resolve on iOS and for the compositing pass to read the stencil,
+    // `pixelFormatView` so that the stencil can be seen apart from the depth it shares a texture with.
+    sceneDepthTextureDescriptor.usage = [MTLTextureUsage.renderTarget, MTLTextureUsage.shaderRead, MTLTextureUsage.pixelFormatView]
     sceneDepthTexture = device.makeTexture(descriptor: sceneDepthTextureDescriptor)
     sceneDepthTexture.label = "scene multisampled depth texture"
+
+    sceneStencilTexture = sceneDepthTexture.makeTextureView(pixelFormat: MTLPixelFormat.x32_stencil8)
+    sceneStencilTexture?.label = "scene multisampled stencil texture"
     
     let sceneResolveDepthTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float_stencil8, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
     sceneResolveDepthTextureDescriptor.textureType = MTLTextureType.type2D
@@ -228,7 +241,7 @@ public class MetalBackgroundShader
     let sceneMSAAstencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderPassDescriptor.stencilAttachment
     sceneMSAAstencilAttachment.texture = sceneDepthTexture
     sceneMSAAstencilAttachment.loadAction = MTLLoadAction.clear
-    sceneMSAAstencilAttachment.storeAction = MTLStoreAction.dontCare
+    sceneMSAAstencilAttachment.storeAction = MTLStoreAction.store
     sceneMSAAstencilAttachment.clearStencil = 0
     
     // Volume-rendered surfaces scene descriptor
@@ -255,8 +268,8 @@ public class MetalBackgroundShader
     
     let sceneVolumeRenderedSurfaceStencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderVolumeRenderedSurfacesPassDescriptor.stencilAttachment
     sceneVolumeRenderedSurfaceStencilAttachment.texture = sceneDepthTexture
-    sceneVolumeRenderedSurfaceStencilAttachment.loadAction = MTLLoadAction.dontCare
-    sceneVolumeRenderedSurfaceStencilAttachment.storeAction = MTLStoreAction.dontCare
+    sceneVolumeRenderedSurfaceStencilAttachment.loadAction = MTLLoadAction.load
+    sceneVolumeRenderedSurfaceStencilAttachment.storeAction = MTLStoreAction.store
     sceneVolumeRenderedSurfaceStencilAttachment.clearStencil = 0
     
     
@@ -276,9 +289,9 @@ public class MetalBackgroundShader
     
     let sceneTransparentMSAAstencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderTransparentPassDescriptor.stencilAttachment
     sceneTransparentMSAAstencilAttachment.texture = sceneDepthTexture
-    sceneTransparentMSAAstencilAttachment.loadAction = MTLLoadAction.dontCare
-    sceneTransparentMSAAstencilAttachment.storeAction = MTLStoreAction.dontCare
-    sceneMSAAstencilAttachment.clearStencil = 0
+    sceneTransparentMSAAstencilAttachment.loadAction = MTLLoadAction.load
+    sceneTransparentMSAAstencilAttachment.storeAction = MTLStoreAction.store
+    sceneTransparentMSAAstencilAttachment.clearStencil = 0
 
     if !supportsHardwareDepthResolve
     {

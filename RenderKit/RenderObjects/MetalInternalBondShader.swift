@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -46,9 +47,15 @@ class MetalInternalBondShader
   var instanceBufferPartialDoubleBonds: [[MTLBuffer?]] = []
   var instanceBufferTripleBonds: [[MTLBuffer?]] = []
   var samplerState: MTLSamplerState! = nil
+  var depthState: MTLDepthStencilState! = nil
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
+    // Records which cues this geometry asked for in the scene's stencil, for the compositing pass to
+    // read back. Matches the depth behaviour these draws relied on when they inherited a state from
+    // whatever ran before them. See `stencilValue` on RKEdgeCueing.
+    depthState = RKEdgeCueing.cueingDepthStencilState(device: device)
+
     let pSamplerDescriptor:MTLSamplerDescriptor? = MTLSamplerDescriptor()
     
     if let sampler = pSamplerDescriptor
@@ -99,6 +106,22 @@ class MetalInternalBondShader
   }
   
   
+  /// Numbers the bonds' patches in the ambient-occlusion atlas, before they are split by bond order: the
+  /// split preserves the order of the bonds, so each of the four buffers carries the numbering away with
+  /// it and the atlas needs no knowledge of which buffer a bond was drawn from.
+  ///
+  /// The external bonds are numbered the same way and are moved past the internal ones by the base held in
+  /// the structure's uniforms, which is what lets one texture serve both.
+  static func stampAmbientOcclusionPatches(_ bonds: inout [RKInPerInstanceAttributesBonds])
+  {
+    var patch: UInt32 = 0
+    for index in bonds.indices
+    {
+      bonds[index].ambientOcclusionPatch = patch
+      patch += UInt32(RKInPerInstanceAttributesBonds.ambientOcclusionPatchCount(type: bonds[index].type))
+    }
+  }
+  
   public func buildVertexBuffers(device: MTLDevice)
   {
     if let _: RKRenderDataSource = renderDataSource
@@ -128,7 +151,8 @@ class MetalInternalBondShader
         {
           for structure in structures
           {
-            let allBonds: [RKInPerInstanceAttributesBonds] = (structure as? RKRenderBondSource)?.renderInternalBonds ?? []
+            var allBonds: [RKInPerInstanceAttributesBonds] = (structure as? RKRenderBondSource)?.renderInternalBonds ?? []
+            MetalInternalBondShader.stampAmbientOcclusionPatches(&allBonds)
             let singleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.single.rawValue)}
             let doubleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.double.rawValue)}
             let partialDoubleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.partial_double.rawValue)}
@@ -156,11 +180,13 @@ class MetalInternalBondShader
     }
   }
   
-  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
+  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], shadowMask: MTLTexture, size: CGSize)
   {
     // draw internal bonds
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderBondSource}.reduce(false, {$0 || $1.drawBonds}))
     {
+      commandEncoder.setDepthStencilState(depthState)
+      commandEncoder.setFragmentTexture(shadowMask, index: 1)
       commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? imposterPipeLine : perPixelImposterPipeLine)
       // the imposter hull is generated in the vertex shader with view-dependent winding
       commandEncoder.setCullMode(MTLCullMode.none)
@@ -190,6 +216,11 @@ class MetalInternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
+              if let ambientOcclusionTexture: MTLTexture = MetalInternalBondShader.ambientOcclusionTexture(ambientOcclusionTextures, sceneIndex: i, movieIndex: j)
+              {
+                commandEncoder.setFragmentTexture(ambientOcclusionTexture, index: 0)
+              }
+              commandEncoder.setStencilReferenceValue(structure.atomEdgeCueing.stencilValue)
               MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
@@ -214,6 +245,11 @@ class MetalInternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
+              if let ambientOcclusionTexture: MTLTexture = MetalInternalBondShader.ambientOcclusionTexture(ambientOcclusionTextures, sceneIndex: i, movieIndex: j)
+              {
+                commandEncoder.setFragmentTexture(ambientOcclusionTexture, index: 0)
+              }
+              commandEncoder.setStencilReferenceValue(structure.atomEdgeCueing.stencilValue)
               MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
@@ -239,6 +275,11 @@ class MetalInternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
+              if let ambientOcclusionTexture: MTLTexture = MetalInternalBondShader.ambientOcclusionTexture(ambientOcclusionTextures, sceneIndex: i, movieIndex: j)
+              {
+                commandEncoder.setFragmentTexture(ambientOcclusionTexture, index: 0)
+              }
+              commandEncoder.setStencilReferenceValue(structure.atomEdgeCueing.stencilValue)
               MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 36, instanceCount: instanceCount)
             }
           }
@@ -264,6 +305,11 @@ class MetalInternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
+              if let ambientOcclusionTexture: MTLTexture = MetalInternalBondShader.ambientOcclusionTexture(ambientOcclusionTextures, sceneIndex: i, movieIndex: j)
+              {
+                commandEncoder.setFragmentTexture(ambientOcclusionTexture, index: 0)
+              }
+              commandEncoder.setStencilReferenceValue(structure.atomEdgeCueing.stencilValue)
               MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
             }
           }
@@ -289,6 +335,11 @@ class MetalInternalBondShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
+              if let ambientOcclusionTexture: MTLTexture = MetalInternalBondShader.ambientOcclusionTexture(ambientOcclusionTextures, sceneIndex: i, movieIndex: j)
+              {
+                commandEncoder.setFragmentTexture(ambientOcclusionTexture, index: 0)
+              }
+              commandEncoder.setStencilReferenceValue(structure.atomEdgeCueing.stencilValue)
               MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 54, instanceCount: instanceCount)
             }
           }
@@ -298,6 +349,12 @@ class MetalInternalBondShader
       
       commandEncoder.setCullMode(MTLCullMode.back)
     }
+  }
+  
+  static func ambientOcclusionTexture(_ textures: [[MTLTexture]], sceneIndex: Int, movieIndex: Int) -> MTLTexture?
+  {
+    guard sceneIndex < textures.count, movieIndex < textures[sceneIndex].count else {return nil}
+    return textures[sceneIndex][movieIndex]
   }
   
   func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?

@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  DSSP algorithm adapted from Kabsch & Sander (1983), Biopolymers 22:2577-2637.
  Hydrogen-bond map and assignment logic follows pydssp (Shintaro Minami, MIT License)

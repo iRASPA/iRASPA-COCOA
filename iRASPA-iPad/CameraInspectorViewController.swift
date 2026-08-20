@@ -437,13 +437,15 @@ final class CameraInspectorViewController: CollapsibleTableViewController, UIDoc
   {
     switch row
     {
+    // ambient describes the environment rather than one lamp, so it belongs to the scene and is not read
+    // off a light: see sceneAmbient in Common.h
     case 0:
-      return sliderRow("Ambient Light Intensity", value: project?.renderLights.first?.ambientIntensity ?? 1.0, min: 0.0, max: 1.0) { [weak self] value in
-        self?.mutateLight { $0.ambientIntensity = value }
+      return sliderRow("Ambient Light Intensity", value: project?.renderSceneAmbientIntensity ?? 1.0, min: 0.0, max: 1.0) { [weak self] value in
+        self?.mutateSceneAmbient { $0.renderSceneAmbientIntensity = value }
       }
     case 1:
-      return colorRow("Ambient Color", color: project?.renderLights.first?.ambient ?? .white) { [weak self] color in
-        self?.mutateLight { $0.ambient = color }
+      return colorRow("Ambient Color", color: project?.renderSceneAmbientColor ?? .white) { [weak self] color in
+        self?.mutateSceneAmbient { $0.renderSceneAmbientColor = color }
       }
     case 2:
       return sliderRow("Diffuse Light Intensity", value: project?.renderLights.first?.diffuseIntensity ?? 1.0, min: 0.0, max: 1.0) { [weak self] value in
@@ -472,6 +474,16 @@ final class CameraInspectorViewController: CollapsibleTableViewController, UIDoc
   {
     guard let project, !project.renderLights.isEmpty else { return }
     body(&project.renderLights[0])
+    project.recheckLightStyle()
+    markEdited()
+    onLightsChange?()
+  }
+
+  private func mutateSceneAmbient(_ body: (ProjectStructureNode) -> Void)
+  {
+    guard let project else { return }
+    body(project)
+    project.recheckLightStyle()
     markEdited()
     onLightsChange?()
   }

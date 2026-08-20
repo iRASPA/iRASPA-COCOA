@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -879,7 +880,7 @@ fileprivate func applyImportedDNARibbonDefaults(_ object: Object)
     let atomCount: Int = (object as? AtomViewer)?.atomTreeController.flattenedLeafNodes().count ?? 0
     let residueCount: Int = target.nucleotideResidueCount > 0 ? target.nucleotideResidueCount : atomCount
     ribbonEditor.dnaRibbonMeshParameters = ProteinRibbonMeshParameters.forImportedStructure(atomCount: atomCount, residueCount: residueCount)
-    ribbonEditor.applyFancyDnaRibbonAppearanceDefault()
+    ribbonEditor.applyIllustrativeDnaRibbonAppearanceDefault()
     ribbonEditor.ribbonScaleFactor = 1.0
     ribbonEditor.nucleicAcidBackboneStyle = .oval
     ribbonEditor.nucleicAcidTraceMode = .phosphateMode4

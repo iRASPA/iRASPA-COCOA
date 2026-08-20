@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  SEGNO algorithm adapted from Cubellis et al., BMC Bioinformatics 2005, 6(S4):S8.
  Uses a four-residue Cα window for local axis geometry, backbone dihedral angles,

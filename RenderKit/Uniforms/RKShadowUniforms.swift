@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -41,10 +42,14 @@ public struct RKShadowUniforms
   public var viewMatrix: float4x4 = float4x4()
   public var shadowMatrix: float4x4 = float4x4()
   public var normalMatrix: float4x4 = float4x4()
-  
+  /// Undoes `viewMatrix`. Only the external bonds need it, to carry an eye-space point back to the
+  /// structure space in which their unit-cell clipping planes are written, so that they occlude with the
+  /// shape they are drawn with rather than as whole cylinders.
+  public var viewMatrixInverse: float4x4 = float4x4()
+
   public init()
   {
-    
+
   }
   
   public init(projectionMatrix: double4x4, viewMatrix: double4x4, modelMatrix: double4x4)
@@ -55,6 +60,7 @@ public struct RKShadowUniforms
     let mvpMatrix: double4x4 = projectionMatrix * viewMatrix * modelMatrix
     self.projectionMatrix = float4x4(Double4x4: OpenGLToMetalMatrix * projectionMatrix)
     self.viewMatrix = float4x4(Double4x4: viewMatrix * modelMatrix)
+    self.viewMatrixInverse = float4x4(Double4x4: (viewMatrix * modelMatrix).inverse)
     self.shadowMatrix = float4x4(Double4x4: ViewToMetalDepthTextureMatrix * mvpMatrix)
     let normalMatrix: double3x3 = double3x3(Double4x4: viewMatrix * modelMatrix).inverse.transpose
     self.normalMatrix = float4x4(Double4x4: double4x4(Double3x3: normalMatrix))

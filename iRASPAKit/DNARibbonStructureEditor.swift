@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
 
  PyMOL nucleic-acid cartoon settings (cartoon_nucleic_acid_mode, cCartoon_* cross-sections).
  *************************************************************************************************************/
@@ -9,6 +9,7 @@
 import Foundation
 import SymmetryKit
 import MathKit
+import RenderKit
 
 public enum NucleicAcidBackboneStyle: Int, Sendable
 {
@@ -70,8 +71,10 @@ public protocol DNARibbonStructureEditor: AnyObject
   var ribbonDiffuseIntensity: Double {get set}
   var ribbonSpecularIntensity: Double {get set}
   var ribbonShininess: Double {get set}
+  var ribbonEdgeCueing: RKEdgeCueing {get set}
   
   func applyFancyRibbonAppearance()
+  func applyIllustrativeRibbonAppearance()
 }
 
 extension DNARibbonStructureEditor
@@ -129,9 +132,20 @@ extension DNARibbonStructureEditor
     ribbonDiffuseIntensity = 1.0
     ribbonSpecularIntensity = 1.0
     ribbonShininess = 6.0
+    ribbonEdgeCueing = .off
   }
   
   public func applyFancyDnaRibbonAppearanceDefault()
+  {
+    applyOccludedDnaRibbonAppearance(edgeCueing: .off)
+  }
+  
+  public func applyIllustrativeDnaRibbonAppearanceDefault()
+  {
+    applyOccludedDnaRibbonAppearance(edgeCueing: .contoursAndHalos)
+  }
+  
+  private func applyOccludedDnaRibbonAppearance(edgeCueing: RKEdgeCueing)
   {
     ribbonHDR = true
     ribbonHDRExposure = 2.5
@@ -146,10 +160,16 @@ extension DNARibbonStructureEditor
     ribbonDiffuseIntensity = 1.0
     ribbonSpecularIntensity = 1.0
     ribbonShininess = 4.0
+    ribbonEdgeCueing = edgeCueing
   }
   
   public func applyFancyRibbonAppearance()
   {
     applyFancyDnaRibbonAppearanceDefault()
+  }
+  
+  public func applyIllustrativeRibbonAppearance()
+  {
+    applyIllustrativeDnaRibbonAppearanceDefault()
   }
 }

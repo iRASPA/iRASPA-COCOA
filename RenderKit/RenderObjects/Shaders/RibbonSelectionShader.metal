@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -27,7 +27,6 @@ struct RibbonSelectionVertexShaderOut
 {
   float4 position [[position]];
   float3 N;
-  float3 L;
   float3 V;
   float3 Model_N;
   float3 ambient;
@@ -67,12 +66,11 @@ static RibbonSelectionVertexShaderOut ribbonSelectionVertex(const device InPerVe
   vert.stripeST = vertices[vid].stripeST;
   
   float3 baseColor = float3(1.0, 1.0, 0.0);
-  vert.ambient = (lightUniforms.lights[0].ambient * structureUniforms.ribbonAmbientColor * float4(baseColor, 1.0)).xyz;
-  vert.diffuse = (lightUniforms.lights[0].diffuse * structureUniforms.ribbonDiffuseColor * float4(baseColor, 1.0)).xyz;
-  vert.specular = (lightUniforms.lights[0].specular * structureUniforms.ribbonSpecularColor).xyz;
+  vert.ambient = (structureUniforms.ribbonAmbientColor * float4(baseColor, 1.0)).xyz;
+  vert.diffuse = (structureUniforms.ribbonDiffuseColor * float4(baseColor, 1.0)).xyz;
+  vert.specular = (structureUniforms.ribbonSpecularColor).xyz;
   
   float4 P = frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
-  vert.L = (lightUniforms.lights[0].position - P * lightUniforms.lights[0].position.w).xyz;
   vert.V = -P.xyz;
   
   return vert;
@@ -112,13 +110,13 @@ fragment float4 RibbonSelectionWorleyFragmentShader(RibbonSelectionVertexShaderO
                                                   constant LightUniforms& lightUniforms [[buffer(2)]])
 {
   float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
   float3 V = normalize(vert.V);
-  float3 R = reflect(-L, N);
   
-  float4 ambient = float4(vert.ambient, 1.0);
-  float4 diffuse = max(dot(N, L), 0.0) * float4(vert.diffuse, 1.0);
-  float4 specular = pow(max(dot(R, V), 0.0), lightUniforms.lights[0].shininess + structureUniforms.ribbonShininess) * float4(vert.specular, 1.0);
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, V, float4(-vert.V, 1.0), structureUniforms.ribbonShininess);
+  
+  float4 ambient = float4(lighting.ambient * vert.ambient, 1.0);
+  float4 diffuse = float4(lighting.diffuse * vert.diffuse, 1.0);
+  float4 specular = float4(lighting.specular * vert.specular, 1.0);
   
   float3 t1 = vert.Model_N;
   float frequency = structureUniforms.atomSelectionWorleyNoise3DFrequency;
@@ -157,8 +155,10 @@ fragment float4 RibbonSelectionStripedFragmentShader(RibbonSelectionVertexShader
                                                    constant LightUniforms& lightUniforms [[buffer(2)]])
 {
   float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
-  float4 color = max(dot(N, L), 0.0) * float4(1.0, 1.0, 0.0, 1.0);
+  
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, normalize(vert.V), float4(-vert.V, 1.0), 0.0);
+  
+  float4 color = float4(lighting.diffuse, 1.0) * float4(1.0, 1.0, 0.0, 1.0);
   
   float2 stripeST = vert.stripeST;
   float uDensity = structureUniforms.atomSelectionStripesDensity;

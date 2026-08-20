@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -72,6 +73,9 @@ public protocol RKRenderAtomSource: RKRenderObject
 {
   var numberOfAtoms: Int {get}
   var drawAtoms: Bool {get}
+
+  /// The cues drawn where these atoms meet something else. The bonds of the same structure follow it.
+  var atomEdgeCueing: RKEdgeCueing {get}
   
   var atomAmbientColor: NSColor {get}
   var atomDiffuseColor: NSColor {get}
@@ -120,6 +124,9 @@ public protocol RKRenderAtomSource: RKRenderObject
 
 public protocol RKRenderBondSource: RKRenderObject
 {
+  /// Taken from the atoms, a ball-and-stick model reading badly with one of the two outlined.
+  var atomEdgeCueing: RKEdgeCueing {get}
+
   var numberOfInternalBonds: Int {get}
   var numberOfExternalBonds: Int {get}
   var renderInternalBonds: [RKInPerInstanceAttributesBonds] {get}
@@ -138,6 +145,13 @@ public protocol RKRenderBondSource: RKRenderObject
   
   var isUnity: Bool {get}
   var hasExternalBonds: Bool {get}
+  
+  var bondAmbientOcclusion: Bool {get}
+  var bondAmbientOcclusionPatchNumber: Int {get set}
+  var bondAmbientOcclusionPatchSize: Int {get set}
+  var bondAmbientOcclusionTextureSize: Int {get set}
+  /// Where the external bonds' patches start in the atlas, the internal ones taking the range before it.
+  var externalBondAmbientOcclusionPatchBase: Int {get set}
   
   var bondScaleFactor: Double {get}
   var bondColorMode: RKBondColorMode {get}
@@ -163,6 +177,10 @@ public protocol RKRenderBondSource: RKRenderObject
 public protocol RKRenderRibbonSource: RKRenderObject
 {
   var drawRibbon: Bool {get}
+
+  /// The cues drawn where these ribbons meet something else, kept apart from the atoms so that a
+  /// protein can be shown with cued ribbons over plain atoms or the reverse.
+  var ribbonEdgeCueing: RKEdgeCueing {get}
   var ribbonScaleFactor: Double {get}
   var renderRibbonVertices: [RKVertex] {get}
   var renderRibbonIndices: [UInt32] {get}
@@ -412,10 +430,55 @@ public protocol RKRenderDataSource: AnyObject
   
   var renderImageNumberOfPixels: Int {get}
   var renderImagePhysicalSizeInInches: Double {get}
+
+  /// How exported pictures and movies are rendered. Unlike the interactive settings, which describe
+  /// what the current machine can keep up with, these are choices about the output and so travel
+  /// with the document.
+  var renderPictureRayTracing: Bool {get}
+  var renderPictureSampleCount: Int {get}
+  var renderPictureMaximumBounces: Int {get}
+
+  /// Applies to every combination of renderer and destination, not just exports. See
+  /// `ambientOcclusionStrength` in Common.h.
+  var renderAmbientOcclusionStrength: Double {get}
+
+  /// Whether the rasterizer should darken the surfaces that a light cannot reach, which it works out
+  /// by tracing the scene the path tracer has already built. Only meaningful for a rig whose lights sit
+  /// off the camera axis: a light at the eye can never be blocked from anything the eye can see.
+  ///
+  /// The path tracer casts its own shadow rays and ignores this.
+  var renderShadows: Bool {get}
+
+  /// Light reaching the scene from the environment as a whole, kept apart from the individual lights so
+  /// that switching one off cannot darken the ambient floor. See `sceneAmbient` in Common.h.
+  var renderSceneAmbientIntensity: Double {get}
+  var renderSceneAmbientColor: NSColor {get}
   
   var showBoundingBox: Bool {get set}
   var renderBoundingBoxSpheres: [RKInPerInstanceAttributesAtoms] {get}
   var renderBoundingBoxCylinders: [RKInPerInstanceAttributesBonds] {get}
   
   var renderAxes: RKGlobalAxes {get}
+}
+
+extension RKRenderDataSource
+{
+  /// The mode an export renders in. Falls back to rasterization on hardware without ray tracing, so
+  /// that a document authored on a capable machine still produces an image elsewhere.
+  public var pictureRenderMode: RKRenderMode
+  {
+    guard renderPictureRayTracing, RKRenderSettings.isRayTracingSupported else {return RKRenderMode.rasterization}
+    return RKRenderMode.rayTracing
+  }
+
+  /// The stored export settings, clamped to what the tracer can be asked for. The stored values come
+  /// from editable fields and from documents written by other versions, so neither is trusted here.
+  public var picturePathTracerSettings: RKPathTracerSettings
+  {
+    var settings: RKPathTracerSettings = RKPathTracerSettings.standard
+    settings.sampleCount = min(max(renderPictureSampleCount, 1), RKRenderSettings.maximumSupportedPictureSamples)
+    settings.maximumBounces = min(max(renderPictureMaximumBounces, 0), RKRenderSettings.maximumSupportedPictureBounces)
+    settings.ambientOcclusionStrength = Float(min(max(renderAmbientOcclusionStrength, 0.0), 1.0))
+    return settings
+  }
 }

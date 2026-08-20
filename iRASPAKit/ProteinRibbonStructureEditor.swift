@@ -1,12 +1,13 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  *************************************************************************************************************/
 
 import Foundation
 import SymmetryKit
 import MathKit
+import RenderKit
 
 public protocol ProteinRibbonStructureEditor: AnyObject
 {
@@ -43,8 +44,10 @@ public protocol ProteinRibbonStructureEditor: AnyObject
   var ribbonDiffuseIntensity: Double {get set}
   var ribbonSpecularIntensity: Double {get set}
   var ribbonShininess: Double {get set}
+  var ribbonEdgeCueing: RKEdgeCueing {get set}
   
   func applyFancyRibbonAppearance()
+  func applyIllustrativeRibbonAppearance()
   func recheckRibbonRepresentationStyle()
 }
 
@@ -123,10 +126,35 @@ extension ProteinRibbonStructureEditor
     ribbonDiffuseIntensity = 1.0
     ribbonSpecularIntensity = 1.0
     ribbonShininess = 6.0
+    ribbonEdgeCueing = .off
     ribbonRepresentationStyle = .default
   }
   
+  /// The occluded material that Tarini, Cignoni and Montani describe in "Ambient Occlusion and Edge
+  /// Cueing to Enhance Real Time Molecular Visualization", without the edge cues the Illustrative style
+  /// draws on top of it. It stops short of their ambient-only shading, which suits the space-filling
+  /// spheres of the paper but not a ribbon: a sphere declares its orientation through its own
+  /// silhouette, while a twisting sheet has nothing but shading to say which way it faces, and drops
+  /// flat without a directional term.
   public func applyFancyRibbonAppearance()
+  {
+    applyOccludedRibbonMaterial(edgeCueing: .off)
+    ribbonRepresentationStyle = .fancy
+  }
+  
+  /// Fancy with both of the paper's cues, which is the pairing their viewer rests on: the diffuse term
+  /// gives the shape of a ribbon and the contours give the depth ordering, where either alone gives
+  /// only one of them.
+  ///
+  /// The cues count towards the style as much as the material does, so switching them off leaves a
+  /// ribbon on Fancy rather than Illustrative, in the way that changing its shininess makes it Custom.
+  public func applyIllustrativeRibbonAppearance()
+  {
+    applyOccludedRibbonMaterial(edgeCueing: .contoursAndHalos)
+    ribbonRepresentationStyle = .illustrative
+  }
+  
+  private func applyOccludedRibbonMaterial(edgeCueing: RKEdgeCueing)
   {
     ribbonHDR = true
     ribbonHDRExposure = 2.5
@@ -141,7 +169,7 @@ extension ProteinRibbonStructureEditor
     ribbonDiffuseIntensity = 1.0
     ribbonSpecularIntensity = 1.0
     ribbonShininess = 4.0
-    ribbonRepresentationStyle = .fancy
+    ribbonEdgeCueing = edgeCueing
   }
   
   public func applyRibbonRepresentationStyle(_ style: ProteinRibbonRepresentationStyle)
@@ -153,6 +181,8 @@ extension ProteinRibbonStructureEditor
       applyDefaultRibbonAppearance()
     case .fancy:
       applyFancyRibbonAppearance()
+    case .illustrative:
+      applyIllustrativeRibbonAppearance()
     case .custom:
       break
     }
@@ -172,10 +202,21 @@ extension ProteinRibbonStructureEditor
            ribbonFloatEqual(ribbonAmbientIntensity, 0.2) &&
            ribbonFloatEqual(ribbonDiffuseIntensity, 1.0) &&
            ribbonFloatEqual(ribbonSpecularIntensity, 1.0) &&
-           ribbonFloatEqual(ribbonShininess, 6.0)
+           ribbonFloatEqual(ribbonShininess, 6.0) &&
+           ribbonEdgeCueing == .off
   }
   
   public func matchesFancyRibbonAppearance() -> Bool
+  {
+    return matchesOccludedRibbonMaterial() && ribbonEdgeCueing == .off
+  }
+  
+  public func matchesIllustrativeRibbonAppearance() -> Bool
+  {
+    return matchesOccludedRibbonMaterial() && ribbonEdgeCueing == .contoursAndHalos
+  }
+  
+  private func matchesOccludedRibbonMaterial() -> Bool
   {
     return ribbonHDR == true &&
            ribbonFloatEqual(ribbonHDRExposure, 2.5) &&
@@ -201,6 +242,10 @@ extension ProteinRibbonStructureEditor
     else if matchesFancyRibbonAppearance()
     {
       ribbonRepresentationStyle = .fancy
+    }
+    else if matchesIllustrativeRibbonAppearance()
+    {
+      ribbonRepresentationStyle = .illustrative
     }
     else
     {

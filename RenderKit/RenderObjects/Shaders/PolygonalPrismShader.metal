@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -48,8 +49,6 @@ vertex AtomSphereVertexShaderOut PolygonalPrismVertexShader(const device InPerVe
   
   float4 P =  frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
   
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
   
   // Calculate view vector
   vert.V = -P.xyz;
@@ -72,9 +71,8 @@ fragment float4 PolygonalPrismFragmentShader(AtomSphereVertexShaderOut vert [[st
                                               sampler           shadowMapSampler [[ sampler(0) ]],
                                               bool frontfacing [[ front_facing ]])
 {
-  // Normalize the incoming N, L and V vectors
+  // Normalize the incoming N and V vectors
   float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
   float3 V = normalize(vert.V);
   
   float4 ambient;
@@ -86,10 +84,10 @@ fragment float4 PolygonalPrismFragmentShader(AtomSphereVertexShaderOut vert [[st
   
   if(!frontfacing)
   {
-    float3 R = reflect(-L, -N);
-    ambient = structureUniforms.primitiveAmbientBackSide;
-    diffuse = max(dot(-N, L), 0.0) * structureUniforms.primitiveDiffuseBackSide;
-    specular = pow(max(dot(R, V), 0.0), structureUniforms.primitiveShininessBackSide) * structureUniforms.primitiveSpecularBackSide;
+    LightingWeights lighting = accumulateLighting(lightUniforms, -N, V, float4(-vert.V, 1.0), structureUniforms.primitiveShininessBackSide);
+    ambient = float4(lighting.ambient, 1.0) * structureUniforms.primitiveAmbientBackSide;
+    diffuse = float4(lighting.diffuse, 1.0) * structureUniforms.primitiveDiffuseBackSide;
+    specular = float4(lighting.specular, 1.0) * structureUniforms.primitiveSpecularBackSide;
     
     color = float4((ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
     if (structureUniforms.primitiveBackSideHDR)
@@ -101,10 +99,10 @@ fragment float4 PolygonalPrismFragmentShader(AtomSphereVertexShaderOut vert [[st
   }
   else
   {
-    float3 R = reflect(-L, N);
-    ambient = structureUniforms.primitiveAmbientFrontSide;
-    diffuse = max(dot(N, L), 0.0) * structureUniforms.primitiveDiffuseFrontSide;
-    specular = pow(max(dot(R, V), 0.0), structureUniforms.primitiveShininessFrontSide) * structureUniforms.primitiveSpecularFrontSide;
+    LightingWeights lighting = accumulateLighting(lightUniforms, N, V, float4(-vert.V, 1.0), structureUniforms.primitiveShininessFrontSide);
+    ambient = float4(lighting.ambient, 1.0) * structureUniforms.primitiveAmbientFrontSide;
+    diffuse = float4(lighting.diffuse, 1.0) * structureUniforms.primitiveDiffuseFrontSide;
+    specular = float4(lighting.specular, 1.0) * structureUniforms.primitiveSpecularFrontSide;
       
     color= float4((ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
     if (structureUniforms.primitiveFrontSideHDR)

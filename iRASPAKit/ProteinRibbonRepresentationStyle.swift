@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -24,9 +24,10 @@ public enum ProteinRibbonRepresentationStyle: String, CaseIterable, Sendable
 {
   case `default` = "Default"
   case fancy = "Fancy"
+  case illustrative = "Illustrative"
   case custom = "Custom"
   
-  public static let selectableCases: [ProteinRibbonRepresentationStyle] = [.default, .fancy]
+  public static let selectableCases: [ProteinRibbonRepresentationStyle] = [.default, .fancy, .illustrative]
   
   public var displayName: String
   {

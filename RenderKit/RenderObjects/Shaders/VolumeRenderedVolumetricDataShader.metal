@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -40,7 +41,6 @@ struct VolumeRenderedVertexShaderOut
   float4 pos;
   float3 UV;
   float3 N;
-  float3 L;
   float3 V;
 };
 
@@ -64,8 +64,6 @@ vertex VolumeRenderedVertexShaderOut VolumeRenderedVolumetricDataVertexShader(co
   
   float4 P = frameUniforms.viewMatrix * pos;
   
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
   
   // Calculate view vector
   vert.V = -P.xyz;

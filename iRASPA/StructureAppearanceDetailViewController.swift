@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -1267,6 +1268,27 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     switch identifier
     {
     case "ProteinRibbonsRepresentationCell":
+      // Edge cueing
+      if let popUpButtonEdgeCueing: iRASPAPopUpButton = view.viewWithTag(6) as? iRASPAPopUpButton
+      {
+        popUpButtonEdgeCueing.isEditable = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
+        {
+          popUpButtonEdgeCueing.isEditable = enabled
+          popUpButtonEdgeCueing.toolTip = "Depth cues drawn around these ribbons, kept apart from the atoms so a protein can be shown with cued ribbons over plain atoms or the reverse. Choosing the Fancy style switches the contours on"
+          if let cueing: RKEdgeCueing = self.getRibbonEdgeCueing()
+          {
+            popUpButtonEdgeCueing.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpButtonEdgeCueing.selectItem(withTitle: cueing.displayName)
+          }
+          else
+          {
+            popUpButtonEdgeCueing.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
+
       if let popUpButtonSecondaryStructure: iRASPAPopUpButton = view.viewWithTag(5) as? iRASPAPopUpButton
       {
         popUpButtonSecondaryStructure.isEditable = false
@@ -2022,6 +2044,27 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     switch(identifier)
     {
     case "AtomsRepresentationCell":
+      // Edge cueing
+      if let popUpButtonEdgeCueing: iRASPAPopUpButton = view.viewWithTag(7) as? iRASPAPopUpButton
+      {
+        popUpButtonEdgeCueing.isEditable = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
+        {
+          popUpButtonEdgeCueing.isEditable = enabled
+          popUpButtonEdgeCueing.toolTip = "Depth cues drawn around these atoms and their bonds. Contour lines mark where a surface ends and how far the next one lies behind it, and halos darken what passes behind a nearer silhouette. Choosing the Fancy style switches the contours on, that being how the style was meant to be seen"
+          if let cueing: RKEdgeCueing = self.getAtomEdgeCueing()
+          {
+            popUpButtonEdgeCueing.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpButtonEdgeCueing.selectItem(withTitle: cueing.displayName)
+          }
+          else
+          {
+            popUpButtonEdgeCueing.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
+
       // Representation type
       if let popUpbuttonRepresentationType: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
@@ -2057,9 +2100,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             popUpbuttonRepresentationStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonRepresentationStyle.removeItem(withTitle: "Custom")
             
-            if representationStyle.rawValue >= 0
+            if let index: Int = Structure.RepresentationStyle.selectableCases.firstIndex(of: representationStyle)
             {
-              popUpbuttonRepresentationStyle.selectItem(at: representationStyle.rawValue)
+              popUpbuttonRepresentationStyle.selectItem(at: index)
             }
             else
             {
@@ -6178,12 +6221,60 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // Representation style
+  /// The cues are drawn over the finished image from a mask the geometry writes as it draws, so
+  /// nothing has to be rebuilt: the uniforms carry the choice and the next frame shows it.
+  @IBAction func changeAtomEdgeCueing(_ sender: NSPopUpButton)
+  {
+    guard let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+          let cueing: RKEdgeCueing = RKEdgeCueing.presets.first(where: {$0.displayName == sender.titleOfSelectedItem})
+    else
+    {
+      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      return
+    }
+
+    self.setAtomEdgeCueing(cueing)
+
+    self.recheckRepresentationStyle()
+    self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+
+    self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
+
+    self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+    self.windowController?.document?.updateChangeCount(.changeDone)
+    self.proxyProject?.representedObject.isEdited = true
+  }
+
+  @IBAction func changeRibbonEdgeCueing(_ sender: NSPopUpButton)
+  {
+    guard let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+          let cueing: RKEdgeCueing = RKEdgeCueing.presets.first(where: {$0.displayName == sender.titleOfSelectedItem})
+    else
+    {
+      self.updateOutlineView(identifiers: [self.ribbonsRepresentationStyleCell, self.ribbonsDNACartoonCell])
+      return
+    }
+
+    self.setRibbonEdgeCueing(cueing)
+
+    self.ribbonAppearanceDidChange(updateIdentifiers: [self.ribbonsDNACartoonCell])
+
+    self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
+
+    self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+    self.windowController?.document?.updateChangeCount(.changeDone)
+    self.proxyProject?.representedObject.isEdited = true
+  }
+
   @IBAction func changeRepresentationStyle(_ sender: NSPopUpButton)
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       let representationStyle = Crystal.RepresentationStyle(rawValue: sender.indexOfSelectedItem), representationStyle.rawValue >= 0
+       sender.indexOfSelectedItem >= 0, sender.indexOfSelectedItem < Structure.RepresentationStyle.selectableCases.count
     {
+      let representationStyle: Structure.RepresentationStyle = Structure.RepresentationStyle.selectableCases[sender.indexOfSelectedItem]
       self.setRepresentationStyle(style: representationStyle, colorSets: document.colorSets)
       
       self.recheckRepresentationStyle()
@@ -10440,6 +10531,36 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     return Set(set).count == 1 ? Structure.RepresentationStyle(rawValue: set.first!) : nil
   }
   
+  public func getAtomEdgeCueing() -> RKEdgeCueing?
+  {
+    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.atomEdgeCueing.rawValue})
+    guard set.count == 1, let rawValue: Int = set.first else {return nil}
+    return RKEdgeCueing(rawValue: rawValue)
+  }
+
+  public func setAtomEdgeCueing(_ cueing: RKEdgeCueing)
+  {
+    self.iRASPAObjects.forEach{($0.object as? Structure)?.atomEdgeCueing = cueing}
+  }
+
+  /// Reads both ribbon families, the proteins and the nucleic acids, which carry the same setting
+  /// under the same name but through editors of their own.
+  public func getRibbonEdgeCueing() -> RKEdgeCueing?
+  {
+    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{
+      ($0.object as? ProteinRibbonStructureEditor)?.ribbonEdgeCueing.rawValue ??
+      ($0.object as? DNARibbonStructureEditor)?.ribbonEdgeCueing.rawValue})
+    guard set.count == 1, let rawValue: Int = set.first else {return nil}
+    return RKEdgeCueing(rawValue: rawValue)
+  }
+
+  public func setRibbonEdgeCueing(_ cueing: RKEdgeCueing)
+  {
+    self.iRASPAObjects.forEach{
+      ($0.object as? ProteinRibbonStructureEditor)?.ribbonEdgeCueing = cueing
+      ($0.object as? DNARibbonStructureEditor)?.ribbonEdgeCueing = cueing}
+  }
+
   public func setRepresentationStyle(style: Structure.RepresentationStyle?, colorSets: SKColorSets)
   {
     self.iRASPAObjects.forEach{

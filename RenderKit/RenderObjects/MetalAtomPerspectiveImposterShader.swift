@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -42,9 +43,15 @@ class MetalAtomPerspectiveImposterShader
   var indexBuffer: MTLBuffer! = nil
   var vertexBuffer: MTLBuffer! = nil
   var samplerState: MTLSamplerState! = nil
+  var depthState: MTLDepthStencilState! = nil
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
+    // Records which cues this geometry asked for in the scene's stencil, for the compositing pass to
+    // read back. Matches the depth behaviour these draws relied on when they inherited a state from
+    // whatever ran before them. See `stencilValue` on RKEdgeCueing.
+    depthState = RKEdgeCueing.cueingDepthStencilState(device: device)
+
     let pSamplerDescriptor:MTLSamplerDescriptor? = MTLSamplerDescriptor()
     
     if let sampler = pSamplerDescriptor
@@ -102,12 +109,15 @@ class MetalAtomPerspectiveImposterShader
     indexBuffer = device.makeBuffer(bytes: quad.indices, length:MemoryLayout<UInt16>.stride * quad.indices.count, options:RKMetal.hostStorage)
   }
   
-  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, instanceBuffer: [[MTLBuffer?]], frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
+  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, instanceBuffer: [[MTLBuffer?]], frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], shadowMask: MTLTexture, size: CGSize)
   {
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderAtomSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setCullMode(MTLCullMode.back)
+      // one mask for the whole pass; only the per-structure occlusion map changes between draws
+      commandEncoder.setFragmentTexture(shadowMask, index: 1)
       
+      commandEncoder.setDepthStencilState(depthState)
       commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? pipeLine : perPixelPipeLine)
       
       commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
@@ -137,6 +147,7 @@ class MetalAtomPerspectiveImposterShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
               commandEncoder.setFragmentTexture(ambientOcclusionTextures[i][j], index: 0)
+              commandEncoder.setStencilReferenceValue(structure.atomEdgeCueing.stencilValue)
               commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
             }
           }

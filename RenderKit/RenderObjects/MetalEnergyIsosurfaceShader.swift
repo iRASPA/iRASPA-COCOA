@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -181,6 +182,7 @@ class MetalEnergyIsosurfaceShader
     commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
     commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 1)
     commandEncoder.setFragmentBuffer(isosurfaceUniformBuffers, offset: 0, index: 2)
+    commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 3)
     
     var index = 0
     for i in 0..<self.renderStructures.count
@@ -249,6 +251,7 @@ class MetalEnergyIsosurfaceShader
     commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
     commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: structureIndex*MemoryLayout<RKStructureUniforms>.stride, index: 1)
     commandEncoder.setFragmentBuffer(isosurfaceUniformBuffers, offset: structureIndex*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
+    commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 3)
     
     commandEncoder.setCullMode(MTLCullMode.front)
     commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<SIMD4<Float>>.stride)

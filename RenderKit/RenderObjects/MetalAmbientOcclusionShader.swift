@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -44,6 +45,10 @@ class MetalAmbientOcclusionShader
   var shadowMapFrameUniformBuffer: MTLBuffer! = nil
   var shadowMapPipeLine: MTLRenderPipelineState! = nil
   var ribbonShadowMapPipeLine: MTLRenderPipelineState! = nil
+  var bondShadowMapPipeLine: MTLRenderPipelineState! = nil
+  var externalBondShadowMapPipeLine: MTLRenderPipelineState! = nil
+  var bondAmbientOcclusionPipeLine: MTLRenderPipelineState! = nil
+  var externalBondAmbientOcclusionPipeLine: MTLRenderPipelineState! = nil
   var ambientOcclusionPipeLine: MTLRenderPipelineState! = nil
   var ribbonAmbientOcclusionPipeLine: MTLRenderPipelineState! = nil
   var ribbonAOBlurHorizontalPipeLine: MTLRenderPipelineState! = nil
@@ -52,6 +57,7 @@ class MetalAmbientOcclusionShader
   var ribbonAOBlurIndexBuffer: MTLBuffer! = nil
   public var textures: [[MTLTexture]] = []
   public var ribbonTextures: [[MTLTexture]] = []
+  public var bondTextures: [[MTLTexture]] = []
   var depthTexture: MTLTexture! = nil
   var depthState: MTLDepthStencilState! = nil
   var quadSamplerState:  MTLSamplerState! = nil
@@ -114,6 +120,56 @@ class MetalAmbientOcclusionShader
     {
       fatalError("Error occurred when creating ribbon shadow map pipeline state \(error)")
     }
+    
+    // The hull vertices come from the vertex id and the instance buffer, so unlike the atom and ribbon
+    // passes above these need no vertex descriptor.
+    func makeBondShadowMapPipeLine(_ name: String) -> MTLRenderPipelineState
+    {
+      let descriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+      descriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
+      descriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+      descriptor.colorAttachments[0] = nil
+      descriptor.vertexFunction = library.makeFunction(name: name + "VertexShader")!
+      descriptor.fragmentFunction = library.makeFunction(name: name + "FragmentShader")!
+      do
+      {
+        return try device.makeRenderPipelineState(descriptor: descriptor)
+      }
+      catch
+      {
+        fatalError("Error occurred when creating \(name) pipeline state \(error)")
+      }
+    }
+    self.bondShadowMapPipeLine = makeBondShadowMapPipeLine("BondShadowMap")
+    self.externalBondShadowMapPipeLine = makeBondShadowMapPipeLine("ExternalBondShadowMap")
+    
+    // The patches are drawn straight into the atlas and each direction is added to the last, as for the
+    // atoms; the vertices come from the vertex id and the instance buffer, so no vertex descriptor.
+    func makeBondAmbientOcclusionPipeLine(_ vertexFunction: String) -> MTLRenderPipelineState
+    {
+      let descriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+      descriptor.depthAttachmentPixelFormat = MTLPixelFormat.invalid
+      descriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+      descriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.r16Float
+      descriptor.colorAttachments[0].isBlendingEnabled = true
+      descriptor.colorAttachments[0].writeMask = MTLColorWriteMask.red
+      descriptor.colorAttachments[0].rgbBlendOperation = MTLBlendOperation.add
+      descriptor.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactor.one
+      descriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one
+      descriptor.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactor.one
+      descriptor.vertexFunction = library.makeFunction(name: vertexFunction)!
+      descriptor.fragmentFunction = library.makeFunction(name: "BondAmbientOcclusionFragmentShader")!
+      do
+      {
+        return try device.makeRenderPipelineState(descriptor: descriptor)
+      }
+      catch
+      {
+        fatalError("Error occurred when creating \(vertexFunction) pipeline state \(error)")
+      }
+    }
+    self.bondAmbientOcclusionPipeLine = makeBondAmbientOcclusionPipeLine("BondAmbientOcclusionVertexShader")
+    self.externalBondAmbientOcclusionPipeLine = makeBondAmbientOcclusionPipeLine("ExternalBondAmbientOcclusionVertexShader")
     
     
     
@@ -220,6 +276,21 @@ class MetalAmbientOcclusionShader
             structure.atomAmbientOcclusionPatchSize = structure.atomAmbientOcclusionTextureSize/structure.atomAmbientOcclusionPatchNumber
           }
           
+          if let bondSource: RKRenderBondSource = structure as? RKRenderBondSource, bondSource.drawBonds
+          {
+            // A double or triple bond is drawn as several cylinders and each gets its own patch, so what
+            // is counted here is cylinders rather than bonds. The internal bonds take the first range of
+            // the atlas and the external ones the range after it.
+            let internalPatches: Int = bondSource.renderInternalBonds.reduce(0){$0 + RKInPerInstanceAttributesBonds.ambientOcclusionPatchCount(type: $1.type)}
+            let externalPatches: Int = bondSource.renderExternalBonds.reduce(0){$0 + RKInPerInstanceAttributesBonds.ambientOcclusionPatchCount(type: $1.type)}
+            let patches: Int = internalPatches + externalPatches
+            bondSource.externalBondAmbientOcclusionPatchBase = internalPatches
+            bondSource.bondAmbientOcclusionTextureSize = RKAmbientOcclusionSizing.maxTextureSize(numberOfAtoms: patches,
+                                                                                                 maxTextureDimension: maxSize)
+            bondSource.bondAmbientOcclusionPatchNumber = Int(sqrt(Double(patches)))+1
+            bondSource.bondAmbientOcclusionPatchSize = bondSource.bondAmbientOcclusionTextureSize/bondSource.bondAmbientOcclusionPatchNumber
+          }
+          
           if let ribbonSource: RKRenderRibbonSource = structure as? RKRenderRibbonSource,
              ribbonSource.drawRibbon,
              ribbonSource.ribbonNumberOfChains > 0
@@ -248,12 +319,14 @@ class MetalAmbientOcclusionShader
     
     self.textures = []
     self.ribbonTextures = []
+    self.bondTextures = []
     if let _: RKRenderDataSource = renderDataSource
     {
       for i in 0..<self.renderStructures.count
       {
         var localTextures: [MTLTexture] = []
         var localRibbonTextures: [MTLTexture] = []
+        var localBondTextures: [MTLTexture] = []
         let structures: [RKRenderObject] = self.renderStructures[i]
         for structure in structures
         {
@@ -271,20 +344,31 @@ class MetalAmbientOcclusionShader
           ribbonTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
           ribbonTextureDescriptor.storageMode = RKMetal.hostStorageMode
           localRibbonTextures.append(device.makeTexture(descriptor: ribbonTextureDescriptor)!)
+          
+          let bondTextureSize: Int = (structure as? RKRenderBondSource)?.bondAmbientOcclusionTextureSize ?? 1
+          let bondTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.r16Float, width: bondTextureSize, height: bondTextureSize, mipmapped: false)
+          bondTextureDescriptor.textureType = MTLTextureType.type2D
+          bondTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
+          bondTextureDescriptor.storageMode = RKMetal.hostStorageMode
+          localBondTextures.append(device.makeTexture(descriptor: bondTextureDescriptor)!)
         }
         self.textures.append(localTextures)
         self.ribbonTextures.append(localRibbonTextures)
+        self.bondTextures.append(localBondTextures)
       }
     }
   }
   
   public func updateAmbientOcclusionTextures(device: MTLDevice, _ commandQueue: MTLCommandQueue, quality: RKRenderQuality,
                                              atomShader: MetalAtomShader, atomOrthographicImposterShader: MetalAtomOrthographicImposterShader,
-                                             ribbonShader: MetalRibbonShader)
+                                             ribbonShader: MetalRibbonShader,
+                                             internalBondShader: MetalInternalBondShader, externalBondShader: MetalExternalBondShader)
   {
     buildAmbientOcclusionTextures(device: device)
     atomShader.buildVertexBuffers(device: device)
     ribbonShader.buildVertexBuffers(device: device)
+    internalBondShader.buildVertexBuffers(device: device)
+    externalBondShader.buildVertexBuffers(device: device)
     
     if let crystalProjectData: RKRenderDataSource = renderDataSource
     {
@@ -337,8 +421,15 @@ class MetalAmbientOcclusionShader
                    structure.isVisible &&
                    ribbonSource.ribbonNumberOfChains > 0
           }()
+          let bondSourceForAO: RKRenderBondSource? = structure as? RKRenderBondSource
+          let shouldBakeBondAO: Bool = {
+            guard let bondSource: RKRenderBondSource = bondSourceForAO else {return false}
+            return bondSource.drawBonds &&
+                   bondSource.bondAmbientOcclusion &&
+                   structure.isVisible
+          }()
           
-          if shouldBakeAtomAO || shouldBakeRibbonAO
+          if shouldBakeAtomAO || shouldBakeRibbonAO || shouldBakeBondAO
           {
             let textureSize: Int = atomSourceForAO?.atomAmbientOcclusionTextureSize ?? 256
             
@@ -355,9 +446,26 @@ class MetalAmbientOcclusionShader
             
             let needFreshAtomBake: Bool = shouldBakeAtomAO && cachedAmbientOcclusionTextures.object(forKey: structure) == nil
             let needFreshRibbonBake: Bool = shouldBakeRibbonAO && cachedAmbientOcclusionTextures.object(forKey: structure.ribbonAmbientOcclusionCacheKey) == nil
+            let needFreshBondBake: Bool = shouldBakeBondAO && cachedAmbientOcclusionTextures.object(forKey: structure.bondAmbientOcclusionCacheKey) == nil
             
-            if needFreshAtomBake || needFreshRibbonBake
+            if needFreshAtomBake || needFreshRibbonBake || needFreshBondBake
             {
+              let bondTextureSize: Int = bondSourceForAO?.bondAmbientOcclusionTextureSize ?? 1
+              var bondAmbientOcclusionPassDescriptor: MTLRenderPassDescriptor? = nil
+              var bondAmbientOcclusionBlendPassDescriptor: MTLRenderPassDescriptor? = nil
+              if needFreshBondBake
+              {
+                bondAmbientOcclusionPassDescriptor = MTLRenderPassDescriptor()
+                bondAmbientOcclusionPassDescriptor!.colorAttachments[0].texture = bondTextures[i][j]
+                bondAmbientOcclusionPassDescriptor!.colorAttachments[0].loadAction = MTLLoadAction.clear
+                bondAmbientOcclusionPassDescriptor!.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
+                bondAmbientOcclusionPassDescriptor!.colorAttachments[0].storeAction = MTLStoreAction.store
+                
+                bondAmbientOcclusionBlendPassDescriptor = MTLRenderPassDescriptor()
+                bondAmbientOcclusionBlendPassDescriptor!.colorAttachments[0].texture = bondTextures[i][j]
+                bondAmbientOcclusionBlendPassDescriptor!.colorAttachments[0].loadAction = MTLLoadAction.load
+                bondAmbientOcclusionBlendPassDescriptor!.colorAttachments[0].storeAction = MTLStoreAction.store
+              }
               var ribbonRenderStructureUniformBuffers: MTLBuffer? = nil
               var ribbonBakeDrewGeometry: Bool = false
               var ribbonAmbientOcclusionPassDescriptor: MTLRenderPassDescriptor? = nil
@@ -436,6 +544,11 @@ class MetalAmbientOcclusionShader
                 {
                   let ribbonClearEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: ribbonClearPass)!
                   ribbonClearEncoder.endEncoding()
+                }
+                if let bondClearPass: MTLRenderPassDescriptor = bondAmbientOcclusionPassDescriptor
+                {
+                  let bondClearEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: bondClearPass)!
+                  bondClearEncoder.endEncoding()
                 }
                 commandBuffer.commit()
               }
@@ -521,6 +634,14 @@ class MetalAmbientOcclusionShader
                                                 structureUniformOffset: l * MemoryLayout<RKStructureUniforms>.stride,
                                                 ribbonShader: ribbonShader)
                     }
+                    drawBondShadowMapInstances(shadowMapCommandEncoder,
+                                               sceneIndex: i,
+                                               structureIndex: l,
+                                               structureUniformBuffers: structureAmbientOcclusionUniformBuffers,
+                                               structureUniformOffset: l * MemoryLayout<RKStructureUniforms>.stride,
+                                               shadowUniformOffset: k * MemoryLayout<RKShadowUniforms>.stride,
+                                               internalBondShader: internalBondShader,
+                                               externalBondShader: externalBondShader)
                   }
                   
                   shadowMapCommandEncoder.endEncoding()
@@ -579,6 +700,22 @@ class MetalAmbientOcclusionShader
                     ribbonBakeDrewGeometry = ribbonBakeDrewGeometry || drewThisPass
                     ribbonAOEncoder.endEncoding()
                   }
+                  
+                  if let bondBlendPass: MTLRenderPassDescriptor = bondAmbientOcclusionBlendPassDescriptor
+                  {
+                    let bondAOEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: bondBlendPass)!
+                    encodeBondAmbientOcclusionAccumulation(bondAOEncoder,
+                                                           sceneIndex: i,
+                                                           structureIndex: j,
+                                                           structureUniformBuffers: structureAmbientOcclusionUniformBuffers,
+                                                           structureUniformOffset: j * MemoryLayout<RKStructureUniforms>.stride,
+                                                           shadowUniformOffset: k * MemoryLayout<RKShadowUniforms>.stride,
+                                                           weight: weights[k],
+                                                           textureSize: bondTextureSize,
+                                                           internalBondShader: internalBondShader,
+                                                           externalBondShader: externalBondShader)
+                    bondAOEncoder.endEncoding()
+                  }
                 }
                 
                 commandBuffer.commit()
@@ -608,6 +745,24 @@ class MetalAmbientOcclusionShader
               self.cachedAmbientOcclusionTextures.setObject(ambientOcclusionTextureData as AnyObject, forKey: structure)
               }
               
+              if needFreshBondBake
+              {
+                let bondDataLength: Int = bondTextureSize * bondTextureSize * 2
+                let bondTextureBuffer: MTLBuffer = device.makeBuffer(length: bondDataLength, options: MTLResourceOptions())!
+                if let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
+                {
+                  let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()!
+                  RKMetal.synchronize(blitEncoder, resource: self.bondTextures[i][j])
+                  blitEncoder.copy(from: self.bondTextures[i][j], sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0, 0, 0), sourceSize: MTLSizeMake(bondTextureSize, bondTextureSize, 1), to: bondTextureBuffer, destinationOffset: 0, destinationBytesPerRow: bondTextureSize * 2, destinationBytesPerImage: 0)
+                  blitEncoder.endEncoding()
+                  commandBuffer.commit()
+                  commandBuffer.waitUntilCompleted()
+                }
+                let bondTextureData: Data = Data(bytes: bondTextureBuffer.contents().assumingMemoryBound(to: UInt8.self), count: bondDataLength)
+                self.cachedAmbientOcclusionTextures.setObject(bondTextureData as AnyObject, forKey: structure.bondAmbientOcclusionCacheKey)
+                synchronizeManagedTextureToGPU(device: device, commandQueue: commandQueue, texture: self.bondTextures[i][j])
+              }
+              
               if needFreshRibbonBake && ribbonCanBake && ribbonBakeDrewGeometry
               {
                 postprocessRibbonAmbientOcclusionTexture(device: device,
@@ -635,6 +790,18 @@ class MetalAmbientOcclusionShader
                 synchronizeManagedTextureToGPU(device: device, commandQueue: commandQueue, texture: self.ribbonTextures[i][j])
               }
             }
+          }
+          
+          if shouldBakeBondAO,
+             let cachedVersion: Data = cachedAmbientOcclusionTextures.object(forKey: structure.bondAmbientOcclusionCacheKey) as? Data
+          {
+            let textureSize: Int = bondSourceForAO?.bondAmbientOcclusionTextureSize ?? 1
+            let region: MTLRegion = MTLRegionMake2D(0, 0, textureSize, textureSize)
+            let bondTexture: MTLTexture = self.bondTextures[i][j]
+            cachedVersion.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> () in
+              bondTexture.replace(region: region, mipmapLevel: 0, slice: 0, withBytes: ptr.baseAddress!, bytesPerRow: 2 * region.size.width, bytesPerImage: 2 * region.size.width * region.size.height)
+            }
+            synchronizeManagedTextureToGPU(device: device, commandQueue: commandQueue, texture: bondTexture)
           }
           
           if let ribbonSource: RKRenderRibbonSource = structure as? RKRenderRibbonSource,
@@ -871,6 +1038,123 @@ class MetalAmbientOcclusionShader
     }
   }
   
+  /// Writes the bonds of one structure into the bake's depth map, so that they darken the atoms and
+  /// ribbons they lie against. Bonds are drawn whether or not the structure asks for occlusion on its own
+  /// atoms: what is being decided here is what stands in the way, not what receives.
+  ///
+  /// The five draws mirror those of the rendered bonds, because the imposter hull of a double or triple
+  /// bond holds several sub-cylinders and the vertex count is what says how many.
+  private func drawBondShadowMapInstances(_ encoder: MTLRenderCommandEncoder,
+                                          sceneIndex: Int,
+                                          structureIndex: Int,
+                                          structureUniformBuffers: MTLBuffer,
+                                          structureUniformOffset: Int,
+                                          shadowUniformOffset: Int,
+                                          internalBondShader: MetalInternalBondShader,
+                                          externalBondShader: MetalExternalBondShader)
+  {
+    guard sceneIndex < renderStructures.count,
+          structureIndex < renderStructures[sceneIndex].count,
+          let bondSource: RKRenderBondSource = renderStructures[sceneIndex][structureIndex] as? RKRenderBondSource,
+          bondSource.drawBonds
+    else {return}
+
+    // the hull is generated in the vertex shader with view-dependent winding
+    encoder.setCullMode(MTLCullMode.none)
+    encoder.setVertexBuffer(shadowMapFrameUniformBuffer, offset: shadowUniformOffset, index: 2)
+    encoder.setVertexBuffer(structureUniformBuffers, offset: structureUniformOffset, index: 3)
+    encoder.setFragmentBuffer(shadowMapFrameUniformBuffer, offset: shadowUniformOffset, index: 0)
+    encoder.setFragmentBuffer(structureUniformBuffers, offset: structureUniformOffset, index: 1)
+
+    for group in MetalAmbientOcclusionShader.bondDrawGroups(bondSource: bondSource,
+                                                            internalBondShader: internalBondShader,
+                                                            externalBondShader: externalBondShader)
+    {
+      encoder.setRenderPipelineState(group.external ? externalBondShadowMapPipeLine : bondShadowMapPipeLine)
+
+      guard sceneIndex < group.buffers.count,
+            structureIndex < group.buffers[sceneIndex].count,
+            let buffer: MTLBuffer = group.buffers[sceneIndex][structureIndex]
+      else {continue}
+
+      let instanceCount: Int = buffer.length / MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+      guard instanceCount > 0 else {continue}
+
+      encoder.setVertexBuffer(buffer, offset: 0, index: 1)
+      encoder.drawPrimitives(type: MTLPrimitiveType.triangle, vertexStart: 0, vertexCount: 18 * group.subCylinders, instanceCount: instanceCount)
+    }
+  }
+  
+  /// The bond instance buffers of one structure, in the order the bonds were numbered when they were built.
+  /// In unity mode every bond is drawn as one cylinder, so the single buffer holding them all replaces the
+  /// four that separate them by bond order.
+  private static func bondDrawGroups(bondSource: RKRenderBondSource,
+                                     internalBondShader: MetalInternalBondShader,
+                                     externalBondShader: MetalExternalBondShader) -> [(buffers: [[MTLBuffer?]], subCylinders: Int, external: Bool)]
+  {
+    if bondSource.isUnity
+    {
+      return [(internalBondShader.instanceBufferAllBonds, 1, false),
+              (externalBondShader.instanceBufferAllBonds, 1, true)]
+    }
+    return [(internalBondShader.instanceBufferSingleBonds, 1, false),
+            (internalBondShader.instanceBufferDoubleBonds, 2, false),
+            (internalBondShader.instanceBufferPartialDoubleBonds, 1, false),
+            (internalBondShader.instanceBufferTripleBonds, 3, false),
+            (externalBondShader.instanceBufferSingleBonds, 1, true),
+            (externalBondShader.instanceBufferDoubleBonds, 2, true),
+            (externalBondShader.instanceBufferPartialDoubleBonds, 1, true),
+            (externalBondShader.instanceBufferTripleBonds, 3, true)]
+  }
+  
+  /// Adds one direction's worth of light to the bonds' occlusion atlas. The patches are drawn rather than
+  /// the bonds, six vertices to a cylinder, so what is instanced here is the same instance buffers the
+  /// bonds are drawn from but with a different vertex count.
+  private func encodeBondAmbientOcclusionAccumulation(_ encoder: MTLRenderCommandEncoder,
+                                                      sceneIndex: Int,
+                                                      structureIndex: Int,
+                                                      structureUniformBuffers: MTLBuffer,
+                                                      structureUniformOffset: Int,
+                                                      shadowUniformOffset: Int,
+                                                      weight: Float,
+                                                      textureSize: Int,
+                                                      internalBondShader: MetalInternalBondShader,
+                                                      externalBondShader: MetalExternalBondShader)
+  {
+    guard sceneIndex < renderStructures.count,
+          structureIndex < renderStructures[sceneIndex].count,
+          let bondSource: RKRenderBondSource = renderStructures[sceneIndex][structureIndex] as? RKRenderBondSource
+    else {return}
+    
+    var mutableWeight: Float = weight
+    
+    encoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(textureSize), height: Double(textureSize), znear: 0.0, zfar: 1.0))
+    encoder.setVertexBuffer(structureUniformBuffers, offset: structureUniformOffset, index: 3)
+    encoder.setFragmentBuffer(shadowMapFrameUniformBuffer, offset: shadowUniformOffset, index: 0)
+    encoder.setFragmentBuffer(structureUniformBuffers, offset: structureUniformOffset, index: 1)
+    encoder.setFragmentBytes(&mutableWeight, length: MemoryLayout<Float>.stride, index: 2)
+    encoder.setFragmentTexture(depthTexture, index: 0)
+    encoder.setFragmentSamplerState(quadSamplerState, index: 0)
+    
+    for group in MetalAmbientOcclusionShader.bondDrawGroups(bondSource: bondSource,
+                                                            internalBondShader: internalBondShader,
+                                                            externalBondShader: externalBondShader)
+    {
+      encoder.setRenderPipelineState(group.external ? externalBondAmbientOcclusionPipeLine : bondAmbientOcclusionPipeLine)
+      
+      guard sceneIndex < group.buffers.count,
+            structureIndex < group.buffers[sceneIndex].count,
+            let buffer: MTLBuffer = group.buffers[sceneIndex][structureIndex]
+      else {continue}
+      
+      let instanceCount: Int = buffer.length / MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+      guard instanceCount > 0 else {continue}
+      
+      encoder.setVertexBuffer(buffer, offset: 0, index: 1)
+      encoder.drawPrimitives(type: MTLPrimitiveType.triangle, vertexStart: 0, vertexCount: 6 * group.subCylinders, instanceCount: instanceCount)
+    }
+  }
+
   private func drawAtomShadowMapInstances(_ encoder: MTLRenderCommandEncoder,
                                           sceneIndex: Int,
                                           structureIndex: Int,

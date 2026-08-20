@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -49,7 +50,7 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
 public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, AtomStructureEditor, BondStructureEditor, AnnotationEditor, InfoEditor, StructuralPropertyEditor
 {
-  private static var classVersionNumber: Int = 10
+  private static var classVersionNumber: Int = 11
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   {
@@ -492,6 +493,13 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   
   public var atomRepresentationType: RepresentationType = .sticks_and_balls
   public var atomRepresentationStyle: RepresentationStyle = .default
+
+  /// Contour lines and halos drawn where the atoms of this structure meet something else.
+  ///
+  /// The bonds follow this setting too, there being no reading of a ball-and-stick model in which the
+  /// sticks are outlined and the balls are not. Ribbons carry their own setting, since a protein is
+  /// commonly shown with cued ribbons over plain atoms or the reverse.
+  public var atomEdgeCueing: RKEdgeCueing = .off
   public var atomForceFieldIdentifier: String = "Default"
   public var atomForceFieldOrder: SKForceFieldSets.ForceFieldOrder = .elementOnly
   public var atomColorSchemeIdentifier: String = SKColorSets.ColorScheme.jmol.rawValue
@@ -500,6 +508,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var atomCacheAmbientOcclusionTexture: [CUnsignedChar] = [CUnsignedChar]()
     
   public var bondAmbientOcclusion: Bool = false
+  /// Layout of the bond occlusion atlas. Sized from the bond count when the bake runs rather than stored
+  /// with the document, like the atom equivalents above.
+  public var bondAmbientOcclusionPatchNumber: Int = 1
+  public var bondAmbientOcclusionPatchSize: Int = 1
+  public var bondAmbientOcclusionTextureSize: Int = 1
+  public var externalBondAmbientOcclusionPatchBase: Int = 0
     
   public enum ProbeMolecule: Int
   {
@@ -537,6 +551,28 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     case fancy = 1
     case licorice = 2
     case objects = 3
+    /// Fancy plus the edge cues of Tarini, Cignoni and Montani, whose viewer the pair of them is named
+    /// after. Its raw value is appended rather than slotted next to Fancy's, that being what documents
+    /// already store; `selectableCases` is what puts the two next to each other where they are offered.
+    case quteMol = 4
+    
+    /// The styles a user picks from, in the order they are offered, Custom being what the settings are
+    /// read back as rather than something to choose. Kept apart from the raw values so that the two
+    /// occluded styles can sit together without renumbering what documents hold.
+    public static let selectableCases: [RepresentationStyle] = [.default, .fancy, .quteMol, .licorice, .objects]
+    
+    public var displayName: String
+    {
+      switch self
+      {
+      case .custom: return "Custom"
+      case .default: return "Default"
+      case .fancy: return "Fancy"
+      case .licorice: return "Licorice"
+      case .objects: return "Objects"
+      case .quteMol: return "QuteMol"
+      }
+    }
   }
   
   
@@ -1671,6 +1707,16 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     {
       atomRepresentationStyle = style
       let preserveAtomBondVisibility: Bool = self is Protein || self is ProteinCrystal
+
+      // QuteMol is the style of Tarini, Cignoni and Montani, which pairs occlusion with both of their
+      // cues; Fancy is the same material without them, and the remaining named styles are plainly lit
+      // and take none either. A custom style is left alone, its cueing being whatever the user set by
+      // hand. The recheck reads the cueing back, so switching the cues off by hand turns QuteMol into
+      // Fancy, and switching them on turns Fancy into QuteMol.
+      if style != .custom
+      {
+        self.atomEdgeCueing = (style == .quteMol) ? .contoursAndHalos : .off
+      }
       
       switch(atomRepresentationStyle)
       {
@@ -1731,7 +1777,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.bondSelectionStripesFrequency = 12.0
         
         self.setRepresentationType(type: .sticks_and_balls)
-      case .fancy:
+      case .fancy, .quteMol:
         if !preserveAtomBondVisibility
         {
           self.drawAtoms = true
@@ -1757,7 +1803,9 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         {
           self.drawBonds = false
         }
-        self.bondAmbientOcclusion = false
+        // the style asks for occlusion on the atoms, so the bonds get it as well for the times the bonds
+        // are kept visible; it is the only style that occludes anything
+        self.bondAmbientOcclusion = true
         
         self.atomSelectionStyle = .WorleyNoise3D
         self.atomSelectionScaling = 1.0
@@ -1876,7 +1924,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         break
       case .default:
         self.setRepresentationColorScheme(scheme: SKColorSets.ColorScheme.jmol.rawValue, colorSets: colorSets)
-      case .fancy:
+      case .fancy, .quteMol:
         self.setRepresentationColorScheme(scheme: SKColorSets.ColorScheme.rasmol.rawValue, colorSets: colorSets)
       case .licorice:
         self.setRepresentationColorScheme(scheme: SKColorSets.ColorScheme.jmol.rawValue, colorSets: colorSets)
@@ -1888,7 +1936,14 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   
   public func recheckRepresentationStyle()
   {
-    if self.drawAtoms == true &&
+    // every branch of the setter leaves atom and bond visibility alone for proteins, which are
+    // normally shown as ribbons rather than as atoms, so the check must not insist on it either
+    let preserveAtomBondVisibility: Bool = self is Protein || self is ProteinCrystal
+    let atomsDrawn: Bool = preserveAtomBondVisibility || self.drawAtoms == true
+    let bondsDrawn: Bool = preserveAtomBondVisibility || self.drawBonds == true
+    let bondsHidden: Bool = preserveAtomBondVisibility || self.drawBonds == false
+
+    if atomsDrawn &&
        (self.atomHue ==~ 1.0) &&
        (self.atomSaturation ==~ 1.0) &&
        (self.atomValue ==~ 1.0) &&
@@ -1912,7 +1967,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
        self.atomForceFieldIdentifier == "Default" &&
        self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
        self.atomColorSchemeOrder == .elementOnly &&
-       self.drawBonds == true &&
+       bondsDrawn &&
        self.bondColorMode == .uniform &&
        (self.bondScaleFactor ==~ 0.15) &&
        self.bondAmbientOcclusion == false &&
@@ -1946,7 +2001,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       (self.bondSelectionScaling ==~ 1.0) &&
       (self.bondSelectionIntensity ==~ 0.7) &&
       (self.bondSelectionStripesDensity ==~ 0.25) &&
-      (self.bondSelectionStripesFrequency ==~ 12.0)
+      (self.bondSelectionStripesFrequency ==~ 12.0) &&
+      self.atomEdgeCueing == .off
     {
       self.atomRepresentationStyle = .default
     }
@@ -1961,11 +2017,11 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
        ((self.atomSpecularColor.greenComponent - 1.0) < 1e-3) &&
        ((self.atomSpecularColor.blueComponent - 1.0) < 1e-3) &&
        ((self.atomSpecularColor.alphaComponent - 1.0) < 1e-3) &&
-       self.drawAtoms == true &&
-       self.drawBonds == false &&
+       atomsDrawn &&
+       bondsHidden &&
        self.atomHDR == false &&
        self.atomAmbientOcclusion == true &&
-       self.bondAmbientOcclusion == false &&
+       self.bondAmbientOcclusion == true &&
        (self.atomAmbientIntensity ==~ 1.0) &&
        (self.atomDiffuseIntensity ==~ 0.0) &&
        (self.atomSpecularIntensity ==~ 0.2) &&
@@ -1984,11 +2040,14 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       (self.bondSelectionScaling ==~ 1.0) &&
       (self.bondSelectionIntensity ==~ 0.4) &&
       (self.bondSelectionStripesDensity ==~ 0.25) &&
-      (self.bondSelectionStripesFrequency ==~ 12.0)
+      (self.bondSelectionStripesFrequency ==~ 12.0) &&
+      (self.atomEdgeCueing == .off || self.atomEdgeCueing == .contoursAndHalos)
     {
-      self.atomRepresentationStyle = .fancy
+      // Fancy and QuteMol share their material and differ only in the cues, so the cueing is what
+      // names them; either cue on its own is a hand-made setting and so stays Custom
+      self.atomRepresentationStyle = (self.atomEdgeCueing == .contoursAndHalos) ? .quteMol : .fancy
     }
-    else if self.drawAtoms == true &&
+    else if atomsDrawn &&
       (self.atomHue ==~ 1.0) &&
       (self.atomSaturation ==~ 1.0) &&
       (self.atomValue ==~ 1.0) &&
@@ -2004,7 +2063,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       (self.atomDiffuseIntensity ==~ 1.0) &&
       (self.atomSpecularIntensity ==~ 1.0) &&
       (self.atomShininess ==~ 4.0) &&
-      self.drawBonds == true &&
+      bondsDrawn &&
       self.bondColorMode == .split &&
       (self.bondScaleFactor ==~ 0.25) &&
       self.bondAmbientOcclusion == false &&
@@ -2038,11 +2097,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       (self.bondSelectionScaling ==~ 1.0) &&
       (self.bondSelectionIntensity ==~ 0.8) &&
       (self.atomSelectionStripesDensity ==~ 0.25) &&
-      (self.atomSelectionStripesFrequency ==~ 12.0)
+      (self.atomSelectionStripesFrequency ==~ 12.0) &&
+      self.atomEdgeCueing == .off
     {
       self.atomRepresentationStyle = .licorice
     }
-    else if self.drawAtoms == true &&
+    else if atomsDrawn &&
       self.atomRepresentationType == .unity &&
       self.atomForceFieldIdentifier == "Default" &&
       self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
@@ -2052,7 +2112,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       (self.atomAmbientIntensity ==~ 0.1) &&
       (self.atomDiffuseIntensity ==~ 0.6) &&
       (self.atomSpecularIntensity ==~ 0.1) &&
-      (self.atomShininess ==~ 4.0)
+      (self.atomShininess ==~ 4.0) &&
+      self.atomEdgeCueing == .off
     {
       self.atomRepresentationStyle = .objects
     }
@@ -3555,6 +3616,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     encoder.encode(self.citationDatebaseCodes)
     
     encoder.encode(Int(0x6f6b6182))
+
+    encoder.encode(self.atomEdgeCueing.rawValue)
     
     super.binaryEncode(to: encoder)
   }
@@ -3986,6 +4049,11 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       {
         throw BinaryDecodableError.invalidMagicNumber
       }
+
+      if readVersionNumber >= 11 // introduced in version 11
+      {
+        self.atomEdgeCueing = RKEdgeCueing(rawValue: try decoder.decode(Int.self)) ?? .off
+      }
       
       try super.init(fromBinary: decoder)
     }
@@ -4024,7 +4092,22 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.creationDate = legacyCreationDate
     }
     
+    // Reapplying the style resets the cueing along with the rest of the material, the style owning it
+    // at the moment it is chosen but not afterwards, so what the document recorded is put back. A
+    // document from before it was recorded keeps what the style derives, which leaves an old Fancy
+    // structure without cues, the way it was drawn when it was written.
+    let archivedAtomEdgeCueing: RKEdgeCueing = self.atomEdgeCueing
     self.setRepresentationStyle(style: self.atomRepresentationStyle)
+    if readVersionNumber >= 11
+    {
+      self.atomEdgeCueing = archivedAtomEdgeCueing
+      // Fancy carried the cues before QuteMol was split off from it, so the two recorded together name
+      // what is now QuteMol
+      if self.atomRepresentationStyle == .fancy && archivedAtomEdgeCueing == .contoursAndHalos
+      {
+        self.atomRepresentationStyle = .quteMol
+      }
+    }
     
     if readVersionNumber <= 4
     {

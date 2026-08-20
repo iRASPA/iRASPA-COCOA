@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -139,7 +140,8 @@ public struct RKStructureUniforms
   public var primitiveSpecularBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.9, y: 0.9, z: 0.9, w: 1.0)
   public var primitiveBackSideHDR: Int32 = 1
   public var primitiveBackSideHDRExposure: Float = 1.5
-  public var pad6: Float = 0.0
+  /// See `edgeCueingRibbons` in Common.h.
+  public var edgeCueingRibbons: Float = 0.0
   public var primitiveShininessBackSide: Float = 4.0
   
   //----------------------------------------  896 bytes boundary
@@ -157,12 +159,15 @@ public struct RKStructureUniforms
   public var primitiveSelectionScaling: Float = 1.01;
   public var primitiveSelectionIntensity: Float = 0.8;
   public var isUnity: Bool = false;
-  public var pad7: Float = 0.0
+  /// See `edgeCueingAtoms` in Common.h.
+  public var edgeCueingAtoms: Float = 0.0
 
   public var primitiveHue: Float = 1.0;
   public var primitiveSaturation: Float = 1.0;
   public var primitiveValue: Float = 1.0;
-  public var pad8: Float = 0.0
+  /// See `ambientOcclusionStrength` in Common.h. Set by the renderer from the project rather than by
+  /// the per-structure initializers, since it is one grading applied to the whole scene.
+  public var ambientOcclusionStrength: Float = 0.0
 
   public var localAxisPosition: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
   public var numberOfReplicas: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
@@ -182,9 +187,17 @@ public struct RKStructureUniforms
   public var ribbonDiffuseColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   public var ribbonSpecularColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   //----------------------------------------  1136 bytes boundary
-  // Pad 144 bytes so stride is 1280 (multiple of 256) for set*BufferOffset.
-  public var padAlignment0: SIMD4<Float> = SIMD4<Float>()
-  public var padAlignment1: SIMD4<Float> = SIMD4<Float>()
+  // The bond occlusion atlas holds the internal bonds first and the external ones after them, so that a
+  // structure needs only one texture; the base is where the second range starts.
+  public var bondAmbientOcclusion: Int32 = 0
+  public var bondAmbientOcclusionPatchNumber: Int32 = 1
+  public var bondAmbientOcclusionPatchSize: Float = 1.0
+  public var bondAmbientOcclusionInverseTextureSize: Float = 1.0
+  public var externalBondAmbientOcclusionPatchBase: Int32 = 0
+  public var padBondAmbientOcclusion0: Float = 0.0
+  public var padBondAmbientOcclusion1: Float = 0.0
+  public var padBondAmbientOcclusion2: Float = 0.0
+  // Pad 112 bytes so stride is 1280 (multiple of 256) for set*BufferOffset.
   public var padAlignment2: SIMD4<Float> = SIMD4<Float>()
   public var padAlignment3: SIMD4<Float> = SIMD4<Float>()
   public var padAlignment4: SIMD4<Float> = SIMD4<Float>()
@@ -236,6 +249,8 @@ public struct RKStructureUniforms
     
       self.atomHDR = structure.atomHDR ? 1 : 0
       self.atomHDRExposure = Float(structure.atomHDRExposure)
+
+      self.edgeCueingAtoms = Float(structure.atomEdgeCueing.rawValue)
       
       self.clipAtomsAtUnitCell = structure.clipAtomsAtUnitCell
       
@@ -282,6 +297,12 @@ public struct RKStructureUniforms
       self.bondShininess = Float(structure.bondShininess)
       
       self.isUnity = structure.isUnity
+      
+      self.bondAmbientOcclusion = structure.bondAmbientOcclusion ? 1 : 0
+      self.bondAmbientOcclusionPatchNumber = Int32(structure.bondAmbientOcclusionPatchNumber)
+      self.bondAmbientOcclusionPatchSize = Float(structure.bondAmbientOcclusionPatchSize)
+      self.bondAmbientOcclusionInverseTextureSize = Float(1.0/Double(max(structure.bondAmbientOcclusionTextureSize, 1)))
+      self.externalBondAmbientOcclusionPatchBase = Int32(structure.externalBondAmbientOcclusionPatchBase)
       
       self.bondSelectionStripesDensity = Float(structure.bondSelectionStripesDensity)
       self.bondSelectionStripesFrequency = Float(structure.bondSelectionStripesFrequency)
@@ -370,6 +391,7 @@ public struct RKStructureUniforms
       self.ribbonSheetColor = SIMD4<Float>(x: sheetColor.x, y: sheetColor.y, z: sheetColor.z, w: 1.0)
       self.ribbonHDR = structure.ribbonHDR ? 1 : 0
       self.ribbonHDRExposure = Float(structure.ribbonHDRExposure)
+      self.edgeCueingRibbons = Float(structure.ribbonEdgeCueing.rawValue)
       self.ribbonHue = Float(structure.ribbonHue)
       self.ribbonSaturation = Float(structure.ribbonSaturation)
       self.ribbonValue = Float(structure.ribbonValue)
@@ -410,5 +432,8 @@ public struct RKStructureUniforms
     let centerOfRotation: SIMD3<Double> = boundingBox.center
     let modelMatrix: double4x4 = inverseModelMatrix * double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: centerOfRotation, withTranslation: structure.origin)
     self.modelMatrix = float4x4(Double4x4: modelMatrix)
+    // the pair has to stay a pair: a shader that carries an eye-space point back into structure space, as
+    // the clipping of the external bonds does, undoes exactly the matrix that took it there
+    self.inverseModelMatrix = float4x4(Double4x4: modelMatrix.inverse)
   }
 }

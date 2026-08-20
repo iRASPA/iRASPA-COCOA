@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -263,7 +264,12 @@ fragment half RibbonAmbientOcclusionFragmentShader(RibbonAmbientOcclusionVertexS
     return 0.0;
   }
   
-  if (shadowMap.sample(shadowMapSampler, shadowPos.xy) >= shadowPos.z)
+  // Along most of these directions the point being tested is itself the nearest surface, so its own
+  // depth and the stored depth are the same number up to rounding and the linear filter used to read
+  // it. Without a margin the surface shadows itself, and since that error can only ever remove light
+  // it accumulates over every direction into occlusion that is not there.
+  const float depthBias = RIBBON_AMBIENT_OCCLUSION_DEPTH_BIAS;
+  if (shadowMap.sample(shadowMapSampler, shadowPos.xy) >= shadowPos.z - depthBias)
   {
     return weight * normalWeight;
   }

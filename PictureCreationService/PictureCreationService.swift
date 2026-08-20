@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -36,7 +37,7 @@ import BinaryCodable
 
 class PictureCreationService: NSObject, PictureCreationProtocol
 {
-  func makePicture(project projectStructureNode: ProjectStructureNode, camera: RKCamera, size: NSSize, withReply reply: @escaping (NSData) -> Void)
+  func makePicture(project projectStructureNode: ProjectStructureNode, camera: RKCamera, size: NSSize, withReply reply: @escaping (NSData, NSString) -> Void)
   {
     projectStructureNode.renderBackgroundCachedImage = projectStructureNode.drawGradientCGImage()
     
@@ -45,17 +46,21 @@ class PictureCreationService: NSObject, PictureCreationProtocol
     // create Ambient Occlusion in higher quality
     //self.invalidateCachedAmbientOcclusionTexture(projectStructureNode.renderStructures)
     
-    if let device = selectDevice()
+    guard let device = selectDevice() else
     {
-      let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: projectStructureNode, camera: camera)
-    
-      if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: projectStructureNode.renderImagePhysicalSizeInInches, camera: camera, imageQuality: projectStructureNode.renderImageQuality, renderQuality: .picture)
-      {
-        reply(data as NSData)
-      }
+      reply(NSData(), "no Metal device available" as NSString)
+      return
     }
-    
-    reply(NSData())
+
+    let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: projectStructureNode, camera: camera)
+
+    guard let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: projectStructureNode.renderImagePhysicalSizeInInches, camera: camera, imageQuality: projectStructureNode.renderImageQuality, renderQuality: .picture, renderMode: projectStructureNode.pictureRenderMode, pathTracerSettings: projectStructureNode.picturePathTracerSettings) else
+    {
+      reply(NSData(), "rendering produced no image (\(renderer.lastPictureDiagnostic))" as NSString)
+      return
+    }
+
+    reply(data as NSData, renderer.lastPictureDiagnostic as NSString)
   }
   
   func selectDevice() -> MTLDevice?

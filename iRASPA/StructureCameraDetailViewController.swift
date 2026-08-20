@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -58,8 +59,21 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   let cameraAxesBackgroundCell: OutlineViewItem = OutlineViewItem("CameraAxesBackgroundCell")
   let cameraAxesTextCell: OutlineViewItem = OutlineViewItem("CameraAxesTextCell")
   
+  let cameraLightStyleCell: OutlineViewItem = OutlineViewItem("CameraLightStyleCell")
+
+  /// One cell per light, in the order of `RKRenderLight.Role`. The control tags within a cell are offset
+  /// by a hundred times the light index, so a handler can recover which light it belongs to.
+  let cameraLightCells: [OutlineViewItem] = (1...RKLightUniforms.numberOfLights).map { OutlineViewItem("CameraLight\($0)Cell") }
+
+  /// Holds the occlusion strength, which grades the whole scene rather than belonging to one light.
   let cameraLightsCell: OutlineViewItem = OutlineViewItem("CameraLightsCell")
+
+  /// Depth cues drawn over the finished image. Kept beside occlusion, the two being the pair of cues
+  /// the Fancy styles are built on.
   
+  let cameraRaytracingCell: OutlineViewItem = OutlineViewItem("CameraRaytracingCell")
+
+  let cameraPictureRayTracingCell: OutlineViewItem = OutlineViewItem("CameraPictureRayTracingCell")
   let cameraPictureCell: OutlineViewItem = OutlineViewItem("CameraPictureCell")
   let cameraPictureDimensionsCell: OutlineViewItem = OutlineViewItem("CameraPictureDimensionsCell")
   
@@ -102,11 +116,12 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     let cameraItem: OutlineViewItem = OutlineViewItem(title: "CameraGroup", children: [cameraOrientationCell, cameraRotationCell, cameraViewMatrixCell, cameraVirtualPositionCell])
     let cameraSelectionItem: OutlineViewItem = OutlineViewItem(title: "CameraSelectionGroup", children: [cameraSelectionCell])
     let cameraAxesItem: OutlineViewItem = OutlineViewItem(title: "CameraAxesGroup", children: [cameraAxesCell, cameraAxesBackgroundCell, cameraAxesTextCell])
-    let cameraLightsItem: OutlineViewItem = OutlineViewItem(title: "CameraLightsGroup", children: [cameraLightsCell])
-    let cameraPictureItem: OutlineViewItem = OutlineViewItem(title: "CameraPictureGroup", children: [cameraPictureCell, cameraPictureDimensionsCell, cameraMovieCell])
+    let cameraLightsItem: OutlineViewItem = OutlineViewItem(title: "CameraLightsGroup", children: [cameraLightStyleCell, cameraLightsCell] + cameraLightCells)
+    let cameraRaytracingItem: OutlineViewItem = OutlineViewItem(title: "CameraRaytracingGroup", children: [cameraRaytracingCell])
+    let cameraPictureItem: OutlineViewItem = OutlineViewItem(title: "CameraPictureGroup", children: [cameraPictureRayTracingCell, cameraPictureCell, cameraPictureDimensionsCell, cameraMovieCell])
     let cameraBackgroundItem: OutlineViewItem = OutlineViewItem(title: "CameraBackgroundGroup",children: [cameraBackgroundCell])
 
-    self.cameraOutlineView?.items = [cameraItem, cameraSelectionItem, cameraAxesItem, cameraLightsItem, cameraPictureItem, cameraBackgroundItem]
+    self.cameraOutlineView?.items = [cameraItem, cameraSelectionItem, cameraAxesItem, cameraLightsItem, cameraRaytracingItem, cameraPictureItem, cameraBackgroundItem]
   }
   
   override func viewWillAppear()
@@ -181,6 +196,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       setPropertiesSelectionTableCells(on: view, identifier: string)
       setPropertiesAxesTableCells(on: view, identifier: string)
       setPropertiesLightsTableCells(on: view, identifier: string)
+      setPropertiesRaytracingTableCells(on: view, identifier: string)
       setPropertiesExportMediaTableCells(on: view, identifier: string)
       setPropertiesBackgroundTableCells(on: view, identifier: string)
       
@@ -643,94 +659,241 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   func setPropertiesLightsTableCells(on view: NSTableCellView, identifier: String)
   {
+    if identifier == "CameraLightStyleCell"
+    {
+      if let popUpButton: NSPopUpButton = view.viewWithTag(1) as? NSPopUpButton
+      {
+        let project: ProjectStructureNode? = representedObject as? ProjectStructureNode
+
+        popUpButton.isEnabled = (project != nil)
+        popUpButton.selectItem(withTitle: (project?.renderLightStyle ?? RKLightStyle.default).displayName)
+        popUpButton.toolTip = "A named set of lights. The emulations follow the documented defaults of those viewers and are a starting point rather than a match. Editing any light turns this to Custom"
+      }
+      return
+    }
+
+    if identifier == "CameraLightsCell"
+    {
+      if let sceneAmbientIntensity: NSTextField = view.viewWithTag(16) as? NSTextField,
+         let sliderSceneAmbientIntensity: NSSlider = view.viewWithTag(17) as? NSSlider,
+         let sceneAmbientColor: NSColorWell = view.viewWithTag(18) as? NSColorWell
+      {
+        let project: ProjectStructureNode? = representedObject as? ProjectStructureNode
+
+        sceneAmbientIntensity.isEnabled = (project != nil)
+        sliderSceneAmbientIntensity.isEnabled = (project != nil)
+        sceneAmbientColor.isEnabled = (project != nil)
+        sceneAmbientIntensity.toolTip = "Light reaching the structure from the environment as a whole, which is why it is not part of any one light: switching every light off leaves this. It scales each material's own ambient, which the representation style sets, so one leaves that style as intended and less than one darkens all of them"
+
+        sliderSceneAmbientIntensity.minValue = 0.0
+        sliderSceneAmbientIntensity.maxValue = 1.0
+        sceneAmbientIntensity.doubleValue = project?.renderSceneAmbientIntensity ?? 1.0
+        sliderSceneAmbientIntensity.doubleValue = project?.renderSceneAmbientIntensity ?? 1.0
+        sceneAmbientColor.color = project?.renderSceneAmbientColor ?? NSColor.white
+      }
+
+      if let ambientOcclusionStrength: NSTextField = view.viewWithTag(12) as? NSTextField,
+         let sliderAmbientOcclusionStrength: NSSlider = view.viewWithTag(13) as? NSSlider
+      {
+        let project: ProjectStructureNode? = representedObject as? ProjectStructureNode
+
+        ambientOcclusionStrength.isEnabled = (project != nil)
+        sliderAmbientOcclusionStrength.isEnabled = (project != nil)
+        ambientOcclusionStrength.toolTip = "How strongly occlusion darkens the direct lighting as well as the ambient light. Zero is physically correct, one matches the older Fancy look. Used by both the rasterizer and the path tracer"
+
+        sliderAmbientOcclusionStrength.minValue = 0.0
+        sliderAmbientOcclusionStrength.maxValue = 1.0
+        ambientOcclusionStrength.doubleValue = project?.renderAmbientOcclusionStrength ?? 0.0
+        sliderAmbientOcclusionStrength.doubleValue = project?.renderAmbientOcclusionStrength ?? 0.0
+      }
+
+      if let shadows: NSButton = view.viewWithTag(19) as? NSButton
+      {
+        let project: ProjectStructureNode? = representedObject as? ProjectStructureNode
+        let supported: Bool = MTLCreateSystemDefaultDevice().map{MetalPathTracerShader.isSupported(device: $0)} ?? false
+
+        shadows.isEnabled = (project != nil) && supported
+        shadows.state = (project?.renderShadows ?? false) ? NSControl.StateValue.on : NSControl.StateValue.off
+        shadows.toolTip = supported
+            ? "Darkens the surfaces a light cannot reach, by tracing the scene the way ray tracing does. A light sitting on the camera casts no shadow, so this only shows with a style whose lights are off to one side. Pictures and movies follow this; whether the render view does is set under Raytracing/Shadows"
+            : "This graphics card cannot trace rays, so shadows are unavailable"
+      }
+      return
+    }
+
+    if let lightIndex: Int = self.cameraLightCells.firstIndex(where: { $0.title == identifier })
+    {
+      self.setPropertiesLightCell(on: view, lightIndex: lightIndex)
+    }
+  }
+
+  private func setPropertiesLightCell(on view: NSTableCellView, lightIndex: Int)
+  {
+    let project: ProjectStructureNode? = representedObject as? ProjectStructureNode
+    let light: RKRenderLight? = (project != nil && lightIndex < project!.renderLights.count) ? project!.renderLights[lightIndex] : nil
+
+    // everything but the checkbox is pointless while the light is off, so it follows the checkbox
+    let base: Int = lightIndex * 100
+    let isOn: Bool = light?.isEnabled ?? false
+
+    if let checkbox: NSButton = view.viewWithTag(base + 14) as? NSButton
+    {
+      checkbox.isEnabled = (light != nil)
+      checkbox.state = isOn ? NSControl.StateValue.on : NSControl.StateValue.off
+      checkbox.toolTip = lightIndex == 0
+          ? "On the view axis, and the only light on by default. Switching it off leaves the scene lit by whichever other lights are on"
+          : "Placed for its photographic role, relative to the camera rather than to the structure"
+    }
+
+    if let popUpButton: NSPopUpButton = view.viewWithTag(base + 15) as? NSPopUpButton
+    {
+      popUpButton.isEnabled = isOn
+      popUpButton.selectItem(at: light?.type.rawValue ?? 0)
+      popUpButton.toolTip = "Directional lights are placed by direction and do not fall off with distance. Point and spot lights are placed by position"
+    }
+
+    // diffuse and specular each pair an intensity field and slider with a colour well. Ambient is absent
+    // because it belongs to the scene, and is edited once in the cell above rather than per light
+    let terms: [(field: Int, slider: Int, color: Int, intensity: Double?, color2: NSColor?)] =
+        [(base + 4, base + 5, base + 6, light?.diffuseIntensity, light?.diffuse),
+         (base + 7, base + 8, base + 9, light?.specularIntensity, light?.specular)]
+
+    for term in terms
+    {
+      if let field: NSTextField = view.viewWithTag(term.field) as? NSTextField
+      {
+        field.isEnabled = isOn
+        field.doubleValue = term.intensity ?? 0.0
+      }
+      if let slider: NSSlider = view.viewWithTag(term.slider) as? NSSlider
+      {
+        slider.isEnabled = isOn
+        slider.minValue = 0.0
+        slider.maxValue = 1.0
+        slider.doubleValue = term.intensity ?? 0.0
+      }
+      if let colorWell: NSColorWell = view.viewWithTag(term.color) as? NSColorWell
+      {
+        colorWell.isEnabled = isOn
+        colorWell.color = term.color2 ?? NSColor.white
+      }
+    }
+
+    if let shininess: NSTextField = view.viewWithTag(base + 10) as? NSTextField
+    {
+      shininess.isEnabled = isOn
+      shininess.doubleValue = light?.shininess ?? 0.0
+    }
+    if let sliderShininess: NSSlider = view.viewWithTag(base + 11) as? NSSlider
+    {
+      sliderShininess.isEnabled = isOn
+      sliderShininess.minValue = 0.1
+      sliderShininess.maxValue = 128.0
+      sliderShininess.doubleValue = light?.shininess ?? 0.1
+    }
+  }
+
+  func setPropertiesRaytracingTableCells(on view: NSTableCellView, identifier: String)
+  {
     switch(identifier)
     {
-    case "CameraLightsCell":
-      if let ambientLightIntensitity: NSTextField = view.viewWithTag(1) as? NSTextField,
-         let sliderAmbientLightIntensitity: NSSlider = view.viewWithTag(2) as? NSSlider,
-         let ambientColor: NSColorWell = view.viewWithTag(3) as? NSColorWell
+    case "CameraRaytracingCell":
+      if let checkboxRayTracing: NSButton = view.viewWithTag(20) as? NSButton,
+         let textFieldSampleCount: NSTextField = view.viewWithTag(21) as? NSTextField,
+         let textFieldRotatingSampleCount: NSTextField = view.viewWithTag(22) as? NSTextField,
+         let textFieldMaximumBounces: NSTextField = view.viewWithTag(23) as? NSTextField
       {
-        ambientLightIntensitity.isEnabled = false
-        sliderAmbientLightIntensitity.isEnabled = false
-        ambientColor.isEnabled = false
-        if let project = representedObject as? ProjectStructureNode
+        // these are application-wide settings rather than project properties: how many samples a
+        // frame can afford says more about the machine than about the structure. They are still
+        // meaningless without a project to render.
+        let isRayTracingSupported: Bool = RKRenderSettings.isRayTracingSupported
+        let hasProject: Bool = (representedObject as? ProjectStructureNode) != nil
+        let isRayTracing: Bool = RKRenderSettings.shared.interactiveRenderMode == .rayTracing
+
+        checkboxRayTracing.isEnabled = hasProject && isRayTracingSupported
+        checkboxRayTracing.state = isRayTracing ? NSControl.StateValue.on : NSControl.StateValue.off
+        checkboxRayTracing.toolTip = isRayTracingSupported
+            ? "Draw the render view with the path tracer instead of the rasterizer"
+            : "This GPU does not support ray tracing"
+
+        let enabled: Bool = checkboxRayTracing.isEnabled && isRayTracing
+
+        textFieldSampleCount.isEnabled = enabled
+        textFieldSampleCount.integerValue = RKRenderSettings.shared.interactiveSampleCount
+        textFieldSampleCount.toolTip = "Paths traced per pixel while the camera is at rest"
+
+        textFieldRotatingSampleCount.isEnabled = enabled
+        textFieldRotatingSampleCount.integerValue = RKRenderSettings.shared.interactiveRotatingSampleCount
+        textFieldRotatingSampleCount.toolTip = "Paths traced per pixel while the camera is being moved. Fewer samples mean a noisier but faster frame; the colours do not change"
+
+        textFieldMaximumBounces.isEnabled = enabled
+        textFieldMaximumBounces.integerValue = RKRenderSettings.shared.interactiveMaximumBounces
+        textFieldMaximumBounces.toolTip = "How often light may bounce between surfaces, at most \(RKRenderSettings.maximumSupportedInteractiveBounces). Zero is direct lighting only"
+
+        if let checkboxShadows: NSButton = view.viewWithTag(24) as? NSButton
         {
-          ambientLightIntensitity.isEnabled = true
-          sliderAmbientLightIntensitity.isEnabled = true
-          ambientColor.isEnabled = true
-          ambientLightIntensitity.doubleValue = project.renderLights[0].ambientIntensity
-          sliderAmbientLightIntensitity.minValue = 0.0
-          sliderAmbientLightIntensitity.maxValue = 1.0
-          sliderAmbientLightIntensitity.doubleValue = project.renderLights[0].ambientIntensity
-          ambientColor.color = project.renderLights[0].ambient
-        }
-      }
-      
-      
-      if let diffuseLightIntensitity: NSTextField = view.viewWithTag(4) as? NSTextField,
-        let sliderDiffuseLightIntensitity: NSSlider = view.viewWithTag(5) as? NSSlider,
-        let diffuseColor: NSColorWell = view.viewWithTag(6) as? NSColorWell
-      {
-        diffuseLightIntensitity.isEnabled = false
-        sliderDiffuseLightIntensitity.isEnabled = false
-        diffuseColor.isEnabled = false
-        if let project = representedObject as? ProjectStructureNode
-        {
-          diffuseLightIntensitity.isEnabled = true
-          sliderDiffuseLightIntensitity.isEnabled = true
-          diffuseColor.isEnabled = true
-          diffuseLightIntensitity.doubleValue = project.renderLights[0].diffuseIntensity
-          sliderDiffuseLightIntensitity.minValue = 0.0
-          sliderDiffuseLightIntensitity.maxValue = 1.0
-          sliderDiffuseLightIntensitity.doubleValue = project.renderLights[0].diffuseIntensity
-          diffuseColor.color = project.renderLights[0].diffuse
-        }
-      }
-      
-      if let specularLightIntensitity: NSTextField = view.viewWithTag(7) as? NSTextField,
-        let sliderSpecularLightIntensitity: NSSlider = view.viewWithTag(8) as? NSSlider,
-        let specularColor: NSColorWell = view.viewWithTag(9) as? NSColorWell
-      {
-        specularLightIntensitity.isEnabled = false
-        sliderSpecularLightIntensitity.isEnabled = false
-        specularColor.isEnabled = false
-        if let project = representedObject as? ProjectStructureNode
-        {
-          specularLightIntensitity.isEnabled = true
-          sliderSpecularLightIntensitity.isEnabled = true
-          specularColor.isEnabled = true
-          specularLightIntensitity.doubleValue = project.renderLights[0].specularIntensity
-          sliderSpecularLightIntensitity.minValue = 0.0
-          sliderSpecularLightIntensitity.maxValue = 1.0
-          sliderSpecularLightIntensitity.doubleValue = project.renderLights[0].specularIntensity
-          specularColor.color = project.renderLights[0].specular
-        }
-      }
-      
-      if let shininess: NSTextField = view.viewWithTag(10) as? NSTextField,
-        let sliderShininess: NSSlider = view.viewWithTag(11) as? NSSlider
-      {
-        shininess.isEnabled = false
-        sliderShininess.isEnabled = false
-        if let project = representedObject as? ProjectStructureNode
-        {
-          shininess.isEnabled = true
-          sliderShininess.isEnabled = true
-          shininess.doubleValue = project.renderLights[0].shininess
-          sliderShininess.minValue = 0.1
-          sliderShininess.maxValue = 128.0
-          sliderShininess.doubleValue = project.renderLights[0].shininess
+          // The path tracer casts its own shadow rays, so with ray-tracing on this is always on and
+          // cannot be turned off. It only chooses whether the rasterizer spends a mask pass.
+          if isRayTracing
+          {
+            checkboxShadows.isEnabled = false
+            checkboxShadows.state = NSControl.StateValue.on
+            checkboxShadows.toolTip = "Shadows are always included when the render view is path-traced"
+          }
+          else
+          {
+            checkboxShadows.isEnabled = hasProject && isRayTracingSupported
+            checkboxShadows.state = RKRenderSettings.shared.interactiveShadows ? NSControl.StateValue.on : NSControl.StateValue.off
+            checkboxShadows.toolTip = isRayTracingSupported
+                ? (RKRenderSettings.tracesRaysInHardware
+                    ? "Trace shadows for the render view. Pictures and movies follow the scene's own Shadows setting instead"
+                    : "Trace shadows for the render view. This GPU traces rays in a shader rather than in hardware, so every frame pays for them; pictures and movies follow the scene's own Shadows setting and are unaffected")
+                : "This GPU cannot trace rays, so shadows are unavailable"
+          }
         }
       }
     default:
       break
     }
   }
-  
+
   func setPropertiesExportMediaTableCells(on view: NSTableCellView, identifier: String)
   {
     switch(identifier)
     {
+    case "CameraPictureRayTracingCell":
+      if let checkboxRayTracing: NSButton = view.viewWithTag(7) as? NSButton,
+         let textFieldSampleCount: NSTextField = view.viewWithTag(8) as? NSTextField,
+         let textFieldMaximumBounces: NSTextField = view.viewWithTag(9) as? NSTextField
+      {
+        checkboxRayTracing.isEnabled = false
+        textFieldSampleCount.isEnabled = false
+        textFieldMaximumBounces.isEnabled = false
+
+        // the checkbox reflects what the document asks for, which stays visible even on a machine
+        // that cannot honour it; the tracer itself falls back to rasterizing
+        let isRayTracingSupported: Bool = RKRenderSettings.isRayTracingSupported
+
+        checkboxRayTracing.toolTip = isRayTracingSupported
+            ? "Render exported pictures and movies with the path tracer"
+            : "This GPU does not support ray tracing, so exports will be rasterized"
+        textFieldSampleCount.toolTip = "Paths traced per pixel, at most \(RKRenderSettings.maximumSupportedPictureSamples). More samples mean less noise and a longer render"
+        textFieldMaximumBounces.toolTip = "How often light may bounce between surfaces, at most \(RKRenderSettings.maximumSupportedPictureBounces). Zero is direct lighting only, and the image stops changing noticeably after a handful"
+
+        if let project: ProjectStructureNode = representedObject as? ProjectStructureNode
+        {
+          let settings: RKPathTracerSettings = project.picturePathTracerSettings
+
+          checkboxRayTracing.isEnabled = isRayTracingSupported
+          checkboxRayTracing.state = project.renderPictureRayTracing ? NSControl.StateValue.on : NSControl.StateValue.off
+
+          let enabled: Bool = isRayTracingSupported && project.renderPictureRayTracing
+          textFieldSampleCount.isEnabled = enabled
+          textFieldSampleCount.integerValue = settings.sampleCount
+          textFieldMaximumBounces.isEnabled = enabled
+          textFieldMaximumBounces.integerValue = settings.maximumBounces
+        }
+      }
     case "CameraPictureCell":
       if let popUpbuttonDPI: NSPopUpButton = view.viewWithTag(1) as? NSPopUpButton,
          let popUpbuttonPictureQuality: NSPopUpButton = view.viewWithTag(2) as? NSPopUpButton,
@@ -2044,187 +2207,47 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   // MARK: Global light
   // =====================================================================
   
-  @IBAction func changeAmbientTextField(_ sender: NSTextField)
-  {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].ambientIntensity = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.cameraLightsCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
-  }
-  
-  
-  @IBAction func changeAmbientIntensitySlider(_ sender: NSSlider)
-  {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].ambientIntensity = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.cameraLightsCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
-  }
-  
-  @IBAction func changeAmbientColor(_ sender: NSColorWell)
-  {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].ambient = sender.color
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
-  }
-  
-  
+  // The light controls all live in per-light cells whose tags are offset by a hundred times the light
+  // index, so each handler recovers its light from the tag rather than needing its own outlet.
+
   @IBAction func changeDiffuseTextField(_ sender: NSTextField)
   {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].diffuseIntensity = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.cameraLightsCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
+    self.updateLight(forTag: sender.tag) { $0.diffuseIntensity = min(max(sender.doubleValue, 0.0), 1.0) }
   }
-  
-  
+
   @IBAction func changeDiffuseIntensitySlider(_ sender: NSSlider)
   {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].diffuseIntensity = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.cameraLightsCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
+    self.updateLight(forTag: sender.tag) { $0.diffuseIntensity = sender.doubleValue }
   }
-  
+
   @IBAction func changeDiffuseColor(_ sender: NSColorWell)
   {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].diffuse = sender.color
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
+    self.updateLight(forTag: sender.tag) { $0.diffuse = sender.color }
   }
-  
+
   @IBAction func changeSpecularTextField(_ sender: NSTextField)
   {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].specularIntensity = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.cameraLightsCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
+    self.updateLight(forTag: sender.tag) { $0.specularIntensity = min(max(sender.doubleValue, 0.0), 1.0) }
   }
-  
-  
+
   @IBAction func changeSpecularIntensitySlider(_ sender: NSSlider)
   {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].specularIntensity = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.cameraLightsCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
+    self.updateLight(forTag: sender.tag) { $0.specularIntensity = sender.doubleValue }
   }
-  
+
   @IBAction func changeSpecularColor(_ sender: NSColorWell)
   {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].specular = sender.color
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
+    self.updateLight(forTag: sender.tag) { $0.specular = sender.color }
   }
-  
-  
+
   @IBAction func changeShininessSlider(_ sender: NSSlider)
   {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].shininess = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.cameraLightsCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
+    self.updateLight(forTag: sender.tag) { $0.shininess = sender.doubleValue }
   }
-  
+
   @IBAction func changeShininessTextField(_ sender: NSTextField)
   {
-    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
-    {
-      crystalProject.renderLights[0].shininess = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.cameraLightsCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
+    self.updateLight(forTag: sender.tag) { $0.shininess = min(max(sender.doubleValue, 0.1), 128.0) }
   }
   
  
@@ -2499,6 +2522,63 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   }
   
   
+  // MARK: Raytracing actions
+  // =====================================================================
+
+  /// Selects how the render view draws. These are application preferences, not project properties,
+  /// so they are not written to the document.
+  @IBAction func setInteractiveRayTracing(_ sender: NSButton)
+  {
+    RKRenderSettings.shared.interactiveRenderMode = (sender.state == NSControl.StateValue.on) ? RKRenderMode.rayTracing : RKRenderMode.rasterization
+
+    // the sample counts follow the checkbox, and the render view redraws on the notification the
+    // setter posts
+    self.updateOutlineView(identifiers: [self.cameraRaytracingCell])
+
+    self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+  }
+
+  @IBAction func setInteractiveSampleCount(_ sender: NSTextField)
+  {
+    RKRenderSettings.shared.interactiveSampleCount = sender.integerValue
+
+    // reflect the clamped value back
+    sender.integerValue = RKRenderSettings.shared.interactiveSampleCount
+
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
+    self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+  }
+
+  @IBAction func setInteractiveRotatingSampleCount(_ sender: NSTextField)
+  {
+    RKRenderSettings.shared.interactiveRotatingSampleCount = sender.integerValue
+
+    sender.integerValue = RKRenderSettings.shared.interactiveRotatingSampleCount
+
+    self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+  }
+
+  @IBAction func setInteractiveMaximumBounces(_ sender: NSTextField)
+  {
+    RKRenderSettings.shared.interactiveMaximumBounces = sender.integerValue
+
+    sender.integerValue = RKRenderSettings.shared.interactiveMaximumBounces
+
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
+    self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+  }
+
+  /// Whether the render view traces shadows. A machine setting rather than a project one, the scene's
+  /// own Shadows setting being what an export obeys, so nothing here is written to the document.
+  @IBAction func setInteractiveShadows(_ sender: NSButton)
+  {
+    RKRenderSettings.shared.interactiveShadows = (sender.state == NSControl.StateValue.on)
+
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
+    self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+  }
+
+
   // MARK: Picture actions
   // =====================================================================
   
@@ -2507,6 +2587,217 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     self.updateOutlineView(identifiers: [self.cameraPictureCell])
   }
   
+  /// Selects how exported pictures and movies are rendered. Unlike the interactive settings, this is
+  /// a property of the project, so that a document keeps the look it was authored with.
+  @IBAction func setPictureRayTracing(_ sender: NSButton)
+  {
+    if let project: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      project.renderPictureRayTracing = (sender.state == NSControl.StateValue.on)
+
+      // the remaining fields follow the checkbox
+      self.updateOutlineView(identifiers: [self.cameraPictureRayTracingCell])
+
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func setPictureSampleCount(_ sender: NSTextField)
+  {
+    if let project: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      project.renderPictureSampleCount = sender.integerValue
+
+      // reflect the clamped value back
+      sender.integerValue = project.picturePathTracerSettings.sampleCount
+
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  @IBAction func setPictureMaximumBounces(_ sender: NSTextField)
+  {
+    if let project: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      project.renderPictureMaximumBounces = sender.integerValue
+
+      sender.integerValue = project.picturePathTracerSettings.maximumBounces
+
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  // MARK: Light actions
+  // =====================================================================
+
+  @IBAction func setLightStyle(_ sender: NSPopUpButton)
+  {
+    guard let project: ProjectStructureNode = self.representedObject as? ProjectStructureNode,
+          let style: RKLightStyle = RKLightStyle.presets.first(where: { $0.displayName == sender.titleOfSelectedItem })
+    else
+    {
+      // the Custom entry stands for the lights that are already there, so choosing it changes nothing
+      self.updateOutlineView(identifiers: [self.cameraLightStyleCell])
+      return
+    }
+
+    project.setLightStyle(style)
+
+    // a style rewrites every light and the occlusion strength, so all of the cells are stale
+    self.updateOutlineView(identifiers: [self.cameraLightStyleCell] + self.cameraLightCells + [self.cameraLightsCell])
+
+    // occlusion strength reaches the rasterizer through the structure uniforms rather than the light ones
+    self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
+    self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
+
+    self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+    self.windowController?.document?.updateChangeCount(.changeDone)
+    self.proxyProject?.representedObject.isEdited = true
+  }
+
+  @IBAction func toggleLight(_ sender: NSButton)
+  {
+    self.updateLight(forTag: sender.tag)
+    {
+      $0.isEnabled = (sender.state == NSControl.StateValue.on)
+    }
+  }
+
+  @IBAction func setLightType(_ sender: NSPopUpButton)
+  {
+    self.updateLight(forTag: sender.tag)
+    {
+      if let type: RKLightType = RKLightType(rawValue: sender.indexOfSelectedItem)
+      {
+        $0.type = type
+      }
+    }
+  }
+
+  private func updateLight(forTag tag: Int, _ change: (inout RKRenderLight) -> ())
+  {
+    let index: Int = tag / 100
+
+    if let project: ProjectStructureNode = self.representedObject as? ProjectStructureNode, index >= 0, index < project.renderLights.count, index < self.cameraLightCells.count
+    {
+      change(&project.renderLights[index])
+      project.recheckLightStyle()
+
+      // enabling a light changes which of its own controls are usable, so the whole cell is refreshed
+      self.updateOutlineView(identifiers: [self.cameraLightCells[index], self.cameraLightStyleCell])
+
+      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  // MARK: Scene ambient actions
+  // =====================================================================
+
+  /// Ambient describes the environment, not a lamp, so it is edited once for the scene. Keeping it out of
+  /// the lights means the ambient level no longer rises and falls with how many of them happen to be on,
+  /// and a material lit by ambient alone, as the Fancy representation style is, survives every light being
+  /// switched off.
+  @IBAction func changeSceneAmbientIntensityTextField(_ sender: NSTextField)
+  {
+    self.applySceneAmbient(intensity: sender.doubleValue, color: nil)
+  }
+
+  @IBAction func changeSceneAmbientIntensitySlider(_ sender: NSSlider)
+  {
+    self.applySceneAmbient(intensity: sender.doubleValue, color: nil)
+  }
+
+  @IBAction func changeSceneAmbientColor(_ sender: NSColorWell)
+  {
+    self.applySceneAmbient(intensity: nil, color: sender.color)
+  }
+
+  private func applySceneAmbient(intensity: Double?, color: NSColor?)
+  {
+    if let project: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      if let intensity: Double = intensity
+      {
+        project.renderSceneAmbientIntensity = min(max(intensity, 0.0), 1.0)
+      }
+      if let color: NSColor = color
+      {
+        project.renderSceneAmbientColor = color
+      }
+      project.recheckLightStyle()
+
+      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+
+      self.updateOutlineView(identifiers: [self.cameraLightsCell, self.cameraLightStyleCell])
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  // MARK: Ambient occlusion actions
+  // =====================================================================
+
+  /// One value, shared by the rasterizer and the path tracer and by both the view and exports, so it
+  /// lives with the lights rather than under either renderer.
+  @IBAction func changeAmbientOcclusionStrengthTextField(_ sender: NSTextField)
+  {
+    self.applyAmbientOcclusionStrength(sender.doubleValue)
+  }
+
+  @IBAction func changeAmbientOcclusionStrengthSlider(_ sender: NSSlider)
+  {
+    self.applyAmbientOcclusionStrength(sender.doubleValue)
+  }
+
+  /// Shadows are a property of the scene rather than of the lighting rig, so unlike the occlusion
+  /// strength beside it this does not make the light style Custom.
+  @IBAction func toggleShadows(_ sender: NSButton)
+  {
+    if let project: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      project.renderShadows = (sender.state == NSControl.StateValue.on)
+
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
+  private func applyAmbientOcclusionStrength(_ strength: Double)
+  {
+    if let project: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      project.renderAmbientOcclusionStrength = min(max(strength, 0.0), 1.0)
+      project.recheckLightStyle()
+
+      // the rasterizer reads this through the structure uniforms, so they have to be rebuilt rather
+      // than just marking the view dirty
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+
+      self.updateOutlineView(identifiers: [self.cameraLightsCell, self.cameraLightStyleCell])
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+
   @IBAction func setPictureEditDimensions(_ sender: NSButtonCell)
   {
     if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode

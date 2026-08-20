@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -88,6 +89,10 @@ typedef struct InPerInstanceAttributesBonds
   float4 scale;
   int tag;
   int type;
+  // First of the occlusion atlas patches belonging to this bond; a double or triple bond owns one per
+  // sub-cylinder, in the order the hull generates them. Stamped when the instance buffers are built,
+  // which is also where the bonds are split by order, so the split buffers inherit it.
+  uint ambientOcclusionPatch;
 } InPerInstanceAttributesBonds;
 
 
@@ -193,11 +198,21 @@ typedef struct FrameUniforms
   float4x4 padMatrix;
   
   float4 cameraPosition;
-  float4 padVector3;
+
+  /// Edge cueing, after Tarini et al. section 5: x is the contour line strength, y its greatest width
+  /// in pixels, z the halo strength and w the halo radius in pixels. A zero strength turns that cue off.
+  float4 edgeCueing;
   int numberOfMultiSamplePoints;
-  float padVector41;
-  float padVector42;
-  float padVector43;
+
+  /// Depth steps, in scene units, at which a contour line reaches its full width and a halo its full
+  /// darkness. Both are set from the size of the scene, so that one setting suits any structure.
+  float edgeCueingContourDepth;
+  float edgeCueingHaloDepth;
+
+  /// Set when the molecular geometry was path traced, in which case the depth of what is visible is in
+  /// the tracer's composite depth buffer rather than in the rasterizer's depth attachment, the geometry
+  /// having been left out of the raster passes.
+  float edgeCueingUsesTracedDepth;
   
   float bloomLevel;
   float bloomPulse;
@@ -214,6 +229,7 @@ typedef struct ShadowUniforms
   float4x4 viewMatrix;
   float4x4 shadowMatrix;
   float4x4 normalMatrix;
+  float4x4 viewMatrixInverse;
 } ShadowUniforms;
 
 typedef struct StructureUniforms
@@ -319,7 +335,10 @@ typedef struct StructureUniforms
   float4 primitiveSpecularBackSide;
   bool primitiveBackSideHDR;
   float primitiveBackSideHDRExposure;
-  float pad6;
+  // Which cues the ribbons of this structure take, as an RKEdgeCueing raw value. Read by the path
+  // tracer, which has no stencil to write and so carries the choice in the uniforms instead.
+  // Occupies a former pad slot so the stride is unchanged.
+  float edgeCueingRibbons = 0.0;
   float primitiveShininessBackSide;
   
   //----------------------------------------  896 bytes boundary
@@ -337,12 +356,16 @@ typedef struct StructureUniforms
   float primitiveSelectionScaling = 1.01;
   float primitiveSelectionIntensity = 0.8;
   bool isUnity;
-  float pad7 = 0.0;
+  // Which cues the atoms and bonds of this structure take. See `edgeCueingRibbons`.
+  float edgeCueingAtoms = 0.0;
 
   float primitiveHue = 1.0;
   float primitiveSaturation = 1.0;
   float primitiveValue = 1.0;
-  float pad8 = 0.0;
+  // How far occlusion leans towards darkening the direct terms as well as the ambient one. 0 is
+  // physically correct, 1 reproduces the "Fancy" look. Occupies a former pad slot so the 1280 byte
+  // stride is unchanged.
+  float ambientOcclusionStrength = 0.0;
   
   float4 localAxesPosition;
   float4 numberOfReplicas;
@@ -362,9 +385,18 @@ typedef struct StructureUniforms
   float4 ribbonDiffuseColor;
   float4 ribbonSpecularColor;
   //----------------------------------------  1136 bytes boundary
-  // Pad 144 bytes so stride is 1280 (multiple of 256) for constant-buffer offsets on iOS.
-  float4 padAlignment0;
-  float4 padAlignment1;
+  // The bond occlusion atlas holds the internal bonds first and the external ones after them, so that a
+  // structure needs only one texture; the base is where the second range starts. Occupies former pad
+  // slots so the 1280 byte stride is unchanged.
+  bool bondAmbientOcclusion;
+  int bondAmbientOcclusionPatchNumber;
+  float bondAmbientOcclusionPatchSize;
+  float bondAmbientOcclusionInverseTextureSize;
+  int externalBondAmbientOcclusionPatchBase;
+  float padBondAmbientOcclusion0;
+  float padBondAmbientOcclusion1;
+  float padBondAmbientOcclusion2;
+  // Pad 112 bytes so stride is 1280 (multiple of 256) for constant-buffer offsets on iOS.
   float4 padAlignment2;
   float4 padAlignment3;
   float4 padAlignment4;
@@ -412,6 +444,8 @@ typedef struct IsosurfaceUniforms
 typedef struct Light
 {
   float4 position;
+  /// Unused. Ambient light describes the environment rather than any one lamp, so it lives in
+  /// `LightUniforms.sceneAmbient`; the slot is kept only to hold the struct layout steady.
   float4 ambient;
   float4 diffuse;
   float4 specular;
@@ -424,8 +458,10 @@ typedef struct Light
   
   float spotExponent;
   float shininess;
-  float pad1;
-  float pad2;
+  /// 0 directional, 1 point, 2 spot. Occupies former pad slots, so the 128 byte stride is unchanged.
+  float lightType;
+  /// Non-zero when the light contributes. Only the camera light in slot 0 is on by default.
+  float enabled;
   
   float pad3;
   float pad4;
@@ -433,10 +469,48 @@ typedef struct Light
   float pad6;
 } Light;
 
+/// One slot per photographic role: camera, key, fill, side/split, rim/kicker, backlight/silhouette,
+/// hair/top and butterfly/paramount. Must match `RKLightUniforms` on the Swift side.
+#define NUMBER_OF_LIGHTS 8
+
+/// The unit cell and the bounding box are guides rather than surfaces and have no material of their own to
+/// set an ambient level with, so they take this share of the colour they are drawn in. It sits in the same
+/// range as the 0.2 an atom's representation style asks for, and it is what keeps them visible when every
+/// light is switched off, which the scene ambient makes a reasonable thing to do.
+#define GUIDE_GEOMETRY_AMBIENT 0.2
+
+/// Margin for the occlusion bake's depth comparison, in the depth units of its orthographic frustum, whose
+/// near and far planes are 1 and 1000, so a thousandth is one Angstrom. It has to clear the rounding between
+/// the two passes without reaching the neighbouring strand, which sits several Angstrom away.
+#define RIBBON_AMBIENT_OCCLUSION_DEPTH_BIAS 5.0e-4
+
+/// How the atoms, bonds and ribbons record their edge cueing in the scene's stencil, for the compositing
+/// pass to read back. The low bits hold an RKEdgeCueing raw value and the high bit says the pixel belongs
+/// to a structure at all, whatever it asked for. Kept in step with `stencilValue` on RKEdgeCueing.
+#define EDGE_CUEING_STENCIL_MODE_MASK 0x03
+#define EDGE_CUEING_STENCIL_CUEABLE_BIT 0x80
+
 typedef struct LightUniforms
 {
-  Light lights[4];
+  Light lights[NUMBER_OF_LIGHTS];
+
+  /// Stands in for the light arriving from the whole environment, and so belongs to the scene rather than
+  /// to any single lamp: enabling or disabling a light leaves the ambient floor untouched, and a material
+  /// that is lit by ambient alone still shows up when every light is off. Multiplies the material ambient,
+  /// which the representation style owns.
+  float4 sceneAmbient;
 } LightUniforms;
+
+
+/// The summed contribution of every enabled light, before the material colours are applied. Kept
+/// separate from the material so that one loop over the lights serves shaders whose ambient, diffuse
+/// and specular colours all differ.
+typedef struct LightingWeights
+{
+  float3 ambient;
+  float3 diffuse;
+  float3 specular;
+} LightingWeights;
 
 
 typedef struct GlobalAxesUniforms
@@ -450,6 +524,38 @@ typedef struct GlobalAxesUniforms
   float textOffset;
   float textScale[4];
 } GlobalAxesUniforms;
+
+/// Accumulates every enabled light at a point, given the eye-space normal, the unnormalized direction
+/// to the eye, and the eye-space position. The lights are defined in eye space, so no further
+/// transform is needed here.
+///
+/// The specular term deliberately does not depend on `N` facing the light, which keeps the highlight
+/// behaviour identical to the single-light code this replaced.
+LightingWeights accumulateLighting(constant LightUniforms& lightUniforms,
+                                   float3 N,
+                                   float3 V,
+                                   float4 eyePosition,
+                                   float materialShininess);
+
+/// As above, but with one bit per light saying whether anything stands between this point and that
+/// light. A light whose bit is clear contributes neither diffuse nor specular, which is what casts a
+/// shadow; the ambient floor is unaffected, since it stands in for light arriving from everywhere.
+///
+/// Only the molecular shaders pass a mask, because only atoms, bonds and ribbons are in the
+/// acceleration structure that the mask is traced against. Everything else uses the overload above,
+/// which is this one with every bit set.
+LightingWeights accumulateLighting(constant LightUniforms& lightUniforms,
+                                   float3 N,
+                                   float3 V,
+                                   float4 eyePosition,
+                                   float materialShininess,
+                                   uint lightVisibility);
+
+/// Reads the per-light visibility of one pixel out of the mask the shadow pass wrote.
+///
+/// `windowPosition` is the fragment's `[[position]]`. When shadows are off the renderer binds a
+/// single all-lit texel, so this reports everything lit without the shaders needing to branch.
+uint shadowMaskAtFragment(texture2d<uint> shadowMask, float4 windowPosition);
 
 float mod289(float x);
 float2 mod289(float2 x);

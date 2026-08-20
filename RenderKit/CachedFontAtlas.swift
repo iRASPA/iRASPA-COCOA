@@ -1,9 +1,10 @@
 /*************************************************************************************************************
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
- D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
- scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
- t.j.h.vlugt@tudelft.nl        http://homepage.tudelft.nl/v9k6y
+ D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
+ S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
+ t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation

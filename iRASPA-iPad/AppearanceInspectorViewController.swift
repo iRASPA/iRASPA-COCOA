@@ -665,11 +665,12 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
         self?.allStructures().forEach { $0.setRepresentationType(type: type) }
       }
     case 1:
-      let selected = (structure?.atomRepresentationStyle.rawValue).flatMap { $0 >= 0 ? $0 : nil }
-      return menuRow("Style", options: ["Default", "Fancy", "Licorice", "Objects"],
+      let styles = Structure.RepresentationStyle.selectableCases
+      let selected = styles.firstIndex(where: { $0 == structure?.atomRepresentationStyle })
+      return menuRow("Style", options: styles.map { $0.displayName },
                      selectedIndex: selected, placeholder: "Custom", effect: .scene) { [weak self] index in
         guard let self else { return }
-        let style = Structure.RepresentationStyle(rawValue: index) ?? .default
+        let style = styles[index]
         self.allStructures().forEach { $0.setRepresentationStyle(style: style, colorSets: self.document.colorSets) }
       }
     case 2:

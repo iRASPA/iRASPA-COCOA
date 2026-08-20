@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -62,6 +63,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
   let _inflightSemaphore: DispatchSemaphore = DispatchSemaphore(value: 3)
   var constantDataBufferIndex: Int = 0
   var frameUniformBuffers: [MTLBuffer]! = nil
+
   
   public weak var renderDataSource: RKRenderDataSource? = nil
   {
@@ -133,6 +135,12 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
     if let view: MetalView = self.view as? MetalView
     {
       view.onCycleRibbonAODebugMode = {[weak self] in self?.cycleRibbonAODebugMode()}
+    }
+
+    // switching the Rendering menu between rasterization and ray tracing has to repaint
+    NotificationCenter.default.addObserver(forName: Notification.Name(RKRenderSettings.RenderModeDidChange), object: nil, queue: OperationQueue.main)
+    {[weak self] _ in
+      self?.redraw()
     }
     
     // the metal default library is not in mainBundle, but in the local framework bundle
@@ -306,7 +314,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
     }
     redraw()
   }
-  
+
   // MARK: -
   // MARK: Reloading
   
@@ -322,7 +330,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
       self.renderer.isosurfaceShader.buildVertexBuffers()
       self.renderer.volumeRenderedSurfaceShader.buildVertexBuffers(device: device)
 
-      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader)
+      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader, internalBondShader: renderer.internalBondShader, externalBondShader: renderer.externalBondShader)
       self.renderer.buildStructureUniforms(device: device)
     
       self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: {})
@@ -347,7 +355,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
     
       self.renderer.isosurfaceShader.buildVertexBuffers()
     
-      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: ambientOcclusionQuality, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader)
+      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: ambientOcclusionQuality, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader, internalBondShader: renderer.internalBondShader, externalBondShader: renderer.externalBondShader)
       self.renderer.buildStructureUniforms(device: device)
     
       self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: {})
@@ -541,7 +549,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
     {
       invalidateRibbonAmbientOcclusionCache()
       self.renderer.buildVertexBuffers(device: device)
-      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader)
+      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader, internalBondShader: renderer.internalBondShader, externalBondShader: renderer.externalBondShader)
       self.renderer.buildStructureUniforms(device: device)
     }
   }
@@ -664,7 +672,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
       {
         let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera)
         
-        if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: crystalProjectData.renderImagePhysicalSizeInInches, camera: camera, imageQuality: imageQuality, renderQuality: .picture)
+        if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: crystalProjectData.renderImagePhysicalSizeInInches, camera: camera, imageQuality: imageQuality, renderQuality: .picture, renderMode: crystalProjectData.pictureRenderMode, pathTracerSettings: crystalProjectData.picturePathTracerSettings)
         {
           return data
         }
@@ -760,7 +768,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
   public func draw(in: MTKView)
   {
     if let view: MetalView = self.view as? MetalView,
-       let _ = self.device,
+       let device: MTLDevice = self.device,
        let commandQueue: MTLCommandQueue = self.renderCommandQueue,
        frameUniformBuffers != nil
     {
@@ -787,7 +795,9 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
       maximumEDRvalue = 1.0
       #endif
       
-      var uniforms: RKTransformationUniforms = renderer.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue, camera: view.renderCameraSource?.renderCamera)
+      let pathTracing: Bool = renderer.isInteractivePathTracing(device: device)
+
+      var uniforms: RKTransformationUniforms = renderer.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue, camera: view.renderCameraSource?.renderCamera, pathTracing: pathTracing)
       memcpy(frameUniformBuffers[constantDataBufferIndex].contents(),&uniforms, MemoryLayout<RKTransformationUniforms>.stride)
       RKMetal.didModify(frameUniformBuffers[constantDataBufferIndex], range: 0..<MemoryLayout<RKTransformationUniforms>.stride)
 
@@ -797,12 +807,36 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
                     
         renderer.pickingOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera, skipRibbonPicking: view.skipRibbonPicking)
        
-        renderer.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera)
-         
+        renderer.drawOffScreen(commandBuffer: commandBuffer, commandQueue: commandQueue, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera, suppressMolecularGeometry: pathTracing)
+
+        // the traced molecular geometry is composited over the rasterized rest of the scene
+        var tracedTexture: MTLTexture? = nil
+        if pathTracing
+        {
+          tracedTexture = renderer.encodeInteractivePathTracer(device: device,
+                                                               commandQueue: commandQueue,
+                                                               commandBuffer: commandBuffer,
+                                                               frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex],
+                                                               size: size,
+                                                               samplesThisFrame: RKRenderSettings.samplesPerInteractiveFrame(renderQuality: view.renderQuality))
+          if tracedTexture == nil
+          {
+            // the molecular geometry was left out of the raster passes above, so without a traced
+            // image to composite there would be nothing to look at
+            renderer.drawOffScreen(commandBuffer: commandBuffer, commandQueue: commandQueue, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera)
+
+            // the uniforms were written expecting a traced image, so the edge cueing has to be sent
+            // back to the rasterizer's depth; nothing has been committed yet, so this is in time
+            uniforms.edgeCueingUsesTracedDepth = 0.0
+            memcpy(frameUniformBuffers[constantDataBufferIndex].contents(),&uniforms, MemoryLayout<RKTransformationUniforms>.stride)
+            RKMetal.didModify(frameUniformBuffers[constantDataBufferIndex], range: 0..<MemoryLayout<RKTransformationUniforms>.stride)
+          }
+        }
+
         if let renderPass: MTLRenderPassDescriptor = (self.view as? MTKView)?.currentRenderPassDescriptor,
            let currentDrawable = (self.view as? MTKView)?.currentDrawable
         {
-          renderer.drawOnScreen(commandBuffer: commandBuffer, renderPass: renderPass, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size)
+          renderer.drawOnScreen(commandBuffer: commandBuffer, renderPass: renderPass, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, sourceTexture: tracedTexture, tracedDepthBuffer: tracedTexture == nil ? nil : renderer.pathTracerShader.compositeDepthBuffer, tracedCueMaskBuffer: tracedTexture == nil ? nil : renderer.pathTracerShader.compositeCueMaskBuffer)
           commandBuffer.present(currentDrawable)
         }
         commandBuffer.commit()

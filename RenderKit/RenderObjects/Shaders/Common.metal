@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -32,6 +33,87 @@
 #include <metal_stdlib>
 #include "Common.h"
 using namespace metal;
+
+
+LightingWeights accumulateLighting(constant LightUniforms& lightUniforms,
+                                   float3 N,
+                                   float3 V,
+                                   float4 eyePosition,
+                                   float materialShininess)
+{
+  return accumulateLighting(lightUniforms, N, V, eyePosition, materialShininess, 0xFFu);
+}
+
+uint shadowMaskAtFragment(texture2d<uint> shadowMask, float4 windowPosition)
+{
+  uint2 pixel = uint2(windowPosition.xy);
+  // the fallback the renderer binds when shadows are off is a single texel, so clamping to the
+  // texture rather than to the framebuffer reports every light lit at every pixel
+  pixel = min(pixel, uint2(shadowMask.get_width() - 1, shadowMask.get_height() - 1));
+  return shadowMask.read(pixel).r;
+}
+
+LightingWeights accumulateLighting(constant LightUniforms& lightUniforms,
+                                   float3 N,
+                                   float3 V,
+                                   float4 eyePosition,
+                                   float materialShininess,
+                                   uint lightVisibility)
+{
+  LightingWeights weights;
+
+  // ambient belongs to the scene, so it is set once here rather than summed over the lights
+  weights.ambient = lightUniforms.sceneAmbient.xyz;
+  weights.diffuse = float3(0.0);
+  weights.specular = float3(0.0);
+
+  for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
+  {
+    if (lightUniforms.lights[i].enabled < 0.5)
+    {
+      continue;
+    }
+
+    // in shadow for this light: no direct light of any kind reaches the point
+    if ((lightVisibility & (1u << uint(i))) == 0u)
+    {
+      continue;
+    }
+
+    // w selects the meaning of position: a direction for a directional light, a location otherwise
+    float4 lightPosition = lightUniforms.lights[i].position;
+    float3 toLight = (lightPosition - eyePosition * lightPosition.w).xyz;
+    float distanceToLight = length(toLight);
+    float3 L = (distanceToLight > 0.0) ? toLight / distanceToLight : float3(0.0, 0.0, 1.0);
+
+    float attenuation = 1.0;
+    if (lightPosition.w > 0.5)
+    {
+      attenuation = 1.0 / max(lightUniforms.lights[i].constantAttenuation +
+                              lightUniforms.lights[i].linearAttenuation * distanceToLight +
+                              lightUniforms.lights[i].quadraticAttenuation * distanceToLight * distanceToLight,
+                              1.0e-4);
+
+      if (lightUniforms.lights[i].lightType > 1.5) // spot
+      {
+        float3 spotAxis = normalize(lightUniforms.lights[i].spotDirection.xyz);
+        float spotCosine = dot(-L, spotAxis);
+        float cutoffCosine = cos((M_PI_F / 180.0) * clamp(lightUniforms.lights[i].spotCutoff, 0.0, 180.0));
+        attenuation *= (spotCosine < cutoffCosine)
+                           ? 0.0
+                           : pow(spotCosine, max(lightUniforms.lights[i].spotExponent, 0.0));
+      }
+    }
+
+    float3 R = reflect(-L, N);
+    float specularFactor = pow(max(dot(R, V), 0.0), lightUniforms.lights[i].shininess + materialShininess);
+
+    weights.diffuse += attenuation * max(dot(N, L), 0.0) * lightUniforms.lights[i].diffuse.xyz;
+    weights.specular += attenuation * specularFactor * lightUniforms.lights[i].specular.xyz;
+  }
+
+  return weights;
+}
 
 
 // Modulo 289, optimizes to code without divisions

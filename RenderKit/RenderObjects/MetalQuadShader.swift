@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -37,6 +38,13 @@ class MetalQuadShader
   var vertexBuffer: MTLBuffer! = nil
   var indexBuffer: MTLBuffer! = nil
   var quadSamplerState: MTLSamplerState! = nil
+
+  /// Stands in for the traced depth when the scene was rasterized. The fragment shader does not read it
+  /// then, but Metal still expects every index the shader declares to be bound.
+  var placeholderDepthBuffer: MTLBuffer! = nil
+
+  /// Likewise for the traced cueing mask.
+  var placeholderCueMaskBuffer: MTLBuffer! = nil
   var textureQuad16bitsPipeLine: MTLRenderPipelineState! = nil
   
   public func buildVertexBuffers(device: MTLDevice)
@@ -60,6 +68,12 @@ class MetalQuadShader
     }
     quadSamplerState = device.makeSamplerState(descriptor: pSamplerDescriptor!)
     
+    placeholderDepthBuffer = device.makeBuffer(length: MemoryLayout<Float>.stride, options: RKMetal.hostStorage)
+    placeholderDepthBuffer.label = "unused traced depth"
+
+    placeholderCueMaskBuffer = device.makeBuffer(length: MemoryLayout<UInt8>.stride, options: RKMetal.hostStorage)
+    placeholderCueMaskBuffer.label = "unused traced cueing mask"
+
     let quad: MetalQuadGeometry = MetalQuadGeometry()
     vertexBuffer = device.makeBuffer(bytes: quad.vertices, length:MemoryLayout<RKVertex>.stride * quad.vertices.count, options:RKMetal.hostStorage)
     indexBuffer = device.makeBuffer(bytes: quad.indices, length:MemoryLayout<UInt16>.stride * quad.indices.count, options:RKMetal.hostStorage)
@@ -104,7 +118,10 @@ class MetalQuadShader
     
   }
   
-  public func renderWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPass: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, sceneResolveTexture: MTLTexture, blurVerticalTexture: MTLTexture,  size: CGSize)
+  /// The edge cueing in the fragment shader finds the discontinuities it draws in the depth of the
+  /// finished scene, which is in `sceneDepthTexture` for a rasterized scene and in `tracedDepthBuffer`
+  /// for a path traced one.
+  public func renderWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPass: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, sceneResolveTexture: MTLTexture, blurVerticalTexture: MTLTexture, sceneDepthTexture: MTLTexture, sceneCueMaskTexture: MTLTexture, tracedDepthBuffer: MTLBuffer?, tracedCueMaskBuffer: MTLBuffer?,  size: CGSize)
   {
     let quadCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPass)!
     quadCommandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
@@ -112,8 +129,12 @@ class MetalQuadShader
     quadCommandEncoder.setRenderPipelineState(quadPipeLine)
     quadCommandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
     quadCommandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
+    quadCommandEncoder.setFragmentBuffer(tracedDepthBuffer ?? placeholderDepthBuffer, offset: 0, index: 1)
+    quadCommandEncoder.setFragmentBuffer(tracedCueMaskBuffer ?? placeholderCueMaskBuffer, offset: 0, index: 2)
     quadCommandEncoder.setFragmentTexture(sceneResolveTexture, index: 0)
     quadCommandEncoder.setFragmentTexture(blurVerticalTexture, index: 1)
+    quadCommandEncoder.setFragmentTexture(sceneDepthTexture, index: 2)
+    quadCommandEncoder.setFragmentTexture(sceneCueMaskTexture, index: 3)
     //quadCommandEncoder.setFragmentTexture(renderer.ambientOcclusionTextures[0][0], index: 0)
     //quadCommandEncoder.setFragmentTexture(renderer.shadowMapDepthTexture, index: 0)
     quadCommandEncoder.setFragmentSamplerState(quadSamplerState, index: 0)

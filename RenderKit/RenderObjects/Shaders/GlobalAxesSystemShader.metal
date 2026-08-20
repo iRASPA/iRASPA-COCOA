@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -54,8 +55,6 @@ vertex AxesVertexShaderOut GlobalAxesSystemVertexShader(const device InPrimitive
   
   float4 P =  frameUniforms.axesViewMatrix * pos;
   
-  // Calculate light vector
-  vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
             
   // Calculate view vector
   vert.V = -P.xyz;
@@ -69,18 +68,16 @@ fragment float4 GlobalAxesSystemFragmentShader(AxesVertexShaderOut vert [[stage_
                                          constant FrameUniforms& frameUniforms [[buffer(1)]],
                                          constant LightUniforms& lightUniforms [[buffer(2)]])
 {
-  // Normalize the incoming N, L and V vectors
+  // Normalize the incoming N and V vectors
   float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
   float3 V = normalize(vert.V);
   
-  // Calculate R locally
-  float3 R = reflect(-L, N);
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, V, float4(-vert.V, 1.0), 0.0);
   
   // Compute the diffuse and specular components for each fragment
-  float3 ambient = vert.ambient.xyz;
-  float3 diffuse = max(dot(N, L), 0.0) * vert.diffuse.xyz;
-  float3 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess) * vert.specular.xyz;
+  float3 ambient = lighting.ambient * vert.ambient.xyz;
+  float3 diffuse = lighting.diffuse * vert.diffuse.xyz;
+  float3 specular = lighting.specular * vert.specular.xyz;
   
   float4 color= float4((ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
   

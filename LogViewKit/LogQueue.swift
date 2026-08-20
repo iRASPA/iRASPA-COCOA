@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -30,6 +31,7 @@
  *************************************************************************************************************/
 
 import Foundation
+import os.log
 #if os(macOS)
 import AppKit
 private typealias LogColor = NSColor
@@ -69,7 +71,20 @@ public class LogQueue
     case warning = 1
     case info = 2
     case verbose = 3
+
+    var systemLogType: OSLogType
+    {
+      switch(self)
+      {
+      case .error: return OSLogType.error
+      case .warning: return OSLogType.default
+      case .info: return OSLogType.info
+      case .verbose: return OSLogType.debug
+      }
+    }
   }
+
+  private static let systemLog: OSLog = OSLog(subsystem: "nl.darkwing.iRASPA", category: "log")
   
   private static var logTextColor: LogColor
   {
@@ -187,6 +202,14 @@ public class LogQueue
       
       
       
+      // Processes without a log window (the XPC services and the command line tool) would
+      // otherwise drop every message, so send it to the system log instead. Visible with
+      // Console.app or `log stream`.
+      if self.destinations.count == 0
+      {
+        os_log("%{public}@ %{public}@", log: LogQueue.systemLog, type: level.systemLogType, colorString, message)
+      }
+
       DispatchQueue.main.async(execute: {
         
         self.textStorageView.append(attributedString)

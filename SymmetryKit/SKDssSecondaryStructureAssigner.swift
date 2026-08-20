@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  PyMOL DSS (Define Secondary Structure) algorithm adapted from SelectorAssignSS in pymol-open-source
  (Warren Lyford Delano / DeLano Scientific, MIT License).

@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation
@@ -47,7 +47,8 @@ struct RibbonVertexShaderOut
 {
   float4 position [[position]];
   float3 N;
-  float3 L;
+  /// The direction to the eye, unnormalized, so that negating it recovers the eye-space position that
+  /// the positional lights need.
   float3 V;
   float3 ambient;
   float3 diffuse;
@@ -108,13 +109,13 @@ vertex RibbonVertexShaderOut RibbonVertexShader(const device InPerVertex *vertic
   
   float3 baseColor = ribbonColorForStructureType(vertices[vid].pad.x, structureUniforms);
   vert.baseColor = baseColor;
-  vert.ambient = (lightUniforms.lights[0].ambient * structureUniforms.ribbonAmbientColor * float4(baseColor, 1.0)).xyz;
-  vert.diffuse = (lightUniforms.lights[0].diffuse * structureUniforms.ribbonDiffuseColor * float4(baseColor, 1.0)).xyz;
-  vert.specular = (lightUniforms.lights[0].specular * structureUniforms.ribbonSpecularColor).xyz;
+  // the material colours only; the lights are summed in the fragment shader, where the normal is known
+  vert.ambient = (structureUniforms.ribbonAmbientColor * float4(baseColor, 1.0)).xyz;
+  vert.diffuse = (structureUniforms.ribbonDiffuseColor * float4(baseColor, 1.0)).xyz;
+  vert.specular = structureUniforms.ribbonSpecularColor.xyz;
   vert.aoUV = vertices[vid].st;
   
   float4 P = frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
-  vert.L = (lightUniforms.lights[0].position - P * lightUniforms.lights[0].position.w).xyz;
   vert.V = -P.xyz;
   
   return vert;
@@ -127,7 +128,8 @@ fragment float4 RibbonFragmentShader(RibbonVertexShaderOut vert [[stage_in]],
                                      constant LightUniforms& lightUniforms [[buffer(2)]],
                                      constant RibbonAODebugUniforms& aoDebug [[buffer(3)]],
                                      texture2d<half> ambientOcclusionTexture [[texture(0)]],
-                                     sampler ambientOcclusionSampler [[sampler(0)]])
+                                     sampler ambientOcclusionSampler [[sampler(0)]],
+                                     texture2d<uint> shadowMask [[texture(1)]])
 {
   float2 inverseTextureSize = float2(1.0 / max(float(aoDebug.textureWidth), 1.0),
                                      1.0 / max(float(aoDebug.textureHeight), 1.0));
@@ -183,13 +185,14 @@ fragment float4 RibbonFragmentShader(RibbonVertexShaderOut vert [[stage_in]],
   }
   
   float3 N = normalize(vert.N);
-  float3 L = normalize(vert.L);
   float3 V = normalize(vert.V);
-  float3 R = reflect(-L, N);
   
-  float3 ambient = vert.ambient;
-  float3 diffuse = max(dot(N, L), 0.0) * vert.diffuse;
-  float3 specular = pow(max(dot(R, V), 0.0), lightUniforms.lights[0].shininess + structureUniforms.ribbonShininess) * vert.specular;
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, V, float4(-vert.V, 1.0), structureUniforms.ribbonShininess,
+                                                shadowMaskAtFragment(shadowMask, vert.position));
+  
+  float3 ambient = lighting.ambient * vert.ambient;
+  float3 diffuse = lighting.diffuse * vert.diffuse;
+  float3 specular = lighting.specular * vert.specular;
   
   float ao = 1.0;
   if (structureUniforms.ribbonAmbientOcclusion)
@@ -197,7 +200,11 @@ fragment float4 RibbonFragmentShader(RibbonVertexShaderOut vert [[stage_in]],
     ao = aoSample;
   }
   
-  float4 color = float4(ao * (ambient + diffuse + specular), 1.0);
+  // occlusion says how much of the environment the point can see, so physically it belongs on the
+  // ambient term alone; the strength blends it back into the direct terms to recover the contrast of
+  // the older "Fancy" look, which a camera light cannot otherwise produce since it casts no shadows
+  float aoDirect = mix(1.0, ao, clamp(structureUniforms.ambientOcclusionStrength, 0.0, 1.0));
+  float4 color = float4(ao * ambient + aoDirect * (diffuse + specular), 1.0);
   if (structureUniforms.ribbonHDR)
   {
     float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.ribbonHDRExposure);

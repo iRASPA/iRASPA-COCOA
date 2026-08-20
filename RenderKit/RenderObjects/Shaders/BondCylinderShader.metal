@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -81,6 +82,10 @@ struct BondCylinderImposterVertexShaderOut
   float3 pointA [[ flat ]];
   float3 pointB [[ flat ]];
   float radius [[ flat ]];
+  // the frame the baked occlusion measures the angle around the axis from, and the patch it lives in
+  float3 aoAxis1 [[ flat ]];
+  float3 aoAxis2 [[ flat ]];
+  uint aoPatch [[ flat ]];
 };
 
 // fragment-input variant of BondCylinderImposterVertexShaderOut (matched to the vertex
@@ -97,6 +102,9 @@ struct BondCylinderImposterPerPixelFragmentShaderIn
   float3 pointA [[ flat ]];
   float3 pointB [[ flat ]];
   float radius [[ flat ]];
+  float3 aoAxis1 [[ flat ]];
+  float3 aoAxis2 [[ flat ]];
+  uint aoPatch [[ flat ]];
 };
 
 // displacement (in model x,z of the cylinder) of the sub-cylinders of double/triple bonds,
@@ -117,6 +125,91 @@ static float2 bondImposterSubCylinderOffset(int type, uint sub, thread float &ra
     offset = (sub == 0) ? float2(-1.0, -dz) : ((sub == 1) ? float2(1.0, -dz) : float2(0.0, dz));
   }
   return offset;
+}
+
+/// One of the cylinders a bond is drawn as, placed in whichever frame the caller's matrix leads to, with
+/// the two axes perpendicular to it that the occlusion atlas measures its angle from.
+struct BondCylinderFrame
+{
+  float3 a;
+  float3 b;
+  float radius;
+  float3 axis1;
+  float3 axis2;
+};
+
+/// Places sub-cylinder `sub` of bond `iid`. The internal and external bonds disagree on the direction of
+/// the axis and on which model axis each sub-cylinder offset follows, so both conventions live here and
+/// every pass that needs the geometry — the drawn bonds, the occluders written into the bake's depth map,
+/// and the bake of the bonds' own occlusion — asks for it in the same way.
+static BondCylinderFrame bondCylinderFrame(const device InPerInstanceAttributesBonds *positions,
+                                           constant StructureUniforms& structureUniforms,
+                                           float4x4 modelView,
+                                           uint iid,
+                                           uint sub,
+                                           bool external)
+{
+  float4 pos1 = positions[iid].position1;
+  float4 pos2 = positions[iid].position2;
+
+  float radiusFactor;
+  int type = structureUniforms.isUnity ? 0 : positions[iid].type;
+  float2 offset = bondImposterSubCylinderOffset(type, sub, radiusFactor);
+
+  float3 dr = normalize((external ? (pos1 - pos2) : (pos2 - pos1)).xyz);
+  float3 v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
+  float3 v2 = normalize(cross(dr, v1));
+
+  // internal: model x maps to v2 and model z to v1; external: model x to -v1 and model z to -v2. These
+  // match the orientationMatrix of the triangle-mesh bond shaders.
+  float3 displacement = structureUniforms.bondScaling * (external ? (offset.x * (-v1) + offset.y * (-v2))
+                                                                  : (offset.x * v2 + offset.y * v1));
+
+  BondCylinderFrame frame;
+  frame.a = (modelView * float4(pos1.xyz + displacement, 1.0)).xyz;
+  frame.b = (modelView * float4(pos2.xyz + displacement, 1.0)).xyz;
+  frame.radius = structureUniforms.bondScaling * radiusFactor;
+  frame.axis1 = normalize((modelView * float4(v1, 0.0)).xyz);
+  frame.axis2 = normalize((modelView * float4(v2, 0.0)).xyz);
+  return frame;
+}
+
+/// Where in the occlusion atlas sub-cylinder `sub` of bond `iid` keeps its patch. The external bonds are
+/// numbered from zero like the internal ones and moved past them here, so that one texture serves both.
+static uint bondAmbientOcclusionPatch(const device InPerInstanceAttributesBonds *positions,
+                                      constant StructureUniforms& structureUniforms,
+                                      uint iid,
+                                      uint sub,
+                                      bool external)
+{
+  uint base = external ? uint(structureUniforms.externalBondAmbientOcclusionPatchBase) : 0u;
+  return base + positions[iid].ambientOcclusionPatch + sub;
+}
+
+/// Reads the occlusion baked for a point on a bond, given the surface normal and how far along the axis
+/// the point lies. The atlas stores one patch per drawn cylinder, the angle around the axis running across
+/// it and the distance along the axis down it.
+static float bondAmbientOcclusionAt(constant StructureUniforms& structureUniforms,
+                                    texture2d<half> ambientOcclusionTexture,
+                                    sampler ambientOcclusionSampler,
+                                    uint patch,
+                                    float3 axis1,
+                                    float3 axis2,
+                                    float3 N,
+                                    float axialFraction)
+{
+  float patchSize = structureUniforms.bondAmbientOcclusionPatchSize;
+  uint patchNumber = uint(structureUniforms.bondAmbientOcclusionPatchNumber);
+  float2 patchOrigin = float2(float(patch % patchNumber), float(patch / patchNumber));
+
+  // On the flat end-caps the normal is along the axis and carries no angle; those texels are hidden inside
+  // the atom the bond ends in whenever the bond is shorter than the two radii, which is the usual case.
+  float angle = atan2(dot(N, axis2), dot(N, axis1));
+  if (angle < 0.0) angle += 2.0 * M_PI_F;
+
+  float2 uv = float2(angle / (2.0 * M_PI_F), clamp(axialFraction, 0.0, 1.0));
+  float2 texel = patchSize * patchOrigin + float2(0.5) + (patchSize - 1.0) * uv;
+  return float(ambientOcclusionTexture.sample(ambientOcclusionSampler, texel * structureUniforms.bondAmbientOcclusionInverseTextureSize).r);
 }
 
 // builds the hull vertex position in eye space for a cylinder from a to b
@@ -299,43 +392,33 @@ vertex BondCylinderImposterVertexShaderOut BondCylinderImposterVertexShader(cons
   float4 pos1 = positions[iid].position1;
   float4 pos2 = positions[iid].position2;
   
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+  vert.ambient = structureUniforms.bondAmbientColor;
+  vert.specular = structureUniforms.bondSpecularColor;
   if (structureUniforms.bondColorMode == 0)
   {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color2;
+    vert.color1 = structureUniforms.bondDiffuseColor * positions[iid].color1;
+    vert.color2 = structureUniforms.bondDiffuseColor * positions[iid].color2;
   }
   else
   {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color2;
+    vert.color1 = structureUniforms.atomDiffuseColor * positions[iid].color1;
+    vert.color2 = structureUniforms.atomDiffuseColor * positions[iid].color2;
   }
   
-  // sub-cylinder displacement for double/triple bonds (all bonds drawn as single cylinders in 'unity'-mode)
-  float radiusFactor;
-  int type = structureUniforms.isUnity ? 0 : positions[iid].type;
-  float2 offset = bondImposterSubCylinderOffset(type, vid / 18, radiusFactor);
-  
-  float3 dr = normalize((pos2 - pos1).xyz);
-  float3 v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
-  float3 v2 = normalize(cross(dr, v1));
-  
-  // model x-axis maps to v2, model z-axis maps to v1 (matches the orientationMatrix of BondCylinderVertexShader)
-  float3 displacement = structureUniforms.bondScaling * (offset.x * v2 + offset.y * v1);
-  float radius = structureUniforms.bondScaling * radiusFactor;
-  
   float4x4 mv = frameUniforms.viewMatrix * structureUniforms.modelMatrix;
-  float3 a = (mv * float4(pos1.xyz + displacement, 1.0)).xyz;
-  float3 b = (mv * float4(pos2.xyz + displacement, 1.0)).xyz;
+  uint sub = vid / 18;
+  BondCylinderFrame frame = bondCylinderFrame(positions, structureUniforms, mv, iid, sub, false);
   
   bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
-  float3 posEye = bondImposterHullPosition(a, b, radius, vid, orthographic);
+  float3 posEye = bondImposterHullPosition(frame.a, frame.b, frame.radius, vid, orthographic);
   
   vert.frag_pos = posEye;
-  vert.pointA = a;
-  vert.pointB = b;
-  vert.radius = radius;
+  vert.pointA = frame.a;
+  vert.pointB = frame.b;
+  vert.radius = frame.radius;
+  vert.aoAxis1 = frame.axis1;
+  vert.aoAxis2 = frame.axis2;
+  vert.aoPatch = bondAmbientOcclusionPatch(positions, structureUniforms, iid, sub, false);
   vert.position = frameUniforms.projectionMatrix * float4(posEye, 1.0);
   
   // invisible bonds have w set to -1, leading to clipping of the entire hull
@@ -351,7 +434,10 @@ template <typename VertexIn>
 static FragOutput BondCylinderImposterFragmentImpl(VertexIn vert,
                                                    constant StructureUniforms& structureUniforms,
                                                    constant LightUniforms& lightUniforms,
-                                                   constant FrameUniforms& frameUniforms)
+                                                   constant FrameUniforms& frameUniforms,
+                                                   texture2d<half> ambientOcclusionTexture,
+                                                   sampler ambientOcclusionSampler,
+                                                   texture2d<uint> shadowMask)
 {
   FragOutput output;
   
@@ -369,20 +455,19 @@ static FragOutput BondCylinderImposterFragmentImpl(VertexIn vert,
   float4 screen_pos = frameUniforms.projectionMatrix * float4(pos, 1.0);
   output.depth = screen_pos.z / screen_pos.w;
   
-  float3 L = normalize((lightUniforms.lights[0].position - float4(pos, 1.0) * lightUniforms.lights[0].position.w).xyz);
   float3 V = normalize(-pos);
   
-  // Calculate R locally
-  float3 R = reflect(-L, N);
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, V, float4(pos, 1.0), structureUniforms.bondShininess,
+                                                shadowMaskAtFragment(shadowMask, vert.position));
   
-  float4 ambient = vert.ambient;
-  float4 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess + structureUniforms.bondShininess) * vert.specular;
-  float4 diffuse = max(dot(N, L), 0.0);
+  float4 ambient = float4(lighting.ambient, 1.0) * vert.ambient;
+  float4 specular = float4(lighting.specular, 1.0) * vert.specular;
+  float4 diffuse = float4(lighting.diffuse, 1.0);
   
   switch(structureUniforms.bondColorMode)
   {
     case 0:
-      diffuse *= lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
+      diffuse *= structureUniforms.bondDiffuseColor;
       break;
     case 1:
       diffuse *= (ct < 0.5 ? vert.color1 : vert.color2);
@@ -392,7 +477,16 @@ static FragOutput BondCylinderImposterFragmentImpl(VertexIn vert,
       break;
   }
   
-  float4 color= float4(ambient.xyz + diffuse.xyz + specular.xyz, 1.0);
+  float ao = 1.0;
+  if (structureUniforms.bondAmbientOcclusion)
+  {
+    ao = bondAmbientOcclusionAt(structureUniforms, ambientOcclusionTexture, ambientOcclusionSampler,
+                                vert.aoPatch, vert.aoAxis1, vert.aoAxis2, N, ct);
+  }
+  
+  // see the note on ambientOcclusionStrength in Common.h
+  float aoDirect = mix(1.0, ao, clamp(structureUniforms.ambientOcclusionStrength, 0.0, 1.0));
+  float4 color= float4(ao * ambient.xyz + aoDirect * (diffuse.xyz + specular.xyz), 1.0);
   
   if (structureUniforms.bondHDR)
   {
@@ -413,9 +507,12 @@ static FragOutput BondCylinderImposterFragmentImpl(VertexIn vert,
 fragment FragOutput BondCylinderImposterFragmentShader(BondCylinderImposterVertexShaderOut vert [[stage_in]],
                                                        constant StructureUniforms& structureUniforms [[buffer(0)]],
                                                        constant LightUniforms& lightUniforms [[buffer(1)]],
-                                                       constant FrameUniforms& frameUniforms [[buffer(2)]])
+                                                       constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                       texture2d<half>  ambientOcclusionTexture [[texture(0)]],
+                                                       sampler          ambientOcclusionSampler [[sampler(0)]],
+                                                       texture2d<uint> shadowMask [[texture(1)]])
 {
-  return BondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms);
+  return BondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
 }
 
 // "fast" per-pixel variant: identical shading, but with center interpolation the
@@ -423,9 +520,12 @@ fragment FragOutput BondCylinderImposterFragmentShader(BondCylinderImposterVerte
 fragment FragOutput BondCylinderImposterPerPixelFragmentShader(BondCylinderImposterPerPixelFragmentShaderIn vert [[stage_in]],
                                                                constant StructureUniforms& structureUniforms [[buffer(0)]],
                                                                constant LightUniforms& lightUniforms [[buffer(1)]],
-                                                               constant FrameUniforms& frameUniforms [[buffer(2)]])
+                                                               constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                       texture2d<half>  ambientOcclusionTexture [[texture(0)]],
+                                                       sampler          ambientOcclusionSampler [[sampler(0)]],
+                                                       texture2d<uint> shadowMask [[texture(1)]])
 {
-  return BondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms);
+  return BondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
 }
 
 
@@ -442,43 +542,33 @@ vertex BondCylinderImposterVertexShaderOut ExternalBondCylinderImposterVertexSha
   float4 pos1 = positions[iid].position1;
   float4 pos2 = positions[iid].position2;
   
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+  vert.ambient = structureUniforms.bondAmbientColor;
+  vert.specular = structureUniforms.bondSpecularColor;
   if (structureUniforms.bondColorMode == 0)
   {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color2;
+    vert.color1 = structureUniforms.bondDiffuseColor * positions[iid].color1;
+    vert.color2 = structureUniforms.bondDiffuseColor * positions[iid].color2;
   }
   else
   {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color2;
+    vert.color1 = structureUniforms.atomDiffuseColor * positions[iid].color1;
+    vert.color2 = structureUniforms.atomDiffuseColor * positions[iid].color2;
   }
   
-  // sub-cylinder displacement for double/triple bonds (all bonds drawn as single cylinders in 'unity'-mode)
-  float radiusFactor;
-  int type = structureUniforms.isUnity ? 0 : positions[iid].type;
-  float2 offset = bondImposterSubCylinderOffset(type, vid / 18, radiusFactor);
-  
-  float3 dr = normalize((pos1 - pos2).xyz);
-  float3 v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
-  float3 v2 = normalize(cross(dr, v1));
-  
-  // model x-axis maps to -v1, model z-axis maps to -v2 (matches the orientationMatrix of ExternalBondCylinderVertexShader)
-  float3 displacement = structureUniforms.bondScaling * (offset.x * (-v1) + offset.y * (-v2));
-  float radius = structureUniforms.bondScaling * radiusFactor;
-  
   float4x4 mv = frameUniforms.viewMatrix * structureUniforms.modelMatrix;
-  float3 a = (mv * float4(pos1.xyz + displacement, 1.0)).xyz;
-  float3 b = (mv * float4(pos2.xyz + displacement, 1.0)).xyz;
+  uint sub = vid / 18;
+  BondCylinderFrame frame = bondCylinderFrame(positions, structureUniforms, mv, iid, sub, true);
   
   bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5);
-  float3 posEye = bondImposterHullPosition(a, b, radius, vid, orthographic);
+  float3 posEye = bondImposterHullPosition(frame.a, frame.b, frame.radius, vid, orthographic);
   
   vert.frag_pos = posEye;
-  vert.pointA = a;
-  vert.pointB = b;
-  vert.radius = radius;
+  vert.pointA = frame.a;
+  vert.pointB = frame.b;
+  vert.radius = frame.radius;
+  vert.aoAxis1 = frame.axis1;
+  vert.aoAxis2 = frame.axis2;
+  vert.aoPatch = bondAmbientOcclusionPatch(positions, structureUniforms, iid, sub, true);
   vert.position = frameUniforms.projectionMatrix * float4(posEye, 1.0);
   
   // invisible bonds have w set to -1, leading to clipping of the entire hull
@@ -494,7 +584,10 @@ template <typename VertexIn>
 static FragOutput ExternalBondCylinderImposterFragmentImpl(VertexIn vert,
                                                            constant StructureUniforms& structureUniforms,
                                                            constant LightUniforms& lightUniforms,
-                                                           constant FrameUniforms& frameUniforms)
+                                                           constant FrameUniforms& frameUniforms,
+                                                           texture2d<half> ambientOcclusionTexture,
+                                                           sampler ambientOcclusionSampler,
+                                                           texture2d<uint> shadowMask)
 {
   FragOutput output;
   
@@ -515,20 +608,19 @@ static FragOutput ExternalBondCylinderImposterFragmentImpl(VertexIn vert,
   float4 screen_pos = frameUniforms.projectionMatrix * float4(pos, 1.0);
   output.depth = screen_pos.z / screen_pos.w;
   
-  float3 L = normalize((lightUniforms.lights[0].position - float4(pos, 1.0) * lightUniforms.lights[0].position.w).xyz);
   float3 V = normalize(-pos);
   
-  // Calculate R locally
-  float3 R = reflect(-L, N);
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, V, float4(pos, 1.0), structureUniforms.bondShininess,
+                                                shadowMaskAtFragment(shadowMask, vert.position));
   
-  float4 ambient = vert.ambient;
-  float4 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess + structureUniforms.bondShininess) * vert.specular;
-  float4 diffuse = max(dot(N, L), 0.0);
+  float4 ambient = float4(lighting.ambient, 1.0) * vert.ambient;
+  float4 specular = float4(lighting.specular, 1.0) * vert.specular;
+  float4 diffuse = float4(lighting.diffuse, 1.0);
   
   switch(structureUniforms.bondColorMode)
   {
     case 0:
-      diffuse *= lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
+      diffuse *= structureUniforms.bondDiffuseColor;
       break;
     case 1:
       diffuse *= (ct < 0.5 ? vert.color1 : vert.color2);
@@ -538,7 +630,16 @@ static FragOutput ExternalBondCylinderImposterFragmentImpl(VertexIn vert,
       break;
   }
   
-  float4 color= float4(ambient.xyz + diffuse.xyz + specular.xyz, 1.0);
+  float ao = 1.0;
+  if (structureUniforms.bondAmbientOcclusion)
+  {
+    ao = bondAmbientOcclusionAt(structureUniforms, ambientOcclusionTexture, ambientOcclusionSampler,
+                                vert.aoPatch, vert.aoAxis1, vert.aoAxis2, N, ct);
+  }
+  
+  // see the note on ambientOcclusionStrength in Common.h
+  float aoDirect = mix(1.0, ao, clamp(structureUniforms.ambientOcclusionStrength, 0.0, 1.0));
+  float4 color= float4(ao * ambient.xyz + aoDirect * (diffuse.xyz + specular.xyz), 1.0);
   
   if (structureUniforms.bondHDR)
   {
@@ -559,9 +660,12 @@ static FragOutput ExternalBondCylinderImposterFragmentImpl(VertexIn vert,
 fragment FragOutput ExternalBondCylinderImposterFragmentShader(BondCylinderImposterVertexShaderOut vert [[stage_in]],
                                                                constant StructureUniforms& structureUniforms [[buffer(0)]],
                                                                constant LightUniforms& lightUniforms [[buffer(1)]],
-                                                               constant FrameUniforms& frameUniforms [[buffer(2)]])
+                                                               constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                       texture2d<half>  ambientOcclusionTexture [[texture(0)]],
+                                                       sampler          ambientOcclusionSampler [[sampler(0)]],
+                                                       texture2d<uint> shadowMask [[texture(1)]])
 {
-  return ExternalBondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms);
+  return ExternalBondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
 }
 
 // "fast" per-pixel variant: identical shading, but with center interpolation the
@@ -569,9 +673,12 @@ fragment FragOutput ExternalBondCylinderImposterFragmentShader(BondCylinderImpos
 fragment FragOutput ExternalBondCylinderImposterPerPixelFragmentShader(BondCylinderImposterPerPixelFragmentShaderIn vert [[stage_in]],
                                                                        constant StructureUniforms& structureUniforms [[buffer(0)]],
                                                                        constant LightUniforms& lightUniforms [[buffer(1)]],
-                                                                       constant FrameUniforms& frameUniforms [[buffer(2)]])
+                                                                       constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                       texture2d<half>  ambientOcclusionTexture [[texture(0)]],
+                                                       sampler          ambientOcclusionSampler [[sampler(0)]],
+                                                       texture2d<uint> shadowMask [[texture(1)]])
 {
-  return ExternalBondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms);
+  return ExternalBondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
 }
 
 
@@ -778,17 +885,17 @@ vertex BondSelectionImposterVertexShaderOut internalBondSelectionImposterVertexS
   float4 pos1 = positions[iid].position1;
   float4 pos2 = positions[iid].position2;
   
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+  vert.ambient = structureUniforms.bondAmbientColor;
+  vert.specular = structureUniforms.bondSpecularColor;
   if (structureUniforms.bondColorMode == 0)
   {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color2;
+    vert.color1 = structureUniforms.bondDiffuseColor * positions[iid].color1;
+    vert.color2 = structureUniforms.bondDiffuseColor * positions[iid].color2;
   }
   else
   {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color2;
+    vert.color1 = structureUniforms.atomDiffuseColor * positions[iid].color1;
+    vert.color2 = structureUniforms.atomDiffuseColor * positions[iid].color2;
   }
   
   // sub-cylinder displacement for double/triple bonds (all bonds drawn as single cylinders in 'unity'-mode)
@@ -841,17 +948,17 @@ vertex BondSelectionImposterVertexShaderOut externalBondSelectionImposterVertexS
   float4 pos1 = positions[iid].position1;
   float4 pos2 = positions[iid].position2;
   
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+  vert.ambient = structureUniforms.bondAmbientColor;
+  vert.specular = structureUniforms.bondSpecularColor;
   if (structureUniforms.bondColorMode == 0)
   {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor * positions[iid].color2;
+    vert.color1 = structureUniforms.bondDiffuseColor * positions[iid].color1;
+    vert.color2 = structureUniforms.bondDiffuseColor * positions[iid].color2;
   }
   else
   {
-    vert.color1 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color1;
-    vert.color2 = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].color2;
+    vert.color1 = structureUniforms.atomDiffuseColor * positions[iid].color1;
+    vert.color2 = structureUniforms.atomDiffuseColor * positions[iid].color2;
   }
   
   // sub-cylinder displacement for double/triple bonds (all bonds drawn as single cylinders in 'unity'-mode)
@@ -898,18 +1005,18 @@ static float4 bondSelectionImposterShade(BondSelectionImposterVertexShaderOut ve
                                          constant LightUniforms& lightUniforms,
                                          float3 pos, float3 N, float ct)
 {
-  float3 L = normalize((lightUniforms.lights[0].position - float4(pos, 1.0) * lightUniforms.lights[0].position.w).xyz);
   float3 V = normalize(-pos);
-  float3 R = reflect(-L, N);
   
-  float4 ambient = vert.ambient;
-  float4 specular = pow(max(dot(R, V), 0.0),  lightUniforms.lights[0].shininess + structureUniforms.bondShininess) * vert.specular;
-  float4 diffuse = max(dot(N, L), 0.0);
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, V, float4(pos, 1.0), structureUniforms.bondShininess);
+  
+  float4 ambient = float4(lighting.ambient, 1.0) * vert.ambient;
+  float4 specular = float4(lighting.specular, 1.0) * vert.specular;
+  float4 diffuse = float4(lighting.diffuse, 1.0);
   
   switch(structureUniforms.bondColorMode)
   {
     case 0:
-      diffuse *= lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
+      diffuse *= structureUniforms.bondDiffuseColor;
       break;
     case 1:
       diffuse *= (ct < 0.5 ? vert.color1 : vert.color2);
@@ -993,8 +1100,8 @@ fragment FragOutput internalBondSelectionStripedImposterFragmentShader(BondSelec
   if (fract(st.x*frequency) >= uDensity && fract(st.y*frequency) >= uDensity)
     discard_fragment();
   
-  float3 L = normalize((lightUniforms.lights[0].position - float4(pos, 1.0) * lightUniforms.lights[0].position.w).xyz);
-  float4 color = max(dot(N, L), 0.0) * float4(1.0,1.0,0.0,1.0);
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, normalize(-pos), float4(pos, 1.0), 0.0);
+  float4 color = float4(lighting.diffuse, 1.0) * float4(1.0,1.0,0.0,1.0);
   
   if (structureUniforms.bondHDR)
   {
@@ -1113,8 +1220,8 @@ fragment FragOutput externalBondSelectionStripedImposterFragmentShader(BondSelec
   if (fract(st.x*frequency) >= uDensity && fract(st.y*frequency) >= uDensity)
     discard_fragment();
   
-  float3 L = normalize((lightUniforms.lights[0].position - float4(pos, 1.0) * lightUniforms.lights[0].position.w).xyz);
-  float4 color = max(dot(N, L), 0.0) * float4(1.0,1.0,0.0,1.0);
+  LightingWeights lighting = accumulateLighting(lightUniforms, N, normalize(-pos), float4(pos, 1.0), 0.0);
+  float4 color = float4(lighting.diffuse, 1.0) * float4(1.0,1.0,0.0,1.0);
   
   if (structureUniforms.bondHDR)
   {
@@ -1125,6 +1232,251 @@ fragment FragOutput externalBondSelectionStripedImposterFragmentShader(BondSelec
   float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
   output.albedo = float4(color.xyz * bloomLevel, bloomLevel);
   return output;
+}
+
+
+// MARK: Occlusion bake
+// =============================================================================
+// The bake looks at the structure from a few hundred directions and records, for each direction, a depth
+// map of everything that could stand in the way. Atoms and ribbons have always been written into that map;
+// these shaders put the bonds in it too, so that a bond darkens the atoms and ribbons it lies against.
+//
+// They live in this file rather than with the rest of the bake because they reuse the hull construction and
+// the cylinder intersection the drawn bonds use, which keeps the occluding shape and the drawn shape the
+// same thing by construction. The bake's camera is always orthographic, so the ray is fixed.
+
+struct BondShadowMapVertexShaderOut
+{
+  float4 position [[position]];
+  float3 frag_pos;
+  float3 pointA [[ flat ]];
+  float3 pointB [[ flat ]];
+  float radius [[ flat ]];
+};
+
+/// Unlike the shadow-map output of the atoms and ribbons, this one cannot promise to write a depth no
+/// greater than the rasterized one: the hull encloses the cylinder and so lies in front of it.
+struct BondShadowMapOutput
+{
+  float depth [[depth(any)]];
+};
+
+/// The depth written for a bond, given where the ray met it: that of the point on the bond's axis rather than
+/// of the surface itself.
+///
+/// The atoms are written into this map as flat discs at their centre depth rather than as hemispheres, so that
+/// an atom never occludes itself; the axis of a bond is the same idea one dimension along. Writing the true
+/// surface instead makes bonds much stronger occluders than the atoms beside them, and since a bond runs from
+/// one atom centre to the other it then darkens both of them along the ring where the two surfaces touch.
+///
+/// It also means no depth margin is needed: a surface lying against a bond is in front of its axis by the
+/// bond's radius, which is far more than any rounding between the two passes.
+static float bondShadowMapAxisDepth(constant ShadowUniforms& shadowUniforms,
+                                    float3 a, float3 b, float axialFraction)
+{
+  float4 axisPoint = shadowUniforms.projectionMatrix * float4(a + axialFraction * (b - a), 1.0);
+  return axisPoint.z / axisPoint.w;
+}
+
+/// Places one hull vertex of a bond in the frame of the bake's camera. `vid / 18` selects the sub-cylinder,
+/// so a double or triple bond occludes with the several cylinders it is drawn as.
+static BondShadowMapVertexShaderOut bondShadowMapHull(const device InPerInstanceAttributesBonds *positions,
+                                                      constant ShadowUniforms& shadowUniforms,
+                                                      constant StructureUniforms& structureUniforms,
+                                                      uint vid,
+                                                      uint iid,
+                                                      bool external)
+{
+  BondShadowMapVertexShaderOut vert;
+
+  float4x4 mv = shadowUniforms.viewMatrix * structureUniforms.modelMatrix;
+  BondCylinderFrame frame = bondCylinderFrame(positions, structureUniforms, mv, iid, vid / 18, external);
+
+  float3 posEye = bondImposterHullPosition(frame.a, frame.b, frame.radius, vid, true);
+
+  vert.frag_pos = posEye;
+  vert.pointA = frame.a;
+  vert.pointB = frame.b;
+  vert.radius = frame.radius;
+  vert.position = shadowUniforms.projectionMatrix * float4(posEye, 1.0);
+
+  // invisible bonds have w set to -1, leading to clipping of the entire hull
+  if (positions[iid].position1.w < 0.0 || positions[iid].position2.w < 0.0)
+  {
+    vert.position = float4(0.0, 0.0, 0.0, -1.0);
+  }
+
+  return vert;
+}
+
+vertex BondShadowMapVertexShaderOut BondShadowMapVertexShader(const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
+                                                              constant ShadowUniforms& shadowUniforms [[buffer(2)]],
+                                                              constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                              uint vid [[vertex_id]],
+                                                              uint iid [[instance_id]])
+{
+  return bondShadowMapHull(positions, shadowUniforms, structureUniforms, vid, iid, false);
+}
+
+vertex BondShadowMapVertexShaderOut ExternalBondShadowMapVertexShader(const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
+                                                                      constant ShadowUniforms& shadowUniforms [[buffer(2)]],
+                                                                      constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                                      uint vid [[vertex_id]],
+                                                                      uint iid [[instance_id]])
+{
+  return bondShadowMapHull(positions, shadowUniforms, structureUniforms, vid, iid, true);
+}
+
+fragment BondShadowMapOutput BondShadowMapFragmentShader(BondShadowMapVertexShaderOut vert [[stage_in]],
+                                                         constant ShadowUniforms& shadowUniforms [[buffer(0)]])
+{
+  BondShadowMapOutput output;
+
+  float3 ro = float3(vert.frag_pos.xy, 0.0);
+  const float3 rd = float3(0.0, 0.0, -1.0);
+
+  float3 N;
+  float ct;
+  float t = bondImposterIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, N, ct);
+  if (t < 0.0) discard_fragment();
+
+  output.depth = bondShadowMapAxisDepth(shadowUniforms, vert.pointA, vert.pointB, ct);
+
+  return output;
+}
+
+fragment BondShadowMapOutput ExternalBondShadowMapFragmentShader(BondShadowMapVertexShaderOut vert [[stage_in]],
+                                                                 constant ShadowUniforms& shadowUniforms [[buffer(0)]],
+                                                                 constant StructureUniforms& structureUniforms [[buffer(1)]])
+{
+  BondShadowMapOutput output;
+
+  float3 ro = float3(vert.frag_pos.xy, 0.0);
+  const float3 rd = float3(0.0, 0.0, -1.0);
+
+  // an external bond is drawn cut off at the cell boundary, so it has to occlude cut off as well
+  float4x4 toStructure = structureUniforms.inverseModelMatrix * shadowUniforms.viewMatrixInverse;
+  float3 N;
+  float ct;
+  float t = bondImposterClippedIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, toStructure, structureUniforms, N, ct);
+  if (t < 0.0) discard_fragment();
+
+  output.depth = bondShadowMapAxisDepth(shadowUniforms, vert.pointA, vert.pointB, ct);
+
+  return output;
+}
+
+// MARK: Bond ambient occlusion bake
+// =============================================================================
+// The other half of the bake: what the bonds receive rather than what they cast. Each drawn cylinder owns a
+// square patch of an atlas, the angle around the axis running across it and the distance along the axis
+// down it, and the pass below adds up how much of the sky reaches each of those texels.
+//
+// The pass rasterizes the patches themselves, not the bonds: six vertices place a quad over the patch, and
+// the fragment shader turns the texel it lands on back into a point on the cylinder to test against the
+// depth map. This mirrors how the atoms' atlas is filled, and like it the whole atlas is redrawn once per
+// direction and blended.
+
+struct BondAmbientOcclusionVertexShaderOut
+{
+  float4 position [[position]];
+  // in the space the depth map was drawn in, so the structure's model matrix but not the bake's view
+  float3 pointA [[ flat ]];
+  float3 pointB [[ flat ]];
+  float3 axis1 [[ flat ]];
+  float3 axis2 [[ flat ]];
+  float radius [[ flat ]];
+};
+
+static BondAmbientOcclusionVertexShaderOut bondAmbientOcclusionPatchQuad(const device InPerInstanceAttributesBonds *positions,
+                                                                        constant StructureUniforms& structureUniforms,
+                                                                        uint vid,
+                                                                        uint iid,
+                                                                        bool external)
+{
+  BondAmbientOcclusionVertexShaderOut vert;
+
+  uint sub = vid / 6;
+  BondCylinderFrame frame = bondCylinderFrame(positions, structureUniforms, structureUniforms.modelMatrix, iid, sub, external);
+  vert.pointA = frame.a;
+  vert.pointB = frame.b;
+  vert.axis1 = frame.axis1;
+  vert.axis2 = frame.axis2;
+  vert.radius = frame.radius;
+
+  uint patch = bondAmbientOcclusionPatch(positions, structureUniforms, iid, sub, external);
+  uint patchNumber = uint(structureUniforms.bondAmbientOcclusionPatchNumber);
+  float patchSize = structureUniforms.bondAmbientOcclusionPatchSize;
+  float2 patchOrigin = float2(float(patch % patchNumber), float(patch / patchNumber));
+
+  const float2 corners[6] = {float2(0.0, 0.0), float2(1.0, 0.0), float2(0.0, 1.0),
+                             float2(0.0, 1.0), float2(1.0, 0.0), float2(1.0, 1.0)};
+  float2 corner = corners[vid % 6];
+
+  float2 origin = patchSize * patchOrigin * structureUniforms.bondAmbientOcclusionInverseTextureSize;
+  float extent = patchSize * structureUniforms.bondAmbientOcclusionInverseTextureSize;
+  float2 clipPosition = (origin + extent * corner) * 2.0 - 1.0;
+  vert.position = float4(clipPosition.x, -clipPosition.y, 0.0, 1.0);
+
+  // invisible bonds have w set to -1; leaving their patches empty is harmless as nothing samples them
+  if (positions[iid].position1.w < 0.0 || positions[iid].position2.w < 0.0)
+  {
+    vert.position = float4(0.0, 0.0, 0.0, -1.0);
+  }
+
+  return vert;
+}
+
+vertex BondAmbientOcclusionVertexShaderOut BondAmbientOcclusionVertexShader(const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
+                                                                           constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                                           uint vid [[vertex_id]],
+                                                                           uint iid [[instance_id]])
+{
+  return bondAmbientOcclusionPatchQuad(positions, structureUniforms, vid, iid, false);
+}
+
+vertex BondAmbientOcclusionVertexShaderOut ExternalBondAmbientOcclusionVertexShader(const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
+                                                                                   constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                                                   uint vid [[vertex_id]],
+                                                                                   uint iid [[instance_id]])
+{
+  return bondAmbientOcclusionPatchQuad(positions, structureUniforms, vid, iid, true);
+}
+
+fragment half BondAmbientOcclusionFragmentShader(BondAmbientOcclusionVertexShaderOut vert [[stage_in]],
+                                                 constant ShadowUniforms& shadowUniforms [[buffer(0)]],
+                                                 constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                 constant float& weight [[buffer(2)]],
+                                                 depth2d<float> shadowMap [[texture(0)]],
+                                                 sampler shadowMapSampler [[sampler(0)]])
+{
+  float patchSize = structureUniforms.bondAmbientOcclusionPatchSize;
+  uint2 texel = uint2(floor(vert.position.xy)) % uint2(patchSize, patchSize);
+  // the two ends of the angular range are the same line of the cylinder, so both edge columns hold it and
+  // the filter has a neighbour to reach for either side of the seam
+  float2 uv = float2(texel) / float2(max(patchSize - 1.0, 1.0));
+
+  float angle = 2.0 * M_PI_F * uv.x;
+  float3 N = cos(angle) * vert.axis1 + sin(angle) * vert.axis2;
+  float3 pos = mix(vert.pointA, vert.pointB, uv.y) + vert.radius * N;
+
+  float4 shadowCoordinate = shadowUniforms.shadowMatrix * float4(pos, 1.0);
+  shadowCoordinate.y = 1.0 - shadowCoordinate.y;
+  float4 shadowPos = shadowCoordinate / shadowCoordinate.w;
+
+  float4 normal = shadowUniforms.normalMatrix * float4(N, 0.0);
+  if (normal.z < 0.0)
+  {
+    return 0.0;
+  }
+
+  // No margin is needed against the bond's own entry in the depth map: that entry is the axis, and every
+  // point this pass tests is in front of it by the radius wherever it faces the camera at all.
+  if (shadowMap.sample(shadowMapSampler, shadowPos.xy) >= shadowPos.z)
+  {
+    return weight * normal.z;
+  }
+  return 0.0;
 }
 
 

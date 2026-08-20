@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -41,13 +42,16 @@ import OperationKit
 
 public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderRibbonSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, Cloning
 {
-  private static var classVersionNumber: Int = 7
+  private static var classVersionNumber: Int = 8
   
   public var backbone: ProteinBackbone = ProteinBackbone()
   public var drawRibbon: Bool = true
   public var ribbonScaleFactor: Double = 1.2
   public var ribbonColorSet: ProteinRibbonColorSet = .standardAcademic
   public var ribbonRepresentationStyle: ProteinRibbonRepresentationStyle = .default
+
+  /// Contour lines and halos drawn where the ribbons of this structure meet something else.
+  public var ribbonEdgeCueing: RKEdgeCueing = .off
   public var ribbonSecondaryStructureMethod: ProteinRibbonSecondaryStructureMethod = .stride
   public var ribbonSplineType: ProteinRibbonSplineType = .bSpline
   public var ribbonSubdivisionsPerSegment: Int = 24
@@ -1382,6 +1386,10 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
     {
       encoder.encode(ribbonSecondaryStructureMethod.rawValue)
     }
+    if Protein.classVersionNumber >= 8
+    {
+      encoder.encode(ribbonEdgeCueing.rawValue)
+    }
     super.binaryEncode(to: encoder)
   }
   
@@ -1453,6 +1461,23 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
     {
       let secondaryStructureMethodIdentifier: String = try decoder.decode(String.self)
       self.ribbonSecondaryStructureMethod = ProteinRibbonSecondaryStructureMethod(rawValue: secondaryStructureMethodIdentifier) ?? .stride
+    }
+
+    if readVersionNumber >= 8
+    {
+      self.ribbonEdgeCueing = RKEdgeCueing(rawValue: try decoder.decode(Int.self)) ?? .off
+      // Fancy carried the cues before Illustrative was split off from it, so the two stored together
+      // name what is now Illustrative; a hand-cued ribbon was stored as Custom and is left alone.
+      if self.ribbonRepresentationStyle == .fancy && self.ribbonEdgeCueing == .contoursAndHalos
+      {
+        self.ribbonRepresentationStyle = .illustrative
+      }
+    }
+    else
+    {
+      // Written before the cueing existed, so it never carried any, and Fancy is now the style without
+      // them: what such a ribbon has always looked like.
+      self.ribbonEdgeCueing = .off
     }
     
     try super.init(fromBinary: decoder)

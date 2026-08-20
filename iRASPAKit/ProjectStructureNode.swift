@@ -1,9 +1,10 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2022 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2026 David Dubbeldam, Jocelyne Vreede, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ J.Vreede@uva.nl      https://www.uva.nl/en/profile/v/r/j.vreede/j.vreede.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
  t.j.h.vlugt@tudelft.nl  http://homepage.tudelft.nl/v9k6y
  
@@ -39,7 +40,7 @@ import MathKit
 
 public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRenderCameraSource, NSSecureCoding
 {
-  private static var classVersionNumber: Int = 5
+  private static var classVersionNumber: Int = 13
   
   public enum MovieType: Int
   {
@@ -49,7 +50,10 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   }
   
   public var sceneList: SceneList = SceneList()
-  public var renderLights: [RKRenderLight] = [RKRenderLight(),RKRenderLight(),RKRenderLight(),RKRenderLight()]
+  public var renderLights: [RKRenderLight] = RKRenderLight.defaultRig()
+
+  /// The named style `renderLights` currently amounts to, kept in step by `recheckLightStyle`.
+  public var renderLightStyle: RKLightStyle = .default
   
   public var showBoundingBox: Bool = false
   
@@ -92,7 +96,36 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   public var imageUnits: Units = .cm
   public var imageDimensions: Dimensions = .pixels
   public var renderImageQuality : RKImageQuality = .rgb_8_bits
-  
+
+  /// How exported pictures and movies are rendered. These sit with the other export settings rather
+  /// than in the application preferences, because unlike the interactive sample counts, which say
+  /// what this machine can keep up with, they are choices about the output.
+  public var renderPictureRayTracing: Bool = false
+  public var renderPictureSampleCount: Int = 1024
+  public var renderPictureMaximumBounces: Int = 2
+
+  /// How far occlusion leans towards darkening the direct lighting terms as well as the ambient one,
+  /// where 0 is physically correct and 1 reproduces the older "Fancy" look. Applies to both the
+  /// rasterizer and the path tracer, and to both interactive frames and exports: it is purely a look,
+  /// with no bearing on render cost, so there is no reason for it to differ between them.
+  public var renderAmbientOcclusionStrength: Double = 0.0
+
+  /// Whether the rasterizer traces the scene to find out which lights actually reach each surface, so
+  /// that geometry standing in the way casts a shadow. On by default, which is what makes the rasterized
+  /// and path-traced views of a scene agree without having to be asked. It costs nothing under the
+  /// legacy camera light, since a light on the view axis casts no shadow and the pass is skipped.
+  ///
+  /// An export honours this wherever it is opened, however slowly the machine traces: a picture is what
+  /// the document says it is. Whether the render view spends a frame's worth of rays on the same thing
+  /// is `RKRenderSettings.interactiveShadows`, which belongs to the machine.
+  public var renderShadows: Bool = true
+
+  /// Light arriving from the environment as a whole, which is why it sits beside the lights rather than
+  /// inside one of them: a rig is free to turn every lamp off without the scene going black. Acts as a
+  /// multiplier on each material's own ambient, which the representation style owns.
+  public var renderSceneAmbientIntensity: Double = 1.0
+  public var renderSceneAmbientColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+
   public var numberOfFramesPerSecond: Int = 15
   
   public var movieType: MovieType = .rotationY
@@ -484,13 +517,28 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     encoder.encode(self.imageUnits.rawValue)
     encoder.encode(self.imageDimensions.rawValue)
     encoder.encode(self.renderImageQuality.rawValue)
-    
+
+    encoder.encode(self.renderPictureRayTracing)
+    encoder.encode(self.renderPictureSampleCount)
+    encoder.encode(self.renderPictureMaximumBounces)
+    encoder.encode(self.renderAmbientOcclusionStrength)
+    encoder.encode(self.renderShadows)
+
     encoder.encode(self.numberOfFramesPerSecond)
     encoder.encode(self.movieType.rawValue)
     
     encoder.encode(self.renderCamera ?? RKCamera())
     
     encoder.encode(self.renderAxes)
+    
+    encoder.encode(self.renderLights.count)
+    for light in self.renderLights
+    {
+      encoder.encode(light)
+    }
+    encoder.encode(self.renderLightStyle.rawValue)
+    encoder.encode(self.renderSceneAmbientIntensity)
+    encoder.encode(self.renderSceneAmbientColor)
     
     encoder.encode(self.sceneList)
     
@@ -499,9 +547,83 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     super.binaryEncode(to: encoder)
   }
   
+  /// Replaces the lights with those of a named style. Selecting `custom` keeps the current lights, since
+  /// custom describes what is already there.
+  public func setLightStyle(_ style: RKLightStyle)
+  {
+    if let rig: [RKRenderLight] = RKRenderLight.rig(for: style)
+    {
+      self.renderLights = rig
+      self.renderAmbientOcclusionStrength = style.ambientOcclusionStrength
+      self.renderSceneAmbientIntensity = style.sceneAmbientIntensity
+      self.renderSceneAmbientColor = style.sceneAmbientColor
+    }
+    self.renderLightStyle = style
+  }
+
+  /// Called after any light, the scene ambient or the occlusion strength is edited, so the style name
+  /// follows the lighting rather than going stale.
+  public func recheckLightStyle()
+  {
+    self.renderLightStyle = RKRenderLight.style(matching: self.renderLights,
+                                                sceneAmbientIntensity: self.renderSceneAmbientIntensity,
+                                                sceneAmbientColor: self.renderSceneAmbientColor,
+                                                ambientOcclusionStrength: self.renderAmbientOcclusionStrength)
+  }
+
   // MARK: -
   // MARK: Binary Decodable support
-  
+
+  /// Up to version 9 each light carried its own ambient and the shaders added those together, so the level
+  /// a document was saved with is recovered by adding them up here. Only lights that were switched on
+  /// counted towards it. The colour is taken from the first light that contributed rather than blended,
+  /// since the inspector only ever offered one ambient colour at a time in practice.
+  ///
+  /// Only ever called with lights that came out of a document. The rigs built in code no longer carry
+  /// ambient at all, so handing one of those in would report darkness.
+  private static func sceneAmbientGatheredFromLights(_ lights: [RKRenderLight]) -> (intensity: Double, color: NSColor)
+  {
+    var intensity: Double = 0.0
+    var color: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    var haveColor: Bool = false
+
+    for light in lights where light.isEnabled && light.ambientIntensity > 0.0
+    {
+      intensity += light.ambientIntensity
+      if !haveColor
+      {
+        color = light.ambient
+        haveColor = true
+      }
+    }
+
+    // the sum could run past white, which the shaders allowed and a single slider cannot express
+    return (min(intensity, 1.0), color)
+  }
+
+  /// Version 7 stored four lights as key, fill, rim and bounce. Those became eight photographic roles in
+  /// a different order, so the stored lights are moved to the slots they were written as. A light keeps
+  /// all of its own state, and slot order does not affect rendering, so a document looks the same after
+  /// the move. Bounce has no counterpart among the new roles and is only carried over, into the butterfly
+  /// slot, when it was switched on, so that a document relying on it still renders as it did.
+  private static func lightsUpgradedFromVersion7(_ lights: [RKRenderLight]) -> [RKRenderLight]
+  {
+    var upgraded: [RKRenderLight] = RKRenderLight.standardRig()
+
+    // whatever the old rig lit the scene with is complete in itself, so the new camera light stays off
+    upgraded[0].isEnabled = false
+
+    let slots: [Int] = [1, 2, 4, 7] // key, fill, rim/kicker, and bounce landing on butterfly
+    for (index, slot) in slots.enumerated() where index < lights.count
+    {
+      if index < 3 || lights[index].isEnabled
+      {
+        upgraded[slot] = lights[index]
+      }
+    }
+    return upgraded
+  }
+
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
     //self.init(name: "test", sceneList: SceneList.init(scenes: []))
@@ -555,7 +677,20 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     self.imageDimensions = imageDimensions
     guard let renderImageQuality = try RKImageQuality(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
     self.renderImageQuality = renderImageQuality
-    
+
+    if readVersionNumber >= 6 // introduced in version 6
+    {
+      self.renderPictureRayTracing = try decoder.decode(Bool.self)
+      self.renderPictureSampleCount = try decoder.decode(Int.self)
+      self.renderPictureMaximumBounces = try decoder.decode(Int.self)
+      self.renderAmbientOcclusionStrength = try decoder.decode(Double.self)
+    }
+
+    if readVersionNumber >= 13 // introduced in version 13
+    {
+      self.renderShadows = try decoder.decode(Bool.self)
+    }
+
     self.numberOfFramesPerSecond = try decoder.decode(Int.self)
     if readVersionNumber >= 5 // introduced in version 5
     {
@@ -568,6 +703,81 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     if readVersionNumber >= 3 // introduced in version 3
     {
       self.renderAxes = try decoder.decode(RKGlobalAxes.self)
+    }
+    
+    var storedLights: [RKRenderLight]? = nil
+    if readVersionNumber >= 7 // introduced in version 7
+    {
+      // the count is stored rather than assumed, so the number of roles can change without a version bump
+      let numberOfLights: Int = try decoder.decode(Int.self)
+      var lights: [RKRenderLight] = []
+      for _ in 0..<numberOfLights
+      {
+        lights.append(try decoder.decode(RKRenderLight.self))
+      }
+
+      if readVersionNumber == 7
+      {
+        lights = ProjectStructureNode.lightsUpgradedFromVersion7(lights)
+      }
+
+      if !lights.isEmpty
+      {
+        // the shaders read a fixed number of slots, so a short list is padded from the rig rather than
+        // leaving the remainder to whatever a default light happens to be
+        var rig: [RKRenderLight] = RKRenderLight.standardRig()
+        for (index, light) in lights.enumerated() where index < rig.count
+        {
+          rig[index] = light
+        }
+        self.renderLights = rig
+        storedLights = rig
+      }
+    }
+
+    var storedLightStyle: Int? = nil
+    if readVersionNumber >= 9 // introduced in version 9
+    {
+      storedLightStyle = try decoder.decode(Int.self)
+    }
+
+    if readVersionNumber >= 10 // introduced in version 10
+    {
+      self.renderSceneAmbientIntensity = try decoder.decode(Double.self)
+      self.renderSceneAmbientColor = try decoder.decode(NSColor.self)
+    }
+    else if let stored: [RKRenderLight] = storedLights
+    {
+      // ambient used to belong to each light and be summed over them, so it is gathered off the lights the
+      // document actually holds and it keeps the ambient level it was saved with
+      let gathered = ProjectStructureNode.sceneAmbientGatheredFromLights(stored)
+      self.renderSceneAmbientIntensity = gathered.intensity
+      self.renderSceneAmbientColor = gathered.color
+    }
+    // a document from before the lights were stored has none to gather from, and what it was given instead
+    // was a light carrying a full ambient, so the neutral default above is what it rendered with. Reading
+    // the current default rig here would report no ambient at all and take the Fancy style, which is lit by
+    // ambient alone, to black.
+
+    if let style: Int = storedLightStyle
+    {
+      self.renderLightStyle = RKLightStyle(rawValue: style) ?? .custom
+    }
+    else
+    {
+      // an older document never named its lighting, so the name is worked out from the lighting itself,
+      // which is why this waits until the ambient above has been settled
+      self.renderLightStyle = RKRenderLight.style(matching: self.renderLights,
+                                                  sceneAmbientIntensity: self.renderSceneAmbientIntensity,
+                                                  sceneAmbientColor: self.renderSceneAmbientColor,
+                                                  ambientOcclusionStrength: self.renderAmbientOcclusionStrength)
+    }
+
+    if readVersionNumber == 11
+    {
+      // Version 11 held one setting for the whole scene. It moved onto the structures, which each
+      // carry their own now, so the value is read past and dropped.
+      _ = try decoder.decode(Int.self)
     }
     
     self.sceneList = try decoder.decode(SceneList.self)
