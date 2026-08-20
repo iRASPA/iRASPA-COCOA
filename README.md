@@ -33,5 +33,23 @@ Output:
 * 8/16 bits, RGB/CMYK, loss-less TIFF for pictures,
 * mp4 (h264) for movies.
 
+## Building from source
+
+The structure databases in `iRASPA/StructureDatabases` and the bundled Python static libraries in `PythonKit` are stored with [Git LFS](https://git-lfs.com). Install the LFS filters before cloning, otherwise those files arrive as small text pointers instead of real data and the resulting build ships an empty Gallery:
+
+```
+git lfs install
+git clone https://github.com/iRASPA/iRASPA-COCOA.git
+```
+
+If you already cloned without Git LFS installed, fetch the real content with:
+
+```
+git lfs install
+git lfs pull
+```
+
+The `Verify Git LFS Resources` build phase stops the build with an explicit message if any of these files is still an unresolved pointer.
+
 ![](https://raw.githubusercontent.com/iRASPA/iRASPA-COCOA/master/iRASPA/ScreenshotMac.png)
 *Screenshot of iRASPA*

@@ -4726,6 +4726,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 938388191E26A4A800112FBA /* Build configuration list for PBXNativeTarget "iRASPA" */;
 			buildPhases = (
+				93AA11BB22CC33DD44EE5501 /* Verify Git LFS Resources */,
 				938388041E26A4A800112FBA /* Sources */,
 				938388051E26A4A800112FBA /* Frameworks */,
 				938388061E26A4A800112FBA /* Resources */,
@@ -5413,6 +5414,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		93AA11BB22CC33DD44EE5501 /* Verify Git LFS Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Scripts/verify_lfs_resources.sh",
+			);
+			name = "Verify Git LFS Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Scripts/verify_lfs_resources.sh\"\n";
+		};
 		A10IPADRSIGN00000000001 /* Resign Simulator for CloudKit */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
