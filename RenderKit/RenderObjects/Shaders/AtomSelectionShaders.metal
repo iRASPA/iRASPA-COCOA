@@ -47,6 +47,25 @@ struct GlowVertexShaderOut
   float4 sphere_radius [[ flat ]];
 };
 
+// The same varyings interpolated per MSAA sample. The glow sphere sits a whisker in front of its own
+// atom, so which of the two gets the sub-pixel depth detail decides the depth test on about half of a
+// pixel's samples over the whole disc — that losing half is precisely the difference between the glow
+// as a soft rim and the glow as a filled disc. The still path shades atoms per sample and the glow per
+// pixel; when the atoms drop to per-pixel shading while the camera moves, the glow switches to this
+// struct so the same fight happens with the roles reversed, and the same fraction of samples survives.
+struct GlowPerSampleVertexShaderOut
+{
+  float4 position [[position]];
+  float4 eye_position;
+  float2 texcoords [[ sample_perspective ]];
+  float4 ambient [[ flat ]];
+  float4 diffuse [[ flat ]];
+  float4 specular [[ flat ]];
+  float3 frag_pos [[ sample_perspective ]];
+  float3 frag_center [[ flat]];
+  float4 sphere_radius [[ flat ]];
+};
+
 
 vertex GlowVertexShaderOut AtomGlowSphereImposterOrthographicVertexShader(const device InPerVertex *vertices [[buffer(0)]],
                                                                           const device InPerInstanceAttributes *positions [[buffer(1)]],
@@ -81,9 +100,10 @@ vertex GlowVertexShaderOut AtomGlowSphereImposterOrthographicVertexShader(const 
 
 
 
-fragment FragOutput AtomGlowSphereImposterOrthographicFragmentShader(GlowVertexShaderOut vert [[stage_in]],
-                                                                     constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                                     constant StructureUniforms& structureUniforms [[buffer(1)]])
+template <typename VertexIn>
+static FragOutput AtomGlowSphereImposterOrthographicFragmentImpl(VertexIn vert,
+                                                                 constant FrameUniforms& frameUniforms,
+                                                                 constant StructureUniforms& structureUniforms)
 {
   FragOutput output;
   
@@ -104,6 +124,21 @@ fragment FragOutput AtomGlowSphereImposterOrthographicFragmentShader(GlowVertexS
   
   return output;
   
+}
+
+fragment FragOutput AtomGlowSphereImposterOrthographicFragmentShader(GlowVertexShaderOut vert [[stage_in]],
+                                                                     constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                     constant StructureUniforms& structureUniforms [[buffer(1)]])
+{
+  return AtomGlowSphereImposterOrthographicFragmentImpl(vert, frameUniforms, structureUniforms);
+}
+
+// used while the scene atoms shade per-pixel, see GlowPerSampleVertexShaderOut
+fragment FragOutput AtomGlowSphereImposterOrthographicPerSampleFragmentShader(GlowPerSampleVertexShaderOut vert [[stage_in]],
+                                                                              constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                              constant StructureUniforms& structureUniforms [[buffer(1)]])
+{
+  return AtomGlowSphereImposterOrthographicFragmentImpl(vert, frameUniforms, structureUniforms);
 }
 
 vertex GlowVertexShaderOut AtomGlowSphereImposterPerspectiveVertexShader(const device InPerVertex *vertices [[buffer(0)]],
@@ -134,9 +169,10 @@ vertex GlowVertexShaderOut AtomGlowSphereImposterPerspectiveVertexShader(const d
   return vert;
 }
 
-fragment FragOutput AtomGlowSphereImposterPerspectiveFragmentShader(GlowVertexShaderOut vert [[stage_in]],
-                                                                    constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                                    constant StructureUniforms& structureUniforms [[buffer(1)]])
+template <typename VertexIn>
+static FragOutput AtomGlowSphereImposterPerspectiveFragmentImpl(VertexIn vert,
+                                                                constant FrameUniforms& frameUniforms,
+                                                                constant StructureUniforms& structureUniforms)
 {
   FragOutput output;
   
@@ -158,6 +194,21 @@ fragment FragOutput AtomGlowSphereImposterPerspectiveFragmentShader(GlowVertexSh
   
   return output;
   
+}
+
+fragment FragOutput AtomGlowSphereImposterPerspectiveFragmentShader(GlowVertexShaderOut vert [[stage_in]],
+                                                                    constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                    constant StructureUniforms& structureUniforms [[buffer(1)]])
+{
+  return AtomGlowSphereImposterPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms);
+}
+
+// used while the scene atoms shade per-pixel, see GlowPerSampleVertexShaderOut
+fragment FragOutput AtomGlowSphereImposterPerspectivePerSampleFragmentShader(GlowPerSampleVertexShaderOut vert [[stage_in]],
+                                                                             constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                             constant StructureUniforms& structureUniforms [[buffer(1)]])
+{
+  return AtomGlowSphereImposterPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms);
 }
 
 
@@ -312,10 +363,11 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionWorleyNoise3DOrthographicV
   return vert;
 }
 
-fragment FragOutput AtomSelectionWorleyNoise3DOrthographicFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
-                                                                         constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                                         constant StructureUniforms& structureUniforms [[buffer(1)]],
-                                                                         constant LightUniforms& lightUniforms [[buffer(2)]])
+template <typename VertexIn>
+static FragOutput AtomSelectionWorleyNoise3DOrthographicFragmentImpl(VertexIn vert,
+                                                                     constant FrameUniforms& frameUniforms,
+                                                                     constant StructureUniforms& structureUniforms,
+                                                                     constant LightUniforms& lightUniforms)
 {
   FragOutput output;
   
@@ -371,6 +423,23 @@ fragment FragOutput AtomSelectionWorleyNoise3DOrthographicFragmentShader(AtomSph
   return output;
 }
 
+fragment FragOutput AtomSelectionWorleyNoise3DOrthographicFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
+                                                                         constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                         constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                         constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return AtomSelectionWorleyNoise3DOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+// used while the scene atoms shade per-pixel, see AtomSelectionPerSampleFragmentShaderIn
+fragment FragOutput AtomSelectionWorleyNoise3DOrthographicPerSampleFragmentShader(AtomSelectionPerSampleFragmentShaderIn vert [[stage_in]],
+                                                                                  constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                                  constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                                  constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return AtomSelectionWorleyNoise3DOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
 // Mark: Worley noise 3D perspective
 
 vertex AtomSphereImposterVertexShaderOut AtomSelectionWorleyNoise3DPerspectiveVertexShader(const device InPerVertex *vertices [[buffer(0)]],
@@ -415,10 +484,11 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionWorleyNoise3DPerspectiveVe
   return vert;
 }
 
-fragment FragOutput AtomSelectionWorleyNoise3DPerspectiveFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
-                                                                        constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                                        constant StructureUniforms& structureUniforms [[buffer(1)]],
-                                                                        constant LightUniforms& lightUniforms [[buffer(2)]])
+template <typename VertexIn>
+static FragOutput AtomSelectionWorleyNoise3DPerspectiveFragmentImpl(VertexIn vert,
+                                                                    constant FrameUniforms& frameUniforms,
+                                                                    constant StructureUniforms& structureUniforms,
+                                                                    constant LightUniforms& lightUniforms)
 {
   FragOutput output;
   
@@ -478,6 +548,23 @@ fragment FragOutput AtomSelectionWorleyNoise3DPerspectiveFragmentShader(AtomSphe
   return output;
 }
 
+fragment FragOutput AtomSelectionWorleyNoise3DPerspectiveFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
+                                                                        constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                        constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                        constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return AtomSelectionWorleyNoise3DPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+// used while the scene atoms shade per-pixel, see AtomSelectionPerSampleFragmentShaderIn
+fragment FragOutput AtomSelectionWorleyNoise3DPerspectivePerSampleFragmentShader(AtomSelectionPerSampleFragmentShaderIn vert [[stage_in]],
+                                                                                 constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                                 constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                                 constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return AtomSelectionWorleyNoise3DPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
 // Mark: Stripes orthographic
 
 vertex AtomSphereImposterVertexShaderOut AtomSelectionStripedSphereOrthographicVertexShader(const device InPerVertex *vertices [[buffer(0)]],
@@ -522,10 +609,11 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionStripedSphereOrthographicV
   return vert;
 }
 
-fragment FragOutput AtomSelectionStripedSphereOrthographicFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
-                                                                         constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                                         constant StructureUniforms& structureUniforms [[buffer(1)]],
-                                                                         constant LightUniforms& lightUniforms [[buffer(2)]])
+template <typename VertexIn>
+static FragOutput AtomSelectionStripedSphereOrthographicFragmentImpl(VertexIn vert,
+                                                                     constant FrameUniforms& frameUniforms,
+                                                                     constant StructureUniforms& structureUniforms,
+                                                                     constant LightUniforms& lightUniforms)
 {
   FragOutput output;
   
@@ -578,6 +666,23 @@ fragment FragOutput AtomSelectionStripedSphereOrthographicFragmentShader(AtomSph
   return output;
 }
 
+fragment FragOutput AtomSelectionStripedSphereOrthographicFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
+                                                                         constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                         constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                         constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return AtomSelectionStripedSphereOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+// used while the scene atoms shade per-pixel, see AtomSelectionPerSampleFragmentShaderIn
+fragment FragOutput AtomSelectionStripedSphereOrthographicPerSampleFragmentShader(AtomSelectionPerSampleFragmentShaderIn vert [[stage_in]],
+                                                                                  constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                                  constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                                  constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return AtomSelectionStripedSphereOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
 // Mark: Stripes 3D perspective
 
 vertex AtomSphereImposterVertexShaderOut AtomSelectionStripedSpherePerspectiveVertexShader(const device InPerVertex *vertices [[buffer(0)]],
@@ -622,10 +727,11 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionStripedSpherePerspectiveVe
   return vert;
 }
 
-fragment FragOutput AtomSelectionStripedSpherePerspectiveFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
-                                                                        constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                                        constant StructureUniforms& structureUniforms [[buffer(1)]],
-                                                                        constant LightUniforms& lightUniforms [[buffer(2)]])
+template <typename VertexIn>
+static FragOutput AtomSelectionStripedSpherePerspectiveFragmentImpl(VertexIn vert,
+                                                                    constant FrameUniforms& frameUniforms,
+                                                                    constant StructureUniforms& structureUniforms,
+                                                                    constant LightUniforms& lightUniforms)
 {
   FragOutput output;
   
@@ -676,4 +782,21 @@ fragment FragOutput AtomSelectionStripedSpherePerspectiveFragmentShader(AtomSphe
   output.albedo = float4(hsv2rgb(hsv) * intensity, intensity);
   
   return output;
+}
+
+fragment FragOutput AtomSelectionStripedSpherePerspectiveFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
+                                                                        constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                        constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                        constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return AtomSelectionStripedSpherePerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+// used while the scene atoms shade per-pixel, see AtomSelectionPerSampleFragmentShaderIn
+fragment FragOutput AtomSelectionStripedSpherePerspectivePerSampleFragmentShader(AtomSelectionPerSampleFragmentShaderIn vert [[stage_in]],
+                                                                                 constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                                 constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                                 constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return AtomSelectionStripedSpherePerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
 }

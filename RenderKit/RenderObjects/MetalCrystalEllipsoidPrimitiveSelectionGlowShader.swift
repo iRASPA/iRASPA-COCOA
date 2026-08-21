@@ -52,7 +52,7 @@ class MetalCrystalEllipsoidPrimitiveSelectionGlowShader
     depthState = device.makeDepthStencilState(descriptor: depthStateDesc)
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
+    pipelineDescriptor.colorAttachments[0].pixelFormat = RKMetal.extendedDynamicRangePixelFormat
     pipelineDescriptor.vertexFunction = library.makeFunction(name: "PrimitiveEllipsoidSelectionGlowVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8

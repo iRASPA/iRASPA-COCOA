@@ -41,6 +41,10 @@ class MetalAtomSelectionStripesOrthographicImposterShader
   var indexBuffer: MTLBuffer! = nil
   var vertexBuffer: MTLBuffer! = nil
   var pipeLine: MTLRenderPipelineState! = nil
+  /// The same overlay with its depth evaluated per MSAA sample. Used while the scene atoms shade
+  /// per-pixel, so that the overlay-against-own-atom depth fight keeps the same odds it has in the
+  /// still frame, where the atoms are the per-sample side; see AtomSelectionPerSampleFragmentShaderIn.
+  var perSamplePipeLine: MTLRenderPipelineState! = nil
   var transparentDepthState: MTLDepthStencilState! = nil
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
@@ -68,6 +72,16 @@ class MetalAtomSelectionStripesOrthographicImposterShader
     do
     {
       self.pipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating render pipeline state \(error) \(device)")
+    }
+    
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSelectionStripedSphereOrthographicPerSampleFragmentShader")!
+    do
+    {
+      self.perSamplePipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
     }
     catch
     {
@@ -107,7 +121,8 @@ class MetalAtomSelectionStripesOrthographicImposterShader
           if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
              (structure.atomSelectionStyle == .striped)
           {
-            commandEncoder.setRenderPipelineState(pipeLine)
+            // opposite rate to the scene atoms, on purpose; see perSamplePipeLine
+            commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? pipeLine : perSamplePipeLine)
             
             if let buffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j)
             {

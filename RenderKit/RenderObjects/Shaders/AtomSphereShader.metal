@@ -158,14 +158,15 @@ typedef struct AtomSphereImposterPerPixelFragmentShaderIn
   float4 ambientOcclusionTransformMatrix4 [[ flat ]];
 } AtomSphereImposterPerPixelFragmentShaderIn;
 
-template <typename VertexIn>
+template <typename VertexIn, bool AnalyticCoverage>
 static FragOutput AtomSphereImposterOrthographicFragmentImpl(VertexIn vert,
                                                              constant FrameUniforms& frameUniforms,
                                                              constant StructureUniforms& structureUniforms,
                                                              constant LightUniforms& lightUniforms,
                                                              texture2d<half>  ambientOcclusionTexture,
                                                              sampler          ambientOcclusionSampler,
-                                                             texture2d<uint>  shadowMask)
+                                                             texture2d<uint>  shadowMask,
+                                                             thread float &coverage)
 {
   FragOutput output;
   
@@ -173,7 +174,17 @@ static FragOutput AtomSphereImposterOrthographicFragmentImpl(VertexIn vert,
   float y = vert.texcoords.y;
   float zz = 1.0 - x*x - y*y;
   
-  if (zz <= 0.0)
+  coverage = 1.0;
+  if (AnalyticCoverage)
+  {
+    // zz rises through zero across the sphere's silhouette, and does so at a rate proportional to
+    // the distance from it, so it measures the silhouette directly. The surface is pinned to the
+    // rim rather than dropped outside it, leaving the sliver of sphere in this pixel something to
+    // shade; how much of the pixel that sliver is worth is what the coverage carries.
+    coverage = coverageFromEdge(zz);
+    zz = max(zz, 0.0);
+  }
+  else if (zz <= 0.0)
     discard_fragment();
   float z = sqrt(zz);
   float4 pos = vert.eye_position;
@@ -187,12 +198,24 @@ static FragOutput AtomSphereImposterOrthographicFragmentImpl(VertexIn vert,
                                                         vert.ambientOcclusionTransformMatrix4);
     float3 vertexPosition = (ambientOcclusionTransformMatrix * (vert.sphere_radius * float4(x,y,z,1.0))).xyz;
     float4 position = float4(vert.instancePosition.xyz + vertexPosition.xyz,1.0);
-    if (dot(structureUniforms.clipPlaneLeft,position)< 0.0) discard_fragment();
-    if (dot(structureUniforms.clipPlaneRight,position)< 0.0) discard_fragment();
-    if (dot(structureUniforms.clipPlaneTop,position)< 0.0) discard_fragment();
-    if (dot(structureUniforms.clipPlaneBottom,position)< 0.0) discard_fragment();
-    if (dot(structureUniforms.clipPlaneFront,position)< 0.0) discard_fragment();
-    if (dot(structureUniforms.clipPlaneBack,position)< 0.0) discard_fragment();
+    if (AnalyticCoverage)
+    {
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneLeft,position)));
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneRight,position)));
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneTop,position)));
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneBottom,position)));
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneFront,position)));
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneBack,position)));
+    }
+    else
+    {
+      if (dot(structureUniforms.clipPlaneLeft,position)< 0.0) discard_fragment();
+      if (dot(structureUniforms.clipPlaneRight,position)< 0.0) discard_fragment();
+      if (dot(structureUniforms.clipPlaneTop,position)< 0.0) discard_fragment();
+      if (dot(structureUniforms.clipPlaneBottom,position)< 0.0) discard_fragment();
+      if (dot(structureUniforms.clipPlaneFront,position)< 0.0) discard_fragment();
+      if (dot(structureUniforms.clipPlaneBack,position)< 0.0) discard_fragment();
+    }
   }
   
   
@@ -250,11 +273,14 @@ fragment FragOutput AtomSphereImposterOrthographicFragmentShader(AtomSphereImpos
                                                                  sampler          ambientOcclusionSampler [[ sampler(0) ]],
                                                                  texture2d<uint>  shadowMask [[ texture(1) ]])
 {
-  return AtomSphereImposterOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
+  float coverage;
+  return AtomSphereImposterOrthographicFragmentImpl<AtomSphereImposterFragmentShaderIn, false>(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask, coverage);
 }
 
-// "fast" per-pixel variant: identical shading, but with center interpolation the
-// fragment shader runs once per pixel even under MSAA
+// "fast" per-pixel variant: identical shading, but with center interpolation the fragment shader runs
+// once per pixel even under MSAA. Silhouette coverage is written as alpha; the pipeline's
+// alpha-to-coverage then keeps only that fraction of the pixel's samples, including their depth,
+// so glow and selection still see the same kind of rim they do in the per-sample still path.
 fragment FragOutput AtomSphereImposterOrthographicPerPixelFragmentShader(AtomSphereImposterPerPixelFragmentShaderIn vert [[stage_in]],
                                                                          constant FrameUniforms& frameUniforms [[buffer(0)]],
                                                                          constant StructureUniforms& structureUniforms [[buffer(1)]],
@@ -263,7 +289,11 @@ fragment FragOutput AtomSphereImposterOrthographicPerPixelFragmentShader(AtomSph
                                                                          sampler          ambientOcclusionSampler [[ sampler(0) ]],
                                                                         texture2d<uint>  shadowMask [[ texture(1) ]])
 {
-  return AtomSphereImposterOrthographicFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
+  float coverage;
+  FragOutput output = AtomSphereImposterOrthographicFragmentImpl<AtomSphereImposterPerPixelFragmentShaderIn, true>(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask, coverage);
+  if (!(coverage > 0.0)) discard_fragment();
+  output.albedo.w = coverage;
+  return output;
 }
 
 
@@ -328,14 +358,15 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterPerspectiveVertexShad
   return vert;
 }
 
-template <typename VertexIn>
+template <typename VertexIn, bool AnalyticCoverage>
 static FragOutput AtomSphereImposterPerspectiveFragmentImpl(VertexIn vert,
                                                             constant FrameUniforms& frameUniforms,
                                                             constant StructureUniforms& structureUniforms,
                                                             constant LightUniforms& lightUniforms,
                                                             texture2d<half>  ambientOcclusionTexture,
                                                             sampler          ambientOcclusionSampler,
-                                                            texture2d<uint>  shadowMask)
+                                                            texture2d<uint>  shadowMask,
+                                                            thread float &coverage)
 {
   FragOutput output;
   
@@ -346,7 +377,14 @@ static FragOutput AtomSphereImposterPerspectiveFragmentImpl(VertexIn vert,
   float B = 2.0 * dot(rij, vij);
   float C = dot(rij, rij) - vert.sphere_radius.z * vert.sphere_radius.z;
   float argument = B * B - 4.0 * A * C;
-  if (argument < 0.0) discard_fragment();
+  coverage = 1.0;
+  if (AnalyticCoverage)
+  {
+    // the discriminant crosses zero on the silhouette; see the orthographic variant
+    coverage = coverageFromEdge(argument);
+    argument = max(argument, 0.0);
+  }
+  else if (argument < 0.0) discard_fragment();
   float t = 0.5 * (-B - sqrt(argument)) / A;
   
   float3 hit = t * vij;
@@ -365,12 +403,24 @@ static FragOutput AtomSphereImposterPerspectiveFragmentImpl(VertexIn vert,
                                                         vert.ambientOcclusionTransformMatrix4);
     float3 vertexPosition = (ambientOcclusionTransformMatrix * (vert.sphere_radius * float4(N,1.0))).xyz;
     float4 position = float4(vert.instancePosition.xyz + vertexPosition.xyz,1.0);
-    if (dot(structureUniforms.clipPlaneLeft,position)< 0.0) discard_fragment();
-    if (dot(structureUniforms.clipPlaneRight,position)< 0.0) discard_fragment();
-    if (dot(structureUniforms.clipPlaneTop,position)< 0.0) discard_fragment();
-    if (dot(structureUniforms.clipPlaneBottom,position)< 0.0) discard_fragment();
-    if (dot(structureUniforms.clipPlaneFront,position)< 0.0) discard_fragment();
-    if (dot(structureUniforms.clipPlaneBack,position)< 0.0) discard_fragment();
+    if (AnalyticCoverage)
+    {
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneLeft,position)));
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneRight,position)));
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneTop,position)));
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneBottom,position)));
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneFront,position)));
+      coverage = min(coverage, coverageFromEdge(dot(structureUniforms.clipPlaneBack,position)));
+    }
+    else
+    {
+      if (dot(structureUniforms.clipPlaneLeft,position)< 0.0) discard_fragment();
+      if (dot(structureUniforms.clipPlaneRight,position)< 0.0) discard_fragment();
+      if (dot(structureUniforms.clipPlaneTop,position)< 0.0) discard_fragment();
+      if (dot(structureUniforms.clipPlaneBottom,position)< 0.0) discard_fragment();
+      if (dot(structureUniforms.clipPlaneFront,position)< 0.0) discard_fragment();
+      if (dot(structureUniforms.clipPlaneBack,position)< 0.0) discard_fragment();
+    }
   }
   
   float3 V = normalize(vert.V);
@@ -423,11 +473,11 @@ fragment FragOutput AtomSphereImposterPerspectiveFragmentShader(AtomSphereImpost
                                                                 sampler          ambientOcclusionSampler [[ sampler(0) ]],
                                                                 texture2d<uint>  shadowMask [[ texture(1) ]])
 {
-  return AtomSphereImposterPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
+  float coverage;
+  return AtomSphereImposterPerspectiveFragmentImpl<AtomSphereImposterFragmentShaderIn, false>(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask, coverage);
 }
 
-// "fast" per-pixel variant: identical shading, but with center interpolation the
-// fragment shader runs once per pixel even under MSAA
+// "fast" per-pixel variant, see AtomSphereImposterOrthographicPerPixelFragmentShader
 fragment FragOutput AtomSphereImposterPerspectivePerPixelFragmentShader(AtomSphereImposterPerPixelFragmentShaderIn vert [[stage_in]],
                                                                         constant FrameUniforms& frameUniforms [[buffer(0)]],
                                                                         constant StructureUniforms& structureUniforms [[buffer(1)]],
@@ -436,7 +486,11 @@ fragment FragOutput AtomSphereImposterPerspectivePerPixelFragmentShader(AtomSphe
                                                                         sampler          ambientOcclusionSampler [[ sampler(0) ]],
                                                                         texture2d<uint>  shadowMask [[ texture(1) ]])
 {
-  return AtomSphereImposterPerspectiveFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
+  float coverage;
+  FragOutput output = AtomSphereImposterPerspectiveFragmentImpl<AtomSphereImposterPerPixelFragmentShaderIn, true>(vert, frameUniforms, structureUniforms, lightUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask, coverage);
+  if (!(coverage > 0.0)) discard_fragment();
+  output.albedo.w = coverage;
+  return output;
 }
 
 

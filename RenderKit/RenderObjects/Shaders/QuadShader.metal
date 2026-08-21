@@ -276,6 +276,14 @@ fragment float4 texturedQuadFragment(BackgroundVertexShaderOut     inFrag    [[ 
   }
 
   float4 glow = frameUniforms.bloomPulse * frameUniforms.bloomLevel * float4(blurTexture.sample(quadSampler, inFrag.m_TexCoord));
-  
-  return color + float4(glow.xyz, 0.0);
+
+  // The scene keeps to the standard range and the glow alone is allowed out of it. Clamping the scene
+  // is what the 8-bit drawable this pass used to write to did implicitly, so the surfaces look exactly
+  // as they did; letting them through instead would brighten every unclamped specular on an EDR
+  // display and change the appearance of scenes nobody asked to alter.
+  //
+  // `maximumEDRvalue` is the headroom the display can show beyond standard white this frame. It is
+  // 1.0 on a standard screen, on a display whose headroom has collapsed at high brightness, and for
+  // every picture and movie export, so this multiply does nothing at all in those cases.
+  return clamp(color, 0.0, 1.0) + float4(glow.xyz * frameUniforms.maximumEDRvalue, 0.0);
 }

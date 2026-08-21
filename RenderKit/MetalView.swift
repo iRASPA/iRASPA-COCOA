@@ -106,6 +106,29 @@ public class MetalView: MTKView
     return tracking == .other
   }
  
+  /// Opts the layer into extended dynamic range. Without this the compositor clips at standard white
+  /// whatever the drawable is able to hold, which is why an XDR display shows nothing extra until it
+  /// is asked for. It only grants permission: how much headroom the display can actually deliver
+  /// varies from frame to frame with its brightness and preset, so that figure is read per frame and
+  /// carried in the frame uniforms instead of being decided here.
+  func configureExtendedDynamicRange()
+  {
+    guard let metalLayer: CAMetalLayer = self.layer as? CAMetalLayer else {return}
+    
+    #if os(macOS)
+    metalLayer.wantsExtendedDynamicRangeContent = true
+    // set through the view rather than straight onto the layer, MTKView owning the colour space on
+    // this platform and reapplying its own over anything written behind its back
+    self.colorspace = RKMetal.extendedDynamicRangeColorSpace
+    #else
+    if #available(iOS 16.0, *)
+    {
+      metalLayer.wantsExtendedDynamicRangeContent = true
+      metalLayer.colorspace = RKMetal.extendedDynamicRangeColorSpace
+    }
+    #endif
+  }
+ 
   #if os(macOS)
   // the MetalView is initialized from the XIB file
   required init(coder: NSCoder)
@@ -117,11 +140,13 @@ public class MetalView: MTKView
     self.autoResizeDrawable = true
     self.autoresizesSubviews = true
     
-    self.colorPixelFormat = MTLPixelFormat.bgra8Unorm
+    self.colorPixelFormat = RKMetal.extendedDynamicRangePixelFormat
     self.depthStencilPixelFormat = MTLPixelFormat.invalid
 
     self.framebufferOnly = true
     self.clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1)
+    
+    configureExtendedDynamicRange()
     
     NotificationCenter.default.addObserver(self, selector: #selector(screenParametersDidChange), name: NSApplication.didChangeScreenParametersNotification, object: NSApplication.shared)
   }
@@ -129,20 +154,48 @@ public class MetalView: MTKView
   deinit
   {
     NotificationCenter.default.removeObserver(self, name: NSApplication.didChangeScreenParametersNotification, object: NSApplication.shared)
+    NotificationCenter.default.removeObserver(self, name: NSWindow.didChangeScreenNotification, object: nil)
+  }
+  
+  // The screen under the window decides how much brightness headroom there is, and two separate
+  // notifications between them cover the ways that can change: the application-level one fires when
+  // a display itself changes (connected, disconnected, resolution or reference mode), but stays
+  // silent when the window is dragged from one display to another — that is the window-level one,
+  // which can only be subscribed to once there is a window.
+  public override func viewDidMoveToWindow()
+  {
+    super.viewDidMoveToWindow()
+    
+    NotificationCenter.default.removeObserver(self, name: NSWindow.didChangeScreenNotification, object: nil)
+    if let window: NSWindow = self.window
+    {
+      NotificationCenter.default.addObserver(self, selector: #selector(screenParametersDidChange), name: NSWindow.didChangeScreenNotification, object: window)
+    }
+    updateExtendedDynamicRangeForCurrentScreen()
   }
   
   @objc func screenParametersDidChange(notification: NSNotification)
   {
-    let screen: NSScreen? = self.window?.screen
-    if #available(macOS 10.15, iOS 13.0, *)
+    updateExtendedDynamicRangeForCurrentScreen()
+  }
+  
+  func updateExtendedDynamicRangeForCurrentScreen()
+  {
+    if #available(macOS 10.15, *)
     {
-      self.edrSupport = screen?.maximumPotentialExtendedDynamicRangeColorComponentValue ?? 1.0
+      self.edrSupport = self.window?.screen?.maximumPotentialExtendedDynamicRangeColorComponentValue ?? 1.0
     }
     else
     {
       // Fallback on earlier versions
       self.edrSupport = 1.0
     }
+    
+    configureExtendedDynamicRange()
+    
+    // the view is paused and draws only when asked; the frame uniforms read the screen's current
+    // headroom while drawing, so a single redraw is all it takes to take on the new screen's look
+    self.layer?.setNeedsDisplay()
   }
   #else
   public override init(frame frameRect: CGRect, device: MTLDevice?)
@@ -165,11 +218,12 @@ public class MetalView: MTKView
     self.enableSetNeedsDisplay = false
     self.autoResizeDrawable = true
     self.autoresizesSubviews = true
-    self.colorPixelFormat = MTLPixelFormat.bgra8Unorm
+    self.colorPixelFormat = RKMetal.extendedDynamicRangePixelFormat
     self.depthStencilPixelFormat = MTLPixelFormat.invalid
     self.framebufferOnly = true
     self.clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1)
     self.isMultipleTouchEnabled = true
+    configureExtendedDynamicRange()
   }
   
   private func addCameraGestures()

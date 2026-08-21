@@ -35,6 +35,11 @@ import Foundation
 class MetalQuadShader
 {
   var quadPipeLine: MTLRenderPipelineState! = nil
+  
+  /// The on-screen composite, which is kept apart from `quadPipeLine` because the drawable is a float
+  /// format able to carry values above standard white while the 8-bit picture export that
+  /// `quadPipeLine` also serves is not.
+  var quadEDRPipeLine: MTLRenderPipelineState! = nil
   var vertexBuffer: MTLBuffer! = nil
   var indexBuffer: MTLBuffer! = nil
   var quadSamplerState: MTLSamplerState! = nil
@@ -99,6 +104,24 @@ class MetalQuadShader
     }
     
     
+    let quadEDRPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    quadEDRPipelineDescriptor.colorAttachments[0].pixelFormat = RKMetal.extendedDynamicRangePixelFormat
+    quadEDRPipelineDescriptor.vertexFunction = library.makeFunction(name: "texturedQuadVertex")!
+    quadEDRPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.invalid
+    quadEDRPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    quadEDRPipelineDescriptor.fragmentFunction = library.makeFunction(name: "texturedQuadFragment")!
+    quadEDRPipelineDescriptor.vertexDescriptor = vertexDescriptor
+    
+    do
+    {
+      self.quadEDRPipeLine = try device.makeRenderPipelineState(descriptor: quadEDRPipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating render pipeline state \(error)")
+    }
+    
+    
     let textureQuad16bitsPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     textureQuad16bitsPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Unorm
     textureQuad16bitsPipelineDescriptor.vertexFunction = library.makeFunction(name: "texturedQuadVertex")!
@@ -126,7 +149,7 @@ class MetalQuadShader
     let quadCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPass)!
     quadCommandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
     quadCommandEncoder.label = "Quad pass command encoder"
-    quadCommandEncoder.setRenderPipelineState(quadPipeLine)
+    quadCommandEncoder.setRenderPipelineState(quadEDRPipeLine)
     quadCommandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
     quadCommandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
     quadCommandEncoder.setFragmentBuffer(tracedDepthBuffer ?? placeholderDepthBuffer, offset: 0, index: 1)

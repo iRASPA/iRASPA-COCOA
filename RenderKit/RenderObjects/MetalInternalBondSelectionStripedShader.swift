@@ -39,6 +39,10 @@ class MetalInternalBondSelectionStripedShader
   var renderStructures: [[RKRenderObject]] = [[]]
   
   var imposterPipeLine: MTLRenderPipelineState! = nil
+  /// The same overlay with its depth evaluated per MSAA sample. Used while the scene bonds shade
+  /// per-pixel, so that the overlay-against-own-bond depth fight keeps the same odds it has in the
+  /// still frame, where the bonds are the per-sample side; see BondSelectionImposterPerSampleFragmentShaderIn.
+  var perSampleImposterPipeLine: MTLRenderPipelineState! = nil
   var transparentDepthState: MTLDepthStencilState! = nil
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
@@ -71,6 +75,16 @@ class MetalInternalBondSelectionStripedShader
     {
       fatalError("Error occurred when creating render pipeline state \(error) \(device)")
     }
+    
+    imposterPipelineDescriptor.fragmentFunction = library.makeFunction(name: "internalBondSelectionStripedImposterPerSampleFragmentShader")!
+    do
+    {
+      self.perSampleImposterPipeLine = try device.makeRenderPipelineState(descriptor: imposterPipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating render pipeline state \(error) \(device)")
+    }
   }
   
   public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, instanceRenderer: MetalInternalBondSelectionShader, bondShader: MetalInternalBondShader, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
@@ -78,7 +92,8 @@ class MetalInternalBondSelectionStripedShader
     // draw internal bonds
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderBondSource}.reduce(false, {$0 || $1.drawBonds}))
     {
-      commandEncoder.setRenderPipelineState(imposterPipeLine)
+      // opposite rate to the scene bonds, on purpose; see perSampleImposterPipeLine
+      commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? imposterPipeLine : perSampleImposterPipeLine)
       
       commandEncoder.setDepthStencilState(self.transparentDepthState)
       // the imposter hull is generated in the vertex shader with view-dependent winding

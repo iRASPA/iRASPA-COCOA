@@ -95,6 +95,7 @@ class MetalInternalBondShader
     // "fast" per-pixel quality mode: identical shading, but interpolated at the pixel
     // center so the fragment shader runs once per pixel even under MSAA
     imposterPipelineDescriptor.fragmentFunction = library.makeFunction(name: "BondCylinderImposterPerPixelFragmentShader")!
+    imposterPipelineDescriptor.isAlphaToCoverageEnabled = true
     do
     {
       self.perPixelImposterPipeLine = try device.makeRenderPipelineState(descriptor: imposterPipelineDescriptor)

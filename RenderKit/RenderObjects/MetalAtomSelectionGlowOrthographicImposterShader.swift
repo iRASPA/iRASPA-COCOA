@@ -41,6 +41,10 @@ class MetalAtomSelectionGlowOrthographicImposterShader
   var indexBuffer: MTLBuffer! = nil
   var vertexBuffer: MTLBuffer! = nil
   var pipeLine: MTLRenderPipelineState! = nil
+  /// The same glow with its depth evaluated per MSAA sample. Used while the scene atoms shade
+  /// per-pixel, so that the glow-against-own-atom depth fight keeps the same odds it has in the
+  /// still frame, where the atoms are the per-sample side; see GlowPerSampleVertexShaderOut.
+  var perSamplePipeLine: MTLRenderPipelineState! = nil
   var depthState: MTLDepthStencilState! = nil
   var samplerState: MTLSamplerState! = nil
   
@@ -71,7 +75,7 @@ class MetalAtomSelectionGlowOrthographicImposterShader
     depthState = device.makeDepthStencilState(descriptor: depthStateDesc)
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
+    pipelineDescriptor.colorAttachments[0].pixelFormat = RKMetal.extendedDynamicRangePixelFormat
     pipelineDescriptor.vertexFunction = library.makeFunction(name: "AtomGlowSphereImposterOrthographicVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
@@ -81,6 +85,16 @@ class MetalAtomSelectionGlowOrthographicImposterShader
     do
     {
       self.pipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating render pipeline state \(error)")
+    }
+    
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomGlowSphereImposterOrthographicPerSampleFragmentShader")!
+    do
+    {
+      self.perSamplePipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
     }
     catch
     {
@@ -129,7 +143,8 @@ class MetalAtomSelectionGlowOrthographicImposterShader
               
             if (structure.atomSelectionStyle == .glow && structure.drawAtoms && structure.isVisible &&  (instanceCount > 0) )
             {
-              commandEncoder.setRenderPipelineState(pipeLine)
+              // opposite rate to the scene atoms, on purpose; see perSamplePipeLine
+              commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? pipeLine : perSamplePipeLine)
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)

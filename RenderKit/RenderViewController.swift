@@ -234,6 +234,10 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
         view.edrSupport = view.window?.screen?.maximumPotentialExtendedDynamicRangeColorComponentValue ?? 1.0
       }
       #endif
+      
+      // the backing layer does not exist yet while the view is being decoded from the XIB, so the
+      // opt-in is repeated here, by which point it does
+      view.configureExtendedDynamicRange()
     }
   }
 

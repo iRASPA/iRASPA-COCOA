@@ -8,14 +8,30 @@
  *************************************************************************************************************/
 
 import Metal
+import CoreGraphics
 
 enum RKMetal
 {
   // Shade the ray-traced imposters per-sample under MSAA, anti-aliasing their
   // silhouettes, clipping and depth. Set to false for a "fast" quality mode that
-  // shades once per pixel (MSAA then only smooths the hull edges, not the
-  // ray-traced edges).
+  // shades once per pixel and writes silhouette coverage as alpha; those pipelines
+  // enable alpha-to-coverage so the MSAA depth still has a fractional rim.
   static var perSampleImposterShading: Bool = true
+
+  /// Format of the on-screen drawable and of the selection-glow chain that feeds it. A float format
+  /// is what makes extended dynamic range possible at all: a normalized format cannot hold a value
+  /// above 1.0, so the compositor would never be handed one however much headroom the display has.
+  /// Picture and movie exports keep their own 8- and 16-bit normalized formats and are untouched.
+  static let extendedDynamicRangePixelFormat: MTLPixelFormat = MTLPixelFormat.rgba16Float
+
+  /// The colour space the drawable is presented in. This one keeps the sRGB transfer curve and only
+  /// lets values run past 1.0, so every pixel already inside [0,1] is encoded exactly as it was
+  /// before EDR was switched on and the image is unchanged; only what exceeds standard white is new.
+  /// The linear variants would instead reinterpret every existing pixel and shift the whole look.
+  static var extendedDynamicRangeColorSpace: CGColorSpace?
+  {
+    return CGColorSpace(name: CGColorSpace.extendedSRGB)
+  }
 
   static var hostStorage: MTLResourceOptions
   {

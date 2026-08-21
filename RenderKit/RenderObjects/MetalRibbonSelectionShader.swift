@@ -45,7 +45,7 @@ class MetalRibbonSelectionShader
     overlayDepthState = device.makeDepthStencilState(descriptor: overlayDepthStateDesc)
     
     let glowPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    glowPipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+    glowPipelineDescriptor.colorAttachments[0].pixelFormat = RKMetal.extendedDynamicRangePixelFormat
     glowPipelineDescriptor.vertexFunction = library.makeFunction(name: "RibbonSelectionGlowVertexShader")!
     glowPipelineDescriptor.fragmentFunction = library.makeFunction(name: "RibbonSelectionGlowFragmentShader")!
     glowPipelineDescriptor.sampleCount = maximumNumberOfSamples

@@ -858,10 +858,9 @@ public class MetalRenderer
   /// still rasterized, and its depth is what the path-traced result is composited against.
   public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, suppressMolecularGeometry: Bool = false)
   {
-    // "fast" imposter mode while interacting (rotating, panning, zooming): the render
-    // quality drops to medium/low during interaction, and the imposters are then shaded
-    // per-pixel; per-sample anti-aliased shading is used for high-quality still frames
-    // and pictures. Applies to all imposter passes of this frame (scene and glow).
+    // Fast per-pixel imposters while interacting; still frames and pictures stay per-sample. Glow and
+    // selection depth-test per sample against the scene, so the per-pixel path has to leave the same
+    // kind of MSAA depth behind — that is what alpha-to-coverage on those pipelines is for.
     RKMetal.perSampleImposterShading = (renderQuality == .high || renderQuality == .picture)
 
     // Falls back to the all-lit texel when no mask was traced, so the molecular shaders can read it

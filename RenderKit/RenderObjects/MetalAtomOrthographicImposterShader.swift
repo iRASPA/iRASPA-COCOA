@@ -91,6 +91,9 @@ class MetalAtomOrthographicImposterShader
     // "fast" per-pixel quality mode: identical shading, but interpolated at the pixel
     // center so the fragment shader runs once per pixel even under MSAA
     pipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSphereImposterOrthographicPerPixelFragmentShader")!
+    // Coverage is written as alpha; this turns it into an MSAA sample mask so depth is left only
+    // on the samples the sphere actually covers, matching the per-sample still path that glow tests.
+    pipelineDescriptor.isAlphaToCoverageEnabled = true
     do
     {
       self.perPixelPipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)

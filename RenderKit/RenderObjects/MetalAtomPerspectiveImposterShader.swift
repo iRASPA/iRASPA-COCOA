@@ -91,6 +91,7 @@ class MetalAtomPerspectiveImposterShader
     // "fast" per-pixel quality mode: identical shading, but interpolated at the pixel
     // center so the fragment shader runs once per pixel even under MSAA
     pipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSphereImposterPerspectivePerPixelFragmentShader")!
+    pipelineDescriptor.isAlphaToCoverageEnabled = true
     do
     {
       self.perPixelPipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)

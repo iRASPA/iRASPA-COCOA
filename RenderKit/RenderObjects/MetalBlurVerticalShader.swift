@@ -46,7 +46,7 @@ class MetalBlurVerticalShader
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
+    pipelineDescriptor.colorAttachments[0].pixelFormat = RKMetal.extendedDynamicRangePixelFormat
     pipelineDescriptor.vertexFunction = library.makeFunction(name: "blurVerticalVertexShader")!
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.invalid
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
@@ -91,7 +91,7 @@ class MetalBlurVerticalShader
   
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int)
   {
-    let blurVerticalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
+    let blurVerticalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: RKMetal.extendedDynamicRangePixelFormat, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
     blurVerticalTextureDescriptor.textureType = MTLTextureType.type2D
     blurVerticalTextureDescriptor.storageMode = MTLStorageMode.private
     blurVerticalTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)

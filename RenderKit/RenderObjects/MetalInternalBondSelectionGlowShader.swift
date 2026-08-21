@@ -39,6 +39,10 @@ class MetalInternalBondSelectionGlowShader
   var renderStructures: [[RKRenderObject]] = [[]]
   
   var imposterPipeLine: MTLRenderPipelineState! = nil
+  /// The same overlay with its depth evaluated per MSAA sample. Used while the scene bonds shade
+  /// per-pixel, so that the overlay-against-own-bond depth fight keeps the same odds it has in the
+  /// still frame, where the bonds are the per-sample side; see BondSelectionImposterPerSampleFragmentShaderIn.
+  var perSampleImposterPipeLine: MTLRenderPipelineState! = nil
   var depthState: MTLDepthStencilState! = nil
   var samplerState: MTLSamplerState! = nil
   
@@ -70,7 +74,7 @@ class MetalInternalBondSelectionGlowShader
     
     // imposter pipeline: the hull vertices are generated from the vertex-id, so no vertex descriptor is needed
     let imposterPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    imposterPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
+    imposterPipelineDescriptor.colorAttachments[0].pixelFormat = RKMetal.extendedDynamicRangePixelFormat
     imposterPipelineDescriptor.vertexFunction = library.makeFunction(name: "internalBondSelectionImposterVertexShader")!
     imposterPipelineDescriptor.sampleCount = maximumNumberOfSamples
     imposterPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
@@ -79,6 +83,16 @@ class MetalInternalBondSelectionGlowShader
     do
     {
       self.imposterPipeLine = try device.makeRenderPipelineState(descriptor: imposterPipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating render pipeline state \(error)")
+    }
+    
+    imposterPipelineDescriptor.fragmentFunction = library.makeFunction(name: "internalBondSelectionGlowImposterPerSampleFragmentShader")!
+    do
+    {
+      self.perSampleImposterPipeLine = try device.makeRenderPipelineState(descriptor: imposterPipelineDescriptor)
     }
     catch
     {
@@ -96,7 +110,8 @@ class MetalInternalBondSelectionGlowShader
       commandEncoder.setCullMode(MTLCullMode.back)
       commandEncoder.setFrontFacing(MTLWinding.clockwise)
       
-      commandEncoder.setRenderPipelineState(imposterPipeLine)
+      // opposite rate to the scene bonds, on purpose; see perSampleImposterPipeLine
+      commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? imposterPipeLine : perSampleImposterPipeLine)
       // the imposter hull is generated in the vertex shader with view-dependent winding
       commandEncoder.setCullMode(MTLCullMode.none)
       

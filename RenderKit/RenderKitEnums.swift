@@ -318,7 +318,7 @@ public class RKRenderSettings
   {
     get
     {
-      guard let count: Int = UserDefaults.standard.value(forKey: RKRenderSettings.interactiveSampleCountKey) as? Int else {return 128}
+      guard let count: Int = UserDefaults.standard.value(forKey: RKRenderSettings.interactiveSampleCountKey) as? Int else {return 32}
       return min(max(count, 1), RKRenderSettings.maximumSupportedInteractiveSamples)
     }
     set(newValue)
@@ -334,7 +334,7 @@ public class RKRenderSettings
   {
     get
     {
-      guard let bounces: Int = UserDefaults.standard.value(forKey: RKRenderSettings.interactiveMaximumBouncesKey) as? Int else {return RKPathTracerSettings.standard.maximumBounces}
+      guard let bounces: Int = UserDefaults.standard.value(forKey: RKRenderSettings.interactiveMaximumBouncesKey) as? Int else {return 2}
       return min(max(bounces, 0), RKRenderSettings.maximumSupportedInteractiveBounces)
     }
     set(newValue)
@@ -359,7 +359,7 @@ public class RKRenderSettings
   {
     get
     {
-      guard let count: Int = UserDefaults.standard.value(forKey: RKRenderSettings.interactiveRotatingSampleCountKey) as? Int else {return 32}
+      guard let count: Int = UserDefaults.standard.value(forKey: RKRenderSettings.interactiveRotatingSampleCountKey) as? Int else {return 8}
       return min(max(count, 1), RKRenderSettings.maximumSupportedInteractiveSamples)
     }
     set(newValue)

@@ -33,6 +33,7 @@
 #ifndef Common_h
 #define Common_h
 
+#include <metal_stdlib>
 #include <simd/simd.h>
 
 using namespace simd;
@@ -42,6 +43,51 @@ typedef struct FragOutput
   float4 albedo [[color(0)]];
   float  depth [[depth(any)]];
 } FragOutput;
+
+/// What the "fast" per-pixel imposters return. The sample mask is what lets that mode stand in for
+/// per-sample shading: the fragment shader still runs once for the whole pixel, but it reports how
+/// much of the pixel the ray-traced silhouette really covers and only that many of the pixel's
+/// samples are written. Without it a per-pixel imposter is all-or-nothing per pixel, so both its
+/// silhouette and the depth it leaves behind come out different from the per-sample ones — which is
+/// then read back by anything that blends over it or depth-tests against it. The selection overlays
+/// do both, which is why the shading rate used to be visible in them.
+typedef struct FragOutputCoverage
+{
+  float4 albedo [[color(0)]];
+  float  depth [[depth(any)]];
+  uint   coverage [[sample_mask]];
+} FragOutputCoverage;
+
+/// Fraction of the pixel lying on the positive side of `edge`, estimated from how fast `edge` changes
+/// from one pixel to the next. Any quantity that rises through zero as the silhouette is crossed will
+/// do: dividing by its own screen-space derivative takes its scale back out. The caller has to
+/// evaluate it in control flow the whole 2x2 quad follows, derivatives being undefined otherwise.
+inline float coverageFromEdge(float edge)
+{
+  float width = metal::fwidth(edge);
+  return width > 0.0f ? metal::saturate(0.5f + edge / width) : (edge > 0.0f ? 1.0f : 0.0f);
+}
+
+/// Picks `coverage` worth of the samples the rasterizer handed this fragment. Which ones are picked
+/// makes no difference — the multisample resolve weighs every sample alike, so only how many are
+/// picked reaches the image — and drawing them from the rasterizer's own mask stops a fragment from
+/// claiming samples outside the primitive.
+inline uint sampleMaskForCoverage(float coverage, uint rasterizerCoverage)
+{
+  if (coverage >= 1.0f) return rasterizerCoverage;
+  if (!(coverage > 0.0f)) return 0u;
+
+  float wanted = coverage * float(metal::popcount(rasterizerCoverage));
+  uint mask = 0u;
+  uint remaining = rasterizerCoverage;
+  for (uint taken = 0u; remaining != 0u; taken++)
+  {
+    uint bit = metal::ctz(remaining);
+    remaining &= remaining - 1u;
+    if (float(taken) + 0.5f < wanted) mask |= (1u << bit);
+  }
+  return mask;
+}
 
 typedef struct InPerVertex
 {
@@ -166,6 +212,37 @@ typedef struct AtomSphereImposterVertexShaderOut
   float4 ambientOcclusionTransformMatrix3 [[ flat ]];
   float4 ambientOcclusionTransformMatrix4 [[ flat ]];
 } AtomSphereImposterVertexShaderOut;
+
+/// AtomSphereImposterVertexShaderOut with the ray-defining members interpolated per MSAA sample
+/// (matched to the vertex output by member name). The selection overlays sit a whisker in front of
+/// the atoms they decorate, so which of the two surfaces carries sub-pixel depth detail decides the
+/// depth test on about half of a pixel's samples over the whole disc — visibly so, since the resolve
+/// then averages overlay and atom. A still frame shades the atoms per sample and the overlay per
+/// pixel; while the camera moves the atoms drop to per-pixel shading and the overlays switch to this
+/// struct, keeping the same odds with the roles reversed, so the selection does not change brightness
+/// when a rotation starts or stops.
+typedef struct AtomSelectionPerSampleFragmentShaderIn
+{
+  float4 position [[position]];
+  float4 eye_position;
+  float4 instancePosition [[ flat ]];
+  float2 texcoords [[ sample_perspective ]];
+  float4 ambient [[ flat ]];
+  float4 diffuse [[ flat ]];
+  float4 specular [[ flat ]];
+  float3 frag_pos [[ sample_perspective ]];
+  float3 frag_center [[ flat]];
+  float3 N;
+  float3 L;
+  float3 V;
+  float4 sphere_radius [[ flat ]];
+  float k1 [[ flat ]];
+  float k2 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix1 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix2 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix3 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix4 [[ flat ]];
+} AtomSelectionPerSampleFragmentShaderIn;
 
 // Ray
 typedef struct Ray

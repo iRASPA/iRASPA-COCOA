@@ -234,9 +234,13 @@ static float3 bondImposterHullPosition(float3 a, float3 b, float radius, uint vi
 
 // ray-traces a capped cylinder from a to b; returns the ray parameter t (or a negative
 // value when there is no intersection) and sets the surface normal and the fraction
-// ct (0 at a, 1 at b) along the axis
-static float bondImposterIntersect(float3 ro, float3 rd, float3 a, float3 b, float r,
-                                   thread float3 &N, thread float &ct)
+// ct (0 at a, 1 at b) along the axis. With AnalyticCoverage the miss is reported as a
+// coverage of zero rather than as a negative t, and a pixel the silhouette runs through
+// gets the fraction of it that the cylinder covers; the ray is then still traced, to the
+// closest point it comes to the surface, so that sliver of cylinder has a colour and a depth.
+template <bool AnalyticCoverage>
+static float bondImposterIntersectImpl(float3 ro, float3 rd, float3 a, float3 b, float r,
+                                       thread float3 &N, thread float &ct, thread float &coverage)
 {
   float3 ba = b - a;
   float3 oc = ro - a;
@@ -246,9 +250,27 @@ static float bondImposterIntersect(float3 ro, float3 rd, float3 a, float3 b, flo
   float k2 = baba - bard * bard;
   float k1 = baba * dot(oc, rd) - baoc * bard;
   float k0 = baba * dot(oc, oc) - baoc * baoc - r * r * baba;
-  float h = k1 * k1 - k2 * k0;
-  if (h < 0.0) return -1.0;
-  h = sqrt(h);
+  float disc = k1 * k1 - k2 * k0;
+  
+  coverage = 1.0;
+  if (AnalyticCoverage)
+  {
+    // The solid is the infinite cylinder cut by the slab between the two end-cap planes, so the ray
+    // is inside it for as long as both hold and the length of that stretch passes through zero right
+    // on the silhouette, mantle and cap rim alike. One expression covering the whole outline is what
+    // makes it measurable: the screen-space derivative it is divided by only means anything where the
+    // neighbouring pixels of the quad computed the same quantity.
+    float h = sign(disc) * sqrt(abs(disc));
+    float tEnter = (-k1 - h) / max(k2, 1.0e-6 * baba);
+    float tExit = (-k1 + h) / max(k2, 1.0e-6 * baba);
+    float invBard = 1.0 / (abs(bard) > 1.0e-6 ? bard : 1.0e-6);
+    float tCapA = (0.0 - baoc) * invBard;
+    float tCapB = (baba - baoc) * invBard;
+    coverage = coverageFromEdge(min(tExit, max(tCapA, tCapB)) - max(tEnter, min(tCapA, tCapB)));
+  }
+  
+  if (!AnalyticCoverage && disc < 0.0) return -1.0;
+  float h = sqrt(max(disc, 0.0));
   float t = (-k1 - h) / k2;
   
   // body of the cylinder
@@ -262,10 +284,18 @@ static float bondImposterIntersect(float3 ro, float3 rd, float3 a, float3 b, flo
   
   // flat end-caps
   t = (((y < 0.0) ? 0.0 : baba) - baoc) / bard;
-  if (abs(k1 + k2 * t) >= h) return -1.0;
+  if (!AnalyticCoverage && abs(k1 + k2 * t) >= h) return -1.0;
   N = ba * sign(y) / sqrt(baba);
   ct = (y < 0.0) ? 0.0 : 1.0;
   return t;
+}
+
+// the plain hit test, for the callers that have no use for a coverage fraction
+static float bondImposterIntersect(float3 ro, float3 rd, float3 a, float3 b, float r,
+                                   thread float3 &N, thread float &ct)
+{
+  float coverage;
+  return bondImposterIntersectImpl<false>(ro, rd, a, b, r, N, ct, coverage);
 }
 
 // ray-traces the capped cylinder from a to b clipped by the six unit-cell planes,
@@ -277,10 +307,12 @@ static float bondImposterIntersect(float3 ro, float3 rd, float3 a, float3 b, flo
 // toStructure transforms eye-space points to the structure space of the clip planes.
 // Returns the ray parameter t (negative when there is no intersection) and sets the
 // eye-space surface normal and the fraction ct (0 at a, 1 at b) along the axis.
-static float bondImposterClippedIntersect(float3 ro, float3 rd, float3 a, float3 b, float r,
-                                          float4x4 toStructure,
-                                          constant StructureUniforms& structureUniforms,
-                                          thread float3 &N, thread float &ct)
+// AnalyticCoverage behaves as it does in bondImposterIntersectImpl.
+template <bool AnalyticCoverage>
+static float bondImposterClippedIntersectImpl(float3 ro, float3 rd, float3 a, float3 b, float r,
+                                              float4x4 toStructure,
+                                              constant StructureUniforms& structureUniforms,
+                                              thread float3 &N, thread float &ct, thread float &coverage)
 {
   float3 ba = b - a;
   float3 oc = ro - a;
@@ -290,18 +322,69 @@ static float bondImposterClippedIntersect(float3 ro, float3 rd, float3 a, float3
   float k2 = baba - bard * bard;
   float k1 = baba * dot(oc, rd) - baoc * bard;
   float k0 = baba * dot(oc, oc) - baoc * baoc - r * r * baba;
-
+  
+  // the six clip planes of the unit cell (in structure space)
+  float4 planes[6] = { structureUniforms.clipPlaneLeft, structureUniforms.clipPlaneRight,
+                       structureUniforms.clipPlaneTop, structureUniforms.clipPlaneBottom,
+                       structureUniforms.clipPlaneFront, structureUniforms.clipPlaneBack };
+  float4 so = toStructure * float4(ro, 1.0);
+  float4 sd = toStructure * float4(rd, 0.0);
+  
+  coverage = 1.0;
+  if (AnalyticCoverage)
+  {
+    // The same interval as below, but taken without any of its branches and with the discriminant
+    // left signed, so that it shrinks smoothly past zero instead of stopping there. Its width is
+    // what the whole outline of the clipped solid — mantle, end-cap and cut face — has in common,
+    // and the pixel-to-pixel rate at which it shrinks says how much of this pixel is still inside.
+    // Every pixel of the quad has to arrive at that derivative having computed the same expression,
+    // which is why nothing here is skipped over.
+    bool alongAxis = k2 <= 1.0e-6 * baba;
+    bool acrossCaps = abs(bard) > 1.0e-6;
+    
+    float disc = k1 * k1 - k2 * k0;
+    float h = sign(disc) * sqrt(abs(disc));
+    float tEnter = alongAxis ? -1.0e30 : (-k1 - h) / k2;
+    float tExit = alongAxis ? 1.0e30 : (-k1 + h) / k2;
+    
+    float tCapA = acrossCaps ? (0.0 - baoc) / bard : -1.0e30;
+    float tCapB = acrossCaps ? (baba - baoc) / bard : 1.0e30;
+    tEnter = max(tEnter, min(tCapA, tCapB));
+    tExit = min(tExit, max(tCapA, tCapB));
+    
+    for (int i = 0; i < 6; i++)
+    {
+      float f0 = dot(planes[i], so);
+      float df = dot(planes[i], sd);
+      bool crosses = abs(df) > 1.0e-8;
+      float tp = crosses ? -f0 / df : 0.0;
+      tEnter = max(tEnter, (crosses && df > 0.0) ? tp : -1.0e30);
+      tExit = min(tExit, crosses ? (df > 0.0 ? 1.0e30 : tp) : (f0 < 0.0 ? -1.0e30 : 1.0e30));
+    }
+    
+    float intervalCoverage = coverageFromEdge(tExit - tEnter);
+    
+    // configurations the interval cannot speak for: a ray along the axis but outside the cylinder,
+    // one that crosses neither cap plane while lying beyond them, and one entering behind the eye
+    bool misses = (alongAxis && k0 > 0.0) || (!acrossCaps && (baoc < 0.0 || baoc > baba)) || tEnter < 0.0;
+    coverage = misses ? 0.0 : intervalCoverage;
+  }
+  
   float tmin = -1.0e30;
   float tmax = 1.0e30;
-
+  
   // -1: undetermined, 0: cylinder mantle, 1: end-cap, 2..7: clip plane
   int entryType = -1;
-
+  
   // infinite cylinder around the axis
   if (k2 > 1.0e-6 * baba)
   {
     float h = k1 * k1 - k2 * k0;
-    if (h < 0.0) return -1.0;
+    if (h < 0.0)
+    {
+      if (!AnalyticCoverage) return -1.0;
+      h = 0.0;
+    }
     h = sqrt(h);
     tmin = (-k1 - h) / k2;
     tmax = (-k1 + h) / k2;
@@ -310,9 +393,9 @@ static float bondImposterClippedIntersect(float3 ro, float3 rd, float3 a, float3
   else if (k0 > 0.0)
   {
     // ray (nearly) parallel to the axis and outside the cylinder
-    return -1.0;
+    if (!AnalyticCoverage) return -1.0;
   }
-
+  
   // slab between the two end-cap planes: 0 <= baoc + t * bard <= baba
   if (abs(bard) > 1.0e-6)
   {
@@ -325,22 +408,20 @@ static float bondImposterClippedIntersect(float3 ro, float3 rd, float3 a, float3
   }
   else if (baoc < 0.0 || baoc > baba)
   {
-    return -1.0;
+    if (!AnalyticCoverage) return -1.0;
   }
-
-  // the six clip planes of the unit cell (in structure space)
-  float4 planes[6] = { structureUniforms.clipPlaneLeft, structureUniforms.clipPlaneRight,
-                       structureUniforms.clipPlaneTop, structureUniforms.clipPlaneBottom,
-                       structureUniforms.clipPlaneFront, structureUniforms.clipPlaneBack };
-  float4 so = toStructure * float4(ro, 1.0);
-  float4 sd = toStructure * float4(rd, 0.0);
+  
   for (int i = 0; i < 6; i++)
   {
     float f0 = dot(planes[i], so);
     float df = dot(planes[i], sd);
     if (abs(df) < 1.0e-8)
     {
-      if (f0 < 0.0) return -1.0;
+      if (f0 < 0.0)
+      {
+        if (!AnalyticCoverage) return -1.0;
+        tmax = -1.0e30;
+      }
     }
     else
     {
@@ -355,9 +436,17 @@ static float bondImposterClippedIntersect(float3 ro, float3 rd, float3 a, float3
       }
     }
   }
-
-  if (tmax < tmin || tmin < 0.0 || entryType < 0) return -1.0;
-
+  
+  if (tmax < tmin || tmin < 0.0 || entryType < 0)
+  {
+    if (!AnalyticCoverage) return -1.0;
+    
+    // the coverage has already written this pixel off, but the ray parameter still has to stay
+    // finite: it goes on to be shaded, only to be masked away afterwards
+    if (!(tmin >= 0.0 && tmin < 1.0e30)) tmin = 0.0;
+    entryType = max(entryType, 0);
+  }
+  
   float t = tmin;
   float y = baoc + t * bard;
   ct = clamp(y / baba, 0.0, 1.0);
@@ -378,6 +467,16 @@ static float bondImposterClippedIntersect(float3 ro, float3 rd, float3 a, float3
     N = -normalize(planeEye.xyz);
   }
   return t;
+}
+
+// the plain hit test, for the callers that have no use for a coverage fraction
+static float bondImposterClippedIntersect(float3 ro, float3 rd, float3 a, float3 b, float r,
+                                          float4x4 toStructure,
+                                          constant StructureUniforms& structureUniforms,
+                                          thread float3 &N, thread float &ct)
+{
+  float coverage;
+  return bondImposterClippedIntersectImpl<false>(ro, rd, a, b, r, toStructure, structureUniforms, N, ct, coverage);
 }
 
 vertex BondCylinderImposterVertexShaderOut BondCylinderImposterVertexShader(const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
@@ -430,14 +529,15 @@ vertex BondCylinderImposterVertexShaderOut BondCylinderImposterVertexShader(cons
   return vert;
 }
 
-template <typename VertexIn>
+template <typename VertexIn, bool AnalyticCoverage>
 static FragOutput BondCylinderImposterFragmentImpl(VertexIn vert,
                                                    constant StructureUniforms& structureUniforms,
                                                    constant LightUniforms& lightUniforms,
                                                    constant FrameUniforms& frameUniforms,
                                                    texture2d<half> ambientOcclusionTexture,
                                                    sampler ambientOcclusionSampler,
-                                                   texture2d<uint> shadowMask)
+                                                   texture2d<uint> shadowMask,
+                                                   thread float &coverage)
 {
   FragOutput output;
   
@@ -447,8 +547,9 @@ static FragOutput BondCylinderImposterFragmentImpl(VertexIn vert,
   
   float3 N;
   float ct;
-  float t = bondImposterIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, N, ct);
-  if (t < 0.0) discard_fragment();
+  float t = bondImposterIntersectImpl<AnalyticCoverage>(ro, rd, vert.pointA, vert.pointB, vert.radius, N, ct, coverage);
+  if (AnalyticCoverage) coverage = (t < 0.0) ? 0.0 : coverage;
+  else if (t < 0.0) discard_fragment();
   
   float3 pos = ro + t * rd;
   
@@ -512,11 +613,14 @@ fragment FragOutput BondCylinderImposterFragmentShader(BondCylinderImposterVerte
                                                        sampler          ambientOcclusionSampler [[sampler(0)]],
                                                        texture2d<uint> shadowMask [[texture(1)]])
 {
-  return BondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
+  float coverage;
+  return BondCylinderImposterFragmentImpl<BondCylinderImposterVertexShaderOut, false>(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask, coverage);
 }
 
-// "fast" per-pixel variant: identical shading, but with center interpolation the
-// fragment shader runs once per pixel even under MSAA
+// "fast" per-pixel variant: identical shading, but with center interpolation the fragment shader runs
+// once per pixel even under MSAA. Silhouette coverage is written as alpha; the pipeline's
+// alpha-to-coverage then keeps only that fraction of the pixel's samples, including their depth,
+// so glow and selection still see the same kind of rim they do in the per-sample still path.
 fragment FragOutput BondCylinderImposterPerPixelFragmentShader(BondCylinderImposterPerPixelFragmentShaderIn vert [[stage_in]],
                                                                constant StructureUniforms& structureUniforms [[buffer(0)]],
                                                                constant LightUniforms& lightUniforms [[buffer(1)]],
@@ -525,7 +629,11 @@ fragment FragOutput BondCylinderImposterPerPixelFragmentShader(BondCylinderImpos
                                                        sampler          ambientOcclusionSampler [[sampler(0)]],
                                                        texture2d<uint> shadowMask [[texture(1)]])
 {
-  return BondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
+  float coverage;
+  FragOutput output = BondCylinderImposterFragmentImpl<BondCylinderImposterPerPixelFragmentShaderIn, true>(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask, coverage);
+  if (!(coverage > 0.0)) discard_fragment();
+  output.albedo.w = coverage;
+  return output;
 }
 
 
@@ -580,14 +688,15 @@ vertex BondCylinderImposterVertexShaderOut ExternalBondCylinderImposterVertexSha
   return vert;
 }
 
-template <typename VertexIn>
+template <typename VertexIn, bool AnalyticCoverage>
 static FragOutput ExternalBondCylinderImposterFragmentImpl(VertexIn vert,
                                                            constant StructureUniforms& structureUniforms,
                                                            constant LightUniforms& lightUniforms,
                                                            constant FrameUniforms& frameUniforms,
                                                            texture2d<half> ambientOcclusionTexture,
                                                            sampler ambientOcclusionSampler,
-                                                           texture2d<uint> shadowMask)
+                                                           texture2d<uint> shadowMask,
+                                                           thread float &coverage)
 {
   FragOutput output;
   
@@ -600,8 +709,9 @@ static FragOutput ExternalBondCylinderImposterFragmentImpl(VertexIn vert,
   float4x4 toStructure = structureUniforms.inverseModelMatrix * frameUniforms.viewMatrixInverse;
   float3 N;
   float ct;
-  float t = bondImposterClippedIntersect(ro, rd, vert.pointA, vert.pointB, vert.radius, toStructure, structureUniforms, N, ct);
-  if (t < 0.0) discard_fragment();
+  float t = bondImposterClippedIntersectImpl<AnalyticCoverage>(ro, rd, vert.pointA, vert.pointB, vert.radius, toStructure, structureUniforms, N, ct, coverage);
+  if (AnalyticCoverage) coverage = (t < 0.0) ? 0.0 : coverage;
+  else if (t < 0.0) discard_fragment();
   
   float3 pos = ro + t * rd;
   
@@ -665,11 +775,11 @@ fragment FragOutput ExternalBondCylinderImposterFragmentShader(BondCylinderImpos
                                                        sampler          ambientOcclusionSampler [[sampler(0)]],
                                                        texture2d<uint> shadowMask [[texture(1)]])
 {
-  return ExternalBondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
+  float coverage;
+  return ExternalBondCylinderImposterFragmentImpl<BondCylinderImposterVertexShaderOut, false>(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask, coverage);
 }
 
-// "fast" per-pixel variant: identical shading, but with center interpolation the
-// fragment shader runs once per pixel even under MSAA
+// "fast" per-pixel variant, see BondCylinderImposterPerPixelFragmentShader
 fragment FragOutput ExternalBondCylinderImposterPerPixelFragmentShader(BondCylinderImposterPerPixelFragmentShaderIn vert [[stage_in]],
                                                                        constant StructureUniforms& structureUniforms [[buffer(0)]],
                                                                        constant LightUniforms& lightUniforms [[buffer(1)]],
@@ -678,7 +788,11 @@ fragment FragOutput ExternalBondCylinderImposterPerPixelFragmentShader(BondCylin
                                                        sampler          ambientOcclusionSampler [[sampler(0)]],
                                                        texture2d<uint> shadowMask [[texture(1)]])
 {
-  return ExternalBondCylinderImposterFragmentImpl(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask);
+  float coverage;
+  FragOutput output = ExternalBondCylinderImposterFragmentImpl<BondCylinderImposterPerPixelFragmentShaderIn, true>(vert, structureUniforms, lightUniforms, frameUniforms, ambientOcclusionTexture, ambientOcclusionSampler, shadowMask, coverage);
+  if (!(coverage > 0.0)) discard_fragment();
+  output.albedo.w = coverage;
+  return output;
 }
 
 
@@ -863,9 +977,31 @@ struct BondSelectionImposterVertexShaderOut
   float4 color2 [[ flat ]];
   float4 ambient [[ flat ]];
   float4 specular [[ flat ]];
-  // center-interpolated: the selection effects don't need the per-sample anti-aliased
-  // treatment of the main bond imposters, so they always shade once per pixel
+  // center-interpolated: while the scene bonds shade per-sample (still frames), the
+  // selection overlay shades once per pixel
   float3 frag_pos;
+  float3 pointA [[ flat ]];
+  float3 pointB [[ flat ]];
+  float radius [[ flat ]];
+  float3 axisX [[ flat ]];
+  float3 axisZ [[ flat ]];
+};
+
+// The same varyings interpolated per MSAA sample (matched to the vertex output by member name).
+// The selection overlay sits a whisker in front of the bond it decorates, so which of the two gets
+// the sub-pixel depth detail decides the depth test on about half of a pixel's samples over the
+// whole silhouette. A still frame shades the bonds per sample and the overlay per pixel; while the
+// camera moves the bonds drop to per-pixel shading and the overlay switches to this struct, keeping
+// the same odds with the roles reversed, so the selection does not change brightness when a rotation
+// starts or stops.
+struct BondSelectionImposterPerSampleFragmentShaderIn
+{
+  float4 position [[position]];
+  float4 color1 [[ flat ]];
+  float4 color2 [[ flat ]];
+  float4 ambient [[ flat ]];
+  float4 specular [[ flat ]];
+  float3 frag_pos [[ sample_perspective ]];
   float3 pointA [[ flat ]];
   float3 pointB [[ flat ]];
   float radius [[ flat ]];
@@ -1000,7 +1136,8 @@ vertex BondSelectionImposterVertexShaderOut externalBondSelectionImposterVertexS
 }
 
 // shared shading of the selection surface color (glow and worley-noise variants)
-static float4 bondSelectionImposterShade(BondSelectionImposterVertexShaderOut vert,
+template <typename VertexIn>
+static float4 bondSelectionImposterShade(VertexIn vert,
                                          constant StructureUniforms& structureUniforms,
                                          constant LightUniforms& lightUniforms,
                                          float3 pos, float3 N, float ct)
@@ -1031,17 +1168,19 @@ static float4 bondSelectionImposterShade(BondSelectionImposterVertexShaderOut ve
 
 // model-space coordinates of the hit point on the unit cylinder (x,z on the unit
 // circle for mantle hits, y = ct in 0..1), matching the Model_N of the mesh path
-static float3 bondSelectionImposterModelCoords(BondSelectionImposterVertexShaderOut vert, float3 pos, float ct)
+template <typename VertexIn>
+static float3 bondSelectionImposterModelCoords(VertexIn vert, float3 pos, float ct)
 {
   float3 axisPos = mix(vert.pointA, vert.pointB, ct);
   float3 pr = (pos - axisPos) / vert.radius;
   return float3(dot(pr, vert.axisX), ct, dot(pr, vert.axisZ));
 }
 
-fragment FragOutput internalBondSelectionGlowImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
-                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
-                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+template <typename VertexIn>
+static FragOutput internalBondSelectionGlowImposterFragmentImpl(VertexIn vert,
+                                           constant FrameUniforms& frameUniforms,
+                                           constant StructureUniforms& structureUniforms,
+                                           constant LightUniforms& lightUniforms)
 {
   FragOutput output;
   
@@ -1072,11 +1211,29 @@ fragment FragOutput internalBondSelectionGlowImposterFragmentShader(BondSelectio
   return output;
 }
 
-
-fragment FragOutput internalBondSelectionStripedImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+fragment FragOutput internalBondSelectionGlowImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
                                            constant FrameUniforms& frameUniforms [[buffer(0)]],
                                            constant StructureUniforms& structureUniforms [[buffer(1)]],
                                            constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return internalBondSelectionGlowImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+// used while the scene bonds shade per-pixel, see BondSelectionImposterPerSampleFragmentShaderIn
+fragment FragOutput internalBondSelectionGlowImposterPerSampleFragmentShader(BondSelectionImposterPerSampleFragmentShaderIn vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return internalBondSelectionGlowImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+
+template <typename VertexIn>
+static FragOutput internalBondSelectionStripedImposterFragmentImpl(VertexIn vert,
+                                           constant FrameUniforms& frameUniforms,
+                                           constant StructureUniforms& structureUniforms,
+                                           constant LightUniforms& lightUniforms)
 {
   FragOutput output;
   
@@ -1114,11 +1271,29 @@ fragment FragOutput internalBondSelectionStripedImposterFragmentShader(BondSelec
   return output;
 }
 
-
-fragment FragOutput internalBondSelectionWorleyNoise3DImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+fragment FragOutput internalBondSelectionStripedImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
                                            constant FrameUniforms& frameUniforms [[buffer(0)]],
                                            constant StructureUniforms& structureUniforms [[buffer(1)]],
                                            constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return internalBondSelectionStripedImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+// used while the scene bonds shade per-pixel, see BondSelectionImposterPerSampleFragmentShaderIn
+fragment FragOutput internalBondSelectionStripedImposterPerSampleFragmentShader(BondSelectionImposterPerSampleFragmentShaderIn vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return internalBondSelectionStripedImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+
+template <typename VertexIn>
+static FragOutput internalBondSelectionWorleyNoise3DImposterFragmentImpl(VertexIn vert,
+                                           constant FrameUniforms& frameUniforms,
+                                           constant StructureUniforms& structureUniforms,
+                                           constant LightUniforms& lightUniforms)
 {
   FragOutput output;
   
@@ -1155,11 +1330,29 @@ fragment FragOutput internalBondSelectionWorleyNoise3DImposterFragmentShader(Bon
   return output;
 }
 
-
-fragment FragOutput externalBondSelectionGlowImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+fragment FragOutput internalBondSelectionWorleyNoise3DImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
                                            constant FrameUniforms& frameUniforms [[buffer(0)]],
                                            constant StructureUniforms& structureUniforms [[buffer(1)]],
                                            constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return internalBondSelectionWorleyNoise3DImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+// used while the scene bonds shade per-pixel, see BondSelectionImposterPerSampleFragmentShaderIn
+fragment FragOutput internalBondSelectionWorleyNoise3DImposterPerSampleFragmentShader(BondSelectionImposterPerSampleFragmentShaderIn vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return internalBondSelectionWorleyNoise3DImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+
+template <typename VertexIn>
+static FragOutput externalBondSelectionGlowImposterFragmentImpl(VertexIn vert,
+                                           constant FrameUniforms& frameUniforms,
+                                           constant StructureUniforms& structureUniforms,
+                                           constant LightUniforms& lightUniforms)
 {
   FragOutput output;
   
@@ -1191,11 +1384,29 @@ fragment FragOutput externalBondSelectionGlowImposterFragmentShader(BondSelectio
   return output;
 }
 
-
-fragment FragOutput externalBondSelectionStripedImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+fragment FragOutput externalBondSelectionGlowImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
                                            constant FrameUniforms& frameUniforms [[buffer(0)]],
                                            constant StructureUniforms& structureUniforms [[buffer(1)]],
                                            constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return externalBondSelectionGlowImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+// used while the scene bonds shade per-pixel, see BondSelectionImposterPerSampleFragmentShaderIn
+fragment FragOutput externalBondSelectionGlowImposterPerSampleFragmentShader(BondSelectionImposterPerSampleFragmentShaderIn vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return externalBondSelectionGlowImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+
+template <typename VertexIn>
+static FragOutput externalBondSelectionStripedImposterFragmentImpl(VertexIn vert,
+                                           constant FrameUniforms& frameUniforms,
+                                           constant StructureUniforms& structureUniforms,
+                                           constant LightUniforms& lightUniforms)
 {
   FragOutput output;
   
@@ -1232,6 +1443,23 @@ fragment FragOutput externalBondSelectionStripedImposterFragmentShader(BondSelec
   float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
   output.albedo = float4(color.xyz * bloomLevel, bloomLevel);
   return output;
+}
+
+fragment FragOutput externalBondSelectionStripedImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return externalBondSelectionStripedImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+// used while the scene bonds shade per-pixel, see BondSelectionImposterPerSampleFragmentShaderIn
+fragment FragOutput externalBondSelectionStripedImposterPerSampleFragmentShader(BondSelectionImposterPerSampleFragmentShaderIn vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return externalBondSelectionStripedImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
 }
 
 
@@ -1480,10 +1708,11 @@ fragment half BondAmbientOcclusionFragmentShader(BondAmbientOcclusionVertexShade
 }
 
 
-fragment FragOutput externalBondSelectionWorleyNoise3DImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
-                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
-                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+template <typename VertexIn>
+static FragOutput externalBondSelectionWorleyNoise3DImposterFragmentImpl(VertexIn vert,
+                                           constant FrameUniforms& frameUniforms,
+                                           constant StructureUniforms& structureUniforms,
+                                           constant LightUniforms& lightUniforms)
 {
   FragOutput output;
   
@@ -1519,5 +1748,22 @@ fragment FragOutput externalBondSelectionWorleyNoise3DImposterFragmentShader(Bon
   float intensity = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
   output.albedo = float4(color.xyz * intensity, intensity);
   return output;
+}
+
+fragment FragOutput externalBondSelectionWorleyNoise3DImposterFragmentShader(BondSelectionImposterVertexShaderOut vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return externalBondSelectionWorleyNoise3DImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
+}
+
+// used while the scene bonds shade per-pixel, see BondSelectionImposterPerSampleFragmentShaderIn
+fragment FragOutput externalBondSelectionWorleyNoise3DImposterPerSampleFragmentShader(BondSelectionImposterPerSampleFragmentShaderIn vert [[stage_in]],
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
+{
+  return externalBondSelectionWorleyNoise3DImposterFragmentImpl(vert, frameUniforms, structureUniforms, lightUniforms);
 }
 
