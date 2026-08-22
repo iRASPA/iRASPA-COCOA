@@ -349,6 +349,7 @@ final class ProjectTreeViewController: UITableViewController, UIDocumentPickerDe
       }
       cell.contentConfiguration = config
       cell.accessoryType = .none
+      cell.accessoryView = nil
       cell.indentationLevel = 0
       cell.selectionStyle = .none
       return cell
@@ -380,13 +381,28 @@ final class ProjectTreeViewController: UITableViewController, UIDocumentPickerDe
       }
       config.image = UIImage(named: "FolderIcon") ?? UIImage(systemName: row.node.isExpanded ? "folder.fill" : "folder")
     }
+    let readOnly = isReadOnlyLibraryNode(row.node)
+    if readOnly
+    {
+      config.textProperties.color = .secondaryLabel
+      if config.secondaryText == nil, row.node !== galleryGroupNode
+      {
+        config.secondaryText = "Read-only. Drag to Projects to edit"
+      }
+    }
     cell.contentConfiguration = config
     cell.indentationWidth = 16
     cell.indentationLevel = row.depth
     cell.selectionStyle = .default
+    cell.accessoryView = nil
     if row.node === selectedNode
     {
       cell.accessoryType = .checkmark
+    }
+    else if readOnly
+    {
+      cell.accessoryType = .none
+      cell.accessoryView = makeLockAccessory()
     }
     else if !row.node.isLeaf
     {
@@ -457,6 +473,20 @@ final class ProjectTreeViewController: UITableViewController, UIDocumentPickerDe
       guard !actions.isEmpty else { return nil }
       return UIMenu(children: actions)
     }
+  }
+
+  private func isReadOnlyLibraryNode(_ node: ProjectTreeNode) -> Bool
+  {
+    return isGalleryNode(node) || isCloudNode(node)
+  }
+
+  private func makeLockAccessory() -> UIImageView
+  {
+    let imageView = UIImageView(image: UIImage(systemName: "lock.fill"))
+    imageView.tintColor = .tertiaryLabel
+    imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 12, weight: .semibold)
+    imageView.sizeToFit()
+    return imageView
   }
 
   private func isGalleryNode(_ node: ProjectTreeNode) -> Bool

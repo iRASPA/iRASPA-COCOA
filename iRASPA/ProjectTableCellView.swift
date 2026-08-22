@@ -38,6 +38,9 @@ public class ProjectTableCellView: NSTableCellView, ProgressIndicator
   @IBOutlet public weak var progressIndicator: ProjectProgressIndicator? = nil
   @IBOutlet public weak var cancelButton: NSButton? = nil
   
+  private var isReadOnly: Bool = false
+  private var lockImageView: NSImageView?
+  
   override init(frame frameRect: NSRect)
   {
     super.init(frame: frameRect)
@@ -50,12 +53,27 @@ public class ProjectTableCellView: NSTableCellView, ProgressIndicator
     self.textField?.wantsLayer = true
   }
   
+  override public func awakeFromNib()
+  {
+    super.awakeFromNib()
+    _ = ensureLockImageView()
+  }
+  
   override public var backgroundStyle: NSView.BackgroundStyle
   {
     didSet
     {
       syncSelectionAppearance(for: backgroundStyle)
     }
+  }
+  
+  func configureReadOnly(_ isReadOnly: Bool, toolTip: String?)
+  {
+    self.isReadOnly = isReadOnly
+    self.toolTip = toolTip
+    let lockView = ensureLockImageView()
+    lockView.isHidden = !isReadOnly
+    lockView.toolTip = toolTip
   }
   
   func syncSelectionAppearance(for style: NSView.BackgroundStyle)
@@ -82,14 +100,69 @@ public class ProjectTableCellView: NSTableCellView, ProgressIndicator
       if style == .emphasized
       {
         textField?.textColor = NSColor.alternateSelectedControlTextColor
+        lockImageView?.contentTintColor = NSColor.alternateSelectedControlTextColor
+      }
+      else if isReadOnly
+      {
+        if textField?.textColor != NSColor.red
+        {
+          textField?.textColor = NSColor.secondaryLabelColor
+        }
+        lockImageView?.contentTintColor = NSColor.tertiaryLabelColor
       }
       else if textField?.textColor == NSColor.alternateSelectedControlTextColor
       {
         textField?.textColor = nil
+        lockImageView?.contentTintColor = NSColor.tertiaryLabelColor
+      }
+      else
+      {
+        lockImageView?.contentTintColor = NSColor.tertiaryLabelColor
       }
     }
     
     textField?.needsDisplay = true
+  }
+  
+  private func ensureLockImageView() -> NSImageView
+  {
+    if let lockImageView
+    {
+      return lockImageView
+    }
+    
+    let lockView = NSImageView()
+    lockView.translatesAutoresizingMaskIntoConstraints = false
+    let symbol = NSImage(systemSymbolName: "lock.fill", accessibilityDescription: NSLocalizedString("Read-only", comment: ""))
+    lockView.image = symbol?.withSymbolConfiguration(NSImage.SymbolConfiguration(pointSize: 9, weight: .semibold))
+    lockView.imageScaling = .scaleProportionallyDown
+    lockView.contentTintColor = NSColor.tertiaryLabelColor
+    lockView.setContentHuggingPriority(.required, for: .horizontal)
+    lockView.setContentCompressionResistancePriority(.required, for: .horizontal)
+    NSLayoutConstraint.activate([
+      lockView.widthAnchor.constraint(equalToConstant: 10),
+      lockView.heightAnchor.constraint(equalToConstant: 10)
+    ])
+    lockView.isHidden = true
+    
+    if let stack = subviews.compactMap({ $0 as? NSStackView }).first
+    {
+      if let textField, let index = stack.arrangedSubviews.firstIndex(of: textField)
+      {
+        stack.insertArrangedSubview(lockView, at: index + 1)
+      }
+      else
+      {
+        stack.addArrangedSubview(lockView)
+      }
+    }
+    else
+    {
+      addSubview(lockView)
+    }
+    
+    lockImageView = lockView
+    return lockView
   }
 }
 

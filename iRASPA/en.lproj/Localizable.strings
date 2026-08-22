@@ -13,6 +13,9 @@
 "Remove Projects" = "Remove Projects";
 "Reorder Projects" = "Reorder Projects";
 "Change Project Selection" = "Change Project Selection";
+"Read-only" = "Read-only";
+"Gallery projects are read-only. Drag them to Local Projects to edit." = "Gallery projects are read-only. Drag them to Local Projects to edit.";
+"iCloud projects are read-only. Drag them to Local Projects to edit." = "iCloud projects are read-only. Drag them to Local Projects to edit.";
 "Change Project Name" = "Change Project Name";
 "Insert Selection" = "Insert Selection";
 "Delete Selection" = "Delete Selection";

@@ -801,6 +801,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       // Work around: draw like GroupItem
       view.textField?.font = .boldSystemFont(ofSize: 10.85)
       view.textField?.textColor = .lightGray
+      view.toolTip = readOnlyLibraryTooltip(for: node, document: document)
       return view
     }
     
@@ -814,6 +815,16 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       view.setImportProgressVisible(node.showsImportProgress)
       
       view.textField?.textColor = nil
+      
+      if let document: iRASPADocument = self.windowController?.currentDocument
+      {
+        let readOnly = isReadOnlyLibraryNode(node, document: document)
+        view.configureReadOnly(readOnly, toolTip: readOnly ? readOnlyLibraryTooltip(for: node, document: document) : nil)
+      }
+      else
+      {
+        view.configureReadOnly(false, toolTip: nil)
+      }
       
       if let documentData: DocumentData = self.windowController?.currentDocument?.documentData,
         node.isDescendantOfNode(documentData.cloudRootNode)
@@ -837,6 +848,10 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       if isSelectedInOutline || isSelectedInModel
       {
         view.backgroundStyle = .emphasized
+      }
+      else
+      {
+        view.backgroundStyle = .normal
       }
       
       view.syncSelectionAppearance(for: view.backgroundStyle)
@@ -3596,6 +3611,32 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     }
   }
 
+  // MARK: Read-only gallery and iCloud projects
+  // =====================================================================
+  
+  private func isReadOnlyLibraryNode(_ node: ProjectTreeNode, document: iRASPADocument) -> Bool
+  {
+    if document.documentData.projectData.rootNodes.contains(node)
+    {
+      return false
+    }
+    return node.isDescendantOfNode(document.documentData.galleryRootNode) ||
+           node.isDescendantOfNode(document.documentData.cloudRootNode)
+  }
+  
+  private func readOnlyLibraryTooltip(for node: ProjectTreeNode, document: iRASPADocument) -> String?
+  {
+    if node.isDescendantOfNode(document.documentData.galleryRootNode)
+    {
+      return NSLocalizedString("Gallery projects are read-only. Drag them to Local Projects to edit.", comment: "")
+    }
+    if node.isDescendantOfNode(document.documentData.cloudRootNode)
+    {
+      return NSLocalizedString("iCloud projects are read-only. Drag them to Local Projects to edit.", comment: "")
+    }
+    return nil
+  }
+  
   // MARK: Copy / Paste / Cut / Delete
   // =====================================================================
   

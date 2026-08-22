@@ -38,6 +38,13 @@ class TableListNameTextField: NSTextField
 {
   private(set) var allowsRenaming: Bool = false
   
+  override func awakeFromNib()
+  {
+    super.awakeFromNib()
+    isSelectable = false
+    isEditable = false
+  }
+  
   override var acceptsFirstResponder: Bool
   {
     return allowsRenaming && super.acceptsFirstResponder
@@ -61,10 +68,23 @@ class TableListNameTextField: NSTextField
     }
   }
   
+  /// The storyboard marks this field selectable so the system "Look Up" menu
+  /// appears on right-click. Rows already have the outline's project menu;
+  /// use that unless the name is being edited.
+  override func menu(for event: NSEvent) -> NSMenu?
+  {
+    if allowsRenaming
+    {
+      return super.menu(for: event)
+    }
+    return enclosingListView()?.menu(for: event)
+  }
+  
   func beginRenaming()
   {
     allowsRenaming = true
     isEditable = true
+    isSelectable = true
     applyEditingAppearance()
   }
   
@@ -72,6 +92,7 @@ class TableListNameTextField: NSTextField
   {
     allowsRenaming = false
     isEditable = false
+    isSelectable = false
     drawsBackground = false
     backgroundColor = nil
     textColor = nil
