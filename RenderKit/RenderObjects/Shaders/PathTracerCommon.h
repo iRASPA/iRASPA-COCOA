@@ -37,6 +37,21 @@
 #define PATH_TRACER_CATEGORY_BOND    1
 #define PATH_TRACER_CATEGORY_RIBBON  2
 
+// Selection styles, mirroring the striped and Worley-noise cases of RKSelectionStyle. An
+// instance marked with one of these is the enlarged shell a selection is drawn on rather than
+// a surface of the model; `none` marks the model itself. The glow style is absent on purpose:
+// the rasterizer draws it into its own texture and blurs it over the finished image, which
+// happens after the trace has been composited and so needs nothing from here.
+#define PATH_TRACER_SELECTION_NONE     0
+#define PATH_TRACER_SELECTION_WORLEY   1
+#define PATH_TRACER_SELECTION_STRIPED  2
+
+// Instance masks. The selection shells answer primary rays only: the raster overlay they stand
+// in for is neither shadowed nor occluding, so the shadow and bounce rays of a path are traced
+// against the model alone and a selection never darkens what is next to it.
+#define PATH_TRACER_MASK_SURFACE    0x1
+#define PATH_TRACER_MASK_SELECTION  0x2
+
 // An atom, in the structure space of its owning structure. Colours are the raw
 // per-instance colours of RKInPerInstanceAttributesAtoms; the light and structure
 // colours are folded in by the kernel, exactly as the imposter vertex shader does.
@@ -57,6 +72,11 @@ typedef struct PathTracerCylinder
   simd_float4 pointB;     // xyz = second end cap centre, w unused
   simd_float4 color1;     // raw per-instance colour at pointA
   simd_float4 color2;     // raw per-instance colour at pointB
+  // The two axes across the cylinder, in structure space, which fix where the selection
+  // patterns start winding around it. Named for the model axes of the bond mesh, so that the
+  // angle measured from them is the one the raster selection shaders measure.
+  simd_float4 axisX;      // xyz = model x-axis, w unused
+  simd_float4 axisZ;      // xyz = model z-axis, w unused
 } PathTracerCylinder;
 
 // One instance of the top-level acceleration structure. `primitiveBase` turns the
@@ -67,6 +87,11 @@ typedef struct PathTracerInstance
   unsigned int primitiveBase;
   unsigned int structureIndex;   // index into the StructureUniforms array
   unsigned int clipAtUnitCell;   // non-zero when the six clip planes apply
+
+  unsigned int selectionStyle;   // PATH_TRACER_SELECTION_*, `none` for the model itself
+  unsigned int pad0;
+  unsigned int pad1;
+  unsigned int pad2;
 } PathTracerInstance;
 
 typedef struct PathTracerUniforms

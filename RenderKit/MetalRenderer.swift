@@ -468,6 +468,10 @@ public class MetalRenderer
   public func reloadRenderDataSelectedAtoms(device: MTLDevice)
   {
     self.rebuildSelectionInstanceBuffers(device: device)
+
+    // the striped and Worley-noise selections are geometry in the traced scene, so which atoms are
+    // selected is baked into the acceleration structures alongside the atoms themselves
+    pathTracerShader.invalidateGeometry()
   }
   
   public func reloadRenderDataSelectedInternalBonds(device: MTLDevice)

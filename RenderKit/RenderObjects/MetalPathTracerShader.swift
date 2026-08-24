@@ -44,6 +44,9 @@ struct RKPathTracerCylinder
   var pointB: SIMD4<Float> = SIMD4<Float>()
   var color1: SIMD4<Float> = SIMD4<Float>()
   var color2: SIMD4<Float> = SIMD4<Float>()
+  // the model x- and z-axis of the bond, which the selection patterns are wound from
+  var axisX: SIMD4<Float> = SIMD4<Float>()
+  var axisZ: SIMD4<Float> = SIMD4<Float>()
 }
 
 struct RKPathTracerInstance
@@ -52,6 +55,11 @@ struct RKPathTracerInstance
   var primitiveBase: UInt32 = 0
   var structureIndex: UInt32 = 0
   var clipAtUnitCell: UInt32 = 0
+
+  var selectionStyle: UInt32 = 0
+  var pad0: UInt32 = 0
+  var pad1: UInt32 = 0
+  var pad2: UInt32 = 0
 }
 
 struct RKPathTracerUniforms
@@ -150,6 +158,11 @@ public class MetalPathTracerShader
   private var indirectBuffer: MTLBuffer? = nil
   private var surfaceInfoBuffer: MTLBuffer? = nil
 
+  /// The selection overlay, kept apart from the accumulation of the model so that it can be
+  /// composited last and over everything, which is the order the rasterizer draws its own
+  /// selection imposters in. Premultiplied: rgb is the colour times its coverage, a the coverage.
+  private var selectionBuffer: MTLBuffer? = nil
+
   /// Device depth of whatever ends up visible in each pixel of the composite, the traced hit where the
   /// trace won and the rasterized primitive where it did not. The rasterizer's depth buffer cannot
   /// answer that on its own, the molecular geometry having been left out of it, so the compositing pass
@@ -241,14 +254,15 @@ public class MetalPathTracerShader
     guard let accumulateFunction: MTLFunction = library.makeFunction(name: "pathTracerAccumulateKernel"),
           let resolveFunction: MTLFunction = library.makeFunction(name: "pathTracerResolveKernel"),
           let sphereFunction: MTLFunction = library.makeFunction(name: "pathTracerSphereIntersection"),
-          let cylinderFunction: MTLFunction = library.makeFunction(name: "pathTracerCylinderIntersection") else
+          let cylinderFunction: MTLFunction = library.makeFunction(name: "pathTracerCylinderIntersection"),
+          let ribbonSelectionFunction: MTLFunction = library.makeFunction(name: "pathTracerRibbonSelectionIntersection") else
     {
       LogQueue.shared.error(destination: nil, message: "Path tracer: shader functions missing from the Metal library")
       return
     }
 
     let linkedFunctions: MTLLinkedFunctions = MTLLinkedFunctions()
-    linkedFunctions.functions = [sphereFunction, cylinderFunction]
+    linkedFunctions.functions = [sphereFunction, cylinderFunction, ribbonSelectionFunction]
 
     let accumulateDescriptor: MTLComputePipelineDescriptor = MTLComputePipelineDescriptor()
     accumulateDescriptor.computeFunction = accumulateFunction
@@ -261,7 +275,7 @@ public class MetalPathTracerShader
       self.accumulatePipeline = pipeline
 
       let tableDescriptor: MTLIntersectionFunctionTableDescriptor = MTLIntersectionFunctionTableDescriptor()
-      tableDescriptor.functionCount = 2
+      tableDescriptor.functionCount = 3
       guard let table: MTLIntersectionFunctionTable = pipeline.makeIntersectionFunctionTable(descriptor: tableDescriptor) else
       {
         LogQueue.shared.error(destination: nil, message: "Path tracer: could not create the intersection function table")
@@ -270,6 +284,7 @@ public class MetalPathTracerShader
       }
       table.setFunction(pipeline.functionHandle(function: sphereFunction), index: 0)
       table.setFunction(pipeline.functionHandle(function: cylinderFunction), index: 1)
+      table.setFunction(pipeline.functionHandle(function: ribbonSelectionFunction), index: 2)
       self.intersectionFunctionTable = table
 
       self.resolvePipeline = try device.makeComputePipelineState(function: resolveFunction)
@@ -296,10 +311,13 @@ public class MetalPathTracerShader
       let pipeline: MTLComputePipelineState = try device.makeComputePipelineState(descriptor: shadowDescriptor, options: [], reflection: nil)
 
       let tableDescriptor: MTLIntersectionFunctionTableDescriptor = MTLIntersectionFunctionTableDescriptor()
-      tableDescriptor.functionCount = 2
+      tableDescriptor.functionCount = 3
       guard let table: MTLIntersectionFunctionTable = pipeline.makeIntersectionFunctionTable(descriptor: tableDescriptor) else {return}
       table.setFunction(pipeline.functionHandle(function: sphereFunction), index: 0)
       table.setFunction(pipeline.functionHandle(function: cylinderFunction), index: 1)
+      // never reached by a shadow ray, the selection shells being outside its mask, but the slot has
+      // to exist for the offsets the geometry descriptors carry to mean the same thing in both tables
+      table.setFunction(pipeline.functionHandle(function: ribbonSelectionFunction), index: 2)
 
       self.shadowMaskPipeline = pipeline
       self.shadowMaskFunctionTable = table
@@ -346,6 +364,9 @@ public class MetalPathTracerShader
     surfaceInfoBuffer = device.makeBuffer(length: pixelCount * MemoryLayout<SIMD4<Float>>.stride, options: MTLResourceOptions.storageModePrivate)
     surfaceInfoBuffer?.label = "path tracer primary surface info"
 
+    selectionBuffer = device.makeBuffer(length: pixelCount * MemoryLayout<SIMD4<Float>>.stride, options: MTLResourceOptions.storageModePrivate)
+    selectionBuffer?.label = "path tracer selection overlay"
+
     compositeDepthBuffer = device.makeBuffer(length: pixelCount * MemoryLayout<Float>.stride, options: MTLResourceOptions.storageModePrivate)
     compositeDepthBuffer?.label = "path tracer composite depth"
 
@@ -386,7 +407,13 @@ public class MetalPathTracerShader
   /// Packs every atom, bond and ribbon of the visible structures into one set of global
   /// buffers, and records one instance per (structure, geometry kind) pair. Geometry stays
   /// in structure space; the structure's model matrix becomes the instance transform.
-  private func packGeometry(device: MTLDevice) -> [(descriptor: MTLPrimitiveAccelerationStructureDescriptor, transform: float4x4)]
+  ///
+  /// Whatever is selected is packed a second time, enlarged as its selection style asks, as instances
+  /// only primary rays can see. That shell is what the striped and Worley-noise patterns are drawn on,
+  /// and it stands to the model in the same relation as the enlarged imposter the rasterizer draws
+  /// over a selected atom. Atoms and bonds grow by a factor about their own axis; a ribbon, being a
+  /// surface with no centre to grow from, is instead pushed out along its normals.
+  private func packGeometry(device: MTLDevice) -> [(descriptor: MTLPrimitiveAccelerationStructureDescriptor, transform: float4x4, mask: UInt32)]
   {
     var spheres: [RKPathTracerSphere] = []
     var cylinders: [RKPathTracerCylinder] = []
@@ -398,68 +425,270 @@ public class MetalPathTracerShader
     var sphereBoxes: [MTLAxisAlignedBoundingBox] = []
     var cylinderBoxes: [MTLAxisAlignedBoundingBox] = []
 
-    // one entry per instance: the primitive acceleration structure to build and the
-    // instance transform to place it with
-    var pending: [(descriptor: MTLPrimitiveAccelerationStructureDescriptor, transform: float4x4)] = []
+    // one entry per instance: the primitive acceleration structure to build, the instance
+    // transform to place it with and the rays it answers
+    var pending: [(descriptor: MTLPrimitiveAccelerationStructureDescriptor, transform: float4x4, mask: UInt32)] = []
 
     var minimum: SIMD3<Float> = SIMD3<Float>(repeating: Float.greatestFiniteMagnitude)
     var maximum: SIMD3<Float> = SIMD3<Float>(repeating: -Float.greatestFiniteMagnitude)
 
+    // The structure being packed. Held here rather than passed because the two helpers below are
+    // otherwise identical for the model and for a selection shell.
+    var modelMatrix: float4x4 = float4x4()
     var structureIndex: Int = 0
+
+    /// Packs `atoms` as spheres of `radiusScale` times their own scale and records the instance that
+    /// places them. Does nothing when they all turn out to be invisible.
+    func appendSpheres(_ atoms: [RKInPerInstanceAttributesAtoms], radiusScale: Float, selection: PathTracerSelection, clipAtUnitCell: Bool)
+    {
+      let sphereBase: Int = spheres.count
+      let boxBase: Int = sphereBoxes.count
+
+      for atom in atoms
+      {
+        // invisible atoms are marked with a negative w, as in the imposter shaders
+        guard atom.position.w >= 0.0 else {continue}
+        let radius: Float = radiusScale * atom.scale.z
+        guard radius > 0.0 else {continue}
+        let center: SIMD3<Float> = SIMD3<Float>(atom.position.x, atom.position.y, atom.position.z)
+
+        var sphere: RKPathTracerSphere = RKPathTracerSphere()
+        sphere.center = SIMD4<Float>(center.x, center.y, center.z, radius)
+        sphere.ambient = atom.ambient
+        sphere.diffuse = atom.diffuse
+        sphere.specular = atom.specular
+        spheres.append(sphere)
+
+        sphereBoxes.append(MetalPathTracerShader.boundingBox(minimum: center - SIMD3<Float>(repeating: radius),
+                                                             maximum: center + SIMD3<Float>(repeating: radius)))
+        MetalPathTracerShader.expand(&minimum, &maximum, modelMatrix: modelMatrix, center: center, radius: radius)
+      }
+
+      guard sphereBoxes.count > boxBase else {return}
+
+      let descriptor: MTLPrimitiveAccelerationStructureDescriptor = MTLPrimitiveAccelerationStructureDescriptor()
+      let geometry: MTLAccelerationStructureBoundingBoxGeometryDescriptor = MTLAccelerationStructureBoundingBoxGeometryDescriptor()
+      // the sphere intersection function sits at index 0 of the function table
+      geometry.intersectionFunctionTableOffset = 0
+      geometry.boundingBoxCount = sphereBoxes.count - boxBase
+      geometry.boundingBoxBufferOffset = boxBase * MemoryLayout<MTLAxisAlignedBoundingBox>.stride
+      descriptor.geometryDescriptors = [geometry]
+      pending.append((descriptor: descriptor, transform: modelMatrix, mask: selection.instanceMask))
+
+      var instance: RKPathTracerInstance = RKPathTracerInstance()
+      instance.kind = UInt32(PathTracerKind.sphere.rawValue)
+      instance.primitiveBase = UInt32(sphereBase)
+      instance.structureIndex = UInt32(structureIndex)
+      instance.clipAtUnitCell = clipAtUnitCell ? 1 : 0
+      instance.selectionStyle = selection.rawValue
+      instances.append(instance)
+    }
+
+    /// Packs the given bond sets as capped cylinders, expanding double and triple bonds into their
+    /// sub-cylinders, and records the instance that places them. `radiusScale` multiplies the radius
+    /// the model itself uses, which is how a selection shell comes to enclose its bond.
+    func appendCylinders(_ bondSets: [(bonds: [RKInPerInstanceAttributesBonds], external: Bool)],
+                         bondScaling: Float,
+                         isUnity: Bool,
+                         radiusScale: Float,
+                         selection: PathTracerSelection,
+                         clipAtUnitCell: Bool)
+    {
+      let cylinderBase: Int = cylinders.count
+      let boxBase: Int = cylinderBoxes.count
+
+      for (bonds, external) in bondSets
+      {
+        for bond in bonds
+        {
+          guard bond.position1.w >= 0.0, bond.position2.w >= 0.0 else {continue}
+
+          let type: Int = isUnity ? 0 : Int(bond.type)
+          let subCylinderCount: Int = MetalPathTracerShader.subCylinderCount(type: type)
+          let position1: SIMD3<Float> = SIMD3<Float>(bond.position1.x, bond.position1.y, bond.position1.z)
+          let position2: SIMD3<Float> = SIMD3<Float>(bond.position2.x, bond.position2.y, bond.position2.z)
+          guard simd_length(position2 - position1) > 0.0 else {continue}
+
+          // the two basis vectors and the sign convention differ between the internal
+          // and external bond vertex shaders; both are reproduced here
+          let direction: SIMD3<Float> = external ? simd_normalize(position1 - position2) : simd_normalize(position2 - position1)
+          let v1: SIMD3<Float> = simd_normalize(abs(direction.x) > abs(direction.z)
+                                                ? SIMD3<Float>(-direction.y, direction.x, 0.0)
+                                                : SIMD3<Float>(0.0, -direction.z, direction.y))
+          let v2: SIMD3<Float> = simd_normalize(simd_cross(direction, v1))
+
+          // the model axes of the bond mesh: the sub-cylinders are displaced along them and the
+          // selection patterns are wound from them
+          let axisX: SIMD3<Float> = external ? -v1 : v2
+          let axisZ: SIMD3<Float> = external ? -v2 : v1
+
+          for sub in 0..<subCylinderCount
+          {
+            var radiusFactor: Float = 1.0
+            let offset: SIMD2<Float> = MetalPathTracerShader.subCylinderOffset(type: type, sub: sub, radiusFactor: &radiusFactor)
+            let displacement: SIMD3<Float> = bondScaling * (offset.x * axisX + offset.y * axisZ)
+            let radius: Float = radiusScale * bondScaling * radiusFactor
+            guard radius > 0.0 else {continue}
+
+            let pointA: SIMD3<Float> = position1 + displacement
+            let pointB: SIMD3<Float> = position2 + displacement
+
+            var cylinder: RKPathTracerCylinder = RKPathTracerCylinder()
+            cylinder.pointA = SIMD4<Float>(pointA.x, pointA.y, pointA.z, radius)
+            cylinder.pointB = SIMD4<Float>(pointB.x, pointB.y, pointB.z, 0.0)
+            cylinder.color1 = bond.color1
+            cylinder.color2 = bond.color2
+            cylinder.axisX = SIMD4<Float>(axisX.x, axisX.y, axisX.z, 0.0)
+            cylinder.axisZ = SIMD4<Float>(axisZ.x, axisZ.y, axisZ.z, 0.0)
+            cylinders.append(cylinder)
+
+            let padding: SIMD3<Float> = SIMD3<Float>(repeating: radius)
+            cylinderBoxes.append(MetalPathTracerShader.boundingBox(minimum: simd_min(pointA, pointB) - padding,
+                                                                   maximum: simd_max(pointA, pointB) + padding))
+            MetalPathTracerShader.expand(&minimum, &maximum, modelMatrix: modelMatrix, center: pointA, radius: radius)
+            MetalPathTracerShader.expand(&minimum, &maximum, modelMatrix: modelMatrix, center: pointB, radius: radius)
+          }
+        }
+      }
+
+      guard cylinderBoxes.count > boxBase else {return}
+
+      let descriptor: MTLPrimitiveAccelerationStructureDescriptor = MTLPrimitiveAccelerationStructureDescriptor()
+      let geometry: MTLAccelerationStructureBoundingBoxGeometryDescriptor = MTLAccelerationStructureBoundingBoxGeometryDescriptor()
+      // the cylinder intersection function sits at index 1 of the function table
+      geometry.intersectionFunctionTableOffset = 1
+      geometry.boundingBoxCount = cylinderBoxes.count - boxBase
+      geometry.boundingBoxBufferOffset = boxBase * MemoryLayout<MTLAxisAlignedBoundingBox>.stride
+      descriptor.geometryDescriptors = [geometry]
+      pending.append((descriptor: descriptor, transform: modelMatrix, mask: selection.instanceMask))
+
+      var instance: RKPathTracerInstance = RKPathTracerInstance()
+      instance.kind = UInt32(PathTracerKind.cylinder.rawValue)
+      instance.primitiveBase = UInt32(cylinderBase)
+      instance.structureIndex = UInt32(structureIndex)
+      instance.clipAtUnitCell = clipAtUnitCell ? 1 : 0
+      instance.selectionStyle = selection.rawValue
+      instances.append(instance)
+    }
+
+    /// Packs the triangles of the given ribbon draw `ranges`, along with the mesh vertices they index
+    /// pushed `expansion` along their own normals, and records the instance that places them. The
+    /// displacement is nothing for a ribbon itself and is what stands a selection shell off it
+    /// otherwise, which is how `ribbonSelectionExpandedPosition` builds the raster overlay: a ribbon
+    /// is a surface, so a shell over it cannot be had by scaling about a centre as for an atom.
+    /// Does nothing when every range turns out to be empty.
+    func appendRibbon(_ ribbonSource: RKRenderRibbonSource,
+                      ranges: [RKRibbonChainDrawRange],
+                      expansion: Float,
+                      selection: PathTracerSelection)
+    {
+      let sourceVertices: [RKVertex] = ribbonSource.renderRibbonVertices
+      let sourceIndices: [UInt32] = ribbonSource.renderRibbonIndices
+      guard !sourceVertices.isEmpty else {return}
+
+      let vertexBase: UInt32 = UInt32(ribbonVertices.count)
+      let triangleBase: Int = ribbonIndices.count / 3
+
+      for range in ranges
+      {
+        guard range.indexCount > 0 else {continue}
+        let start: Int = range.indexStart
+        let end: Int = min(start + range.indexCount, sourceIndices.count)
+        guard start < end else {continue}
+        for i in start..<end
+        {
+          ribbonIndices.append(sourceIndices[i] + vertexBase)
+        }
+      }
+
+      guard ribbonIndices.count / 3 > triangleBase else
+      {
+        // nothing was selected, or every range was hidden: drop the indices appended above
+        ribbonIndices.removeLast(ribbonIndices.count - triangleBase * 3)
+        return
+      }
+
+      for vertex in sourceVertices
+      {
+        var displaced: RKVertex = vertex
+        let normal: SIMD3<Float> = SIMD3<Float>(vertex.normal.x, vertex.normal.y, vertex.normal.z)
+        let length: Float = simd_length(normal)
+        if expansion != 0.0, length > 0.0
+        {
+          let offset: SIMD3<Float> = (expansion / length) * normal
+          displaced.position = SIMD4<Float>(vertex.position.x + offset.x,
+                                            vertex.position.y + offset.y,
+                                            vertex.position.z + offset.z,
+                                            vertex.position.w)
+        }
+        ribbonVertices.append(displaced)
+        ribbonPositions.append(displaced.position.x)
+        ribbonPositions.append(displaced.position.y)
+        ribbonPositions.append(displaced.position.z)
+        let point: SIMD3<Float> = SIMD3<Float>(displaced.position.x, displaced.position.y, displaced.position.z)
+        MetalPathTracerShader.expand(&minimum, &maximum, modelMatrix: modelMatrix, center: point, radius: 0.0)
+      }
+
+      let descriptor: MTLPrimitiveAccelerationStructureDescriptor = MTLPrimitiveAccelerationStructureDescriptor()
+      let geometry: MTLAccelerationStructureTriangleGeometryDescriptor = MTLAccelerationStructureTriangleGeometryDescriptor()
+      geometry.triangleCount = ribbonIndices.count / 3 - triangleBase
+      geometry.indexType = MTLIndexType.uint32
+      geometry.indexBufferOffset = triangleBase * 3 * MemoryLayout<UInt32>.stride
+
+      if selection == PathTracerSelection.striped
+      {
+        // the striped pattern has gaps, so which of the built-in test's hits count is settled by the
+        // ribbon selection intersection function, at index 2 of the function table
+        geometry.opaque = false
+        geometry.intersectionFunctionTableOffset = 2
+      }
+      else
+      {
+        // triangles use the built-in intersection test rather than a function
+        geometry.opaque = true
+      }
+
+      descriptor.geometryDescriptors = [geometry]
+      pending.append((descriptor: descriptor, transform: modelMatrix, mask: selection.instanceMask))
+
+      var instance: RKPathTracerInstance = RKPathTracerInstance()
+      instance.kind = UInt32(PathTracerKind.ribbon.rawValue)
+      instance.primitiveBase = UInt32(triangleBase)
+      instance.structureIndex = UInt32(structureIndex)
+      instance.clipAtUnitCell = 0
+      instance.selectionStyle = selection.rawValue
+      instances.append(instance)
+    }
+
     for sceneStructures in renderStructures
     {
       for structure in sceneStructures
       {
         let uniforms: RKStructureUniforms = RKStructureUniforms(structureIdentifier: structureIndex, structure: structure)
-        let modelMatrix: float4x4 = uniforms.modelMatrix
+        modelMatrix = uniforms.modelMatrix
         let isUnity: Bool = (structure as? RKRenderBondSource)?.isUnity ?? false
 
         // -- atoms ------------------------------------------------------------
         if let atomSource: RKRenderAtomSource = structure as? RKRenderAtomSource,
-           atomSource.drawAtoms, structure.isVisible, atomSource.numberOfAtoms > 0
+           atomSource.drawAtoms, structure.isVisible
         {
           let bondScaling: Float = Float((structure as? RKRenderBondSource)?.bondScaleFactor ?? 1.0)
           let radiusScale: Float = (isUnity ? bondScaling : 1.0) * Float(atomSource.atomScaleFactor)
 
-          let sphereBase: Int = spheres.count
-          let boxBase: Int = sphereBoxes.count
-          for atom in atomSource.renderAtoms
+          if atomSource.numberOfAtoms > 0
           {
-            // invisible atoms are marked with a negative w, as in the imposter shaders
-            guard atom.position.w >= 0.0 else {continue}
-            let radius: Float = radiusScale * atom.scale.z
-            guard radius > 0.0 else {continue}
-            let center: SIMD3<Float> = SIMD3<Float>(atom.position.x, atom.position.y, atom.position.z)
-
-            var sphere: RKPathTracerSphere = RKPathTracerSphere()
-            sphere.center = SIMD4<Float>(center.x, center.y, center.z, radius)
-            sphere.ambient = atom.ambient
-            sphere.diffuse = atom.diffuse
-            sphere.specular = atom.specular
-            spheres.append(sphere)
-
-            sphereBoxes.append(MetalPathTracerShader.boundingBox(minimum: center - SIMD3<Float>(repeating: radius),
-                                                                 maximum: center + SIMD3<Float>(repeating: radius)))
-            MetalPathTracerShader.expand(&minimum, &maximum, modelMatrix: modelMatrix, center: center, radius: radius)
+            appendSpheres(atomSource.renderAtoms,
+                          radiusScale: radiusScale,
+                          selection: PathTracerSelection.none,
+                          clipAtUnitCell: atomSource.clipAtomsAtUnitCell)
           }
 
-          if sphereBoxes.count > boxBase
+          if let selection: PathTracerSelection = PathTracerSelection(atomSource.atomSelectionStyle)
           {
-            let descriptor: MTLPrimitiveAccelerationStructureDescriptor = MTLPrimitiveAccelerationStructureDescriptor()
-            let geometry: MTLAccelerationStructureBoundingBoxGeometryDescriptor = MTLAccelerationStructureBoundingBoxGeometryDescriptor()
-            // the sphere intersection function sits at index 0 of the function table
-            geometry.intersectionFunctionTableOffset = 0
-            geometry.boundingBoxCount = sphereBoxes.count - boxBase
-            geometry.boundingBoxBufferOffset = boxBase * MemoryLayout<MTLAxisAlignedBoundingBox>.stride
-            descriptor.geometryDescriptors = [geometry]
-            pending.append((descriptor: descriptor, transform: modelMatrix))
-
-            var instance: RKPathTracerInstance = RKPathTracerInstance()
-            instance.kind = UInt32(PathTracerKind.sphere.rawValue)
-            instance.primitiveBase = UInt32(sphereBase)
-            instance.structureIndex = UInt32(structureIndex)
-            instance.clipAtUnitCell = atomSource.clipAtomsAtUnitCell ? 1 : 0
-            instances.append(instance)
+            appendSpheres(atomSource.renderSelectedAtoms,
+                          radiusScale: radiusScale * MetalPathTracerShader.selectionScaling(atomSource.atomSelectionScaling),
+                          selection: selection,
+                          clipAtUnitCell: atomSource.clipAtomsAtUnitCell)
           }
         }
 
@@ -468,75 +697,25 @@ public class MetalPathTracerShader
            bondSource.drawBonds, structure.isVisible
         {
           let bondScaling: Float = Float(bondSource.bondScaleFactor)
-          let cylinderBase: Int = cylinders.count
-          let boxBase: Int = cylinderBoxes.count
 
-          for (bonds, external) in [(bondSource.renderInternalBonds, false), (bondSource.renderExternalBonds, true)]
+          appendCylinders([(bonds: bondSource.renderInternalBonds, external: false),
+                           (bonds: bondSource.renderExternalBonds, external: true)],
+                          bondScaling: bondScaling,
+                          isUnity: isUnity,
+                          radiusScale: 1.0,
+                          selection: PathTracerSelection.none,
+                          clipAtUnitCell: bondSource.clipBondsAtUnitCell)
+
+          if let selection: PathTracerSelection = PathTracerSelection(bondSource.bondSelectionStyle)
           {
-            for bond in bonds
-            {
-              guard bond.position1.w >= 0.0, bond.position2.w >= 0.0 else {continue}
-
-              let type: Int = isUnity ? 0 : Int(bond.type)
-              let subCylinderCount: Int = MetalPathTracerShader.subCylinderCount(type: type)
-              let position1: SIMD3<Float> = SIMD3<Float>(bond.position1.x, bond.position1.y, bond.position1.z)
-              let position2: SIMD3<Float> = SIMD3<Float>(bond.position2.x, bond.position2.y, bond.position2.z)
-              guard simd_length(position2 - position1) > 0.0 else {continue}
-
-              // the two basis vectors and the sign convention differ between the internal
-              // and external bond vertex shaders; both are reproduced here
-              let direction: SIMD3<Float> = external ? simd_normalize(position1 - position2) : simd_normalize(position2 - position1)
-              let v1: SIMD3<Float> = simd_normalize(abs(direction.x) > abs(direction.z)
-                                                    ? SIMD3<Float>(-direction.y, direction.x, 0.0)
-                                                    : SIMD3<Float>(0.0, -direction.z, direction.y))
-              let v2: SIMD3<Float> = simd_normalize(simd_cross(direction, v1))
-
-              for sub in 0..<subCylinderCount
-              {
-                var radiusFactor: Float = 1.0
-                let offset: SIMD2<Float> = MetalPathTracerShader.subCylinderOffset(type: type, sub: sub, radiusFactor: &radiusFactor)
-                let displacement: SIMD3<Float> = external
-                    ? bondScaling * (offset.x * (-v1) + offset.y * (-v2))
-                    : bondScaling * (offset.x * v2 + offset.y * v1)
-                let radius: Float = bondScaling * radiusFactor
-                guard radius > 0.0 else {continue}
-
-                let pointA: SIMD3<Float> = position1 + displacement
-                let pointB: SIMD3<Float> = position2 + displacement
-
-                var cylinder: RKPathTracerCylinder = RKPathTracerCylinder()
-                cylinder.pointA = SIMD4<Float>(pointA.x, pointA.y, pointA.z, radius)
-                cylinder.pointB = SIMD4<Float>(pointB.x, pointB.y, pointB.z, 0.0)
-                cylinder.color1 = bond.color1
-                cylinder.color2 = bond.color2
-                cylinders.append(cylinder)
-
-                let padding: SIMD3<Float> = SIMD3<Float>(repeating: radius)
-                cylinderBoxes.append(MetalPathTracerShader.boundingBox(minimum: simd_min(pointA, pointB) - padding,
-                                                                       maximum: simd_max(pointA, pointB) + padding))
-                MetalPathTracerShader.expand(&minimum, &maximum, modelMatrix: modelMatrix, center: pointA, radius: radius)
-                MetalPathTracerShader.expand(&minimum, &maximum, modelMatrix: modelMatrix, center: pointB, radius: radius)
-              }
-            }
-          }
-
-          if cylinderBoxes.count > boxBase
-          {
-            let descriptor: MTLPrimitiveAccelerationStructureDescriptor = MTLPrimitiveAccelerationStructureDescriptor()
-            let geometry: MTLAccelerationStructureBoundingBoxGeometryDescriptor = MTLAccelerationStructureBoundingBoxGeometryDescriptor()
-            // the cylinder intersection function sits at index 1 of the function table
-            geometry.intersectionFunctionTableOffset = 1
-            geometry.boundingBoxCount = cylinderBoxes.count - boxBase
-            geometry.boundingBoxBufferOffset = boxBase * MemoryLayout<MTLAxisAlignedBoundingBox>.stride
-            descriptor.geometryDescriptors = [geometry]
-            pending.append((descriptor: descriptor, transform: modelMatrix))
-
-            var instance: RKPathTracerInstance = RKPathTracerInstance()
-            instance.kind = UInt32(PathTracerKind.cylinder.rawValue)
-            instance.primitiveBase = UInt32(cylinderBase)
-            instance.structureIndex = UInt32(structureIndex)
-            instance.clipAtUnitCell = bondSource.clipBondsAtUnitCell ? 1 : 0
-            instances.append(instance)
+            // the 1.01 is the selection imposter's, which lifts the shell clear of its own bond
+            appendCylinders([(bonds: bondSource.renderSelectedInternalBonds, external: false),
+                             (bonds: bondSource.renderSelectedExternalBonds, external: true)],
+                            bondScaling: bondScaling,
+                            isUnity: isUnity,
+                            radiusScale: 1.01 * MetalPathTracerShader.selectionScaling(bondSource.bondSelectionScaling),
+                            selection: selection,
+                            clipAtUnitCell: bondSource.clipBondsAtUnitCell)
           }
         }
 
@@ -546,58 +725,24 @@ public class MetalPathTracerShader
            ribbonSource.ribbonNumberOfIndices > 0,
            !ribbonSource.renderRibbonVertices.isEmpty
         {
-          let vertexBase: UInt32 = UInt32(ribbonVertices.count)
-          let triangleBase: Int = ribbonIndices.count / 3
-          let sourceVertices: [RKVertex] = ribbonSource.renderRibbonVertices
-          let sourceIndices: [UInt32] = ribbonSource.renderRibbonIndices
-
           // only the visible draw ranges are included, so hidden chains and residues do
           // not show up in the path-traced image either
-          for range in ribbonSource.ribbonDrawRangesForEncoding()
-          {
-            guard range.indexCount > 0 else {continue}
-            let start: Int = range.indexStart
-            let end: Int = min(start + range.indexCount, sourceIndices.count)
-            guard start < end else {continue}
-            for i in start..<end
-            {
-              ribbonIndices.append(sourceIndices[i] + vertexBase)
-            }
-          }
+          appendRibbon(ribbonSource,
+                       ranges: ribbonSource.ribbonDrawRangesForEncoding(),
+                       expansion: 0.0,
+                       selection: PathTracerSelection.none)
 
-          if ribbonIndices.count / 3 > triangleBase
+          // The selected residues and segments, marked on a shell standing off the ribbon. Which
+          // style that shell wears is decided by the atom setting, there being no ribbon-specific
+          // one, exactly as `MetalRibbonSelectionShader` decides it.
+          if let atomSource: RKRenderAtomSource = structure as? RKRenderAtomSource,
+             let selection: PathTracerSelection = PathTracerSelection(atomSource.atomSelectionStyle)
           {
-            ribbonVertices.append(contentsOf: sourceVertices)
-            for vertex in sourceVertices
-            {
-              ribbonPositions.append(vertex.position.x)
-              ribbonPositions.append(vertex.position.y)
-              ribbonPositions.append(vertex.position.z)
-              let point: SIMD3<Float> = SIMD3<Float>(vertex.position.x, vertex.position.y, vertex.position.z)
-              MetalPathTracerShader.expand(&minimum, &maximum, modelMatrix: modelMatrix, center: point, radius: 0.0)
-            }
-
-            let descriptor: MTLPrimitiveAccelerationStructureDescriptor = MTLPrimitiveAccelerationStructureDescriptor()
-            let geometry: MTLAccelerationStructureTriangleGeometryDescriptor = MTLAccelerationStructureTriangleGeometryDescriptor()
-            geometry.triangleCount = ribbonIndices.count / 3 - triangleBase
-            geometry.indexType = MTLIndexType.uint32
-            geometry.indexBufferOffset = triangleBase * 3 * MemoryLayout<UInt32>.stride
-            // triangles use the built-in intersection test rather than a function
-            geometry.opaque = true
-            descriptor.geometryDescriptors = [geometry]
-            pending.append((descriptor: descriptor, transform: modelMatrix))
-
-            var instance: RKPathTracerInstance = RKPathTracerInstance()
-            instance.kind = UInt32(PathTracerKind.ribbon.rawValue)
-            instance.primitiveBase = UInt32(triangleBase)
-            instance.structureIndex = UInt32(structureIndex)
-            instance.clipAtUnitCell = 0
-            instances.append(instance)
-          }
-          else
-          {
-            // every range was hidden: drop the indices appended above
-            ribbonIndices.removeLast(ribbonIndices.count - triangleBase * 3)
+            let expansion: Float = (MetalPathTracerShader.selectionScaling(atomSource.atomSelectionScaling) - 1.0) * selection.ribbonExpansionScale
+            appendRibbon(ribbonSource,
+                         ranges: MetalPathTracerShader.selectedRibbonDrawRanges(ribbonSource),
+                         expansion: expansion,
+                         selection: selection)
           }
         }
 
@@ -660,7 +805,7 @@ public class MetalPathTracerShader
     primitiveAccelerationStructures = []
     instanceAccelerationStructure = nil
 
-    let pending: [(descriptor: MTLPrimitiveAccelerationStructureDescriptor, transform: float4x4)] = packGeometry(device: device)
+    let pending: [(descriptor: MTLPrimitiveAccelerationStructureDescriptor, transform: float4x4, mask: UInt32)] = packGeometry(device: device)
     guard !pending.isEmpty else {return false}
 
     guard let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer(),
@@ -694,7 +839,8 @@ public class MetalPathTracerShader
       var descriptor: MTLAccelerationStructureInstanceDescriptor = MTLAccelerationStructureInstanceDescriptor()
       descriptor.accelerationStructureIndex = UInt32(index)
       descriptor.options = MTLAccelerationStructureInstanceOptions(rawValue: 0)
-      descriptor.mask = 0xFF
+      // keeps the selection shells out of every ray but the primary one
+      descriptor.mask = entry.mask
       // the table slot is chosen per geometry, so no extra per-instance offset is needed
       descriptor.intersectionFunctionTableOffset = 0
       descriptor.transformationMatrix = MetalPathTracerShader.packedTransform(entry.transform)
@@ -767,6 +913,7 @@ public class MetalPathTracerShader
     let accumulationBuffer: MTLBuffer
     let indirectBuffer: MTLBuffer
     let surfaceInfoBuffer: MTLBuffer
+    let selectionBuffer: MTLBuffer
     let compositeDepthBuffer: MTLBuffer
     let compositeCueMaskBuffer: MTLBuffer
     let compositeTexture: MTLTexture
@@ -802,6 +949,7 @@ public class MetalPathTracerShader
     guard let accumulationBuffer = accumulationBuffer,
           let indirectBuffer = indirectBuffer,
           let surfaceInfoBuffer = surfaceInfoBuffer,
+          let selectionBuffer = selectionBuffer,
           let compositeDepthBuffer = compositeDepthBuffer,
           let compositeCueMaskBuffer = compositeCueMaskBuffer,
           let compositeTexture = compositeTexture else {_ = fail("could not allocate the accumulation buffers"); return nil}
@@ -820,6 +968,8 @@ public class MetalPathTracerShader
     functionTable.setBuffer(instanceDataBuffer, offset: 0, index: 1)
     functionTable.setBuffer(structureUniformBuffers, offset: 0, index: 2)
     functionTable.setBuffer(cylinderBuffer, offset: 0, index: 3)
+    functionTable.setBuffer(ribbonVertexBuffer, offset: 0, index: 4)
+    functionTable.setBuffer(ribbonIndexBuffer, offset: 0, index: 5)
 
     return Resources(accumulatePipeline: accumulatePipeline,
                      resolvePipeline: resolvePipeline,
@@ -833,6 +983,7 @@ public class MetalPathTracerShader
                      accumulationBuffer: accumulationBuffer,
                      indirectBuffer: indirectBuffer,
                      surfaceInfoBuffer: surfaceInfoBuffer,
+                     selectionBuffer: selectionBuffer,
                      compositeDepthBuffer: compositeDepthBuffer,
                      compositeCueMaskBuffer: compositeCueMaskBuffer,
                      compositeTexture: compositeTexture,
@@ -891,6 +1042,7 @@ public class MetalPathTracerShader
     encoder.setBuffer(resources.accumulationBuffer, offset: 0, index: 11)
     encoder.setBuffer(resources.surfaceInfoBuffer, offset: 0, index: 12)
     encoder.setBuffer(resources.indirectBuffer, offset: 0, index: 13)
+    encoder.setBuffer(resources.selectionBuffer, offset: 0, index: 14)
 
     // residency of everything reached indirectly
     for structure in primitiveAccelerationStructures
@@ -901,6 +1053,8 @@ public class MetalPathTracerShader
     encoder.useResource(resources.cylinderBuffer, usage: MTLResourceUsage.read)
     encoder.useResource(resources.instanceDataBuffer, usage: MTLResourceUsage.read)
     encoder.useResource(resources.structureUniformBuffers, usage: MTLResourceUsage.read)
+    encoder.useResource(resources.ribbonVertexBuffer, usage: MTLResourceUsage.read)
+    encoder.useResource(resources.ribbonIndexBuffer, usage: MTLResourceUsage.read)
 
     encoder.dispatchThreadgroups(threadgroups, threadsPerThreadgroup: MetalPathTracerShader.threadgroupSize)
     encoder.endEncoding()
@@ -923,6 +1077,7 @@ public class MetalPathTracerShader
     encoder.setBuffer(resources.indirectBuffer, offset: 0, index: 4)
     encoder.setBuffer(resources.compositeDepthBuffer, offset: 0, index: 5)
     encoder.setBuffer(resources.compositeCueMaskBuffer, offset: 0, index: 6)
+    encoder.setBuffer(resources.selectionBuffer, offset: 0, index: 7)
     encoder.setTexture(resources.sceneColorTexture, index: 0)
     encoder.setTexture(resources.sceneDepthTexture, index: 1)
     encoder.setTexture(resources.compositeTexture, index: 2)
@@ -1105,6 +1260,8 @@ public class MetalPathTracerShader
     functionTable.setBuffer(instanceDataBuffer, offset: 0, index: 1)
     functionTable.setBuffer(structureUniformBuffers, offset: 0, index: 2)
     functionTable.setBuffer(cylinderBuffer, offset: 0, index: 3)
+    functionTable.setBuffer(ribbonVertexBuffer, offset: 0, index: 4)
+    functionTable.setBuffer(ribbonIndexBuffer, offset: 0, index: 5)
 
     guard let encoder: MTLComputeCommandEncoder = commandBuffer.makeComputeCommandEncoder() else {return nil}
 
@@ -1134,6 +1291,8 @@ public class MetalPathTracerShader
     encoder.useResource(cylinderBuffer, usage: MTLResourceUsage.read)
     encoder.useResource(instanceDataBuffer, usage: MTLResourceUsage.read)
     encoder.useResource(structureUniformBuffers, usage: MTLResourceUsage.read)
+    encoder.useResource(ribbonVertexBuffer, usage: MTLResourceUsage.read)
+    encoder.useResource(ribbonIndexBuffer, usage: MTLResourceUsage.read)
 
     encoder.dispatchThreadgroups(threadgroups(size: size), threadsPerThreadgroup: MetalPathTracerShader.threadgroupSize)
     encoder.endEncoding()
@@ -1149,6 +1308,74 @@ public class MetalPathTracerShader
     case sphere = 0
     case cylinder = 1
     case ribbon = 2
+  }
+
+  /// Mirrors PATH_TRACER_SELECTION_* of PathTracerCommon.h.
+  private enum PathTracerSelection: UInt32
+  {
+    case none = 0
+    case worley = 1
+    case striped = 2
+
+    /// The style of shell to pack for a selection, or nil when the tracer draws none: `none`
+    /// selects nothing, and the glow style is drawn by the rasterizer's blur pass, which composites
+    /// it over the traced image afterwards.
+    init?(_ style: RKSelectionStyle)
+    {
+      switch style
+      {
+      case RKSelectionStyle.WorleyNoise3D: self = PathTracerSelection.worley
+      case RKSelectionStyle.striped: self = PathTracerSelection.striped
+      default: return nil
+      }
+    }
+
+    /// Mirrors PATH_TRACER_MASK_* of PathTracerCommon.h.
+    var instanceMask: UInt32
+    {
+      return (self == PathTracerSelection.none) ? 0x1 : 0x2
+    }
+
+    /// How far a ribbon selection shell stands off the ribbon, as a fraction of what
+    /// `atomSelectionScaling` asks for. The striped style is lifted further than the Worley-noise
+    /// one, as `ribbonSelectionExpandedPosition` lifts it: its pattern has gaps, and a shell too
+    /// close to its ribbon shows through them as much as beside them. Atoms and bonds have no
+    /// equivalent, their shells being scaled about a centre rather than pushed along a surface.
+    var ribbonExpansionScale: Float
+    {
+      return (self == PathTracerSelection.striped) ? 0.45 : 0.2
+    }
+  }
+
+  /// A selection scaling as the shaders receive it. `RKStructureUniforms` never passes one through
+  /// unenlarged, so neither does the packing here: a shell exactly on the surface it marks would be
+  /// at the very limit the selection ray stops at, and would be met or missed by rounding alone.
+  private static func selectionScaling(_ scaling: Double) -> Float
+  {
+    return Float(max(1.001, scaling))
+  }
+
+  /// The draw ranges of the selected residues and segments of a ribbon, hidden ones left out. The
+  /// same set `MetalRibbonSelectionShader` draws its overlay over.
+  private static func selectedRibbonDrawRanges(_ ribbonSource: RKRenderRibbonSource) -> [RKRibbonChainDrawRange]
+  {
+    var ranges: [RKRibbonChainDrawRange] = []
+
+    for index in ribbonSource.renderSelectedRibbonSegmentDrawRangeIndices.sorted()
+    {
+      guard index >= 0, index < ribbonSource.ribbonSegmentDrawRanges.count else {continue}
+      if ribbonSource.ribbonUsesSegmentVisibility, !ribbonSource.isRibbonSegmentDrawRangeVisible(at: index) {continue}
+      ranges.append(ribbonSource.ribbonSegmentDrawRanges[index])
+    }
+
+    for index in ribbonSource.renderSelectedRibbonResidueDrawRangeIndices.sorted()
+    {
+      guard index >= 0, index < ribbonSource.ribbonResidueDrawRanges.count else {continue}
+      if ribbonSource.ribbonUsesResidueVisibility, !ribbonSource.isRibbonResidueDrawRangeVisible(at: index) {continue}
+      ranges.append(ribbonSource.ribbonResidueDrawRanges[index])
+    }
+
+    return ranges
   }
 
   /// Number of sub-cylinders drawn for a bond type, matching `bondImposterSubCylinderOffset`.
