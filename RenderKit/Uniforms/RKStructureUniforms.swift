@@ -111,7 +111,10 @@ public struct RKStructureUniforms
   public var atomSelectionStripesDensity: Float = 0.25
   public var atomSelectionStripesFrequency: Float = 12.0
   public var atomSelectionWorleyNoise3DFrequency: Float = 2.0
-  public var atomSelectionWorleyNoise3DJitter: Float = 0.0
+  // Jitter 0 is not a neutral starting value: it puts every feature point at the exact centre of its
+  // cell, which turns the noise into the cubic cell lattice and the selection into a grid of straight
+  // dark walls. It matches the model-side default, as the bond and primitive jitters below do.
+  public var atomSelectionWorleyNoise3DJitter: Float = 1.0
   
   public var atomAnnotationTextDisplacement: SIMD4<Float> = SIMD4<Float>()
   public var atomAnnotationTextColor: SIMD4<Float> = SIMD4<Float>(0.0,0.0,0.0,1.0)
@@ -206,7 +209,17 @@ public struct RKStructureUniforms
   public var padAlignment7: SIMD4<Float> = SIMD4<Float>()
   public var padAlignment8: SIMD4<Float> = SIMD4<Float>()
   //----------------------------------------  1280 bytes boundary
-  
+
+  /// Smallest shell a selection may be drawn at, as a multiple of the radius of what it marks.
+  ///
+  /// The shell depth-tests against the surface it covers, so it cannot be allowed to coincide with
+  /// it exactly; 0.1% of clearance is ample for the rounding involved. It is only enough because the
+  /// overlays shade at the same MSAA rate as the geometry they test against, both depths then being
+  /// evaluated at the same points. When the rates were crossed the comparison was off by the depth
+  /// slope times the sample offset, which beat 0.1% over most of any atom more than a few dozen
+  /// pixels across and painted screen-aligned bands there; see AtomSelectionPerSampleFragmentShaderIn.
+  static let minimumSelectionScaling: Double = 1.001
+
   public init()
   {
     
@@ -258,7 +271,7 @@ public struct RKStructureUniforms
       self.atomSelectionStripesFrequency = Float(structure.atomSelectionStripesFrequency)
       self.atomSelectionWorleyNoise3DFrequency = Float(structure.atomSelectionWorleyNoise3DFrequency)
       self.atomSelectionWorleyNoise3DJitter = Float(structure.atomSelectionWorleyNoise3DJitter)
-      self.atomSelectionScaling = Float(max(1.001,structure.atomSelectionScaling)) // avoid artifacts
+      self.atomSelectionScaling = Float(max(RKStructureUniforms.minimumSelectionScaling, structure.atomSelectionScaling))
       self.atomSelectionIntensity = Float(structure.atomSelectionIntensity)
       
       self.atomAnnotationTextColor = SIMD4<Float>(color: structure.atomTextColor)
@@ -309,7 +322,7 @@ public struct RKStructureUniforms
       self.bondSelectionWorleyNoise3DFrequency = Float(structure.bondSelectionWorleyNoise3DFrequency)
       self.bondSelectionWorleyNoise3DJitter = Float(structure.bondSelectionWorleyNoise3DJitter)
       self.bondSelectionIntensity = Float(structure.bondSelectionIntensity)
-      self.bondSelectionScaling = Float(max(1.001,structure.bondSelectionScaling)) // avoid artifacts
+      self.bondSelectionScaling = Float(max(RKStructureUniforms.minimumSelectionScaling, structure.bondSelectionScaling))
     }
     
     if let structure: RKRenderPrimitiveSource = structure as? RKRenderPrimitiveSource
@@ -318,7 +331,7 @@ public struct RKStructureUniforms
       self.atomSelectionStripesFrequency = Float(structure.atomSelectionStripesFrequency)
       self.atomSelectionWorleyNoise3DFrequency = Float(structure.atomSelectionWorleyNoise3DFrequency)
       self.atomSelectionWorleyNoise3DJitter = Float(structure.atomSelectionWorleyNoise3DJitter)
-      self.atomSelectionScaling = Float(max(1.001,structure.atomSelectionScaling)) // avoid artifacts
+      self.atomSelectionScaling = Float(max(RKStructureUniforms.minimumSelectionScaling, structure.atomSelectionScaling))
       self.atomSelectionIntensity = Float(structure.atomSelectionIntensity)
       
       let primitiveModelMatrix = float4x4(Double4x4: double4x4(simd_quatd: structure.primitiveOrientation))
@@ -334,7 +347,7 @@ public struct RKStructureUniforms
       self.primitiveSaturation = Float(structure.primitiveSaturation)
       self.primitiveValue = Float(structure.primitiveValue)
       
-      self.primitiveSelectionScaling = Float(max(1.001,structure.primitiveSelectionScaling))
+      self.primitiveSelectionScaling = Float(max(RKStructureUniforms.minimumSelectionScaling, structure.primitiveSelectionScaling))
       self.primitiveSelectionStripesDensity = Float(structure.primitiveSelectionStripesDensity)
       self.primitiveSelectionStripesFrequency = Float(structure.primitiveSelectionStripesFrequency)
       self.primitiveSelectionWorleyNoise3DFrequency = Float(structure.primitiveSelectionWorleyNoise3DFrequency)

@@ -67,7 +67,6 @@ inline float coverageFromEdge(float edge)
   float width = metal::fwidth(edge);
   return width > 0.0f ? metal::saturate(0.5f + edge / width) : (edge > 0.0f ? 1.0f : 0.0f);
 }
-
 /// Picks `coverage` worth of the samples the rasterizer handed this fragment. Which ones are picked
 /// makes no difference — the multisample resolve weighs every sample alike, so only how many are
 /// picked reaches the image — and drawing them from the rasterizer's own mask stops a fragment from
@@ -215,12 +214,12 @@ typedef struct AtomSphereImposterVertexShaderOut
 
 /// AtomSphereImposterVertexShaderOut with the ray-defining members interpolated per MSAA sample
 /// (matched to the vertex output by member name). The selection overlays sit a whisker in front of
-/// the atoms they decorate, so which of the two surfaces carries sub-pixel depth detail decides the
-/// depth test on about half of a pixel's samples over the whole disc — visibly so, since the resolve
-/// then averages overlay and atom. A still frame shades the atoms per sample and the overlay per
-/// pixel; while the camera moves the atoms drop to per-pixel shading and the overlays switch to this
-/// struct, keeping the same odds with the roles reversed, so the selection does not change brightness
-/// when a rotation starts or stops.
+/// the atoms they decorate and depth-test against them, so the two surfaces have to be measured at
+/// the same points. Measured at different points, the comparison is off by the depth slope times
+/// the sub-pixel offset, which outgrows the overlay's clearance on an atom's flanks and flips the
+/// test there in bands aligned to the screen's fixed sample pattern. The overlays therefore follow
+/// the scene's shading rate: this struct while the atoms shade per sample (still frames), the
+/// pixel-rate struct above while they shade per pixel (interaction).
 typedef struct AtomSelectionPerSampleFragmentShaderIn
 {
   float4 position [[position]];
@@ -650,6 +649,37 @@ float3 rgb2hsv(float3 c);
 float3 hsv2rgb(float3 c);
 float2 cellular2D(float2 P, float jitter);
 float2 cellular3D(float3 P, float jitter);
+
+/// The Worley-noise darkening factor `F2 - F1`, averaged over the pixel it is being drawn into.
+///
+/// The factor falls to zero along the boundaries between cells, and those boundaries are narrower than
+/// a pixel at any frequency worth using. Read once per pixel, each one comes out either fully dark or
+/// missing altogether: the mean over the image is right, but the lines are harsh, and which pixels
+/// catch one changes with the camera, so they crawl. The path tracer has no such trouble, averaging
+/// many jittered readings across the pixel, and this is what lets the rasterizer agree with it.
+///
+/// Read at four points spread across the pixel's own footprint, which the screen-space derivatives of
+/// the coordinate give, so the spacing follows the projection and no frequency or zoom is favoured.
+/// Reconstructing the mean instead from one reading and a slope was tried and does not work: the
+/// factor has a crease at every boundary rather than a smooth minimum, and at the frequencies worth
+/// using a pixel often spans more than one boundary, so there is no single valley to fit. Measured
+/// against a converged trace, four readings cut the error by around three times and sixteen by around
+/// five, while the closed form gained a tenth of that at best and lost ground at high frequency.
+///
+/// The caller has to evaluate this in control flow the whole 2x2 quad follows, derivatives being
+/// undefined otherwise.
+inline float filteredWorleyFactor(float3 coordinates, float jitter)
+{
+  float3 sx = 0.25f * metal::dfdx(coordinates);
+  float3 sy = 0.25f * metal::dfdy(coordinates);
+
+  float2 F00 = cellular3D(coordinates - sx - sy, jitter);
+  float2 F01 = cellular3D(coordinates - sx + sy, jitter);
+  float2 F10 = cellular3D(coordinates + sx - sy, jitter);
+  float2 F11 = cellular3D(coordinates + sx + sy, jitter);
+
+  return 0.25f * ((F00.y - F00.x) + (F01.y - F01.x) + (F10.y - F10.x) + (F11.y - F11.x));
+}
 
 float2 rayBoxIntersection(Ray ray, AABB box);
 

@@ -1352,7 +1352,7 @@ public class MetalPathTracerShader
   /// at the very limit the selection ray stops at, and would be met or missed by rounding alone.
   private static func selectionScaling(_ scaling: Double) -> Float
   {
-    return Float(max(1.001, scaling))
+    return Float(max(RKStructureUniforms.minimumSelectionScaling, scaling))
   }
 
   /// The draw ranges of the selected residues and segments of a ribbon, hidden ones left out. The

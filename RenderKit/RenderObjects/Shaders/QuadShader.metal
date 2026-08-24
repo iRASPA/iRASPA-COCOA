@@ -287,3 +287,26 @@ fragment float4 texturedQuadFragment(BackgroundVertexShaderOut     inFrag    [[ 
   // every picture and movie export, so this multiply does nothing at all in those cases.
   return clamp(color, 0.0, 1.0) + float4(glow.xyz * frameUniforms.maximumEDRvalue, 0.0);
 }
+
+/// Lays a device depth held per pixel in a buffer back into a depth attachment.
+///
+/// The selection glow is rasterized even when the scene is traced, and it depth-tests against the
+/// scene to find which selected atoms are hidden behind others. The molecular geometry is left out of
+/// the raster passes when it is traced, so the depth it would have written is not in any attachment,
+/// only in the tracer's composite depth buffer. Without this the glow tests against a depth buffer
+/// holding no atoms at all and every selected atom glows, buried ones included.
+struct TracedDepthFragmentOut
+{
+  float depth [[depth(any)]];
+};
+
+fragment TracedDepthFragmentOut tracedDepthWriteFragment(BackgroundVertexShaderOut inFrag [[ stage_in ]],
+                                                         constant uint2&     size        [[ buffer(0) ]],
+                                                         const device float* tracedDepth [[ buffer(1) ]])
+{
+  uint2 pixel = min(uint2(inFrag.m_Position.xy), size - uint2(1));
+
+  TracedDepthFragmentOut out;
+  out.depth = tracedDepth[pixel.y * size.x + pixel.x];
+  return out;
+}

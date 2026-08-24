@@ -41,9 +41,11 @@ class MetalAtomSelectionWorleyNoise3DOrthographicImposterShader
   var indexBuffer: MTLBuffer! = nil
   var vertexBuffer: MTLBuffer! = nil
   var pipeLine: MTLRenderPipelineState! = nil
-  /// The same overlay with its depth evaluated per MSAA sample. Used while the scene atoms shade
-  /// per-pixel, so that the overlay-against-own-atom depth fight keeps the same odds it has in the
-  /// still frame, where the atoms are the per-sample side; see AtomSelectionPerSampleFragmentShaderIn.
+  /// The same overlay with its depth evaluated per MSAA sample. Bound while the scene atoms shade
+  /// per-sample, so the overlay and the atom it depth-tests against are measured at the same points;
+  /// at mixed rates the test is off by the depth slope times the sample offset, which outgrows the
+  /// overlay's clearance on an atom's flanks and flips there in screen-aligned bands; see
+  /// AtomSelectionPerSampleFragmentShaderIn.
   var perSamplePipeLine: MTLRenderPipelineState! = nil
   var transparentDepthState: MTLDepthStencilState! = nil
   
@@ -121,8 +123,8 @@ class MetalAtomSelectionWorleyNoise3DOrthographicImposterShader
           if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
              (structure.atomSelectionStyle == .WorleyNoise3D)
           {
-            // opposite rate to the scene atoms, on purpose; see perSamplePipeLine
-            commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? pipeLine : perSamplePipeLine)
+            // same rate as the scene atoms; see perSamplePipeLine
+            commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? perSamplePipeLine : pipeLine)
               
             if let buffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j)
             {

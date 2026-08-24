@@ -992,7 +992,13 @@ kernel void pathTracerAccumulateKernel(uint2 gid [[thread_position_in_grid]],
 
   for (uint sampleIndex = 0; sampleIndex < uniforms.samplesPerDispatch; sampleIndex++)
   {
-    float2 jitter = float2(pathTracerRandom(state), pathTracerRandom(state));
+    // The first sample of a pixel runs through its centre, because it is the one whose depth is
+    // recorded in surfaceInfo below and handed to passes that rasterize against the traced result.
+    // Those passes evaluate their own depth at the pixel centre, and the selection glow's clearance
+    // over the atom it wraps is far smaller than the depth spread a jittered evaluation point
+    // produces, so a jittered reading would fail it on whichever pixels drew a nearer point.
+    bool centreSample = (uniforms.sampleOffset == 0 && sampleIndex == 0);
+    float2 jitter = centreSample ? float2(0.5) : float2(pathTracerRandom(state), pathTracerRandom(state));
     float2 uv = (float2(gid) + jitter) / float2(float(uniforms.width), float(uniforms.height));
     // the framebuffer origin is top-left, normalized device coordinates point up
     float2 ndc = float2(uv.x * 2.0 - 1.0, 1.0 - uv.y * 2.0);

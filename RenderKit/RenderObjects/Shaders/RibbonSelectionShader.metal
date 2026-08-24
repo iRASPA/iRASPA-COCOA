@@ -121,9 +121,8 @@ fragment float4 RibbonSelectionWorleyFragmentShader(RibbonSelectionVertexShaderO
   float3 t1 = vert.Model_N;
   float frequency = structureUniforms.atomSelectionWorleyNoise3DFrequency;
   float jitter = structureUniforms.atomSelectionWorleyNoise3DJitter;
-  float2 F = cellular3D(frequency * float3(t1.x, t1.z, t1.y), jitter);
-  float n = F.y - F.x;
-  
+  float n = filteredWorleyFactor(frequency * float3(t1.x, t1.z, t1.y), jitter);
+
   float4 color = n * (ambient + diffuse + specular);
   if (structureUniforms.ribbonHDR)
   {

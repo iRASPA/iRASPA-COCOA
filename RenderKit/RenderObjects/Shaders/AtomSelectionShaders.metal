@@ -402,8 +402,7 @@ static FragOutput AtomSelectionWorleyNoise3DOrthographicFragmentImpl(VertexIn ve
   
   float frequency = structureUniforms.atomSelectionWorleyNoise3DFrequency;
   float jitter = structureUniforms.atomSelectionWorleyNoise3DJitter;
-  float2 F = cellular3D(frequency*float3(t1.x,t1.z,t1.y), jitter);
-  float n = F.y-F.x;
+  float n = filteredWorleyFactor(frequency*float3(t1.x,t1.z,t1.y), jitter);
   
   float4 color= n * float4(ambient.xyz + diffuse.xyz + specular.xyz, 1.0);
   
@@ -526,8 +525,7 @@ static FragOutput AtomSelectionWorleyNoise3DPerspectiveFragmentImpl(VertexIn ver
   
   float frequency = structureUniforms.atomSelectionWorleyNoise3DFrequency;
   float jitter = structureUniforms.atomSelectionWorleyNoise3DJitter;
-  float2 F = cellular3D(frequency*float3(t1.x,t1.z,t1.y),jitter);
-  float n = F.y-F.x;
+  float n = filteredWorleyFactor(frequency*float3(t1.x,t1.z,t1.y), jitter);
   
   float4 color = n * float4(ambient.xyz + diffuse.xyz + specular.xyz, 1.0);
   

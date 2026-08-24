@@ -823,6 +823,13 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
                                                                frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex],
                                                                size: size,
                                                                samplesThisFrame: RKRenderSettings.samplesPerInteractiveFrame(renderQuality: view.renderQuality))
+          if let tracedDepthBuffer: MTLBuffer = tracedTexture == nil ? nil : renderer.pathTracerShader.compositeDepthBuffer
+          {
+            // the glow was left out of the raster passes above, having had no molecular depth to test
+            // against; now that the trace has produced one, the buried selections can be hidden
+            renderer.encodeSelectionGlowAgainstTracedDepth(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, camera: view.renderCameraSource?.renderCamera, tracedDepthBuffer: tracedDepthBuffer)
+          }
+
           if tracedTexture == nil
           {
             // the molecular geometry was left out of the raster passes above, so without a traced

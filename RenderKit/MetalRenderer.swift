@@ -589,6 +589,8 @@ public class MetalRenderer
     blurVerticalShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     quadShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+
+    atomSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     blurHorizontalPictureShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     blurVerticalPictureShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
@@ -696,6 +698,8 @@ public class MetalRenderer
     blurVerticalShader.buildVertexBuffers(device: device)
   
     quadShader.buildVertexBuffers(device: device)
+
+    atomSelectionGlowShader.buildVertexBuffers(device: device)
     
     blurHorizontalPictureShader.buildVertexBuffers(device: device)
     blurVerticalPictureShader.buildVertexBuffers(device: device)
@@ -862,9 +866,10 @@ public class MetalRenderer
   /// still rasterized, and its depth is what the path-traced result is composited against.
   public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, suppressMolecularGeometry: Bool = false)
   {
-    // Fast per-pixel imposters while interacting; still frames and pictures stay per-sample. Glow and
-    // selection depth-test per sample against the scene, so the per-pixel path has to leave the same
-    // kind of MSAA depth behind — that is what alpha-to-coverage on those pipelines is for.
+    // Fast per-pixel imposters while interacting; still frames and pictures stay per-sample. The
+    // glow and selection overlays follow the same rate, so the overlay-against-scene depth test
+    // compares depths evaluated at the same points in either mode. Alpha-to-coverage is what keeps
+    // a fractional MSAA rim on the per-pixel path, so silhouettes still resolve smoothly.
     RKMetal.perSampleImposterShading = (renderQuality == .high || renderQuality == .picture)
 
     // Falls back to the all-lit texel when no mask was traced, so the molecular shaders can read it
@@ -1125,29 +1130,42 @@ public class MetalRenderer
    
     renderSceneTransparentWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderTransparentPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
     
-    if let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor)
+    // Skipped when the molecular geometry is traced rather than rasterized: the glow shells depth-test
+    // against the scene, and the geometry that hides the buried ones is not in this depth buffer.
+    // `encodeSelectionGlowAgainstTracedDepth` draws them once the trace has produced that depth.
+    if !suppressMolecularGeometry
+    {
+      encodeSelectionGlow(commandBuffer, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, camera: camera)
+    }
+  }
+
+  /// The selection glow, drawn into the off-screen glow texture and blurred, ready for the compositing
+  /// pass to add. `renderPassDescriptor` settles which depth the shells test against.
+  private func encodeSelectionGlow(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, camera: RKCamera?)
+  {
+    if let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)
     {
       if let camera, camera.frustrumType == .perspective
       {
-        atomSelectionGlowPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+        atomSelectionGlowPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       }
       else
       {
-        atomSelectionGlowOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+        atomSelectionGlowOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       }
       
-      internalBondSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceRenderer: internalBondSelectionShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-      externalBondSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceRenderer: externalBondSelectionShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      internalBondSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: internalBondSelectionShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      externalBondSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: externalBondSelectionShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
       
-      ellipsoidPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-      crystalEllipsoidPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      ellipsoidPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      crystalEllipsoidPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
-      cylinderPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalCylinderShader: metalCylinderShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-      crystalCylinderPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalCrystalCylinderShader: metalCrystalCylinderShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      cylinderPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCylinderShader: metalCylinderShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      crystalCylinderPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCrystalCylinderShader: metalCrystalCylinderShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
-      polygonalPrismPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalPolygonalPrismShader: metalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-      crystalPolygonalPrismPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalCrystalPolygonalPrismShader: metalCrystalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      polygonalPrismPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalPolygonalPrismShader: metalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      crystalPolygonalPrismPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCrystalPolygonalPrismShader: metalCrystalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
       ribbonSelectionShader.renderGlowWithEncoder(commandEncoder,
                                                   ribbonShader: ribbonShader,
@@ -1162,8 +1180,24 @@ public class MetalRenderer
     blurHorizontalShader.renderWithEncoder(commandBuffer, renderPassDescriptor: blurHorizontalShader.blurHorizontalRenderPassDescriptor, texture: atomSelectionGlowShader.atomSelectionGlowResolveTexture, frameUniformBuffer: frameUniformBuffer, size: size)
     
     blurVerticalShader.renderWithEncoder(commandBuffer, renderPassDescriptor: blurVerticalShader.blurVerticalRenderPassDescriptor, texture: blurHorizontalShader.blurHorizontalTexture, frameUniformBuffer: frameUniformBuffer, size: size)
-    
-   
+  }
+
+  /// The selection glow for a path-traced scene, testing against the depth the tracer composited
+  /// rather than against the rasterizer's, which holds no molecular geometry at all in that case.
+  /// Has to follow the trace and precede the compositing pass, in a command buffer submitted between
+  /// the two or in the same one.
+  public func encodeSelectionGlowAgainstTracedDepth(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, camera: RKCamera?, tracedDepthBuffer: MTLBuffer)
+  {
+    atomSelectionGlowShader.encodeTracedDepth(commandBuffer, tracedDepthBuffer: tracedDepthBuffer, size: size)
+
+    // The tracer records one depth per pixel, measured at the pixel centre, so the glow imposters
+    // are held at pixel rate here whatever the scene shaded at: shaded per sample they would be
+    // measured at points the recorded depth was not, and the depth slope times the sample offset
+    // dwarfs the glow's clearance over its own atom; see AtomSelectionPerSampleFragmentShaderIn.
+    let sceneRate: Bool = RKMetal.perSampleImposterShading
+    RKMetal.perSampleImposterShading = false
+    encodeSelectionGlow(commandBuffer, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowTracedRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, camera: camera)
+    RKMetal.perSampleImposterShading = sceneRate
   }
   
   /// Composites the finished scene onto the drawable. `sourceTexture` overrides the rasterized
@@ -1368,6 +1402,14 @@ public class MetalRenderer
           sourceTexture = traced
           tracedDepthBuffer = pathTracerShader.compositeDepthBuffer
           tracedCueMaskBuffer = pathTracerShader.compositeCueMaskBuffer
+
+          // the glow was left out of the pass above, having had no molecular depth to test against
+          if let depth: MTLBuffer = tracedDepthBuffer,
+             let glowCommandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
+          {
+            self.encodeSelectionGlowAgainstTracedDepth(commandBuffer: glowCommandBuffer, frameUniformBuffer: frameUniformBuffer, size: size, camera: camera, tracedDepthBuffer: depth)
+            glowCommandBuffer.commit()
+          }
         }
         else if let fallbackCommandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
         {

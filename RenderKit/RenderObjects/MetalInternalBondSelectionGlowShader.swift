@@ -39,9 +39,11 @@ class MetalInternalBondSelectionGlowShader
   var renderStructures: [[RKRenderObject]] = [[]]
   
   var imposterPipeLine: MTLRenderPipelineState! = nil
-  /// The same overlay with its depth evaluated per MSAA sample. Used while the scene bonds shade
-  /// per-pixel, so that the overlay-against-own-bond depth fight keeps the same odds it has in the
-  /// still frame, where the bonds are the per-sample side; see BondSelectionImposterPerSampleFragmentShaderIn.
+  /// The same overlay with its depth evaluated per MSAA sample. Bound while the scene bonds shade
+  /// per-sample, so the overlay and the bond it depth-tests against are measured at the same points;
+  /// at mixed rates the test is off by the depth slope times the sample offset, which outgrows the
+  /// overlay's clearance on the cylinder's flanks and flips there in screen-aligned bands; see
+  /// BondSelectionImposterPerSampleFragmentShaderIn.
   var perSampleImposterPipeLine: MTLRenderPipelineState! = nil
   var depthState: MTLDepthStencilState! = nil
   var samplerState: MTLSamplerState! = nil
@@ -110,8 +112,8 @@ class MetalInternalBondSelectionGlowShader
       commandEncoder.setCullMode(MTLCullMode.back)
       commandEncoder.setFrontFacing(MTLWinding.clockwise)
       
-      // opposite rate to the scene bonds, on purpose; see perSampleImposterPipeLine
-      commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? imposterPipeLine : perSampleImposterPipeLine)
+      // same rate as the scene bonds; see perSampleImposterPipeLine
+      commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? perSampleImposterPipeLine : imposterPipeLine)
       // the imposter hull is generated in the vertex shader with view-dependent winding
       commandEncoder.setCullMode(MTLCullMode.none)
       

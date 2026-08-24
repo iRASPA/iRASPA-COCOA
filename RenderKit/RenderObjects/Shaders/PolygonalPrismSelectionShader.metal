@@ -276,9 +276,8 @@ fragment float4 PrimitiveEllipsoidSelectionWorleyNoise3DFragmentShader(Primitive
   
   float frequency = structureUniforms.primitiveSelectionWorleyNoise3DFrequency;
   float jitter = structureUniforms.primitiveSelectionWorleyNoise3DJitter;
-  float2 F = cellular3D(frequency*float3(t1.x,t1.z,t1.y),jitter);
-  float n = F.y-F.x;
-  
+  float n = filteredWorleyFactor(frequency*float3(t1.x,t1.z,t1.y), jitter);
+
   float4 color = n * float4(ambient.xyz + diffuse.xyz + specular.xyz, 1.0);
   
   if (structureUniforms.primitiveFrontSideHDR)
@@ -343,9 +342,8 @@ fragment float4 PrimitiveCylinderSelectionWorleyNoise3DFragmentShader(PrimitiveV
   
   float frequency = structureUniforms.primitiveSelectionWorleyNoise3DFrequency;
   float jitter = structureUniforms.primitiveSelectionWorleyNoise3DJitter;
-  float2 F = cellular3D(frequency*float3(t1.x,t1.z,t1.y),jitter);
-  float n = F.y-F.x;
-  
+  float n = filteredWorleyFactor(frequency*float3(t1.x,t1.z,t1.y), jitter);
+
   float4 color = n * float4(ambient.xyz + diffuse.xyz + specular.xyz, 1.0);
   
   if (structureUniforms.primitiveFrontSideHDR)
@@ -410,9 +408,8 @@ fragment float4 PrimitivePolygonalPrismSelectionWorleyNoise3DFragmentShader(Prim
   
   float frequency = structureUniforms.primitiveSelectionWorleyNoise3DFrequency;
   float jitter = structureUniforms.primitiveSelectionWorleyNoise3DJitter;
-  float2 F = cellular3D(frequency*float3(t1.x,t1.z,t1.y),jitter);
-  float n = F.y-F.x;
-  
+  float n = filteredWorleyFactor(frequency*float3(t1.x,t1.z,t1.y), jitter);
+
   float4 color = n * float4(ambient.xyz + diffuse.xyz + specular.xyz, 1.0);
   
   if (structureUniforms.primitiveFrontSideHDR)

@@ -977,8 +977,7 @@ struct BondSelectionImposterVertexShaderOut
   float4 color2 [[ flat ]];
   float4 ambient [[ flat ]];
   float4 specular [[ flat ]];
-  // center-interpolated: while the scene bonds shade per-sample (still frames), the
-  // selection overlay shades once per pixel
+  // center-interpolated: the pixel-rate side, used while the scene bonds shade per pixel too
   float3 frag_pos;
   float3 pointA [[ flat ]];
   float3 pointB [[ flat ]];
@@ -988,12 +987,13 @@ struct BondSelectionImposterVertexShaderOut
 };
 
 // The same varyings interpolated per MSAA sample (matched to the vertex output by member name).
-// The selection overlay sits a whisker in front of the bond it decorates, so which of the two gets
-// the sub-pixel depth detail decides the depth test on about half of a pixel's samples over the
-// whole silhouette. A still frame shades the bonds per sample and the overlay per pixel; while the
-// camera moves the bonds drop to per-pixel shading and the overlay switches to this struct, keeping
-// the same odds with the roles reversed, so the selection does not change brightness when a rotation
-// starts or stops.
+// The selection overlay sits a whisker in front of the bond it decorates and depth-tests against
+// it, so the two surfaces have to be measured at the same points. Measured at different points, the
+// comparison is off by the depth slope times the sub-pixel offset, which outgrows the overlay's
+// clearance on the cylinder's flanks and flips the test there in bands aligned to the screen's
+// fixed sample pattern. The overlay therefore follows the scene's shading rate: this struct while
+// the bonds shade per sample (still frames), the pixel-rate struct above while they shade per
+// pixel (interaction).
 struct BondSelectionImposterPerSampleFragmentShaderIn
 {
   float4 position [[position]];
@@ -1313,9 +1313,8 @@ static FragOutput internalBondSelectionWorleyNoise3DImposterFragmentImpl(VertexI
   float3 t1 = bondSelectionImposterModelCoords(vert, pos, ct);
   float frequency = structureUniforms.bondSelectionWorleyNoise3DFrequency;
   float jitter = structureUniforms.bondSelectionWorleyNoise3DJitter;
-  float2 F = cellular3D(frequency*float3(t1.x,2.0*t1.y,t1.z), jitter);
-  float n = F.y-F.x;
-  
+  float n = filteredWorleyFactor(frequency*float3(t1.x,2.0*t1.y,t1.z), jitter);
+
   float4 color = n * bondSelectionImposterShade(vert, structureUniforms, lightUniforms, pos, N, ct);
   
   if (structureUniforms.bondHDR)
@@ -1733,9 +1732,8 @@ static FragOutput externalBondSelectionWorleyNoise3DImposterFragmentImpl(VertexI
   float3 t1 = bondSelectionImposterModelCoords(vert, pos, ct);
   float frequency = structureUniforms.bondSelectionWorleyNoise3DFrequency;
   float jitter = structureUniforms.bondSelectionWorleyNoise3DJitter;
-  float2 F = cellular3D(frequency*float3(t1.x,2.0*t1.y,t1.z), jitter);
-  float n = F.y-F.x;
-  
+  float n = filteredWorleyFactor(frequency*float3(t1.x,2.0*t1.y,t1.z), jitter);
+
   float4 color = n * bondSelectionImposterShade(vert, structureUniforms, lightUniforms, pos, N, ct);
   
   if (structureUniforms.bondHDR)
