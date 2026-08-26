@@ -824,6 +824,16 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
               if let bondViewer: BondEditor = object as? BondEditor
               {
                 indexSet = bondViewer.bondSetController.selectedObjects
+                
+                // add also all the bonds that are connected to a deleted atom
+                let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(selectedAtoms.map{$0.representedObject})
+                for (index, bond) in bondViewer.bondSetController.arrangedObjects.enumerated()
+                {
+                  if asymmetricAtoms.contains(bond.atom1) || asymmetricAtoms.contains(bond.atom2)
+                  {
+                    indexSet.insert(index)
+                  }
+                }
                 selectedBonds = bondViewer.bondSetController.arrangedObjects[indexSet]
               }
               
@@ -1356,19 +1366,19 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
             self.reloadRenderDataSelectedAtoms()
             NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
           case 2:
-            let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
-            let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
-            if let bondViewer = selectedStructure as? BondEditor
+            // for a picked bond, 'pickedObject' is the index of the asymmetric bond itself
+            if let bondViewer = selectedStructure as? BondEditor,
+               pickedObject >= 0, pickedObject < bondViewer.bondSetController.arrangedObjects.count
             {
-              let asymmetricBond: SKAsymmetricBond = bondViewer.bondSetController.arrangedObjects[pickedAsymmetricAtom]
+              let asymmetricBond: SKAsymmetricBond = bondViewer.bondSetController.arrangedObjects[pickedObject]
               let selectedAtoms: Set<SKAsymmetricAtom> = Set(bondViewer.atomTreeController.selectedTreeNodes.map{$0.representedObject})
-              if bondViewer.bondSetController.selectedObjects.contains(pickedAsymmetricAtom) &&
+              if bondViewer.bondSetController.selectedObjects.contains(pickedObject) &&
                 (selectedAtoms.contains(asymmetricBond.atom1) || selectedAtoms.contains(asymmetricBond.atom2))
               {
                 // deselecting a selected bond while one of these atoms is selected is forbidden
                 return
               }
-              self.toggleBondSelectionFor(object: selectedStructure , indexSet: IndexSet(integer: pickedAsymmetricAtom))
+              self.toggleBondSelectionFor(object: selectedStructure , indexSet: IndexSet(integer: pickedObject))
               self.reloadRenderDataSelectedInternalBonds()
             }
             NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)

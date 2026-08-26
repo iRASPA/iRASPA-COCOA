@@ -712,7 +712,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     }
   }
   
-  func addNode(_ node: SKAtomTreeNode, inItem: SKAtomTreeNode?, atIndex: Int, inStructure object: Object)
+  func addNode(_ node: SKAtomTreeNode, inItem: SKAtomTreeNode?, atIndex: Int, inStructure object: Object, bonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>] = [], atBondIndexes bondIndexSet: IndexSet = [])
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
@@ -723,6 +723,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       atomEditor.atomTreeController.insertNode(node, inItem: inItem, atIndex: atIndex)
       atomEditor.atomTreeController.selectedTreeNodes.insert(node)
+      
+      if let bondEditor: BondEditor = object as? BondEditor, !bondIndexSet.isEmpty
+      {
+        bondEditor.bondSetController.arrangedObjects.insertItems(bonds, atIndexes: bondIndexSet)
+        bondEditor.bondSetController.tag()
+      }
       
       if (!filterContent)
       {
@@ -782,11 +788,35 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        proxyProject?.isEnabled == true
     {
       let index: Int = node.indexPath.last ?? 0
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.addNode(node, inItem: fromItem, atIndex: index, inStructure: object)})
+      
+      // the bonds that are connected to the removed atom, or to any of its descendants, have to be removed as well
+      var removedBonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>] = []
+      var removedBondIndexSet: IndexSet = []
+      if let bondEditor: BondEditor = object as? BondEditor
+      {
+        let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(node.flattenedNodes().map{$0.representedObject})
+        for (bondIndex, bond) in bondEditor.bondSetController.arrangedObjects.enumerated()
+        {
+          if asymmetricAtoms.contains(bond.atom1) || asymmetricAtoms.contains(bond.atom2)
+          {
+            removedBondIndexSet.insert(bondIndex)
+          }
+        }
+        removedBonds = bondEditor.bondSetController.arrangedObjects[removedBondIndexSet]
+      }
+      
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.addNode(node, inItem: fromItem, atIndex: index, inStructure: object, bonds: removedBonds, atBondIndexes: removedBondIndexSet)})
       
       let fromItem: SKAtomTreeNode? = node.isRootNode() ? nil: node.parentNode
       atomEditor.atomTreeController.removeNode(node)
       atomEditor.atomTreeController.selectedTreeNodes.remove(node)
+      
+      if let bondEditor: BondEditor = object as? BondEditor, !removedBondIndexSet.isEmpty
+      {
+        bondEditor.bondSetController.arrangedObjects.remove(at: removedBondIndexSet)
+        bondEditor.bondSetController.selectedObjects = []
+        bondEditor.bondSetController.tag()
+      }
       
       if (!filterContent)
       {
@@ -2352,7 +2382,16 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let selectedAtoms: [SKAtomTreeNode] = structure.atomTreeController.selectedTreeNodes.sorted(by: { $0.indexPath > $1.indexPath })
       let indexPaths: [IndexPath] = selectedAtoms.map{$0.indexPath}
       
-      let indexSet: IndexSet = structure.bondSetController.selectedObjects
+      // the atoms are moved out of this structure, so also take the bonds that are connected to them
+      var indexSet: IndexSet = structure.bondSetController.selectedObjects
+      let movedAtoms: Set<SKAsymmetricAtom> = Set(selectedAtoms.flatMap{$0.flattenedNodes()}.map{$0.representedObject})
+      for (bondIndex, bond) in structure.bondSetController.arrangedObjects.enumerated()
+      {
+        if movedAtoms.contains(bond.atom1) || movedAtoms.contains(bond.atom2)
+        {
+          indexSet.insert(bondIndex)
+        }
+      }
       let selectedBonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>] = structure.bondSetController.arrangedObjects[indexSet]
       
       self.addMovieNode(movie, inItem: currentSelectedScene, atIndex: index+1, structure: structure, atoms: selectedAtoms, from: indexPaths, bonds: selectedBonds, from: indexSet, move: true)

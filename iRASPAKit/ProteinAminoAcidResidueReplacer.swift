@@ -198,12 +198,16 @@ public enum ProteinAminoAcidResidueReplacer
     }
     guard !newAtomNodes.isEmpty else {return false}
     
+    // the bonds of the atoms that are removed have to be dropped as well, otherwise they remain as dangling bonds
+    var removedAtoms: [SKAsymmetricAtom] = []
+    
     let parentNode: SKAtomTreeNode?
     if let residueNode: SKAtomTreeNode = residueNode
     {
       parentNode = residueNode
       for child in residueNode.childNodes
       {
+        removedAtoms += child.flattenedNodes().map{$0.representedObject}
         structure.atomTreeController.removeNode(child)
       }
       for (index, atomNode) in newAtomNodes.enumerated()
@@ -218,6 +222,7 @@ public enum ProteinAminoAcidResidueReplacer
       let insertionIndex: Int = atomNodes.first?.indexPath.last ?? 0
       for atomNode in atomNodes.sorted(by: {$0.indexPath > $1.indexPath})
       {
+        removedAtoms += atomNode.flattenedNodes().map{$0.representedObject}
         structure.atomTreeController.removeNode(atomNode)
       }
       for (offset, atomNode) in newAtomNodes.enumerated()
@@ -228,7 +233,7 @@ public enum ProteinAminoAcidResidueReplacer
     
     let replacedAtoms: [SKAsymmetricAtom] = newAtomNodes.map{$0.representedObject}
     let newBonds: [SKBondNode] = structure.bonds(subset: replacedAtoms)
-    bondEditor.bondSetController.replaceBonds(atoms: replacedAtoms, bonds: newBonds)
+    bondEditor.bondSetController.replaceBonds(atoms: removedAtoms + replacedAtoms, bonds: newBonds)
     
     structure.atomTreeController.tag()
     bondEditor.bondSetController.tag()
