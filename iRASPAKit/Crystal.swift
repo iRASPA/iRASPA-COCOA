@@ -2229,7 +2229,14 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
     return data
   }
   
-  public var dimensions: SIMD3<Int32> = SIMD3<Int32>(128,128,128)
+  // Derived from the persisted grid-size setting so it can never go stale. A stored copy was
+  // silently skipped by two-phase initialization on decode, leaving 128 while the data was 256^3,
+  // and marching cubes then read the grid with the wrong stride right after opening a project.
+  public var dimensions: SIMD3<Int32>
+  {
+    let size: Int32 = Int32(pow(2.0,Double(self.encompassingPowerOfTwoCubicGridSize)))
+    return SIMD3<Int32>(size,size,size)
+  }
   
   public var range: (Double, Double) = (0.0,0.0)
   
@@ -2240,20 +2247,6 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   public var average: Double = 0.0
   
   public var variance: Double = 0.0
-  
-  public override var encompassingPowerOfTwoCubicGridSize: Int
-  {
-    get
-    {
-      return super.encompassingPowerOfTwoCubicGridSize
-    }
-    set(newValue)
-    {
-      super.encompassingPowerOfTwoCubicGridSize = newValue
-      let size: Int32 = Int32(pow(2.0,Double(newValue)))
-      self.dimensions = SIMD3<Int32>(size,size,size)
-    }
-  }
   
   public var isImmutable: Bool
   {
@@ -2271,14 +2264,13 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
     }
     let probeParameters: SIMD2<Double> = self.adsorptionSurfaceProbeParameters
     let size: Int32 = Int32(pow(2.0,Double(self.encompassingPowerOfTwoCubicGridSize)))
-    self.dimensions = SIMD3<Int32>(size,size,size)
     
     let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
     
     if let device: MTLDevice = MTLCreateSystemDefaultDevice(),
        let commandQueue: MTLCommandQueue = device.makeCommandQueue()
     {
-      let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell:   cell.unitCell, numberOfReplicas: numberOfReplicas)
+      let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell:   cell.unitCell, numberOfReplicas: numberOfReplicas, blockingPockets: self.appliedBlockingPockets)
       
       let data: [Float] = framework.ComputeEnergyGrid(Int(size), sizeY: Int(size), sizeZ: Int(size), probeParameter: probeParameters)
       guard let minValue = data.min() else {
@@ -2292,6 +2284,26 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
       self.adsorptionVolumeStepLength = 0.25 / Double(size)
    
       return data
+    }
+    return []
+  }
+  
+  // The analytic (energy, Apollonius-distance, medial-reliability) field the well surface is extracted from.
+  public var wellFieldData: [Float]
+  {
+    let cell: SKCell = self.cell
+    let positions: [SIMD3<Double>] = self.atomUnitCellPositions
+    let potentialParameters: [SIMD2<Double>] = self.potentialParameters
+    let probeParameters: SIMD2<Double> = self.adsorptionSurfaceProbeParameters
+    let size: Int = Int(pow(2.0,Double(self.encompassingPowerOfTwoCubicGridSize)))
+    
+    let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
+    
+    if let device: MTLDevice = MTLCreateSystemDefaultDevice(),
+       let commandQueue: MTLCommandQueue = device.makeCommandQueue()
+    {
+      let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas, blockingPockets: self.appliedBlockingPockets)
+      return framework.ComputeWellFieldGrid(size, sizeY: size, sizeZ: size, probeParameter: probeParameters)
     }
     return []
   }

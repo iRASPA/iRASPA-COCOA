@@ -89,14 +89,20 @@ class Project
     
   }
   
+  private var frameworkSnapshots: [SKFrameworkSnapshot]
+  {
+    return projectStructureNode.sceneList.allAdsorptionSurfaceStructures.map(SKFrameworkSnapshot.init)
+  }
+  
   public var voidFractions: [Double]
   {
-    return SKVoidFraction.compute(structures: projectStructureNode.sceneList.allAdsorptionSurfaceStructures)
+    return SKVoidFraction.compute(structures: frameworkSnapshots).map{$0.voidFraction}
   }
   
   public var surfaceAreas: ([Double], [Double])
   {
-    return SKNitrogenSurfaceArea.compute(structures: projectStructureNode.sceneList.allAdsorptionSurfaceStructures)
+    guard let results: [SKSurfaceAreaResult] = try? SKNitrogenSurfaceArea.compute(structures: frameworkSnapshots) else {return ([], [])}
+    return (results.map{$0.gravimetric}, results.map{$0.volumetric})
   }
   
   var makePicture: Data

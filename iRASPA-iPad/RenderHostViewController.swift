@@ -533,6 +533,12 @@ final class RenderHostViewController: UIViewController
     renderController.redraw()
   }
 
+  func reloadBlockingPocketAppearance()
+  {
+    renderController.updateBlockingPocketUniforms()
+    renderController.redraw()
+  }
+
   /// Cheap update path for appearance changes that only affect per-structure uniforms
   /// (colors, intensities, HSV, selection styling) — mirrors Cocoa's updateStructureUniforms+redraw.
   func reloadStructureUniforms()

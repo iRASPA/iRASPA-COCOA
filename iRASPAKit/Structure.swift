@@ -48,9 +48,9 @@ fileprivate func ==~ (left: Double, right: Double) -> Bool
 
 public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
-public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, AtomStructureEditor, BondStructureEditor, AnnotationEditor, InfoEditor, StructuralPropertyEditor
+public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, RKRenderBlockingPocketsSource, AtomStructureEditor, BondStructureEditor, AnnotationEditor, InfoEditor, StructuralPropertyEditor
 {
-  private static var classVersionNumber: Int = 11
+  private static var classVersionNumber: Int = 13
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   {
@@ -335,6 +335,15 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     }
   }
   
+  public var structureWellSurfaceArea: Double = 0.0
+  {
+    didSet
+    {
+      self.structureGravimetricWellSurfaceArea = structureWellSurfaceArea * SKConstant.AvogadroConstantPerAngstromSquared / self.structureMass
+      self.structureVolumetricWellSurfaceArea = structureWellSurfaceArea * 1e4 / self.cell.volume
+    }
+  }
+  
   // MARK: protocol RKRenderObjectSource implementation
   // =====================================================================
   
@@ -425,12 +434,42 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var structureAccessiblePoreVolume: Double = 0.0
   public var structureVolumetricNitrogenSurfaceArea: Double = 0.0
   public var structureGravimetricNitrogenSurfaceArea: Double = 0.0
+  public var structureVolumetricWellSurfaceArea: Double = 0.0
+  public var structureGravimetricWellSurfaceArea: Double = 0.0
   public var structureNumberOfChannelSystems: Int = 0
   public var structureNumberOfInaccessiblePockets: Int = 0
   public var structureDimensionalityOfPoreSystem: Int = 0
   public var structureLargestCavityDiameter : Double = 0.0
   public var structureRestrictingPoreLimitingDiameter: Double = 0.0
   public var structureLargestCavityDiameterAlongAViablePath : Double = 0.0
+  
+  // the fractional position (x,y,z) and the radius in Angstrom (w) of the blocking pockets
+  public var blockingPockets: [SIMD4<Double>] = []
+  
+  public var drawBlockingPockets: Bool = false
+  
+  // when set, grid positions inside a blocking pocket are treated as inaccessible
+  public var applyBlockingPockets: Bool = false
+  
+  // What the energy grid has to leave out. Reading it through one property keeps the flag out of the four
+  // crystal types that compute a grid, and out of SimulationKit, which is handed the pockets to apply and
+  // nothing else.
+  public var appliedBlockingPockets: [SIMD4<Double>]
+  {
+    return applyBlockingPockets ? blockingPockets : []
+  }
+  
+  // The material of the pocket spheres. The diffuse colour defaults to a cyan that no element in the
+  // CPK palette is drawn in, so that a pocket is not mistaken for a large atom.
+  public var blockingPocketsFrontSideHDR: Bool = true
+  public var blockingPocketsFrontSideHDRExposure: Double = 1.5
+  public var blockingPocketsFrontSideAmbientColor: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+  public var blockingPocketsFrontSideDiffuseColor: NSColor = NSColor(red: 0.20, green: 0.65, blue: 0.85, alpha: 1.0)
+  public var blockingPocketsFrontSideSpecularColor: NSColor = NSColor(red: 0.92, green: 0.92, blue: 0.92, alpha: 1.0)
+  public var blockingPocketsFrontSideAmbientIntensity: Double = 0.2
+  public var blockingPocketsFrontSideDiffuseIntensity: Double = 1.0
+  public var blockingPocketsFrontSideSpecularIntensity: Double = 0.5
+  public var blockingPocketsFrontSideShininess: Double = 4.0
   
   
   
@@ -665,12 +704,28 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.structureAccessiblePoreVolume = copy.structureAccessiblePoreVolume
     self.structureVolumetricNitrogenSurfaceArea = copy.structureVolumetricNitrogenSurfaceArea
     self.structureGravimetricNitrogenSurfaceArea = copy.structureGravimetricNitrogenSurfaceArea
+    self.structureVolumetricWellSurfaceArea = copy.structureVolumetricWellSurfaceArea
+    self.structureGravimetricWellSurfaceArea = copy.structureGravimetricWellSurfaceArea
     self.structureNumberOfChannelSystems = copy.structureNumberOfChannelSystems
     self.structureNumberOfInaccessiblePockets = copy.structureNumberOfInaccessiblePockets
     self.structureDimensionalityOfPoreSystem = copy.structureDimensionalityOfPoreSystem
     self.structureLargestCavityDiameter = copy.structureLargestCavityDiameter
     self.structureRestrictingPoreLimitingDiameter = copy.structureRestrictingPoreLimitingDiameter
     self.structureLargestCavityDiameterAlongAViablePath = copy.structureLargestCavityDiameterAlongAViablePath
+    
+    self.blockingPockets = copy.blockingPockets
+    self.drawBlockingPockets = copy.drawBlockingPockets
+    self.applyBlockingPockets = copy.applyBlockingPockets
+    
+    self.blockingPocketsFrontSideHDR = copy.blockingPocketsFrontSideHDR
+    self.blockingPocketsFrontSideHDRExposure = copy.blockingPocketsFrontSideHDRExposure
+    self.blockingPocketsFrontSideAmbientColor = copy.blockingPocketsFrontSideAmbientColor
+    self.blockingPocketsFrontSideDiffuseColor = copy.blockingPocketsFrontSideDiffuseColor
+    self.blockingPocketsFrontSideSpecularColor = copy.blockingPocketsFrontSideSpecularColor
+    self.blockingPocketsFrontSideAmbientIntensity = copy.blockingPocketsFrontSideAmbientIntensity
+    self.blockingPocketsFrontSideDiffuseIntensity = copy.blockingPocketsFrontSideDiffuseIntensity
+    self.blockingPocketsFrontSideSpecularIntensity = copy.blockingPocketsFrontSideSpecularIntensity
+    self.blockingPocketsFrontSideShininess = copy.blockingPocketsFrontSideShininess
     
     
     self.authorFirstName = copy.authorFirstName
@@ -1038,6 +1093,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.structureAccessiblePoreVolume = cellStructureViewer.structureAccessiblePoreVolume
       self.structureVolumetricNitrogenSurfaceArea = cellStructureViewer.structureVolumetricNitrogenSurfaceArea
       self.structureGravimetricNitrogenSurfaceArea = cellStructureViewer.structureGravimetricNitrogenSurfaceArea
+      self.structureVolumetricWellSurfaceArea = cellStructureViewer.structureVolumetricWellSurfaceArea
+      self.structureGravimetricWellSurfaceArea = cellStructureViewer.structureGravimetricWellSurfaceArea
       self.structureNumberOfChannelSystems = cellStructureViewer.structureNumberOfChannelSystems
       self.structureNumberOfInaccessiblePockets = cellStructureViewer.structureNumberOfInaccessiblePockets
       self.structureDimensionalityOfPoreSystem = cellStructureViewer.structureDimensionalityOfPoreSystem
@@ -1154,12 +1211,28 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.structureAccessiblePoreVolume = clone.structureAccessiblePoreVolume
     self.structureVolumetricNitrogenSurfaceArea = clone.structureVolumetricNitrogenSurfaceArea
     self.structureGravimetricNitrogenSurfaceArea = clone.structureGravimetricNitrogenSurfaceArea
+    self.structureVolumetricWellSurfaceArea = clone.structureVolumetricWellSurfaceArea
+    self.structureGravimetricWellSurfaceArea = clone.structureGravimetricWellSurfaceArea
     self.structureNumberOfChannelSystems = clone.structureNumberOfChannelSystems
     self.structureNumberOfInaccessiblePockets = clone.structureNumberOfInaccessiblePockets
     self.structureDimensionalityOfPoreSystem = clone.structureDimensionalityOfPoreSystem
     self.structureLargestCavityDiameter = clone.structureLargestCavityDiameter
     self.structureRestrictingPoreLimitingDiameter = clone.structureRestrictingPoreLimitingDiameter
     self.structureLargestCavityDiameterAlongAViablePath = clone.structureLargestCavityDiameterAlongAViablePath
+    
+    self.blockingPockets = clone.blockingPockets
+    self.drawBlockingPockets = clone.drawBlockingPockets
+    self.applyBlockingPockets = clone.applyBlockingPockets
+    
+    self.blockingPocketsFrontSideHDR = clone.blockingPocketsFrontSideHDR
+    self.blockingPocketsFrontSideHDRExposure = clone.blockingPocketsFrontSideHDRExposure
+    self.blockingPocketsFrontSideAmbientColor = clone.blockingPocketsFrontSideAmbientColor
+    self.blockingPocketsFrontSideDiffuseColor = clone.blockingPocketsFrontSideDiffuseColor
+    self.blockingPocketsFrontSideSpecularColor = clone.blockingPocketsFrontSideSpecularColor
+    self.blockingPocketsFrontSideAmbientIntensity = clone.blockingPocketsFrontSideAmbientIntensity
+    self.blockingPocketsFrontSideDiffuseIntensity = clone.blockingPocketsFrontSideDiffuseIntensity
+    self.blockingPocketsFrontSideSpecularIntensity = clone.blockingPocketsFrontSideSpecularIntensity
+    self.blockingPocketsFrontSideShininess = clone.blockingPocketsFrontSideShininess
     
     
     self.authorFirstName = clone.authorFirstName
@@ -2453,6 +2526,88 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   }
   
   // MARK: -
+  // MARK: Blocking pockets
+  
+  /// Reads blocking pockets from the contents of a RASPA '.block'-file.
+  ///
+  /// The first line holds the number of pockets, every following line holds a fractional position and
+  /// a radius in Angstrom. Lines that do not hold four numbers (like the count on the first line) are
+  /// skipped, so that files without a count and files with comments are read as well.
+  ///
+  /// - parameter contents: the complete contents of the '.block'-file.
+  /// - returns: the fractional positions (x,y,z) and radii (w) of the blocking pockets.
+  public static func parseBlockingPockets(contents: String) -> [SIMD4<Double>]
+  {
+    var blockingPockets: [SIMD4<Double>] = []
+    
+    for line in contents.components(separatedBy: .newlines)
+    {
+      var strippedLine: String = line
+      for commentMarker in ["#", "//", "!", ";"]
+      {
+        if let range: Range<String.Index> = strippedLine.range(of: commentMarker)
+        {
+          strippedLine = String(strippedLine[strippedLine.startIndex..<range.lowerBound])
+        }
+      }
+      
+      let words: [String] = strippedLine.components(separatedBy: CharacterSet(charactersIn: " \t,")).filter{!$0.isEmpty}
+      if words.count < 4
+      {
+        continue
+      }
+      
+      guard let x: Double = Double(words[0]),
+            let y: Double = Double(words[1]),
+            let z: Double = Double(words[2]),
+            let radius: Double = Double(words[3]) else {continue}
+      
+      blockingPockets.append(SIMD4<Double>(x, y, z, radius))
+    }
+    
+    return blockingPockets
+  }
+  
+  /// The blocking pockets as translucent spheres, one instance per pocket per cell replica.
+  ///
+  /// The pockets are stored as fractional positions, so they follow the content shift and flip of the
+  /// cell just like the atoms do, and the radius is used unchanged as the sphere radius in Angstrom.
+  /// Every sphere shares one material, which travels in the uniforms, so an instance carries only its
+  /// placement.
+  public var renderBlockingPockets: [RKInPerInstanceAttributesAtoms]
+  {
+    guard !blockingPockets.isEmpty else {return []}
+    
+    var data: [RKInPerInstanceAttributesAtoms] = []
+    data.reserveCapacity(blockingPockets.count * cell.totalNumberOfReplicas)
+    
+    for blockingPocket in blockingPockets
+    {
+      let position: SIMD3<Double> = SIMD3<Double>.flip(v: SIMD3<Double>(blockingPocket.x, blockingPocket.y, blockingPocket.z), flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+      
+      for k1 in cell.minimumReplica.x...cell.maximumReplica.x
+      {
+        for k2 in cell.minimumReplica.y...cell.maximumReplica.y
+        {
+          for k3 in cell.minimumReplica.z...cell.maximumReplica.z
+          {
+            let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: position.x + Double(k1), y: position.y + Double(k2), z: position.z + Double(k3)) + cell.contentShift
+            let cartesianPosition: SIMD3<Double> = cell.convertToCartesian(fractionalPosition)
+            
+            var instance: RKInPerInstanceAttributesAtoms = RKInPerInstanceAttributesAtoms()
+            instance.position = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: 1.0)
+            instance.scale = SIMD4<Float>(repeating: Float(blockingPocket.w))
+            instance.tag = UInt32(data.count)
+            data.append(instance)
+          }
+        }
+      }
+    }
+    
+    return data
+  }
+  
+  // MARK: -
   // MARK: Compute bonds
   
   public func computeBonds(cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> [SKBondNode]
@@ -3619,6 +3774,27 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
 
     encoder.encode(self.atomEdgeCueing.rawValue)
     
+    encoder.encode(self.blockingPockets.count)
+    for blockingPocket in self.blockingPockets
+    {
+      encoder.encode(blockingPocket)
+    }
+    encoder.encode(self.drawBlockingPockets)
+    encoder.encode(self.applyBlockingPockets)
+    
+    encoder.encode(self.blockingPocketsFrontSideHDR)
+    encoder.encode(self.blockingPocketsFrontSideHDRExposure)
+    encoder.encode(self.blockingPocketsFrontSideAmbientColor)
+    encoder.encode(self.blockingPocketsFrontSideDiffuseColor)
+    encoder.encode(self.blockingPocketsFrontSideSpecularColor)
+    encoder.encode(self.blockingPocketsFrontSideAmbientIntensity)
+    encoder.encode(self.blockingPocketsFrontSideDiffuseIntensity)
+    encoder.encode(self.blockingPocketsFrontSideSpecularIntensity)
+    encoder.encode(self.blockingPocketsFrontSideShininess)
+    
+    encoder.encode(self.structureVolumetricWellSurfaceArea)
+    encoder.encode(self.structureGravimetricWellSurfaceArea)
+    
     super.binaryEncode(to: encoder)
   }
   
@@ -4053,6 +4229,35 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       if readVersionNumber >= 11 // introduced in version 11
       {
         self.atomEdgeCueing = RKEdgeCueing(rawValue: try decoder.decode(Int.self)) ?? .off
+      }
+      
+      if readVersionNumber >= 12 // introduced in version 12
+      {
+        let numberOfBlockingPockets: Int = try decoder.decode(Int.self)
+        self.blockingPockets = []
+        self.blockingPockets.reserveCapacity(max(0, numberOfBlockingPockets))
+        for _ in 0..<max(0, numberOfBlockingPockets)
+        {
+          self.blockingPockets.append(try decoder.decode(SIMD4<Double>.self))
+        }
+        self.drawBlockingPockets = try decoder.decode(Bool.self)
+        self.applyBlockingPockets = try decoder.decode(Bool.self)
+        
+        self.blockingPocketsFrontSideHDR = try decoder.decode(Bool.self)
+        self.blockingPocketsFrontSideHDRExposure = try decoder.decode(Double.self)
+        self.blockingPocketsFrontSideAmbientColor = try decoder.decode(NSColor.self)
+        self.blockingPocketsFrontSideDiffuseColor = try decoder.decode(NSColor.self)
+        self.blockingPocketsFrontSideSpecularColor = try decoder.decode(NSColor.self)
+        self.blockingPocketsFrontSideAmbientIntensity = try decoder.decode(Double.self)
+        self.blockingPocketsFrontSideDiffuseIntensity = try decoder.decode(Double.self)
+        self.blockingPocketsFrontSideSpecularIntensity = try decoder.decode(Double.self)
+        self.blockingPocketsFrontSideShininess = try decoder.decode(Double.self)
+      }
+      
+      if readVersionNumber >= 13 // introduced in version 13
+      {
+        self.structureVolumetricWellSurfaceArea = try decoder.decode(Double.self)
+        self.structureGravimetricWellSurfaceArea = try decoder.decode(Double.self)
       }
       
       try super.init(fromBinary: decoder)

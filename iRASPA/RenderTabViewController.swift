@@ -541,6 +541,16 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
+  func updateBlockingPocketUniforms()
+  {
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
+    {
+      renderController.updateBlockingPocketUniforms()
+    }
+  }
+  
   func updateIsosurface(completionHandler: @escaping () -> ())
   {
     let selectedTabViewIndex: Int = self.selectedTabViewItemIndex

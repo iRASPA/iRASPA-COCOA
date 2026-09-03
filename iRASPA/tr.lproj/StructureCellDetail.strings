@@ -1,4 +1,3 @@
-
 /* Class = "NSTextFieldCell"; placeholderString = "bz"; ObjectID = "0mz-pu-d5l"; */
 "0mz-pu-d5l.placeholderString" = "bz";
 
@@ -407,8 +406,11 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "Açı X";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Surface Area (Nitrogen)"; ObjectID = "siG-7J-hEu"; */
-"siG-7J-hEu.title" = "Hacimsel Yüzey Alanı (Azot)";
+/* Class = "NSTextFieldCell"; title = "Volumetric Surface Area"; ObjectID = "EnV-lc-SaA"; */
+"EnV-lc-SaA.title" = "Hacimsel Yüzey Alanı (Azot)";
+
+/* Class = "NSTextFieldCell"; title = "Volumetric Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
+"siG-7J-hEu.title" = "Hacimsel Well-Yüzey Alanı";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
 "swk-Q8-afT.title" = "Kristal Çözücü";
@@ -467,8 +469,11 @@
 /* Class = "NSTextFieldCell"; title = "Dimensionality of Pore System"; ObjectID = "vwN-1o-Umq"; */
 "vwN-1o-Umq.title" = "Gözenek Sisteminin Boyutluluğu";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area (Nitrogen)"; ObjectID = "xXh-YD-ajh"; */
-"xXh-YD-ajh.title" = "Gravimetrik Yüzey Alanı (Azot)";
+/* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area"; ObjectID = "EnG-lc-SaA"; */
+"EnG-lc-SaA.title" = "Gravimetrik Yüzey Alanı (Azot)";
+
+/* Class = "NSTextFieldCell"; title = "Gravimetric Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
+"xXh-YD-ajh.title" = "Gravimetrik Well-Yüzey Alanı";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "xax-w6-E1h"; */
 "xax-w6-E1h.title" = "Döndür -90";

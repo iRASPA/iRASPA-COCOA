@@ -358,8 +358,11 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "Ângulo X";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Surface Area (Nitrogen)"; ObjectID = "siG-7J-hEu"; */
-"siG-7J-hEu.title" = "Área de superfície volumétrica (nitrogênio)";
+/* Class = "NSTextFieldCell"; title = "Volumetric Surface Area"; ObjectID = "EnV-lc-SaA"; */
+"EnV-lc-SaA.title" = "Área de superfície volumétrica (nitrogênio)";
+
+/* Class = "NSTextFieldCell"; title = "Volumetric Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
+"siG-7J-hEu.title" = "Área de superfície volumétrica well";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
 "swk-Q8-afT.title" = "Solvente Cristal";
@@ -460,8 +463,11 @@
 /* Class = "NSMenuItem"; title = "RASPA Volumetric Data"; ObjectID = "xOm-9h-Hai"; */
 "xOm-9h-Hai.title" = "Dados volumétricos RASPA";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area (Nitrogen)"; ObjectID = "xXh-YD-ajh"; */
-"xXh-YD-ajh.title" = "Área de superfície gravimétrica (nitrogênio)";
+/* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area"; ObjectID = "EnG-lc-SaA"; */
+"EnG-lc-SaA.title" = "Área de superfície gravimétrica (nitrogênio)";
+
+/* Class = "NSTextFieldCell"; title = "Gravimetric Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
+"xXh-YD-ajh.title" = "Área de superfície gravimétrica well";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
 "Y0x-AR-NvS.placeholderString" = "Máximo Z";
@@ -498,4 +504,3 @@
 
 /* Class = "NSMenuItem"; title = "Krypton"; ObjectID = "zSC-HO-4oc"; */
 "zSC-HO-4oc.title" = "Krypton";
-

@@ -517,6 +517,19 @@ typedef struct IsosurfaceUniforms
   float4 pad6;
 } IsosurfaceUniforms;
 
+/// The material of the translucent spheres that show the blocking pockets. The alpha of `diffuse` carries
+/// the opacity. Swift pads the stride out to 256 bytes; only the payload is declared here.
+typedef struct BlockingPocketUniforms
+{
+  float4 ambient;
+  float4 diffuse;
+  float4 specular;
+  bool hdr;
+  float hdrExposure;
+  float shininess;
+  float pad0;
+} BlockingPocketUniforms;
+
 typedef struct Light
 {
   float4 position;

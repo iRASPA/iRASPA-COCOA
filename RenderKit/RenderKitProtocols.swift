@@ -265,6 +265,28 @@ public extension RKRenderRibbonSource
   }
 }
 
+/// Regions of the pore space that are inaccessible to an adsorbate, drawn as one translucent sphere per
+/// pocket per cell replica of the radius the pocket was read with.
+///
+/// A property of the framework rather than of a grid, which is why this is not part of
+/// `RKRenderVolumetricDataSource`: imported volumetric data has no framework to block off. The spheres
+/// are drawn two-sided and share one material, the far wall taking it with the normal flipped.
+public protocol RKRenderBlockingPocketsSource: RKRenderObject
+{
+  var drawBlockingPockets: Bool {get}
+  var renderBlockingPockets: [RKInPerInstanceAttributesAtoms] {get}
+  
+  var blockingPocketsFrontSideHDR: Bool {get}
+  var blockingPocketsFrontSideHDRExposure: Double {get}
+  var blockingPocketsFrontSideAmbientColor: NSColor {get}
+  var blockingPocketsFrontSideDiffuseColor: NSColor {get}
+  var blockingPocketsFrontSideSpecularColor: NSColor {get}
+  var blockingPocketsFrontSideAmbientIntensity: Double {get}
+  var blockingPocketsFrontSideDiffuseIntensity: Double {get}
+  var blockingPocketsFrontSideSpecularIntensity: Double {get}
+  var blockingPocketsFrontSideShininess: Double {get}
+}
+
 public protocol RKRenderVolumetricDataSource: RKRenderObject
 {
   var drawAdsorptionSurface: Bool {get}
@@ -273,6 +295,12 @@ public protocol RKRenderVolumetricDataSource: RKRenderObject
   var gridData: [Float] {get}
   var gridValueAndGradientData: [SIMD4<Float>] {get}
   var isImmutable: Bool {get}
+  
+  // The analytic field the well surface is extracted from: three floats per grid point, the energy U, the
+  // additively weighted (Apollonius) distance to the framework, and the medial reliability (0 on the axis
+  // of a channel where opposing walls cancel). Empty where no analytic form exists
+  // (imported volumetric data), and the renderer then falls back to the iso-surface.
+  var wellFieldData: [Float] {get}
   
   var adsorptionSurfaceRenderingMethod: RKEnergySurfaceType {get}
   var adsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction {get}
@@ -308,6 +336,11 @@ public protocol RKRenderVolumetricDataSource: RKRenderObject
   var adsorptionSurfaceBackSideAmbientIntensity: Double {get}
   var adsorptionSurfaceBackSideSpecularIntensity: Double {get}
   var adsorptionSurfaceBackSideShininess: Double {get}
+}
+
+public extension RKRenderVolumetricDataSource
+{
+  var wellFieldData: [Float] { return [] }
 }
 
 public protocol RKRenderPrimitiveSource

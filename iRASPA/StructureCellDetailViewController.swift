@@ -41,7 +41,7 @@ import LogViewKit
 
 // CellViewer
 
-class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate, WindowControllerConsumer, ProjectConsumer
+class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate, NSTableViewDataSource, NSTableViewDelegate, WindowControllerConsumer, ProjectConsumer
 {
   @IBOutlet private weak var cellOutlineView: NSStaticViewBasedOutlineView?
  
@@ -76,6 +76,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   let symmetryCenteringCell: OutlineViewItem = OutlineViewItem("SymmetryCenteringCell")
   let symmetryPropertiesCell: OutlineViewItem = OutlineViewItem("SymmetryPropertiesCell")
   
+  let blockingPocketsCell: OutlineViewItem = OutlineViewItem("BlockingPocketsCell")
+  
   
   // ViewDidLoad: bounds are not yet set (do not do geometry-related etup here)
   override func viewDidLoad()
@@ -96,7 +98,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     
     let symmetryItem: OutlineViewItem = OutlineViewItem(title: "SymmetryGroup", children: [symmetrySpaceGroupCell, symmetryCenteringCell, symmetryPropertiesCell])
     
-    self.cellOutlineView?.items = [cellStructureItem, cellContentTransformItem, structuralPropertiesItem, symmetryItem]
+    let blockingPocketsItem: OutlineViewItem = OutlineViewItem(title: "BlockingPocketsGroup", children: [blockingPocketsCell])
+    
+    self.cellOutlineView?.items = [cellStructureItem, cellContentTransformItem, structuralPropertiesItem, symmetryItem, blockingPocketsItem]
     
   }
   
@@ -222,6 +226,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       setPropertiesTransformTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesStructuralTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesSymmetryTableCells(on: view, identifier: string, enabled: enabled)
+      setPropertiesBlockingPocketsTableCells(on: view, identifier: string, enabled: enabled)
       
       return view
     }
@@ -1222,7 +1227,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
-      if let textFieldRenderStructureVolumetricNitrogenSurfaceArea: NSTextField = view.viewWithTag(2) as? NSTextField
+      if let textFieldRenderStructureVolumetricNitrogenSurfaceArea: NSTextField = view.viewWithTag(12) as? NSTextField
       {
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEditable = false
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.stringValue = ""
@@ -1240,7 +1245,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldRenderStructureGravimetricNitrogenSurfaceArea: NSTextField = view.viewWithTag(3) as? NSTextField
+      if let textFieldRenderStructureGravimetricNitrogenSurfaceArea: NSTextField = view.viewWithTag(13) as? NSTextField
       {
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEditable = false
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.stringValue = ""
@@ -1255,6 +1260,43 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           else
           {
             textFieldRenderStructureGravimetricNitrogenSurfaceArea.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      
+      if let textFieldRenderStructureVolumetricWellSurfaceArea: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        textFieldRenderStructureVolumetricWellSurfaceArea.isEditable = false
+        textFieldRenderStructureVolumetricWellSurfaceArea.stringValue = ""
+        textFieldRenderStructureVolumetricWellSurfaceArea.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldRenderStructureVolumetricWellSurfaceArea.isEnabled = enabled
+          if let structureVolumetricWellSurfaceArea: Double = self.renderStructureVolumetricWellSurfaceArea
+          {
+            textFieldRenderStructureVolumetricWellSurfaceArea.doubleValue = structureVolumetricWellSurfaceArea
+          }
+          else
+          {
+            textFieldRenderStructureVolumetricWellSurfaceArea.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let textFieldRenderStructureGravimetricWellSurfaceArea: NSTextField = view.viewWithTag(3) as? NSTextField
+      {
+        textFieldRenderStructureGravimetricWellSurfaceArea.isEditable = false
+        textFieldRenderStructureGravimetricWellSurfaceArea.stringValue = ""
+        textFieldRenderStructureGravimetricWellSurfaceArea.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldRenderStructureGravimetricWellSurfaceArea.isEnabled = enabled
+          if let structureGravimetricWellSurfaceArea: Double = self.renderStructureGravimetricWellSurfaceArea
+          {
+            textFieldRenderStructureGravimetricWellSurfaceArea.doubleValue = structureGravimetricWellSurfaceArea
+          }
+          else
+          {
+            textFieldRenderStructureGravimetricWellSurfaceArea.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1315,6 +1357,24 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           buttonComputeGeometricSurfaceArea.isEnabled = enabled
+        }
+      }
+      
+      if let buttonComputeEnergyVolumetricSurfaceArea: NSButton = view.viewWithTag(16) as? NSButton
+      {
+        buttonComputeEnergyVolumetricSurfaceArea.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          buttonComputeEnergyVolumetricSurfaceArea.isEnabled = enabled
+        }
+      }
+    
+      if let buttonComputeEnergyGravimetricSurfaceArea: NSButton = view.viewWithTag(17) as? NSButton
+      {
+        buttonComputeEnergyGravimetricSurfaceArea.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          buttonComputeEnergyGravimetricSurfaceArea.isEnabled = enabled
         }
       }
   
@@ -1598,6 +1658,39 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
             numberOfElementsTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
+      }
+    default:
+      break
+    }
+  }
+  
+  func setPropertiesBlockingPocketsTableCells(on view: NSTableCellView, identifier: String, enabled: Bool)
+  {
+    switch(identifier)
+    {
+    case "BlockingPocketsCell":
+      if let buttonLoadBlockingPockets: NSButton = view.viewWithTag(1) as? NSButton
+      {
+        buttonLoadBlockingPockets.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          buttonLoadBlockingPockets.isEnabled = enabled
+        }
+      }
+      if let textFieldNumberOfBlockingPockets: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        textFieldNumberOfBlockingPockets.isEditable = false
+        textFieldNumberOfBlockingPockets.stringValue = ""
+        if !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          textFieldNumberOfBlockingPockets.stringValue = String(format: NSLocalizedString("%ld blocking pockets", comment: ""), self.renderBlockingPockets.count)
+        }
+      }
+      if let tableViewBlockingPockets: NSTableView = view.viewWithTag(3) as? NSTableView
+      {
+        tableViewBlockingPockets.dataSource = self
+        tableViewBlockingPockets.delegate = self
+        tableViewBlockingPockets.reloadData()
       }
     default:
       break
@@ -2873,7 +2966,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
-      let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: iRASPAObjects.compactMap({$0.object as? Structure}).map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+      let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: structures.map(SKFrameworkSnapshot.init))
       
       for (i, result) in results.enumerated()
       {
@@ -3339,7 +3432,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       let structures: [Structure & StructuralPropertyEditor & VolumetricDataViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & VolumetricDataViewer})
-      let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+      let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: structures.map(SKFrameworkSnapshot.init))
         
       for (i, result) in results.enumerated()
       {
@@ -3368,10 +3461,16 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       do
       {
         let structures: [Structure] = self.iRASPAObjects.compactMap({$0.object as? Structure})
-        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: $0.frameworkProbeParameters)})
-        for (i, result) in results.enumerated()
+        let snapshots: [SKFrameworkSnapshot] = structures.map(SKFrameworkSnapshot.init)
+        let energyResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.computeEnergySurface(structures: snapshots)
+        let wellResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.compute(structures: snapshots)
+        for (i, result) in energyResults.enumerated()
         {
-          structures[i].structureNitrogenSurfaceArea = result
+          structures[i].structureNitrogenSurfaceArea = result.area
+        }
+        for (i, result) in wellResults.enumerated()
+        {
+          structures[i].structureWellSurfaceArea = result.area
         }
       }
       catch let error
@@ -3394,10 +3493,36 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
      do
       {
         let structures: [Structure & StructuralPropertyEditor & VolumetricDataViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & VolumetricDataViewer})
-        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: $0.frameworkProbeParameters)})
+        let results: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.computeEnergySurface(structures: structures.map(SKFrameworkSnapshot.init))
         for (i, result) in results.enumerated()
         {
-          structures[i].structureNitrogenSurfaceArea = result
+          structures[i].structureNitrogenSurfaceArea = result.area
+        }
+      }
+      catch let error
+      {
+        LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
+        return
+      }
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.structuralProbeCell])
+    }
+  }
+  
+  @IBAction func recomputeWellSurfaceArea(_ sender: NSButton)
+  {
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    {
+     do
+      {
+        let structures: [Structure & StructuralPropertyEditor & VolumetricDataViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & VolumetricDataViewer})
+        let results: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.compute(structures: structures.map(SKFrameworkSnapshot.init))
+        for (i, result) in results.enumerated()
+        {
+          structures[i].structureWellSurfaceArea = result.area
         }
       }
       catch let error
@@ -3492,6 +3617,128 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     }
   }
   
+  
+  // MARK: Blocking pockets
+  // =====================================================================
+  
+  public var renderBlockingPockets: [SIMD4<Double>]
+  {
+    return self.iRASPAObjects.compactMap({$0.object as? Structure}).first?.blockingPockets ?? []
+  }
+  
+  func setBlockingPockets(structures: [Structure], blockingPockets: [[SIMD4<Double>]])
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
+    {
+      let oldBlockingPockets: [[SIMD4<Double>]] = structures.map({$0.blockingPockets})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.setBlockingPockets(structures: structures, blockingPockets: oldBlockingPockets)})
+      project.undoManager.setActionName(NSLocalizedString("Change Blocking Pockets", comment: ""))
+      
+      for (index, structure) in structures.enumerated()
+      {
+        structure.blockingPockets = index < blockingPockets.count ? blockingPockets[index] : []
+      }
+      
+      // the pockets are drawn as spheres and can mask the energy grid, so both have to be rebuilt
+      self.windowController?.detailTabViewController?.renderViewController?.reloadRenderData()
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structures)
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: {})
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      projectTreeNode.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsCell])
+    }
+  }
+  
+  @IBAction func loadBlockingPocketsFile(_ sender: NSButton)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
+    {
+      let openPanel: NSOpenPanel = NSOpenPanel()
+      openPanel.canChooseDirectories = false
+      openPanel.allowsMultipleSelection = false
+      openPanel.canChooseFiles = true
+      openPanel.allowedFileTypes = ["block"]
+      openPanel.isReleasedWhenClosed = true
+      
+      openPanel.begin(completionHandler: {[weak self] (result) -> Void in
+        guard result == NSApplication.ModalResponse.OK, let url: URL = openPanel.url, let strongSelf = self else {return}
+        
+        do
+        {
+          let contents: String = try String(contentsOf: url, encoding: String.Encoding.utf8)
+          let blockingPockets: [SIMD4<Double>] = Structure.parseBlockingPockets(contents: contents)
+          let structures: [Structure] = strongSelf.iRASPAObjects.compactMap({$0.object as? Structure})
+          
+          // a newly read file replaces the blocking pockets of all selected structures
+          strongSelf.setBlockingPockets(structures: structures, blockingPockets: Array(repeating: blockingPockets, count: structures.count))
+          
+          LogQueue.shared.info(destination: strongSelf.windowController, message: "Read \(blockingPockets.count) blocking pockets from \(url.lastPathComponent)")
+        }
+        catch let error
+        {
+          LogQueue.shared.error(destination: strongSelf.windowController, message: error.localizedDescription)
+        }
+      })
+    }
+  }
+  
+  // MARK: NSTableView DataSource and Delegate for the blocking pockets
+  // =====================================================================
+  
+  func numberOfRows(in tableView: NSTableView) -> Int
+  {
+    return self.renderBlockingPockets.count
+  }
+  
+  func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView?
+  {
+    let blockingPockets: [SIMD4<Double>] = self.renderBlockingPockets
+    guard let columnIdentifier: String = tableColumn?.identifier.rawValue, row < blockingPockets.count else {return nil}
+    
+    let blockingPocket: SIMD4<Double> = blockingPockets[row]
+    
+    let cellIdentifier: String
+    let value: Double
+    switch(columnIdentifier)
+    {
+    case "blockingPocketIdColumn":
+      if let view: NSTableCellView = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "blockingPocketIdRow"), owner: self) as? NSTableCellView,
+         let textField: NSTextField = view.viewWithTag(10) as? NSTextField
+      {
+        textField.isEditable = false
+        textField.integerValue = row + 1
+        return view
+      }
+      return nil
+    case "blockingPocketXColumn":
+      cellIdentifier = "blockingPocketXRow"
+      value = blockingPocket.x
+    case "blockingPocketYColumn":
+      cellIdentifier = "blockingPocketYRow"
+      value = blockingPocket.y
+    case "blockingPocketZColumn":
+      cellIdentifier = "blockingPocketZRow"
+      value = blockingPocket.z
+    case "blockingPocketRadiusColumn":
+      cellIdentifier = "blockingPocketRadiusRow"
+      value = blockingPocket.w
+    default:
+      return nil
+    }
+    
+    if let view: NSTableCellView = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellIdentifier), owner: self) as? NSTableCellView,
+       let textField: NSTextField = view.viewWithTag(10) as? NSTextField
+    {
+      textField.isEditable = false
+      textField.doubleValue = value
+      return view
+    }
+    return nil
+  }
   
   // MARK: Spacegroup
   // =====================================================================
@@ -4271,6 +4518,32 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     set(newValue)
     {
       self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricNitrogenSurfaceArea = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureVolumetricWellSurfaceArea: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureVolumetricWellSurfaceArea})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureVolumetricWellSurfaceArea = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureGravimetricWellSurfaceArea: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricWellSurfaceArea})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricWellSurfaceArea = newValue ?? 0.0}
     }
   }
   

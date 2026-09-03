@@ -5749,24 +5749,26 @@
                                                                 <outlet property="textField" destination="vhF-XI-azH" id="9qc-EX-6Sr"/>
                                                             </connections>
                                                         </tableCellView>
-                                                        <tableCellView identifier="AdsorptionPropertiesCell" misplaced="YES" id="fbQ-n9-248" userLabel="Adsorption Properties Cell">
-                                                            <rect key="frame" x="1" y="4698" width="495" height="331"/>
+                                                        <tableCellView identifier="AdsorptionPropertiesCell" id="fbQ-n9-248" userLabel="Adsorption Properties Cell">
+                                                            <rect key="frame" x="1" y="4698" width="495" height="393"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="7" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Blc-Pf-3cu">
-                                                                    <rect key="frame" x="8" y="4" width="467" height="344"/>
+                                                                    <rect key="frame" x="8" y="4" width="467" height="385"/>
                                                                     <subviews>
                                                                         <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" xPlacement="fill" yPlacement="fill" rowAlignment="none" rowSpacing="16" columnSpacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="WVG-FA-4dD">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="467" height="344"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="467" height="385"/>
                                                                             <rows>
                                                                                 <gridRow id="ncA-GB-Ycz"/>
+                                                                                <gridRow id="Blk-Ap-ly0"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="OkC-WC-wVI"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="C1r-l1-HuV"/>
+                                                                                <gridRow rowAlignment="none" id="Blk-Sp-tr0"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="8h7-jb-nL2"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="SzU-an-ufR"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="zUB-QW-gkE"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="pQn-qA-nCP"/>
-                                                                                <gridRow id="wMe-2x-Mmi"/>
+                                                                                <gridRow rowAlignment="firstBaseline" id="wMe-2x-Mmi"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="bAi-rF-idD"/>
                                                                             </rows>
                                                                             <columns>
@@ -5777,7 +5779,7 @@
                                                                             <gridCells>
                                                                                 <gridCell row="ncA-GB-Ycz" column="OhW-Iw-Tbh" headOfMergedCell="a9K-Nn-OOl" xPlacement="leading" id="a9K-Nn-OOl">
                                                                                     <button key="contentView" tag="1" horizontalHuggingPriority="260" verticalHuggingPriority="260" translatesAutoresizingMaskIntoConstraints="NO" id="hw5-Nb-ugN">
-                                                                                        <rect key="frame" x="0.0" y="312" width="117" height="32"/>
+                                                                                        <rect key="frame" x="0.0" y="429" width="117" height="32"/>
                                                                                         <buttonCell key="cell" type="check" title="Show Grid Data" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="nOa-3D-Seb">
                                                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                                             <font key="font" metaFont="system"/>
@@ -5791,7 +5793,7 @@
                                                                                 <gridCell row="ncA-GB-Ycz" column="8wk-Gx-Y8W" id="JgN-2m-Peb"/>
                                                                                 <gridCell row="OkC-WC-wVI" column="OhW-Iw-Tbh" id="Usv-tl-KgD">
                                                                                     <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4KJ-J2-rSp">
-                                                                                        <rect key="frame" x="43" y="276" width="116" height="16"/>
+                                                                                        <rect key="frame" x="43" y="393" width="116" height="16"/>
                                                                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Rendering Method" id="a38-aE-bnB">
                                                                                             <font key="font" usesAppearanceFont="YES"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -5801,7 +5803,7 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="OkC-WC-wVI" column="tj8-DZ-Ldh" id="GsQ-FI-SGi">
                                                                                     <popUpButton key="contentView" tag="52" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="waL-3V-4Pc" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
-                                                                                        <rect key="frame" x="188" y="272" width="158" height="24"/>
+                                                                                        <rect key="frame" x="188" y="389" width="158" height="24"/>
                                                                                         <popUpButtonCell key="cell" type="push" title="Isosurface" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="srI-4O-aco" id="ry6-IY-E6d">
                                                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                                             <font key="font" metaFont="message"/>
@@ -5809,6 +5811,8 @@
                                                                                                 <items>
                                                                                                     <menuItem title="Isosurface" state="on" id="srI-4O-aco"/>
                                                                                                     <menuItem title="Volume Rendering" id="c6g-Sw-8rf"/>
+                                                                                                    <menuItem title="Well Surface" id="Wel-Su-rf0"/>
+                                                                                                    <menuItem title="Well Surface Overlay" id="Wel-Ov-rl0"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>
@@ -5820,7 +5824,7 @@
                                                                                 <gridCell row="OkC-WC-wVI" column="8wk-Gx-Y8W" id="Wfr-NW-4nv"/>
                                                                                 <gridCell row="C1r-l1-HuV" column="OhW-Iw-Tbh" id="Lxg-vE-Lhd">
                                                                                     <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="H4B-LJ-dCt">
-                                                                                        <rect key="frame" x="70" y="236" width="89" height="16"/>
+                                                                                        <rect key="frame" x="70" y="353" width="89" height="16"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Probe Particle" id="WhP-xe-dr3">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -5830,7 +5834,7 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="C1r-l1-HuV" column="tj8-DZ-Ldh" id="KBh-wn-DDZ">
                                                                                     <popUpButton key="contentView" tag="2" horizontalHuggingPriority="210" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NLF-ag-eoT" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
-                                                                                        <rect key="frame" x="188" y="232" width="158" height="24"/>
+                                                                                        <rect key="frame" x="188" y="349" width="158" height="24"/>
                                                                                         <popUpButtonCell key="cell" type="push" title="Helium" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Agf-z9-rse" id="YXF-7h-Cnb">
                                                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                                             <font key="font" metaFont="message"/>
@@ -5854,6 +5858,27 @@
                                                                                     </popUpButton>
                                                                                 </gridCell>
                                                                                 <gridCell row="C1r-l1-HuV" column="8wk-Gx-Y8W" id="9cU-eO-hhJ"/>
+                                                                                <gridCell row="Blk-Ap-ly0" column="OhW-Iw-Tbh" headOfMergedCell="Blk-Ap-c10" xPlacement="leading" id="Blk-Ap-c10">
+                                                                                    <button key="contentView" tag="111" horizontalHuggingPriority="260" verticalHuggingPriority="260" translatesAutoresizingMaskIntoConstraints="NO" id="Blk-Ap-btn">
+                                                                                        <rect key="frame" x="0.0" y="253" width="160" height="32"/>
+                                                                                        <buttonCell key="cell" type="check" title="Apply Blocking Pockets" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="Blk-Ap-cel">
+                                                                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                        </buttonCell>
+                                                                                        <connections>
+                                                                                            <action selector="toggleApplyBlockingPockets:" target="A5d-Ag-J3w" id="Blk-Ap-act"/>
+                                                                                        </connections>
+                                                                                    </button>
+                                                                                </gridCell>
+                                                                                <gridCell row="Blk-Ap-ly0" column="tj8-DZ-Ldh" headOfMergedCell="Blk-Ap-c10" id="Blk-Ap-c20"/>
+                                                                                <gridCell row="Blk-Ap-ly0" column="8wk-Gx-Y8W" id="Blk-Ap-c30"/>
+                                                                                <gridCell row="Blk-Sp-tr0" column="OhW-Iw-Tbh" headOfMergedCell="Blk-Sp-c10" xPlacement="fill" yPlacement="center" id="Blk-Sp-c10">
+                                                                                    <box key="contentView" verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Blk-Sp-box">
+                                                                                        <rect key="frame" x="0.0" y="232" width="467" height="5"/>
+                                                                                    </box>
+                                                                                </gridCell>
+                                                                                <gridCell row="Blk-Sp-tr0" column="tj8-DZ-Ldh" headOfMergedCell="Blk-Sp-c10" id="Blk-Sp-c20"/>
+                                                                                <gridCell row="Blk-Sp-tr0" column="8wk-Gx-Y8W" id="Blk-Sp-c30"/>
                                                                                 <gridCell row="8h7-jb-nL2" column="OhW-Iw-Tbh" id="b4k-BQ-baP">
                                                                                     <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="X86-fK-IOX">
                                                                                         <rect key="frame" x="48" y="196" width="111" height="16"/>
@@ -5996,18 +6021,18 @@
                                                                                     </slider>
                                                                                 </gridCell>
                                                                                 <gridCell row="wMe-2x-Mmi" column="OhW-Iw-Tbh" id="Tyn-Rw-zeO">
-                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="juV-Hx-G7A">
-                                                                                        <rect key="frame" x="94" y="40" width="65" height="16"/>
-                                                                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Threshold" id="Ix2-td-CFb">
-                                                                                            <font key="font" usesAppearanceFont="YES"/>
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="juV-Hx-G7A">
+                                                                                        <rect key="frame" x="94" y="44" width="65" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Threshold" id="Ix2-td-CFb">
+                                                                                            <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="wMe-2x-Mmi" column="tj8-DZ-Ldh" id="RNW-VQ-D6E">
                                                                                     <textField key="contentView" focusRingType="none" horizontalHuggingPriority="210" verticalHuggingPriority="750" tag="105" translatesAutoresizingMaskIntoConstraints="NO" id="C88-Q5-VrP">
-                                                                                        <rect key="frame" x="188" y="40" width="158" height="16"/>
+                                                                                        <rect key="frame" x="188" y="40" width="158" height="24"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="7at-DZ-Nxs">
                                                                                             <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="vsX-f2-mLg"/>
                                                                                             <font key="font" metaFont="system"/>
@@ -6021,7 +6046,7 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="wMe-2x-Mmi" column="8wk-Gx-Y8W" id="ONK-CN-san">
                                                                                     <slider key="contentView" verticalHuggingPriority="750" tag="106" translatesAutoresizingMaskIntoConstraints="NO" id="mLW-xo-cQ9">
-                                                                                        <rect key="frame" x="377" y="40" width="90" height="16"/>
+                                                                                        <rect key="frame" x="377" y="45" width="90" height="16"/>
                                                                                         <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="iMh-54-QFt"/>
                                                                                         <connections>
                                                                                             <action selector="changeAdsorptionTransparencyThresholdSlider:" target="A5d-Ag-J3w" id="uIZ-8D-ea4"/>
@@ -6775,6 +6800,344 @@
                                                                 <constraint firstItem="NA6-dP-uqD" firstAttribute="top" secondItem="x93-3d-fR2" secondAttribute="top" constant="4" id="8M1-MW-tMV"/>
                                                                 <constraint firstAttribute="bottom" secondItem="NA6-dP-uqD" secondAttribute="bottom" constant="4" id="JcY-6K-bZl"/>
                                                                 <constraint firstItem="NA6-dP-uqD" firstAttribute="leading" secondItem="x93-3d-fR2" secondAttribute="leading" constant="8" id="Yhz-8P-vTA"/>
+                                                            </constraints>
+                                                        </tableCellView>
+                                                        <tableCellView identifier="BlockingPocketsVisualAppearanceGroup" id="BkP-Gr-cel" userLabel="Blocking Pockets Appearance Group">
+                                                            <rect key="frame" x="1" y="5378" width="495" height="16"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <subviews>
+                                                                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Gr-stk">
+                                                                    <rect key="frame" x="13" y="0.0" width="462" height="16"/>
+                                                                    <subviews>
+                                                                        <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Gr-tfd">
+                                                                            <rect key="frame" x="-2" y="0.0" width="107" height="16"/>
+                                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Blocking Pockets" id="BkP-Gr-tcl">
+                                                                                <font key="font" metaFont="system"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                        </textField>
+                                                                    </subviews>
+                                                                    <visibilityPriorities>
+                                                                        <integer value="1000"/>
+                                                                    </visibilityPriorities>
+                                                                    <customSpacing>
+                                                                        <real value="3.4028234663852886e+38"/>
+                                                                    </customSpacing>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="BkP-Gr-stk" secondAttribute="trailing" constant="20" symbolic="YES" id="BkP-Gr-cn1"/>
+                                                                <constraint firstItem="BkP-Gr-stk" firstAttribute="leading" secondItem="BkP-Gr-cel" secondAttribute="leading" constant="13" id="BkP-Gr-cn2"/>
+                                                                <constraint firstItem="BkP-Gr-stk" firstAttribute="top" secondItem="BkP-Gr-cel" secondAttribute="top" id="BkP-Gr-cn3"/>
+                                                                <constraint firstAttribute="bottom" secondItem="BkP-Gr-stk" secondAttribute="bottom" id="BkP-Gr-cn4"/>
+                                                            </constraints>
+                                                            <connections>
+                                                                <outlet property="textField" destination="BkP-Gr-tfd" id="BkP-Gr-out"/>
+                                                            </connections>
+                                                        </tableCellView>
+                                                        <tableCellView identifier="BlockingPocketsPropertiesCell" id="BkP-Pr-cel" userLabel="Blocking Pockets Properties Cell">
+                                                            <rect key="frame" x="1" y="5354" width="495" height="24"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <subviews>
+                                                                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="7" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Pr-stk">
+                                                                    <rect key="frame" x="8" y="4" width="467" height="16"/>
+                                                                    <subviews>
+                                                                        <button tag="1" horizontalHuggingPriority="260" verticalHuggingPriority="260" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Pr-btn">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="158" height="16"/>
+                                                                            <buttonCell key="cell" type="check" title="Show Blocking Pockets" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="BkP-Pr-bcl">
+                                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                                <font key="font" metaFont="system"/>
+                                                                            </buttonCell>
+                                                                            <connections>
+                                                                                <action selector="toggleShowBlockingPockets:" target="A5d-Ag-J3w" id="BkP-Pr-act"/>
+                                                                            </connections>
+                                                                        </button>
+                                                                    </subviews>
+                                                                    <visibilityPriorities>
+                                                                        <integer value="1000"/>
+                                                                    </visibilityPriorities>
+                                                                    <customSpacing>
+                                                                        <real value="3.4028234663852886e+38"/>
+                                                                    </customSpacing>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="BkP-Pr-stk" firstAttribute="leading" secondItem="BkP-Pr-cel" secondAttribute="leading" constant="8" id="BkP-Pr-cn1"/>
+                                                                <constraint firstItem="BkP-Pr-stk" firstAttribute="top" secondItem="BkP-Pr-cel" secondAttribute="top" constant="4" id="BkP-Pr-cn2"/>
+                                                                <constraint firstAttribute="bottom" secondItem="BkP-Pr-stk" secondAttribute="bottom" constant="4" id="BkP-Pr-cn3"/>
+                                                                <constraint firstAttribute="trailing" secondItem="BkP-Pr-stk" secondAttribute="trailing" constant="20" symbolic="YES" id="BkP-Pr-cn4"/>
+                                                            </constraints>
+                                                        </tableCellView>
+                                                        <tableCellView identifier="BlockingPocketsFrontSurfaceCell" id="BkP-Fs-cel" userLabel="Blocking Pockets Front Surface Cell">
+                                                            <rect key="frame" x="1" y="5128" width="495" height="250"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <subviews>
+                                                                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-stk">
+                                                                    <rect key="frame" x="8" y="4" width="467" height="242"/>
+                                                                    <subviews>
+                                                                        <box horizontalHuggingPriority="230" verticalHuggingPriority="230" borderType="line" title="Outside surface" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-box">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="467" height="242"/>
+                                                                            <view key="contentView" id="BkP-Fs-ctv">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="467" height="230"/>
+                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                <subviews>
+                                                                                    <gridView horizontalHuggingPriority="220" verticalHuggingPriority="220" xPlacement="fill" yPlacement="fill" rowAlignment="none" rowSpacing="12" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-grd" userLabel="Grid View Blocking Pockets Surface">
+                                                                                        <rect key="frame" x="4" y="4" width="459" height="222"/>
+                                                                                        <constraints>
+                                                                                            <constraint firstItem="BkP-Fs-aml" firstAttribute="centerY" secondItem="BkP-Fs-amw" secondAttribute="centerY" id="BkP-Fs-y00"/>
+                                                                                            <constraint firstItem="BkP-Fs-dfl" firstAttribute="centerY" secondItem="BkP-Fs-dfw" secondAttribute="centerY" id="BkP-Fs-y10"/>
+                                                                                            <constraint firstItem="BkP-Fs-spl" firstAttribute="centerY" secondItem="BkP-Fs-spw" secondAttribute="centerY" id="BkP-Fs-y20"/>
+                                                                                        </constraints>
+                                                                                        <rows>
+                                                                                            <gridRow yPlacement="fill" rowAlignment="firstBaseline" id="BkP-Fs-r00"/>
+                                                                                            <gridRow yPlacement="fill" rowAlignment="firstBaseline" id="BkP-Fs-r10"/>
+                                                                                            <gridRow yPlacement="fill" rowAlignment="firstBaseline" id="BkP-Fs-r20"/>
+                                                                                            <gridRow yPlacement="fill" rowAlignment="firstBaseline" id="BkP-Fs-r30"/>
+                                                                                            <gridRow yPlacement="fill" rowAlignment="firstBaseline" id="BkP-Fs-r40"/>
+                                                                                            <gridRow yPlacement="fill" rowAlignment="firstBaseline" id="BkP-Fs-r50"/>
+                                                                                        </rows>
+                                                                                        <columns>
+                                                                                            <gridColumn xPlacement="trailing" id="BkP-Fs-c00"/>
+                                                                                            <gridColumn id="BkP-Fs-c10"/>
+                                                                                            <gridColumn width="70" id="BkP-Fs-c20"/>
+                                                                                            <gridColumn xPlacement="none" width="60" id="BkP-Fs-c30"/>
+                                                                                        </columns>
+                                                                                        <gridCells>
+                                                                                            <gridCell row="BkP-Fs-r00" column="BkP-Fs-c00" headOfMergedCell="BkP-Fs-g00" xPlacement="leading" id="BkP-Fs-g00">
+                                                                                                <button key="contentView" tag="1" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-hdb">
+                                                                                                    <rect key="frame" x="0.0" y="180" width="149" height="42"/>
+                                                                                                    <buttonCell key="cell" type="check" title="High Dynamic Range" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="BkP-Fs-hdc">
+                                                                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                    </buttonCell>
+                                                                                                    <connections>
+                                                                                                        <action selector="toggleBlockingPocketsFrontSideHDR:" target="A5d-Ag-J3w" id="BkP-Fs-hda"/>
+                                                                                                    </connections>
+                                                                                                </button>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r00" column="BkP-Fs-c10" headOfMergedCell="BkP-Fs-g00" id="BkP-Fs-g01"/>
+                                                                                            <gridCell row="BkP-Fs-r00" column="BkP-Fs-c20" id="BkP-Fs-g02"/>
+                                                                                            <gridCell row="BkP-Fs-r00" column="BkP-Fs-c30" id="BkP-Fs-g03"/>
+                                                                                            <gridCell row="BkP-Fs-r10" column="BkP-Fs-c00" id="BkP-Fs-g10">
+                                                                                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-exl">
+                                                                                                    <rect key="frame" x="84" y="144" width="61" height="20"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Exposure" id="BkP-Fs-exc">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r10" column="BkP-Fs-c10" id="BkP-Fs-g11">
+                                                                                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="210" verticalHuggingPriority="260" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-ext">
+                                                                                                    <rect key="frame" x="151" y="144" width="162" height="24"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="BkP-Fs-exf">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="BkP-Fs-exn"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideHDRExposureTextField:" target="A5d-Ag-J3w" id="BkP-Fs-exa"/>
+                                                                                                    </connections>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r10" column="BkP-Fs-c20" id="BkP-Fs-g12">
+                                                                                                <slider key="contentView" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-exs">
+                                                                                                    <rect key="frame" x="321" y="149" width="70" height="16"/>
+                                                                                                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="BkP-Fs-exd"/>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideExposureSlider:" target="A5d-Ag-J3w" id="BkP-Fs-exb"/>
+                                                                                                    </connections>
+                                                                                                </slider>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r10" column="BkP-Fs-c30" id="BkP-Fs-g13"/>
+                                                                                            <gridCell row="BkP-Fs-r20" column="BkP-Fs-c00" id="BkP-Fs-g20">
+                                                                                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-aml">
+                                                                                                    <rect key="frame" x="1" y="112" width="144" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Ambient Light Intensity" id="BkP-Fs-amc">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r20" column="BkP-Fs-c10" id="BkP-Fs-g21">
+                                                                                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="210" verticalHuggingPriority="260" verticalCompressionResistancePriority="760" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-amt">
+                                                                                                    <rect key="frame" x="151" y="108" width="162" height="24"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="BkP-Fs-amf">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="BkP-Fs-amn"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideAmbientTextField:" target="A5d-Ag-J3w" id="BkP-Fs-ama"/>
+                                                                                                    </connections>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r20" column="BkP-Fs-c20" id="BkP-Fs-g22">
+                                                                                                <slider key="contentView" verticalHuggingPriority="750" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-ams">
+                                                                                                    <rect key="frame" x="321" y="113" width="70" height="16"/>
+                                                                                                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="BkP-Fs-amd"/>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideAmbientIntensitySlider:" target="A5d-Ag-J3w" id="BkP-Fs-amb"/>
+                                                                                                    </connections>
+                                                                                                </slider>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r20" column="BkP-Fs-c30" xPlacement="fill" yPlacement="fill" rowAlignment="none" id="BkP-Fs-g23">
+                                                                                                <colorWell key="contentView" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-amw">
+                                                                                                    <rect key="frame" x="399" y="108" width="60" height="24"/>
+                                                                                                    <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideAmbientColor:" target="A5d-Ag-J3w" id="BkP-Fs-ame"/>
+                                                                                                    </connections>
+                                                                                                </colorWell>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r30" column="BkP-Fs-c00" id="BkP-Fs-g30">
+                                                                                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-dfl">
+                                                                                                    <rect key="frame" x="8" y="76" width="137" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Diffuse Light Intensity" id="BkP-Fs-dfc">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r30" column="BkP-Fs-c10" id="BkP-Fs-g31">
+                                                                                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="210" verticalHuggingPriority="260" verticalCompressionResistancePriority="760" tag="7" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-dft">
+                                                                                                    <rect key="frame" x="151" y="72" width="162" height="24"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="BkP-Fs-dff">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="BkP-Fs-dfn"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideDiffuseTextField:" target="A5d-Ag-J3w" id="BkP-Fs-dfa"/>
+                                                                                                    </connections>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r30" column="BkP-Fs-c20" id="BkP-Fs-g32">
+                                                                                                <slider key="contentView" verticalHuggingPriority="750" tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-dfs">
+                                                                                                    <rect key="frame" x="321" y="77" width="70" height="16"/>
+                                                                                                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="BkP-Fs-dfd"/>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideDiffuseIntensitySlider:" target="A5d-Ag-J3w" id="BkP-Fs-dfb"/>
+                                                                                                    </connections>
+                                                                                                </slider>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r30" column="BkP-Fs-c30" xPlacement="fill" yPlacement="fill" rowAlignment="none" id="BkP-Fs-g33">
+                                                                                                <colorWell key="contentView" tag="9" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-dfw">
+                                                                                                    <rect key="frame" x="399" y="72" width="60" height="24"/>
+                                                                                                    <color key="color" red="0.2" green="0.65" blue="0.85" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideDiffuseColor:" target="A5d-Ag-J3w" id="BkP-Fs-dfe"/>
+                                                                                                    </connections>
+                                                                                                </colorWell>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r40" column="BkP-Fs-c00" id="BkP-Fs-g40">
+                                                                                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-spl">
+                                                                                                    <rect key="frame" x="-2" y="40" width="147" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Specular Light Intensity" id="BkP-Fs-spc">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r40" column="BkP-Fs-c10" id="BkP-Fs-g41">
+                                                                                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="210" verticalHuggingPriority="260" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-spt">
+                                                                                                    <rect key="frame" x="151" y="36" width="162" height="24"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="BkP-Fs-spf">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="BkP-Fs-spn"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideSpecularTextField:" target="A5d-Ag-J3w" id="BkP-Fs-spa"/>
+                                                                                                    </connections>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r40" column="BkP-Fs-c20" id="BkP-Fs-g42">
+                                                                                                <slider key="contentView" verticalHuggingPriority="750" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-sps">
+                                                                                                    <rect key="frame" x="321" y="41" width="70" height="16"/>
+                                                                                                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="BkP-Fs-spd"/>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideSpecularIntensitySlider:" target="A5d-Ag-J3w" id="BkP-Fs-spb"/>
+                                                                                                    </connections>
+                                                                                                </slider>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r40" column="BkP-Fs-c30" xPlacement="fill" yPlacement="fill" rowAlignment="none" id="BkP-Fs-g43">
+                                                                                                <colorWell key="contentView" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-spw">
+                                                                                                    <rect key="frame" x="399" y="36" width="60" height="24"/>
+                                                                                                    <color key="color" red="0.92" green="0.92" blue="0.92" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideSpecularColor:" target="A5d-Ag-J3w" id="BkP-Fs-spe"/>
+                                                                                                    </connections>
+                                                                                                </colorWell>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r50" column="BkP-Fs-c00" id="BkP-Fs-g50">
+                                                                                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-shl">
+                                                                                                    <rect key="frame" x="83" y="0.0" width="62" height="20"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Shininess" id="BkP-Fs-shc">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r50" column="BkP-Fs-c10" id="BkP-Fs-g51">
+                                                                                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="210" verticalHuggingPriority="260" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-sht">
+                                                                                                    <rect key="frame" x="151" y="0.0" width="162" height="24"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="BkP-Fs-shf">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="BkP-Fs-shn"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideShininessTextField:" target="A5d-Ag-J3w" id="BkP-Fs-sha"/>
+                                                                                                    </connections>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r50" column="BkP-Fs-c20" id="BkP-Fs-g52">
+                                                                                                <slider key="contentView" verticalHuggingPriority="750" tag="14" translatesAutoresizingMaskIntoConstraints="NO" id="BkP-Fs-shs">
+                                                                                                    <rect key="frame" x="321" y="5" width="70" height="16"/>
+                                                                                                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="BkP-Fs-shd"/>
+                                                                                                    <connections>
+                                                                                                        <action selector="changeBlockingPocketsFrontSideShininessSlider:" target="A5d-Ag-J3w" id="BkP-Fs-shb"/>
+                                                                                                    </connections>
+                                                                                                </slider>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="BkP-Fs-r50" column="BkP-Fs-c30" id="BkP-Fs-g53"/>
+                                                                                        </gridCells>
+                                                                                    </gridView>
+                                                                                </subviews>
+                                                                                <constraints>
+                                                                                    <constraint firstItem="BkP-Fs-grd" firstAttribute="top" secondItem="BkP-Fs-ctv" secondAttribute="top" constant="4" id="BkP-Fs-b00"/>
+                                                                                    <constraint firstItem="BkP-Fs-grd" firstAttribute="leading" secondItem="BkP-Fs-ctv" secondAttribute="leading" constant="4" id="BkP-Fs-b01"/>
+                                                                                    <constraint firstAttribute="bottom" secondItem="BkP-Fs-grd" secondAttribute="bottom" constant="4" id="BkP-Fs-b02"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="BkP-Fs-grd" secondAttribute="trailing" constant="4" id="BkP-Fs-b03"/>
+                                                                                </constraints>
+                                                                            </view>
+                                                                        </box>
+                                                                    </subviews>
+                                                                    <visibilityPriorities>
+                                                                        <integer value="1000"/>
+                                                                    </visibilityPriorities>
+                                                                    <customSpacing>
+                                                                        <real value="3.4028234663852886e+38"/>
+                                                                    </customSpacing>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="BkP-Fs-stk" firstAttribute="leading" secondItem="BkP-Fs-cel" secondAttribute="leading" constant="8" id="BkP-Fs-k00"/>
+                                                                <constraint firstItem="BkP-Fs-stk" firstAttribute="top" secondItem="BkP-Fs-cel" secondAttribute="top" constant="4" id="BkP-Fs-k01"/>
+                                                                <constraint firstAttribute="bottom" secondItem="BkP-Fs-stk" secondAttribute="bottom" constant="4" id="BkP-Fs-k02"/>
+                                                                <constraint firstAttribute="trailing" secondItem="BkP-Fs-stk" secondAttribute="trailing" constant="20" symbolic="YES" id="BkP-Fs-k03"/>
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="AnnotationVisualAppearanceGroup" id="TDk-3Q-oyW" userLabel="Annotation Appearance Group">

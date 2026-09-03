@@ -154,6 +154,36 @@
 /* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "BKm-75-TFG"; */
 "BKm-75-TFG.title" = "اسم العرض";
 
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "BkP-Fs-amc"; */
+"BkP-Fs-amc.title" = "شدة الضوء المحيط";
+
+/* Class = "NSBox"; title = "Outside surface"; ObjectID = "BkP-Fs-box"; */
+"BkP-Fs-box.title" = "السطح الأمامي";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "BkP-Fs-dfc"; */
+"BkP-Fs-dfc.title" = "نشر شدة الضوء";
+
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "BkP-Fs-exc"; */
+"BkP-Fs-exc.title" = "التعرض";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "BkP-Fs-hdc"; */
+"BkP-Fs-hdc.title" = "المدى الديناميكي العالي";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "BkP-Fs-shc"; */
+"BkP-Fs-shc.title" = "اللمعان";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "BkP-Fs-spc"; */
+"BkP-Fs-spc.title" = "شدة الضوء البراق";
+
+/* Class = "NSTextFieldCell"; title = "Blocking Pockets"; ObjectID = "BkP-Gr-tcl"; */
+"BkP-Gr-tcl.title" = "الجيوب المانعة";
+
+/* Class = "NSButtonCell"; title = "Show Blocking Pockets"; ObjectID = "BkP-Pr-bcl"; */
+"BkP-Pr-bcl.title" = "إظهار الجيوب المانعة";
+
+/* Class = "NSButtonCell"; title = "Apply Blocking Pockets"; ObjectID = "Blk-Ap-cel"; */
+"Blk-Ap-cel.title" = "تطبيق الجيوب المانعة";
+
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "BMS-ba-E5g"; */
 "BMS-ba-E5g.title" = "عنصر كيميائي";
 
@@ -183,6 +213,12 @@
 
 /* Class = "NSMenuItem"; title = "Volume Rendering"; ObjectID = "c6g-Sw-8rf"; */
 "c6g-Sw-8rf.title" = "تمثيل الصوت";
+
+/* Class = "NSMenuItem"; title = "Well Surface"; ObjectID = "Wel-Su-rf0"; */
+"Wel-Su-rf0.title" = "سطح البئر";
+
+/* Class = "NSMenuItem"; title = "Well Surface Overlay"; ObjectID = "Wel-Ov-rl0"; */
+"Wel-Ov-rl0.title" = "تراكب سطح البئر";
 
 /* Class = "NSMenuItem"; title = "32x32x32"; ObjectID = "C6X-Mp-y1T"; */
 "C6X-Mp-y1T.title" = "32x32x32";
@@ -744,4 +780,3 @@
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "ZX7-oF-dgu"; */
 "ZX7-oF-dgu.title" = "المدى الديناميكي العالي";
-

@@ -53,6 +53,13 @@ class MetalEnergyIsosurfaceShader
   let cachedAdsorptionSurfaces: [Int: NSCache<AnyObject, AnyObject>] = [16: NSCache(), 32: NSCache(), 64: NSCache(), 128: NSCache(), 256: NSCache(), 512: NSCache()]
   let cachedPermanentAdsorptionSurfaces: [Int: NSCache<AnyObject, AnyObject>] = [16: NSCache(), 32: NSCache(), 64: NSCache(), 128: NSCache(), 256: NSCache(), 512: NSCache()]
   
+  // The well surface reads a three-floats-per-point (energy, Apollonius distance, medial reliability) field rather than the energy
+  // grid; cached apart so that switching rendering methods cannot hand one builder the other's data. Like the
+  // energy grid, the field depends on the probe and the force field, and is purged by the same
+  // invalidateIsosurface calls (the key is only structure and grid size).
+  let cachedWellFields: [Int: NSCache<AnyObject, AnyObject>] = [16: NSCache(), 32: NSCache(), 64: NSCache(), 128: NSCache(), 256: NSCache(), 512: NSCache()]
+  let cachedPermanentWellFields: [Int: NSCache<AnyObject, AnyObject>] = [16: NSCache(), 32: NSCache(), 64: NSCache(), 128: NSCache(), 256: NSCache(), 512: NSCache()]
+  
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
     // Marching Cubes vertices are always 48 bytes (3 × float4). Do not reuse the shared
@@ -126,20 +133,25 @@ class MetalEnergyIsosurfaceShader
   
   public func buildVertexBuffers()
   {
-    self.vertexBuffer = []
+    // Keep already-computed marching-cubes meshes. Atom/bond visibility, ambient occlusion,
+    // and other reloadRenderData paths rebuild vertex arrays without calling
+    // updateAdsorptionSurface, and dropping the buffers here made the isosurface vanish.
+    var newVertexBuffer: [[MTLBuffer?]] = []
     if let _: RKRenderDataSource = renderDataSource
     {
       for i in 0..<self.renderStructures.count
       {
         var buffers: [MTLBuffer?] = []
         let structures: [RKRenderObject] = self.renderStructures[i]
-        for _ in structures
+        for j in 0..<structures.count
         {
-          buffers.append(nil)
+          let existing: MTLBuffer? = (i < self.vertexBuffer.count && j < self.vertexBuffer[i].count) ? self.vertexBuffer[i][j] : nil
+          buffers.append(existing)
         }
-        self.vertexBuffer.append(buffers)
+        newVertexBuffer.append(buffers)
       }
     }
+    self.vertexBuffer = newVertexBuffer
   }
   
   public func buildInstanceBuffers(device: MTLDevice)
@@ -195,7 +207,7 @@ class MetalEnergyIsosurfaceShader
            let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: i, movieIndex: j),
            let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
            structure.drawAdsorptionSurface,
-           structure.adsorptionSurfaceRenderingMethod == .isoSurface
+           structure.adsorptionSurfaceRenderingMethod.isTriangulated
         {
           let vertexCount: Int = 3 * structure.adsorptionSurfaceNumberOfTriangles
           if (structure.isVisible &&  structure.adsorptionSurfaceOpacity>0.99999 && vertexCount>0)
@@ -229,7 +241,7 @@ class MetalEnergyIsosurfaceShader
           let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: sceneIndex, movieIndex: movieIndex),
           let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: sceneIndex, movieIndex: movieIndex),
           structure.drawAdsorptionSurface,
-          structure.adsorptionSurfaceRenderingMethod == .isoSurface else {return}
+          structure.adsorptionSurfaceRenderingMethod.isTriangulated else {return}
     
     let vertexCount: Int = 3 * structure.adsorptionSurfaceNumberOfTriangles
     guard structure.isVisible && structure.adsorptionSurfaceOpacity<=0.99999 && vertexCount>0 else {return}
@@ -288,8 +300,6 @@ class MetalEnergyIsosurfaceShader
         {
           if let structure = structure as? RKRenderVolumetricDataSource, structure.drawAdsorptionSurface
           {
-            var data: [Float] = []
-            
             let dimensions: SIMD3<Int32> = structure.dimensions
             let largestSize: Int = Int(max(dimensions.x,dimensions.y,dimensions.z))
             
@@ -300,46 +310,52 @@ class MetalEnergyIsosurfaceShader
               gridSizeType += 1
             }
             let size = max(16, Int(pow(2.0,Double(gridSizeType))))
-               
-            if let cachedVersion: Data = cachedPermanentAdsorptionSurfaces[size]?.object(forKey: structure) as? Data
+            
+            func load(cached: [Int: NSCache<AnyObject, AnyObject>], permanent: [Int: NSCache<AnyObject, AnyObject>], compute: () -> [Float], name: String) -> [Float]
             {
-              data = [Float](repeating: Float(0.0), count: cachedVersion.count / MemoryLayout<Float>.stride)
-              let _ = data.withUnsafeMutableBytes { cachedVersion.copyBytes(to: $0, from: 0..<cachedVersion.count) }
-              
-              LogQueue.shared.verbose(destination: windowController, message: "Loading the \(structure.displayName)-Metal energy grid from cache")
-            }
-            else if let cachedVersion: Data = cachedAdsorptionSurfaces[size]?.object(forKey: structure) as? Data
-            {
-              data = [Float](repeating: Float(0.0), count: cachedVersion.count / MemoryLayout<Float>.stride)
-              let _ = data.withUnsafeMutableBytes { cachedVersion.copyBytes(to: $0, from: 0..<cachedVersion.count) }
-              
-              LogQueue.shared.verbose(destination: windowController, message: "Loading the \(structure.displayName)-Metal energy grid from cache")
-            }
-            else
-            {
-              data = structure.gridData
-              
-              if structure.isImmutable
+              if let cachedVersion: Data = (permanent[size]?.object(forKey: structure) ?? cached[size]?.object(forKey: structure)) as? Data
               {
-                if let cache: NSCache = cachedPermanentAdsorptionSurfaces[size]
-                {
-                  let cachedData: Data = data.withUnsafeMutableBufferPointer{Data(buffer: $0)}
-                  cache.setObject(cachedData as AnyObject, forKey: structure)
-                }
+                var data: [Float] = [Float](repeating: Float(0.0), count: cachedVersion.count / MemoryLayout<Float>.stride)
+                let _ = data.withUnsafeMutableBytes { cachedVersion.copyBytes(to: $0, from: 0..<cachedVersion.count) }
+                LogQueue.shared.verbose(destination: windowController, message: "Loading the \(structure.displayName)-Metal \(name) from cache")
+                return data
               }
-              else
+              var data: [Float] = compute()
+              if !data.isEmpty, let cache: NSCache = structure.isImmutable ? permanent[size] : cached[size]
               {
-                if let cache: NSCache = cachedAdsorptionSurfaces[size]
-                {
-                  let cachedData: Data = data.withUnsafeMutableBufferPointer{Data(buffer: $0)}
-                  cache.setObject(cachedData as AnyObject, forKey: structure)
-                }
+                let cachedData: Data = data.withUnsafeMutableBufferPointer{Data(buffer: $0)}
+                cache.setObject(cachedData as AnyObject, forKey: structure)
               }
+              return data
+            }
+            
+            // The well surface and its filament overlay are level sets of the analytic force field; the
+            // iso-surface and the volume rendering are level sets and samplings of the energy grid. When
+            // the well field is unavailable (imported volumetric data has no analytic form) the iso-surface
+            // stands in for it.
+            let renderingMethod: RKEnergySurfaceType = structure.adsorptionSurfaceRenderingMethod
+            var isWellSurface: Bool = renderingMethod == .wellSurface || renderingMethod == .wellSurfaceOverlay
+            
+            var fieldData: [Float] = []
+            if isWellSurface
+            {
+              fieldData = load(cached: cachedWellFields, permanent: cachedPermanentWellFields, compute: { structure.wellFieldData }, name: "well field")
+              if fieldData.isEmpty
+              {
+                LogQueue.shared.warning(destination: windowController, message: "The well surface is not available for \(structure.displayName); showing the isosurface instead.")
+                isWellSurface = false
+              }
+            }
+            
+            var data: [Float] = []
+            if !isWellSurface
+            {
+              data = load(cached: cachedAdsorptionSurfaces, permanent: cachedPermanentAdsorptionSurfaces, compute: { structure.gridData }, name: "energy grid")
             }
             
             let startTime: UInt64  = mach_absolute_time()
             
-            if data.isEmpty
+            if !isWellSurface && data.isEmpty
             {
               LogQueue.shared.error(destination: windowController, message: "Energy grid for \(structure.displayName) is empty; no isosurface will be drawn.")
               structure.adsorptionSurfaceNumberOfTriangles = 0
@@ -349,17 +365,60 @@ class MetalEnergyIsosurfaceShader
             {
               do
               {
-                if let buffer = try SKMetalMarchingCubes.constructIsoSurfaceVertexBuffer(device: device, commandQueue: commandQueue, data: data, isovalue: structure.adsorptionSurfaceIsoValue, dimensions: dimensions)
+                let isOverlay: Bool = isWellSurface && renderingMethod == .wellSurfaceOverlay
+                let surfaceName: String = isOverlay ? "Well surface overlay" : (isWellSurface ? "Well surface" : "Isosurface")
+
+                var buffer: MTLBuffer? = nil
+                if isOverlay
+                {
+                  // The merged-well filament: the thin tube along channel axes too narrow for the
+                  // probe's contact sheet, where the adsorbate is enclosed and sits on the axis.
+                  if let adsorptionStructure = structure as? SKRenderAdsorptionSurfaceStructure
+                  {
+                    buffer = try SKMetalWellSurface.constructWellFilamentVertexBuffer(device: device, commandQueue: commandQueue, field: fieldData, isovalue: structure.adsorptionSurfaceIsoValue, dimensions: dimensions, unitCell: adsorptionStructure.cell.unitCell)
+                  }
+                }
+                else if isWellSurface
+                {
+                  buffer = try SKMetalWellSurface.constructWellSurfaceVertexBuffer(device: device, commandQueue: commandQueue, field: fieldData, isovalue: structure.adsorptionSurfaceIsoValue, dimensions: dimensions)
+
+                  if let constructed = buffer, let adsorptionStructure = structure as? SKRenderAdsorptionSurfaceStructure
+                  {
+                    // Marching cubes puts the vertices on the probe-contact distance surface; the refinement
+                    // slides each one along the ray to its nearest atom onto the exact 1D minimum of the
+                    // analytic energy --- the true multi-atom well floor.
+                    let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: adsorptionStructure.atomUnitCellPositions, potentialParameters: adsorptionStructure.potentialParameters, unitCell: adsorptionStructure.cell.unitCell, numberOfReplicas: adsorptionStructure.cell.numberOfReplicas(forCutoff: 12.0), blockingPockets: adsorptionStructure.appliedBlockingPockets)
+                    let trimIso: Float = SKMetalWellSurface.effectiveTrimIsovalue(field: fieldData, isovalue: structure.adsorptionSurfaceIsoValue, dimensions: dimensions)
+                    framework.RefineWellSurfaceVertexBuffer(vertexBuffer: constructed, probeParameter: structure.adsorptionSurfaceProbeParameters, isovalue: trimIso)
+                  }
+                }
+                else
+                {
+                  buffer = try SKMetalMarchingCubes.constructIsoSurfaceVertexBuffer(device: device, commandQueue: commandQueue, data: data, isovalue: structure.adsorptionSurfaceIsoValue, dimensions: dimensions)
+                }
+
+                if let buffer = buffer
                 {
                   vertexBuffer[i][j] = buffer
                   structure.adsorptionSurfaceNumberOfTriangles = buffer.length / (3 * 3 * MemoryLayout<SIMD4<Float>>.stride)
-                  LogQueue.shared.info(destination: windowController, message: "Isosurface for \(structure.displayName): \(structure.adsorptionSurfaceNumberOfTriangles) triangles")
+                  if isOverlay
+                  {
+                    LogQueue.shared.info(destination: windowController, message: "\(surfaceName) for \(structure.displayName): \(structure.adsorptionSurfaceNumberOfTriangles) triangles; where a tightly enclosed adsorbate sits on the channel axis (not monolayer area)")
+                  }
+                  else if isWellSurface
+                  {
+                    LogQueue.shared.info(destination: windowController, message: "\(surfaceName) for \(structure.displayName): \(structure.adsorptionSurfaceNumberOfTriangles) triangles; the real monolayer area")
+                  }
+                  else
+                  {
+                    LogQueue.shared.info(destination: windowController, message: "\(surfaceName) for \(structure.displayName): \(structure.adsorptionSurfaceNumberOfTriangles) triangles")
+                  }
                 }
                 else
                 {
                   vertexBuffer[i][j] = nil
                   structure.adsorptionSurfaceNumberOfTriangles = 0
-                  LogQueue.shared.warning(destination: windowController, message: "Marching cubes produced 0 triangles for \(structure.displayName) at iso \(structure.adsorptionSurfaceIsoValue) K")
+                  LogQueue.shared.warning(destination: windowController, message: "\(surfaceName) produced 0 triangles for \(structure.displayName) at iso \(structure.adsorptionSurfaceIsoValue) K")
                 }
               }
               catch

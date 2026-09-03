@@ -1,4 +1,3 @@
-
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "126-Ob-v2F"; */
 "126-Ob-v2F.title" = "Rotate +90";
 
@@ -103,6 +102,36 @@
 
 /* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "BKm-75-TFG"; */
 "BKm-75-TFG.title" = "Display Name";
+
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "BkP-Fs-amc"; */
+"BkP-Fs-amc.title" = "Ambient Light Intensity";
+
+/* Class = "NSBox"; title = "Outside surface"; ObjectID = "BkP-Fs-box"; */
+"BkP-Fs-box.title" = "Outside surface";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "BkP-Fs-dfc"; */
+"BkP-Fs-dfc.title" = "Diffuse Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "BkP-Fs-exc"; */
+"BkP-Fs-exc.title" = "Exposure";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "BkP-Fs-hdc"; */
+"BkP-Fs-hdc.title" = "High Dynamic Range";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "BkP-Fs-shc"; */
+"BkP-Fs-shc.title" = "Shininess";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "BkP-Fs-spc"; */
+"BkP-Fs-spc.title" = "Specular Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Blocking Pockets"; ObjectID = "BkP-Gr-tcl"; */
+"BkP-Gr-tcl.title" = "Blocking Pockets";
+
+/* Class = "NSButtonCell"; title = "Show Blocking Pockets"; ObjectID = "BkP-Pr-bcl"; */
+"BkP-Pr-bcl.title" = "Show Blocking Pockets";
+
+/* Class = "NSButtonCell"; title = "Apply Blocking Pockets"; ObjectID = "Blk-Ap-cel"; */
+"Blk-Ap-cel.title" = "Apply Blocking Pockets";
 
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "BMS-ba-E5g"; */
 "BMS-ba-E5g.title" = "Chemical Element";

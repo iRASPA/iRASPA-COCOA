@@ -211,7 +211,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .origin: return 3
     case .transformContent: return 7
     case .structural: return 7
-    case .probe: return 6
+    case .probe: return 9
     case .channels: return 4
     case .spaceGroup: return 5
     case .centering: return 5
@@ -258,6 +258,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
       if indexPath.row == 6 { computeHeliumVoidFraction() }
     case .probe:
       if indexPath.row == 3 { computeNitrogenSurfaceArea() }
+      if indexPath.row == 6 { computeWellSurfaceArea() }
     case .actions:
       switch indexPath.row
       {
@@ -638,12 +639,18 @@ final class StructureInspectorViewController: CollapsibleTableViewController
         self.document.updateChangeCount(.done)
       }
     case 1:
-      return infoRow("Surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricNitrogenSurfaceArea) })
+      return infoRow("Volumetric surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricNitrogenSurfaceArea) })
     case 2:
-      return infoRow("Surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricNitrogenSurfaceArea) })
+      return infoRow("Gravimetric surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricNitrogenSurfaceArea) })
     case 3:
       return actionRow(isComputing ? "Computing surface area…" : "Compute surface area")
     case 4:
+      return infoRow("Volumetric well-surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricWellSurfaceArea) })
+    case 5:
+      return infoRow("Gravimetric well-surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricWellSurfaceArea) })
+    case 6:
+      return actionRow(isComputing ? "Computing well-surface area…" : "Compute well-surface area")
+    case 7:
       return intFieldRow("Number of channel systems", value: structure?.structureNumberOfChannelSystems ?? 0) { [weak self] value in
         self?.allStructures().forEach { $0.structureNumberOfChannelSystems = value }
         self?.document.updateChangeCount(.done)
@@ -1044,9 +1051,9 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     }
     isComputing = true
     tableView.reloadData()
-    let payload = structures.map { ($0.cell, $0.atomUnitCellPositions, $0.potentialParameters) }
+    let payload = structures.map(SKFrameworkSnapshot.init)
     DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-      let results = SKVoidFraction.compute(structures: payload, probeParameters: SIMD2<Double>(10.9, 2.64))
+      let results = SKVoidFraction.compute(structures: payload)
       DispatchQueue.main.async {
         guard let self else { return }
         for (i, result) in results.enumerated() where structures.indices.contains(i)
@@ -1074,7 +1081,47 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     }
     isComputing = true
     tableView.reloadData()
-    let payload = structures.map { ($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: $0.frameworkProbeParameters) }
+    let payload = structures.map(SKFrameworkSnapshot.init)
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      do
+      {
+        let results = try SKNitrogenSurfaceArea.computeEnergySurface(structures: payload)
+        DispatchQueue.main.async {
+          guard let self else { return }
+          for (i, result) in results.enumerated() where structures.indices.contains(i)
+          {
+            structures[i].structureNitrogenSurfaceArea = result.area
+            structures[i].recomputeDensityProperties()
+          }
+          self.isComputing = false
+          self.document.updateChangeCount(.done)
+          self.tableView.reloadData()
+          let text = structures.map { String(format: "%.1f m²/g", $0.structureGravimetricNitrogenSurfaceArea) }.joined(separator: ", ")
+          LogQueue.shared.info(destination: nil, message: "Surface area: \(text)")
+        }
+      }
+      catch
+      {
+        DispatchQueue.main.async {
+          self?.isComputing = false
+          self?.tableView.reloadData()
+          LogQueue.shared.error(destination: nil, message: error.localizedDescription)
+        }
+      }
+    }
+  }
+
+  private func computeWellSurfaceArea()
+  {
+    guard !isComputing else { return }
+    let structures = computeTargets()
+    guard !structures.isEmpty else {
+      LogQueue.shared.warning(destination: nil, message: "No structure with unit-cell positions to compute a well-surface area")
+      return
+    }
+    isComputing = true
+    tableView.reloadData()
+    let payload = structures.map(SKFrameworkSnapshot.init)
     DispatchQueue.global(qos: .userInitiated).async { [weak self] in
       do
       {
@@ -1083,14 +1130,14 @@ final class StructureInspectorViewController: CollapsibleTableViewController
           guard let self else { return }
           for (i, result) in results.enumerated() where structures.indices.contains(i)
           {
-            structures[i].structureNitrogenSurfaceArea = result
+            structures[i].structureWellSurfaceArea = result.area
             structures[i].recomputeDensityProperties()
           }
           self.isComputing = false
           self.document.updateChangeCount(.done)
           self.tableView.reloadData()
-          let text = structures.map { String(format: "%.1f m²/g", $0.structureGravimetricNitrogenSurfaceArea) }.joined(separator: ", ")
-          LogQueue.shared.info(destination: nil, message: "Nitrogen surface area: \(text)")
+          let text = structures.map { String(format: "%.1f m²/g", $0.structureGravimetricWellSurfaceArea) }.joined(separator: ", ")
+          LogQueue.shared.info(destination: nil, message: "Well-surface area: \(text)")
         }
       }
       catch

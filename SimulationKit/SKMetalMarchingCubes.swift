@@ -55,7 +55,7 @@ public class SKMetalMarchingCubes
   {
   }
   
-  public static func constructIsoSurfaceVertexBuffer(device: MTLDevice?, commandQueue: MTLCommandQueue?, data: [Float], isovalue: Double, dimensions: SIMD3<Int32>) throws -> MTLBuffer?
+  public static func constructIsoSurfaceVertexBuffer(device: MTLDevice?, commandQueue: MTLCommandQueue?, data: [Float], isovalue: Double, dimensions: SIMD3<Int32>, substituteIsovalueIfNeeded: Bool = true) throws -> MTLBuffer?
   {
     guard let device: MTLDevice = device ?? MTLCreateSystemDefaultDevice(),
           let commandQueue: MTLCommandQueue = commandQueue ?? device.makeCommandQueue()
@@ -71,6 +71,15 @@ public class SKMetalMarchingCubes
     var iso = Float(isovalue)
     if !(minV < iso && maxV > iso)
     {
+      // A substitute a quarter of the way up the range is a last resort for the energy isosurface so
+      // something is visible. It is the wrong thing for a well-surface field: the range runs from a
+      // fraction of an angstrom to the overlap clamp (10,000 in mixed units), and the substitute lands
+      // deep inside the repulsive core, closer to the atoms than the 0 K isosurface.
+      if !substituteIsovalueIfNeeded
+      {
+        LogQueue.shared.warning(destination: nil, message: String(format: "Iso %.1f does not cross the grid (min %.4f, max %.1f).", isovalue, minV, maxV))
+        return nil
+      }
       iso = minV + 0.25 * (maxV - minV)
       LogQueue.shared.warning(destination: nil, message: String(format: "Iso %.1f K does not cross the energy grid (min %.1f, max %.1f K). Using %.1f K so a surface is visible.", isovalue, minV, maxV, iso))
     }

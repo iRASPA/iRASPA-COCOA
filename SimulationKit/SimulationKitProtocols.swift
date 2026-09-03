@@ -45,6 +45,52 @@ public protocol SKRenderAdsorptionSurfaceStructure
   var minimumGridEnergyValue: Float? {get set}
   var structureHeliumVoidFraction: Double {get set}
   var structureNitrogenSurfaceArea: Double {get set}
+  
+  // The probe the framework properties are measured with, as epsilon in kelvin and sigma in angstrom.
+  var frameworkProbeParameters: SIMD2<Double> {get}
+  
+  // Spheres the probe may not enter, as a fractional position of the unit cell with a radius in angstrom.
+  // Empty unless the structure asks for its blocking pockets to be applied, so a grid computation can pass
+  // this on without knowing about the setting.
+  var appliedBlockingPockets: [SIMD4<Double>] {get}
+}
+
+
+// Everything the framework property calculators read off a structure, taken in one go.
+//
+// They run on a background queue while the model stays editable, and reading positions off a structure walks
+// its atom tree, so what they are given has to be a copy made where the model is safe to read.
+public struct SKFrameworkSnapshot
+{
+  public let cell: SKCell
+  
+  // Fractional positions of the unit cell.
+  public let positions: [SIMD3<Double>]
+  public let potentialParameters: [SIMD2<Double>]
+  
+  // The probe of the framework properties measured with one; a helium void fraction uses helium regardless.
+  public let probeParameters: SIMD2<Double>
+  
+  // Empty unless the structure asks for its blocking pockets to be applied.
+  public let blockingPockets: [SIMD4<Double>]
+  
+  // Of the unit cell, in gram per mole.
+  public let mass: Double
+  
+  public init(cell: SKCell, positions: [SIMD3<Double>], potentialParameters: [SIMD2<Double>], probeParameters: SIMD2<Double>, blockingPockets: [SIMD4<Double>] = [], mass: Double = 0.0)
+  {
+    self.cell = cell
+    self.positions = positions
+    self.potentialParameters = potentialParameters
+    self.probeParameters = probeParameters
+    self.blockingPockets = blockingPockets
+    self.mass = mass
+  }
+  
+  public init(_ structure: SKRenderAdsorptionSurfaceStructure)
+  {
+    self.init(cell: structure.cell, positions: structure.atomUnitCellPositions, potentialParameters: structure.potentialParameters, probeParameters: structure.frameworkProbeParameters, blockingPockets: structure.appliedBlockingPockets, mass: structure.structureMass)
+  }
 }
 
 

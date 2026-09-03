@@ -541,3 +541,5 @@ kernel void classifyCubes(texture3d<float,access::read> rawData [[ texture(0) ]]
   uint4 writeValue = uint4(numberOfTriangles[cubeindex], cubeindex, 0, 0);
   writeHistoPyramid.write(writeValue, gid);
 }
+
+

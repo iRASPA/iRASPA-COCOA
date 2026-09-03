@@ -2185,7 +2185,8 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
   
   public var dimensions: SIMD3<Int32>
   {
-    return SIMD3<Int32>(Int32(self.encompassingPowerOfTwoCubicGridSize),Int32(self.encompassingPowerOfTwoCubicGridSize),Int32(self.encompassingPowerOfTwoCubicGridSize))
+    let size: Int32 = Int32(pow(2.0,Double(self.encompassingPowerOfTwoCubicGridSize)))
+    return SIMD3<Int32>(size,size,size)
   }
   
   public var range: (Double, Double) = (0.0,0.0)
@@ -2209,14 +2210,14 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
     let positions: [SIMD3<Double>] = self.atomUnitCellPositions
     let potentialParameters: [SIMD2<Double>] = self.potentialParameters
     let probeParameters: SIMD2<Double> = self.adsorptionSurfaceProbeParameters
-    let size: Int = self.encompassingPowerOfTwoCubicGridSize
+    let size: Int = Int(pow(2.0,Double(self.encompassingPowerOfTwoCubicGridSize)))
     
     let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
     
     if let device: MTLDevice = MTLCreateSystemDefaultDevice(),
        let commandQueue: MTLCommandQueue = device.makeCommandQueue()
     {
-      let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell:   cell.unitCell, numberOfReplicas: numberOfReplicas)
+      let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell:   cell.unitCell, numberOfReplicas: numberOfReplicas, blockingPockets: self.appliedBlockingPockets)
       
       let data: [Float] = framework.ComputeEnergyGrid(size, sizeY: size, sizeZ: size, probeParameter: probeParameters)
                   
@@ -2225,6 +2226,26 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
       self.adsorptionVolumeStepLength = 0.25 / Double(size)
    
       return data
+    }
+    return []
+  }
+  
+  // The analytic (energy, Apollonius-distance, medial-reliability) field the well surface is extracted from.
+  public var wellFieldData: [Float]
+  {
+    let cell: SKCell = self.cell
+    let positions: [SIMD3<Double>] = self.atomUnitCellPositions
+    let potentialParameters: [SIMD2<Double>] = self.potentialParameters
+    let probeParameters: SIMD2<Double> = self.adsorptionSurfaceProbeParameters
+    let size: Int = Int(pow(2.0,Double(self.encompassingPowerOfTwoCubicGridSize)))
+    
+    let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
+    
+    if let device: MTLDevice = MTLCreateSystemDefaultDevice(),
+       let commandQueue: MTLCommandQueue = device.makeCommandQueue()
+    {
+      let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas, blockingPockets: self.appliedBlockingPockets)
+      return framework.ComputeWellFieldGrid(size, sizeY: size, sizeZ: size, probeParameter: probeParameters)
     }
     return []
   }

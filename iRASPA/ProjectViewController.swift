@@ -2332,7 +2332,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           
             let structures: [Structure] = projectStructure.allObjects.compactMap({$0 as? Structure})
             
-            let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+            let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: structures.map(SKFrameworkSnapshot.init))
             
             for (i, result) in results.enumerated()
             {
@@ -2342,10 +2342,16 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           
             do
             {
-              let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: SIMD2<Double>(36.0,3.31))})
-              for (i, result) in results.enumerated()
+              let snapshots: [SKFrameworkSnapshot] = structures.map(SKFrameworkSnapshot.init)
+              let energyResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.computeEnergySurface(structures: snapshots)
+              let wellResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.compute(structures: snapshots)
+              for (i, result) in energyResults.enumerated()
               {
-                structures[i].structureNitrogenSurfaceArea = result
+                structures[i].structureNitrogenSurfaceArea = result.area
+              }
+              for (i, result) in wellResults.enumerated()
+              {
+                structures[i].structureWellSurfaceArea = result.area
               }
               LogQueue.shared.info(destination: self.view.window?.windowController, message: "Computed surface area for " + projectStructure.displayName)
             }

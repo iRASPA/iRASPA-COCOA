@@ -188,20 +188,24 @@ class MetalEnergyVolumeRenderedSurfaceShader
     vertexBuffer = device.makeBuffer(bytes: unitCube.vertices, length:MemoryLayout<RKVertex>.stride * unitCube.vertices.count, options:RKMetal.hostStorage)
     indexBuffer = device.makeBuffer(bytes: unitCube.indices, length:MemoryLayout<UInt16>.stride * unitCube.indices.count, options:RKMetal.hostStorage)
     
-    self.textureData = []
+    // Keep already-uploaded energy-grid textures across atom/bond visibility reloads, matching
+    // MetalEnergyIsosurfaceShader.buildVertexBuffers. New slots stay nil until updateAdsorptionSurface.
+    var newTextureData: [[MTLTexture?]] = []
     if let _: RKRenderDataSource = renderDataSource
     {
       for i in 0..<self.renderStructures.count
       {
         var textures: [MTLTexture?] = []
         let structures: [RKRenderObject] = self.renderStructures[i]
-        for _ in structures
+        for j in 0..<structures.count
         {
-          textures.append(nil)
+          let existing: MTLTexture? = (i < self.textureData.count && j < self.textureData[i].count) ? self.textureData[i][j] : nil
+          textures.append(existing)
         }
-        self.textureData.append(textures)
+        newTextureData.append(textures)
       }
     }
+    self.textureData = newTextureData
   }
   
   

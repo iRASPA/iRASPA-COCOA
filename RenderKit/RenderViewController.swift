@@ -530,6 +530,14 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
     }
   }
   
+  public func updateBlockingPocketUniforms()
+  {
+    if let device = self.device
+    {
+      self.renderer.buildBlockingPocketUniforms(device: device)
+    }
+  }
+  
   public func updateLightUniforms()
   {
     if let device = self.device
@@ -552,7 +560,8 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
        let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
       invalidateRibbonAmbientOcclusionCache()
-      self.renderer.buildVertexBuffers(device: device)
+      // Do not rebuild vertex buffers here: that used to nil the isosurface meshes, and the
+      // Draw-atoms checkbox (which only needs a fresh AO atlas) then left the surface gone.
       self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader, ribbonShader: renderer.ribbonShader, internalBondShader: renderer.internalBondShader, externalBondShader: renderer.externalBondShader)
       self.renderer.buildStructureUniforms(device: device)
     }
@@ -587,38 +596,27 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
   
   public func invalidateIsosurfaces()
   {
-    self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[16]?.removeAllObjects()
-    self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[32]?.removeAllObjects()
-    self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[64]?.removeAllObjects()
-    self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[128]?.removeAllObjects()
-    self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[256]?.removeAllObjects()
-    self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[512]?.removeAllObjects()
-    
-    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[16]?.removeAllObjects()
-    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[32]?.removeAllObjects()
-    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[64]?.removeAllObjects()
-    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[128]?.removeAllObjects()
-    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[256]?.removeAllObjects()
-    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[512]?.removeAllObjects()
+    for size in [16, 32, 64, 128, 256, 512]
+    {
+      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[size]?.removeAllObjects()
+      // the well field depends on the same probe and force-field settings as the energy grid, so whatever
+      // invalidates one must invalidate the other; a stale entry here once served one probe's surface as
+      // another's after a probe change
+      self.renderer.isosurfaceShader.cachedWellFields[size]?.removeAllObjects()
+      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[size]?.removeAllObjects()
+    }
   }
   
   public func invalidateIsosurface(_ structures: [RKRenderObject])
   {
-    for  structure in structures
+    for structure in structures
     {
-      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[16]?.removeObject(forKey: structure)
-      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[32]?.removeObject(forKey: structure)
-      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[64]?.removeObject(forKey: structure)
-      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[128]?.removeObject(forKey: structure)
-      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[256]?.removeObject(forKey: structure)
-      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[512]?.removeObject(forKey: structure)
-      
-      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[16]?.removeObject(forKey: structure)
-      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[32]?.removeObject(forKey: structure)
-      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[64]?.removeObject(forKey: structure)
-      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[128]?.removeObject(forKey: structure)
-      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[256]?.removeObject(forKey: structure)
-      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[512]?.removeObject(forKey: structure)
+      for size in [16, 32, 64, 128, 256, 512]
+      {
+        self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[size]?.removeObject(forKey: structure)
+        self.renderer.isosurfaceShader.cachedWellFields[size]?.removeObject(forKey: structure)
+        self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[size]?.removeObject(forKey: structure)
+      }
     }
   }
   

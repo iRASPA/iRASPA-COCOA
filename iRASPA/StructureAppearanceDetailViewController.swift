@@ -110,6 +110,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   let adsorptionFrontSurfaceCell: OutlineViewItem = OutlineViewItem("AdsorptionFrontSurfaceCell")
   let adsorptionBackSurfaceCell: OutlineViewItem = OutlineViewItem("AdsorptionBackSurfaceCell")
   
+  let blockingPocketsPropertiesCell: OutlineViewItem = OutlineViewItem("BlockingPocketsPropertiesCell")
+  let blockingPocketsFrontSurfaceCell: OutlineViewItem = OutlineViewItem("BlockingPocketsFrontSurfaceCell")
+  
   let annotationVisualAppearanceCell: OutlineViewItem = OutlineViewItem("AnnotationVisualAppearanceCell")
   
   lazy var primitiveVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "PrimitiveVisualAppearanceGroup", children: [primitiveOrientationPropertiesCell, primitiveTransformationPropertiesCell, primitiveOpacityPropertiesCell, primitiveSelectionPropertiesCell, primitiveHSVPropertiesCell, primitiveFrontPropertiesCell, primitiveBackPropertiesCell])
@@ -120,6 +123,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   lazy var unitCellVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "UnitCellVisualAppearanceGroup", children: [unitCellScalingCell])
   lazy var localAxesAppearanceItem: OutlineViewItem = OutlineViewItem(title: "LocalAxesVisualAppearanceGroup", children: [localAxesCell])
   lazy var adsorptionVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AdsorptionVisualAppearanceGroup", children: [adsorptionPropertiesCell, adsorptionHSVCell, adsorptionFrontSurfaceCell, adsorptionBackSurfaceCell])
+  lazy var blockingPocketsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "BlockingPocketsVisualAppearanceGroup", children: [blockingPocketsPropertiesCell, blockingPocketsFrontSurfaceCell])
   lazy var annotationVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AnnotationVisualAppearanceGroup", children: [annotationVisualAppearanceCell])
   
   
@@ -181,7 +185,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       items.append(ribbonsDNAVisualAppearanceItem)
     }
-    items.append(contentsOf: [atomsVisualAppearanceItem, bondsVisualAppearanceItem, unitCellVisualAppearanceItem, localAxesAppearanceItem, adsorptionVisualAppearanceItem, annotationVisualAppearanceItem])
+    items.append(contentsOf: [atomsVisualAppearanceItem, bondsVisualAppearanceItem, unitCellVisualAppearanceItem, localAxesAppearanceItem, adsorptionVisualAppearanceItem, blockingPocketsVisualAppearanceItem, annotationVisualAppearanceItem])
     self.appearanceOutlineView?.items = items
   }
   
@@ -283,6 +287,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       setPropertiesUnitCellTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesLocalAxesTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesAdsorptionTableCells(on: view, identifier: string, enabled: enabled)
+      setPropertiesBlockingPocketsTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesAnnotationTableCells(on: view, identifier: string, enabled: enabled)
       
       return view
@@ -3724,6 +3729,28 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
+      // Apply blocking pockets yes/no
+      if let checkApplyBlockingPocketsButton: NSButton = view.viewWithTag(111) as? NSButton
+      {
+        checkApplyBlockingPocketsButton.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure & VolumetricDataViewer}).isEmpty
+        {
+          checkApplyBlockingPocketsButton.isEnabled = enabled && adsorptionSurfaceOn
+          
+          if let renderApplyBlockingPockets: Bool = self.renderApplyBlockingPockets
+          {
+            checkApplyBlockingPocketsButton.allowsMixedState = false
+            checkApplyBlockingPocketsButton.state = renderApplyBlockingPockets ? NSControl.StateValue.on : NSControl.StateValue.off
+          }
+          else
+          {
+            checkApplyBlockingPocketsButton.allowsMixedState = true
+            checkApplyBlockingPocketsButton.state = NSControl.StateValue.mixed
+          }
+        }
+      }
+      
       if let textFieldIsovalue: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         textFieldIsovalue.isEditable = false
@@ -4445,6 +4472,282 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
     
+    default:
+      break
+    }
+  }
+  
+  func setPropertiesBlockingPocketsTableCells(on view: NSTableCellView, identifier: String, enabled: Bool)
+  {
+    // The pockets are read from a file and drawn as geometry of their own, so unlike the iso-surface
+    // material the controls do not need the grid; they only need pockets to be shown at all.
+    let drawBlockingPockets: Bool = self.renderDrawBlockingPockets ?? false
+    
+    switch(identifier)
+    {
+    case "BlockingPocketsPropertiesCell":
+      // Show blocking pockets yes/no
+      if let button: NSButton = view.viewWithTag(1) as? NSButton
+      {
+        button.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          button.isEnabled = enabled
+          
+          if let renderDrawBlockingPockets: Bool = self.renderDrawBlockingPockets
+          {
+            button.allowsMixedState = false
+            button.state = renderDrawBlockingPockets ? NSControl.StateValue.on : NSControl.StateValue.off
+          }
+          else
+          {
+            button.allowsMixedState = true
+            button.state = NSControl.StateValue.mixed
+          }
+        }
+      }
+      
+    case "BlockingPocketsFrontSurfaceCell":
+      // High dynamic range
+      if let button: NSButton = view.viewWithTag(1) as? NSButton
+      {
+        button.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          button.isEnabled = enabled && drawBlockingPockets
+          
+          if let hdr: Bool = self.renderBlockingPocketsFrontSideHDR
+          {
+            button.allowsMixedState = false
+            button.state = hdr ? NSControl.StateValue.on : NSControl.StateValue.off
+          }
+          else
+          {
+            button.allowsMixedState = true
+            button.state = NSControl.StateValue.mixed
+          }
+        }
+      }
+      
+      // Exposure
+      if let textFieldExposure: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        textFieldExposure.isEditable = false
+        textFieldExposure.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          textFieldExposure.isEditable = enabled && drawBlockingPockets
+          if let exposure: Double = self.renderBlockingPocketsFrontSideHDRExposure
+          {
+            textFieldExposure.doubleValue = exposure
+          }
+          else
+          {
+            textFieldExposure.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      if let sliderExposure: NSSlider = view.viewWithTag(3) as? NSSlider
+      {
+        sliderExposure.isEnabled = false
+        sliderExposure.minValue = 0.0
+        sliderExposure.maxValue = 3.0
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          sliderExposure.isEnabled = enabled && drawBlockingPockets
+          if let exposure: Double = self.renderBlockingPocketsFrontSideHDRExposure
+          {
+            sliderExposure.doubleValue = exposure
+          }
+        }
+      }
+      
+      // ambient intensity and color
+      if let textFieldAmbientIntensity: NSTextField = view.viewWithTag(4) as? NSTextField
+      {
+        textFieldAmbientIntensity.isEditable = false
+        textFieldAmbientIntensity.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          textFieldAmbientIntensity.isEditable = enabled && drawBlockingPockets
+          if let ambientIntensity = self.renderBlockingPocketsFrontSideAmbientIntensity
+          {
+            textFieldAmbientIntensity.doubleValue = ambientIntensity
+          }
+          else
+          {
+            textFieldAmbientIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      if let sliderAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
+      {
+        sliderAmbientIntensity.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          sliderAmbientIntensity.isEnabled = enabled && drawBlockingPockets
+          if let ambientIntensity = self.renderBlockingPocketsFrontSideAmbientIntensity
+          {
+            sliderAmbientIntensity.minValue = 0.0
+            sliderAmbientIntensity.maxValue = 1.0
+            sliderAmbientIntensity.doubleValue = ambientIntensity
+          }
+        }
+      }
+      if let ambientColor: NSColorWell = view.viewWithTag(6) as? NSColorWell
+      {
+        ambientColor.isEnabled = false
+        ambientColor.color = NSColor.lightGray
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          ambientColor.isEnabled = enabled && drawBlockingPockets
+          if let color = self.renderBlockingPocketsFrontSideAmbientColor
+          {
+            ambientColor.color = color
+          }
+        }
+      }
+      
+      // diffuse intensity and color
+      if let textFieldDiffuseIntensity: NSTextField = view.viewWithTag(7) as? NSTextField
+      {
+        textFieldDiffuseIntensity.isEditable = false
+        textFieldDiffuseIntensity.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          textFieldDiffuseIntensity.isEditable = enabled && drawBlockingPockets
+          if let diffuseIntensity = self.renderBlockingPocketsFrontSideDiffuseIntensity
+          {
+            textFieldDiffuseIntensity.doubleValue = diffuseIntensity
+          }
+          else
+          {
+            textFieldDiffuseIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      if let sliderDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
+      {
+        sliderDiffuseIntensity.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          sliderDiffuseIntensity.isEnabled = enabled && drawBlockingPockets
+          if let diffuseIntensity = self.renderBlockingPocketsFrontSideDiffuseIntensity
+          {
+            sliderDiffuseIntensity.minValue = 0.0
+            sliderDiffuseIntensity.maxValue = 1.0
+            sliderDiffuseIntensity.doubleValue = diffuseIntensity
+          }
+        }
+      }
+      if let diffuseColor: NSColorWell = view.viewWithTag(9) as? NSColorWell
+      {
+        diffuseColor.isEnabled = false
+        diffuseColor.color = NSColor.lightGray
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          diffuseColor.isEnabled = enabled && drawBlockingPockets
+          if let color = self.renderBlockingPocketsFrontSideDiffuseColor
+          {
+            diffuseColor.color = color
+          }
+        }
+      }
+      
+      // specular intensity and color
+      if let textFieldSpecularIntensity: NSTextField = view.viewWithTag(10) as? NSTextField
+      {
+        textFieldSpecularIntensity.isEditable = false
+        textFieldSpecularIntensity.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          textFieldSpecularIntensity.isEditable = enabled && drawBlockingPockets
+          if let specularIntensity = self.renderBlockingPocketsFrontSideSpecularIntensity
+          {
+            textFieldSpecularIntensity.doubleValue = specularIntensity
+          }
+          else
+          {
+            textFieldSpecularIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      if let sliderSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
+      {
+        sliderSpecularIntensity.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          sliderSpecularIntensity.isEnabled = enabled && drawBlockingPockets
+          if let specularIntensity = self.renderBlockingPocketsFrontSideSpecularIntensity
+          {
+            sliderSpecularIntensity.minValue = 0.0
+            sliderSpecularIntensity.maxValue = 1.0
+            sliderSpecularIntensity.doubleValue = specularIntensity
+          }
+        }
+      }
+      if let specularColor: NSColorWell = view.viewWithTag(12) as? NSColorWell
+      {
+        specularColor.isEnabled = false
+        specularColor.color = NSColor.lightGray
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          specularColor.isEnabled = enabled && drawBlockingPockets
+          if let color = self.renderBlockingPocketsFrontSideSpecularColor
+          {
+            specularColor.color = color
+          }
+        }
+      }
+      
+      // shininess
+      if let textFieldShininess: NSTextField = view.viewWithTag(13) as? NSTextField
+      {
+        textFieldShininess.isEditable = false
+        textFieldShininess.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          textFieldShininess.isEditable = enabled && drawBlockingPockets
+          if let shininess = self.renderBlockingPocketsFrontSideShininess
+          {
+            textFieldShininess.doubleValue = shininess
+          }
+          else
+          {
+            textFieldShininess.stringValue = NSLocalizedString("Multiple Values", comment: "")
+          }
+        }
+      }
+      if let sliderShininess: NSSlider = view.viewWithTag(14) as? NSSlider
+      {
+        sliderShininess.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is Structure}).isEmpty
+        {
+          sliderShininess.isEnabled = enabled && drawBlockingPockets
+          if let shininess = self.renderBlockingPocketsFrontSideShininess
+          {
+            sliderShininess.minValue = 0.0
+            sliderShininess.maxValue = 256.0
+            sliderShininess.doubleValue = shininess
+          }
+        }
+      }
+      
     default:
       break
     }
@@ -8753,6 +9056,268 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
+  @IBAction func toggleShowBlockingPockets(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      sender.allowsMixedState = false
+      self.renderDrawBlockingPockets = (sender.state == NSControl.StateValue.on)
+
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      // the material is only editable while the pockets are shown
+      self.updateOutlineView(identifiers: [self.blockingPocketsPropertiesCell, self.blockingPocketsFrontSurfaceCell])
+    }
+  }
+  
+  @IBAction func toggleApplyBlockingPockets(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderApplyBlockingPockets = (sender.state == NSControl.StateValue.on)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: iRASPAObjects.flatMap{$0.selectedRenderFrames})
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+    }
+  }
+  
+  @IBAction func toggleBlockingPocketsFrontSideHDR(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      sender.allowsMixedState = false
+      self.renderBlockingPocketsFrontSideHDR = (sender.state == NSControl.StateValue.on)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideHDRExposureTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideHDRExposure = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsFrontSurfaceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideExposureSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideHDRExposure = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsFrontSurfaceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideAmbientTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideAmbientIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsFrontSurfaceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideAmbientIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideAmbientIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsFrontSurfaceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideAmbientColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideAmbientColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideDiffuseTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideDiffuseIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsFrontSurfaceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideDiffuseIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideDiffuseIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsFrontSurfaceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideDiffuseColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideDiffuseColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideSpecularTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideSpecularIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsFrontSurfaceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideSpecularIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideSpecularIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsFrontSurfaceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideSpecularColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideSpecularColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideShininessTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideShininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsFrontSurfaceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBlockingPocketsFrontSideShininessSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderBlockingPocketsFrontSideShininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.blockingPocketsFrontSurfaceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateBlockingPocketUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
   @IBAction func changeAdsorptionTransferFunction(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
@@ -11855,6 +12420,149 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     set(newValue)
     {
       self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
+    }
+  }
+  
+  public var renderDrawBlockingPockets: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.drawBlockingPockets})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.drawBlockingPockets = newValue ?? false}
+    }
+  }
+  
+  public var renderApplyBlockingPockets: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.applyBlockingPockets})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.applyBlockingPockets = newValue ?? false}
+    }
+  }
+  
+  public var renderBlockingPocketsFrontSideHDR: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.blockingPocketsFrontSideHDR})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.blockingPocketsFrontSideHDR = newValue ?? true}
+    }
+  }
+  
+  public var renderBlockingPocketsFrontSideHDRExposure: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.blockingPocketsFrontSideHDRExposure})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.blockingPocketsFrontSideHDRExposure = newValue ?? 1.5}
+    }
+  }
+  
+  public var renderBlockingPocketsFrontSideAmbientIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.blockingPocketsFrontSideAmbientIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.blockingPocketsFrontSideAmbientIntensity = newValue ?? 0.2}
+    }
+  }
+  
+  public var renderBlockingPocketsFrontSideDiffuseIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.blockingPocketsFrontSideDiffuseIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.blockingPocketsFrontSideDiffuseIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderBlockingPocketsFrontSideSpecularIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.blockingPocketsFrontSideSpecularIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.blockingPocketsFrontSideSpecularIntensity = newValue ?? 0.5}
+    }
+  }
+  
+  public var renderBlockingPocketsFrontSideShininess: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.blockingPocketsFrontSideShininess})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.blockingPocketsFrontSideShininess = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderBlockingPocketsFrontSideAmbientColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.blockingPocketsFrontSideAmbientColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.blockingPocketsFrontSideAmbientColor = newValue ?? NSColor.black}
+    }
+  }
+  
+  public var renderBlockingPocketsFrontSideDiffuseColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.blockingPocketsFrontSideDiffuseColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.blockingPocketsFrontSideDiffuseColor = newValue ?? NSColor(red: 0.20, green: 0.65, blue: 0.85, alpha: 1.0)}
+    }
+  }
+  
+  public var renderBlockingPocketsFrontSideSpecularColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? Structure)?.blockingPocketsFrontSideSpecularColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? Structure)?.blockingPocketsFrontSideSpecularColor = newValue ?? NSColor(red: 0.92, green: 0.92, blue: 0.92, alpha: 1.0)}
     }
   }
   

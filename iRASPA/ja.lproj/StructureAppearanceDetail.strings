@@ -154,6 +154,36 @@
 /* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "BKm-75-TFG"; */
 "BKm-75-TFG.title" = "表示名";
 
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "BkP-Fs-amc"; */
+"BkP-Fs-amc.title" = "環境光強度";
+
+/* Class = "NSBox"; title = "Outside surface"; ObjectID = "BkP-Fs-box"; */
+"BkP-Fs-box.title" = "前面";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "BkP-Fs-dfc"; */
+"BkP-Fs-dfc.title" = "散乱光強度";
+
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "BkP-Fs-exc"; */
+"BkP-Fs-exc.title" = "露光";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "BkP-Fs-hdc"; */
+"BkP-Fs-hdc.title" = "ハイダイナミックレンジ";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "BkP-Fs-shc"; */
+"BkP-Fs-shc.title" = "光沢";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "BkP-Fs-spc"; */
+"BkP-Fs-spc.title" = "鏡面光強度";
+
+/* Class = "NSTextFieldCell"; title = "Blocking Pockets"; ObjectID = "BkP-Gr-tcl"; */
+"BkP-Gr-tcl.title" = "ブロッキングポケット";
+
+/* Class = "NSButtonCell"; title = "Show Blocking Pockets"; ObjectID = "BkP-Pr-bcl"; */
+"BkP-Pr-bcl.title" = "ブロッキングポケットを表示";
+
+/* Class = "NSButtonCell"; title = "Apply Blocking Pockets"; ObjectID = "Blk-Ap-cel"; */
+"Blk-Ap-cel.title" = "ブロッキングポケットを適用";
+
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "BMS-ba-E5g"; */
 "BMS-ba-E5g.title" = "化学元素";
 
@@ -183,6 +213,12 @@
 
 /* Class = "NSMenuItem"; title = "Volume Rendering"; ObjectID = "c6g-Sw-8rf"; */
 "c6g-Sw-8rf.title" = "ボリュームレンダリング";
+
+/* Class = "NSMenuItem"; title = "Well Surface"; ObjectID = "Wel-Su-rf0"; */
+"Wel-Su-rf0.title" = "ポテンシャル井戸面";
+
+/* Class = "NSMenuItem"; title = "Well Surface Overlay"; ObjectID = "Wel-Ov-rl0"; */
+"Wel-Ov-rl0.title" = "ポテンシャル井戸面オーバーレイ";
 
 /* Class = "NSMenuItem"; title = "32x32x32"; ObjectID = "C6X-Mp-y1T"; */
 "C6X-Mp-y1T.title" = "32x32x32";
@@ -744,4 +780,3 @@
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "ZX7-oF-dgu"; */
 "ZX7-oF-dgu.title" = "ハイダイナミックレンジ";
-

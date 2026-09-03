@@ -120,6 +120,9 @@ final class MainSplitViewController: UISplitViewController, UISplitViewControlle
     appearance.onSurfaceAppearanceChange = { [weak self] in
       self?.renderHost.reloadIsosurfaceAppearance()
     }
+    appearance.onBlockingPocketAppearanceChange = { [weak self] in
+      self?.renderHost.reloadBlockingPocketAppearance()
+    }
     appearance.onSurfaceChange = { [weak self] in
       self?.renderHost.reloadAdsorptionSurface()
     }

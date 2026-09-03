@@ -20,6 +20,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
   var onBackgroundChange: (() -> Void)?
   var onVisibilityChange: (() -> Void)?
   var onSurfaceAppearanceChange: (() -> Void)?
+  var onBlockingPocketAppearanceChange: (() -> Void)?
   var onSurfaceChange: (() -> Void)?
 
   private var node: ProjectTreeNode?
@@ -57,6 +58,8 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     case adsorptionHSV
     case adsorptionFront
     case adsorptionBack
+    case blockingPocketsProperties
+    case blockingPocketsFront
     case annotation
   }
 
@@ -65,6 +68,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     case uniforms          // structure uniforms only (colors, intensities, HSV, selection)
     case scene             // full scene reload (geometry, representation, fonts)
     case surfaceAppearance // isosurface uniforms only
+    case pocketAppearance  // blocking pocket uniforms only
     case surfaceRecompute  // recompute adsorption surface
     case visibility        // atom visibility buffers
   }
@@ -142,6 +146,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     case .uniforms: onUniformChange?()
     case .scene: onChange?()
     case .surfaceAppearance: onSurfaceAppearanceChange?()
+    case .pocketAppearance: onBlockingPocketAppearanceChange?()
     case .surfaceRecompute: onSurfaceChange?()
     case .visibility: onVisibilityChange?()
     }
@@ -173,6 +178,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     case .unitCell: return "Unit cell"
     case .localAxes: return "Local Axes"
     case .adsorptionProperties: return "Volumetric Data"
+    case .blockingPocketsProperties: return "Blocking Pockets"
     case .annotation: return "Annotation"
     default: return nil
     }
@@ -211,6 +217,8 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     case .adsorptionHSV: return hasStructure ? "HSV" : ""
     case .adsorptionFront: return hasStructure ? "Front Side" : ""
     case .adsorptionBack: return hasStructure ? "Back Side" : ""
+    case .blockingPocketsProperties: return hasStructure ? "Properties" : ""
+    case .blockingPocketsFront: return hasStructure ? "Outside Surface" : ""
     case .annotation: return hasStructure ? "Type & Style" : ""
     }
   }
@@ -253,10 +261,12 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     case .bondsLighting: return 8
     case .unitCell: return 5
     case .localAxes: return 6
-    case .adsorptionProperties: return 9
+    case .adsorptionProperties: return 10
     case .adsorptionHSV: return 3
     case .adsorptionFront: return 9
     case .adsorptionBack: return 9
+    case .blockingPocketsProperties: return 1
+    case .blockingPocketsFront: return 9
     case .annotation: return 8
     }
   }
@@ -294,6 +304,8 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     case .adsorptionHSV: return adsorptionHSVCell(row: indexPath.row)
     case .adsorptionFront: return adsorptionSideCell(row: indexPath.row, front: true)
     case .adsorptionBack: return adsorptionSideCell(row: indexPath.row, front: false)
+    case .blockingPocketsProperties: return blockingPocketsPropertiesCell(row: indexPath.row)
+    case .blockingPocketsFront: return blockingPocketsSurfaceCell(row: indexPath.row)
     case .annotation: return annotationCell(row: indexPath.row)
     }
   }
@@ -1044,19 +1056,23 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
       }
       return cell
     case 1:
-      return menuRow("Rendering method", options: ["Isosurface", "Volume rendering"],
+      return switchRow("Apply blocking pockets", isOn: structure?.applyBlockingPockets ?? false, effect: .surfaceRecompute) { [weak self] isOn in
+        self?.allStructures().forEach { $0.applyBlockingPockets = isOn }
+      }
+    case 2:
+      return menuRow("Rendering method", options: ["Isosurface", "Volume rendering", "Well surface", "Well surface overlay"],
                      selectedIndex: structure?.adsorptionSurfaceRenderingMethod.rawValue, effect: .surfaceRecompute) { [weak self] index in
         let method = RKEnergySurfaceType(rawValue: index) ?? .isoSurface
         self?.allStructures().forEach { $0.adsorptionSurfaceRenderingMethod = method }
       }
-    case 2:
+    case 3:
       let probes = ["Helium", "Methane", "Nitrogen", "Hydrogen", "Water", "CO₂", "Xenon", "Krypton", "Argon"]
       return menuRow("Probe molecule", options: probes,
                      selectedIndex: structure?.adsorptionSurfaceProbeMolecule.rawValue, effect: .surfaceRecompute) { [weak self] index in
         let probe = Structure.ProbeMolecule(rawValue: index) ?? .helium
         self?.allStructures().forEach { $0.adsorptionSurfaceProbeMolecule = probe }
       }
-    case 3:
+    case 4:
       let viewer = structure as? VolumetricDataViewer
       var minimum = viewer?.range.0 ?? -1000.0
       var maximum = viewer?.range.1 ?? 0.0
@@ -1064,19 +1080,19 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
       return sliderRow("Isovalue", value: structure?.adsorptionSurfaceIsoValue ?? 0.0, min: minimum, max: maximum, format: "%.1f", effect: .surfaceRecompute) { [weak self] value in
         self?.allStructures().forEach { $0.adsorptionSurfaceIsoValue = value }
       }
-    case 4:
+    case 5:
       return sliderRow("Opacity", value: structure?.adsorptionSurfaceOpacity ?? 1.0, min: 0, max: 1, effect: .surfaceAppearance) { [weak self] value in
         self?.allStructures().forEach { $0.adsorptionSurfaceOpacity = value }
       }
-    case 5:
+    case 6:
       return sliderRow("Transparency threshold", value: structure?.adsorptionTransparencyThreshold ?? 0.0, min: 0, max: 1, effect: .surfaceAppearance) { [weak self] value in
         self?.allStructures().forEach { $0.adsorptionTransparencyThreshold = value }
       }
-    case 6:
+    case 7:
       return fieldRow("Step length", value: structure?.adsorptionVolumeStepLength ?? 0.0005, format: "%.4f", effect: .surfaceAppearance) { [weak self] value in
         self?.allStructures().forEach { $0.adsorptionVolumeStepLength = value }
       }
-    case 7:
+    case 8:
       let functions = ["RASPA PES", "Cool-warm diverging", "X-ray", "Gray", "Rainbow", "Turbo", "Gnuplot", "Spectral", "Cool",
                        "Viridis", "Plasma", "Inferno", "Magma", "Cividis", "Spring", "Summer", "Autumn"]
       return menuRow("Transfer function", options: functions,
@@ -1153,6 +1169,60 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     default:
       return sliderRow("Shininess", value: front ? structure.adsorptionSurfaceFrontSideShininess : structure.adsorptionSurfaceBackSideShininess, min: 0.1, max: 256, format: "%.1f", effect: .surfaceAppearance) { [weak self] value in
         self?.allStructures().forEach { if front { $0.adsorptionSurfaceFrontSideShininess = value } else { $0.adsorptionSurfaceBackSideShininess = value } }
+      }
+    }
+  }
+
+  // MARK: Blocking pockets
+
+  private func blockingPocketsPropertiesCell(row: Int) -> UITableViewCell
+  {
+    return switchRow("Show blocking pockets", isOn: structure?.drawBlockingPockets ?? false, effect: .scene) { [weak self] isOn in
+      self?.allStructures().forEach { $0.drawBlockingPockets = isOn }
+    }
+  }
+
+  /// The pocket spheres are drawn two-sided from one material, so there is no inside counterpart here.
+  private func blockingPocketsSurfaceCell(row: Int) -> UITableViewCell
+  {
+    guard let structure else { return UITableViewCell() }
+    switch row
+    {
+    case 0:
+      return switchRow("High dynamic range", isOn: structure.blockingPocketsFrontSideHDR, effect: .pocketAppearance) { [weak self] isOn in
+        self?.allStructures().forEach { $0.blockingPocketsFrontSideHDR = isOn }
+      }
+    case 1:
+      return sliderRow("Exposure", value: structure.blockingPocketsFrontSideHDRExposure, min: 0, max: 3, effect: .pocketAppearance) { [weak self] value in
+        self?.allStructures().forEach { $0.blockingPocketsFrontSideHDRExposure = value }
+      }
+    case 2:
+      return sliderRow("Ambient intensity", value: structure.blockingPocketsFrontSideAmbientIntensity, min: 0, max: 1, effect: .pocketAppearance) { [weak self] value in
+        self?.allStructures().forEach { $0.blockingPocketsFrontSideAmbientIntensity = value }
+      }
+    case 3:
+      return colorRow("Ambient color", color: structure.blockingPocketsFrontSideAmbientColor, effect: .pocketAppearance) { [weak self] color in
+        self?.allStructures().forEach { $0.blockingPocketsFrontSideAmbientColor = color }
+      }
+    case 4:
+      return sliderRow("Diffuse intensity", value: structure.blockingPocketsFrontSideDiffuseIntensity, min: 0, max: 1, effect: .pocketAppearance) { [weak self] value in
+        self?.allStructures().forEach { $0.blockingPocketsFrontSideDiffuseIntensity = value }
+      }
+    case 5:
+      return colorRow("Diffuse color", color: structure.blockingPocketsFrontSideDiffuseColor, effect: .pocketAppearance) { [weak self] color in
+        self?.allStructures().forEach { $0.blockingPocketsFrontSideDiffuseColor = color }
+      }
+    case 6:
+      return sliderRow("Specular intensity", value: structure.blockingPocketsFrontSideSpecularIntensity, min: 0, max: 1, effect: .pocketAppearance) { [weak self] value in
+        self?.allStructures().forEach { $0.blockingPocketsFrontSideSpecularIntensity = value }
+      }
+    case 7:
+      return colorRow("Specular color", color: structure.blockingPocketsFrontSideSpecularColor, effect: .pocketAppearance) { [weak self] color in
+        self?.allStructures().forEach { $0.blockingPocketsFrontSideSpecularColor = color }
+      }
+    default:
+      return sliderRow("Shininess", value: structure.blockingPocketsFrontSideShininess, min: 0.1, max: 256, format: "%.1f", effect: .pocketAppearance) { [weak self] value in
+        self?.allStructures().forEach { $0.blockingPocketsFrontSideShininess = value }
       }
     }
   }

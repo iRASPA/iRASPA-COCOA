@@ -154,6 +154,36 @@
 /* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "BKm-75-TFG"; */
 "BKm-75-TFG.title" = "显示名称";
 
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "BkP-Fs-amc"; */
+"BkP-Fs-amc.title" = "环境光强度";
+
+/* Class = "NSBox"; title = "Outside surface"; ObjectID = "BkP-Fs-box"; */
+"BkP-Fs-box.title" = "前表面";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "BkP-Fs-dfc"; */
+"BkP-Fs-dfc.title" = "漫射光强度";
+
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "BkP-Fs-exc"; */
+"BkP-Fs-exc.title" = "曝光";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "BkP-Fs-hdc"; */
+"BkP-Fs-hdc.title" = "高动态范围";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "BkP-Fs-shc"; */
+"BkP-Fs-shc.title" = "光泽度";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "BkP-Fs-spc"; */
+"BkP-Fs-spc.title" = "镜面光强度";
+
+/* Class = "NSTextFieldCell"; title = "Blocking Pockets"; ObjectID = "BkP-Gr-tcl"; */
+"BkP-Gr-tcl.title" = "阻塞空腔";
+
+/* Class = "NSButtonCell"; title = "Show Blocking Pockets"; ObjectID = "BkP-Pr-bcl"; */
+"BkP-Pr-bcl.title" = "显示阻塞空腔";
+
+/* Class = "NSButtonCell"; title = "Apply Blocking Pockets"; ObjectID = "Blk-Ap-cel"; */
+"Blk-Ap-cel.title" = "应用阻塞空腔";
+
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "BMS-ba-E5g"; */
 "BMS-ba-E5g.title" = "化学元素";
 
@@ -183,6 +213,12 @@
 
 /* Class = "NSMenuItem"; title = "Volume Rendering"; ObjectID = "c6g-Sw-8rf"; */
 "c6g-Sw-8rf.title" = "体积渲染";
+
+/* Class = "NSMenuItem"; title = "Well Surface"; ObjectID = "Wel-Su-rf0"; */
+"Wel-Su-rf0.title" = "势阱表面";
+
+/* Class = "NSMenuItem"; title = "Well Surface Overlay"; ObjectID = "Wel-Ov-rl0"; */
+"Wel-Ov-rl0.title" = "势阱表面叠加";
 
 /* Class = "NSMenuItem"; title = "32x32x32"; ObjectID = "C6X-Mp-y1T"; */
 "C6X-Mp-y1T.title" = "32x32x32";
@@ -744,4 +780,3 @@
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "ZX7-oF-dgu"; */
 "ZX7-oF-dgu.title" = "高动态范围";
-

@@ -67,6 +67,7 @@ public class MetalRenderer
   var boundingBoxSphereShader: MetalBoundingBoxSphereShader = MetalBoundingBoxSphereShader()
   
   var isosurfaceShader: MetalEnergyIsosurfaceShader = MetalEnergyIsosurfaceShader()
+  var blockingPocketsShader: MetalBlockingPocketsShader = MetalBlockingPocketsShader()
   var ribbonShader: MetalRibbonShader = MetalRibbonShader()
   var ribbonSelectionShader: MetalRibbonSelectionShader = MetalRibbonSelectionShader()
   var volumeRenderedSurfaceShader: MetalEnergyVolumeRenderedSurfaceShader = MetalEnergyVolumeRenderedSurfaceShader()
@@ -158,6 +159,7 @@ public class MetalRenderer
   var frameUniformBuffer: MTLBuffer! = nil
   var structureUniformBuffers: MTLBuffer! = nil
   var isosurfaceUniformBuffers: MTLBuffer! = nil
+  var blockingPocketUniformBuffers: MTLBuffer! = nil
   var lightUniformBuffers: MTLBuffer! = nil
   var globalAxesUniformBuffers: MTLBuffer! = nil
   
@@ -200,6 +202,7 @@ public class MetalRenderer
       self.buildLightUniforms(device: device)
       self.buildStructureUniforms(device: device)
       self.buildIsosurfaceUniforms(device: device)
+      self.buildBlockingPocketUniforms(device: device)
       self.buildGlobalAxesUniforms(device: device)
     }
   }
@@ -240,6 +243,9 @@ public class MetalRenderer
     
     isosurfaceShader.renderDataSource = renderDataSource
     isosurfaceShader.renderStructures = renderStructures
+    
+    blockingPocketsShader.renderDataSource = renderDataSource
+    blockingPocketsShader.renderStructures = renderStructures
     
     ribbonShader.renderDataSource = renderDataSource
     ribbonShader.renderStructures = renderStructures
@@ -408,6 +414,7 @@ public class MetalRenderer
     buildStructureUniforms(device: device)
     buildGlobalAxesUniforms(device: device)
     buildIsosurfaceUniforms(device: device)
+    buildBlockingPocketUniforms(device: device)
     buildLightUniforms(device: device)
   }
   
@@ -547,6 +554,7 @@ public class MetalRenderer
     boundingBoxSphereShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     isosurfaceShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    blockingPocketsShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     ribbonShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     ribbonSelectionShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     volumeRenderedSurfaceShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
@@ -671,6 +679,7 @@ public class MetalRenderer
     
     isosurfaceShader.buildInstanceBuffers(device: device)
     isosurfaceShader.buildVertexBuffers()
+    blockingPocketsShader.buildVertexBuffers(device: device)
     ribbonShader.buildVertexBuffers(device: device)
     volumeRenderedSurfaceShader.buildVertexBuffers(device: device)
     
@@ -806,6 +815,30 @@ public class MetalRenderer
       if(!isosurfaceUniforms.isEmpty)
       {
         isosurfaceUniformBuffers = device.makeBuffer(bytes: isosurfaceUniforms, length: MemoryLayout<RKIsosurfaceUniforms>.stride * isosurfaceUniforms.count, options:RKMetal.hostStorage)
+      }
+    }
+  }
+  
+  public func buildBlockingPocketUniforms(device: MTLDevice)
+  {
+    if let project: RKRenderDataSource = renderDataSource
+    {
+      var blockingPocketUniforms: [RKBlockingPocketUniforms] = [RKBlockingPocketUniforms](repeating: RKBlockingPocketUniforms(), count: project.renderStructures.count)
+      
+      var index: Int  = 0
+      for i in 0..<project.numberOfScenes
+      {
+        let structures: [RKRenderObject] = project.renderStructuresForScene(i)
+        for structure in structures
+        {
+          blockingPocketUniforms[index] = RKBlockingPocketUniforms(structure: structure)
+          index += 1
+        }
+      }
+      
+      if(!blockingPocketUniforms.isEmpty)
+      {
+        blockingPocketUniformBuffers = device.makeBuffer(bytes: blockingPocketUniforms, length: MemoryLayout<RKBlockingPocketUniforms>.stride * blockingPocketUniforms.count, options:RKMetal.hostStorage)
       }
     }
   }
@@ -1056,6 +1089,8 @@ public class MetalRenderer
       self.volumeRenderedSurfaceShader.renderVolumeRenderedVolumetricDataWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
       
       self.isosurfaceShader.renderTransparentIsosurfacesWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
+      self.blockingPocketsShader.renderWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, blockingPocketUniformBuffers: blockingPocketUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
       self.metalCrystalEllipsoidShader.renderTransparentWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
       self.metalCrystalCylinderShader.renderTransparentWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)

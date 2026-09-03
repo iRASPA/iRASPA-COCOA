@@ -41,6 +41,23 @@ public enum RKEnergySurfaceType: Int
 {
   case isoSurface = 0
   case volumeRendering = 1
+  case wellSurface = 2
+  // The merged-well filament: the thin tube along channel axes too narrow for the probe's contact
+  // sheet, where the adsorbate is enclosed and sits on that axis. Drawn as its own rendering
+  // method so it can be superimposed on a copy of the structure showing the well surface, each with its
+  // own material.
+  case wellSurfaceOverlay = 3
+
+  /// Whether the surface is a triangle mesh drawn by the isosurface pipeline, the well surface being the
+  /// iso-surface mapped onto the locus of energy minima rather than a separate construction.
+  public var isTriangulated: Bool
+  {
+    switch self
+    {
+    case .isoSurface, .wellSurface, .wellSurfaceOverlay: return true
+    case .volumeRendering: return false
+    }
+  }
 }
 
 public enum RKPredefinedVolumeRenderingTransferFunction: Int

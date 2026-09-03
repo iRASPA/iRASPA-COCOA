@@ -154,6 +154,36 @@
 /* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "BKm-75-TFG"; */
 "BKm-75-TFG.title" = "Отображаемое имя";
 
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "BkP-Fs-amc"; */
+"BkP-Fs-amc.title" = "Яркость окружающего света";
+
+/* Class = "NSBox"; title = "Outside surface"; ObjectID = "BkP-Fs-box"; */
+"BkP-Fs-box.title" = "Лицевая поверхность";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "BkP-Fs-dfc"; */
+"BkP-Fs-dfc.title" = "Интенсивность рассеянного света";
+
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "BkP-Fs-exc"; */
+"BkP-Fs-exc.title" = "Экспозиция";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "BkP-Fs-hdc"; */
+"BkP-Fs-hdc.title" = "Расширенный динамический диапазон";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "BkP-Fs-shc"; */
+"BkP-Fs-shc.title" = "Блеск";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "BkP-Fs-spc"; */
+"BkP-Fs-spc.title" = "Интенсивность зеркального света";
+
+/* Class = "NSTextFieldCell"; title = "Blocking Pockets"; ObjectID = "BkP-Gr-tcl"; */
+"BkP-Gr-tcl.title" = "Блокирующие полости";
+
+/* Class = "NSButtonCell"; title = "Show Blocking Pockets"; ObjectID = "BkP-Pr-bcl"; */
+"BkP-Pr-bcl.title" = "Показать блокирующие полости";
+
+/* Class = "NSButtonCell"; title = "Apply Blocking Pockets"; ObjectID = "Blk-Ap-cel"; */
+"Blk-Ap-cel.title" = "Применить блокирующие полости";
+
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "BMS-ba-E5g"; */
 "BMS-ba-E5g.title" = "Химический элемент";
 
@@ -183,6 +213,12 @@
 
 /* Class = "NSMenuItem"; title = "Volume Rendering"; ObjectID = "c6g-Sw-8rf"; */
 "c6g-Sw-8rf.title" = "Объемный рендеринг";
+
+/* Class = "NSMenuItem"; title = "Well Surface"; ObjectID = "Wel-Su-rf0"; */
+"Wel-Su-rf0.title" = "Поверхность потенциальной ямы";
+
+/* Class = "NSMenuItem"; title = "Well Surface Overlay"; ObjectID = "Wel-Ov-rl0"; */
+"Wel-Ov-rl0.title" = "Наложение поверхности потенциальной ямы";
 
 /* Class = "NSMenuItem"; title = "32x32x32"; ObjectID = "C6X-Mp-y1T"; */
 "C6X-Mp-y1T.title" = "32x32x32";
@@ -744,4 +780,3 @@
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "ZX7-oF-dgu"; */
 "ZX7-oF-dgu.title" = "Расширенный динамический диапазон";
-

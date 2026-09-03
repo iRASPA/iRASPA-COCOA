@@ -2092,15 +2092,17 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="StructuralProbeCell" translatesAutoresizingMaskIntoConstraints="NO" id="UOl-sD-WWY" userLabel="Structural Probe Cell">
-                                                            <rect key="frame" x="1" y="1213" width="495" height="152"/>
+                                                            <rect key="frame" x="1" y="1213" width="495" height="232"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ugh-V4-NJx">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="152"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="232"/>
                                                                     <subviews>
                                                                         <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="8" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uHm-39-iH6">
-                                                                            <rect key="frame" x="8" y="8" width="467" height="136"/>
+                                                                            <rect key="frame" x="8" y="8" width="467" height="216"/>
                                                                             <rows>
                                                                                 <gridRow id="mUq-Sf-Ag1"/>
+                                                                                <gridRow id="EnV-rw-SaA"/>
+                                                                                <gridRow id="EnG-rw-SaA"/>
                                                                                 <gridRow id="itp-to-pVH"/>
                                                                                 <gridRow id="0ZQ-Ue-Lzl"/>
                                                                                 <gridRow id="BLJ-da-5OD"/>
@@ -2150,10 +2152,96 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="mUq-Sf-Ag1" column="nSC-dm-sGl" id="ap5-Aj-LuT"/>
                                                                                 <gridCell row="mUq-Sf-Ag1" column="HwQ-Q9-aoX" id="Y8M-G1-2uD"/>
+                                                                                <gridCell row="EnV-rw-SaA" column="8CM-yc-z64" id="EnV-c0-SaA">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-lb-SaA" userLabel="Volumetric Surface Area">
+                                                                                        <rect key="frame" x="46" y="148" width="151" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Volumetric Surface Area" id="EnV-lc-SaA" userLabel="Volumetric Surface Area">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="EnV-rw-SaA" column="DEf-ke-SgU" id="EnV-c1-SaA">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-tf-SaA">
+                                                                                        <rect key="frame" x="203" y="145" width="165" height="21"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="EnV-tc-SaA">
+                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="EnV-fm-SaA"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="EnV-rw-SaA" column="nSC-dm-sGl" id="EnV-c2-SaA">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-un-SaA">
+                                                                                        <rect key="frame" x="374" y="148" width="57" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="[m²/cm³]" id="EnV-uc-SaA">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="EnV-rw-SaA" column="HwQ-Q9-aoX" id="EnV-c3-SaA">
+                                                                                    <button key="contentView" verticalHuggingPriority="750" tag="16" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-bt-SaA">
+                                                                                        <rect key="frame" x="430" y="138" width="44" height="32"/>
+                                                                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRefreshTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="EnV-bc-SaA">
+                                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                        </buttonCell>
+                                                                                        <connections>
+                                                                                            <action selector="recomputeNitrogenSurfaceArea:" target="b7G-Em-dfk" id="EnV-ac-SaA"/>
+                                                                                        </connections>
+                                                                                    </button>
+                                                                                </gridCell>
+                                                                                <gridCell row="EnG-rw-SaA" column="8CM-yc-z64" id="EnG-c0-SaA">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnG-lb-SaA" userLabel="Gravimetric Surface Area">
+                                                                                        <rect key="frame" x="41" y="119" width="156" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gravimetric Surface Area" id="EnG-lc-SaA" userLabel="Gravimetric Surface Area">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="EnG-rw-SaA" column="DEf-ke-SgU" id="EnG-c1-SaA">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="EnG-tf-SaA">
+                                                                                        <rect key="frame" x="203" y="116" width="165" height="21"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="EnG-tc-SaA">
+                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="EnG-fm-SaA"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="EnG-rw-SaA" column="nSC-dm-sGl" id="EnG-c2-SaA">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnG-un-SaA">
+                                                                                        <rect key="frame" x="374" y="119" width="57" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="[m²/g]" id="EnG-uc-SaA">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="EnG-rw-SaA" column="HwQ-Q9-aoX" id="EnG-c3-SaA">
+                                                                                    <button key="contentView" verticalHuggingPriority="750" tag="17" translatesAutoresizingMaskIntoConstraints="NO" id="EnG-bt-SaA">
+                                                                                        <rect key="frame" x="430" y="109" width="44" height="32"/>
+                                                                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRefreshTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="EnG-bc-SaA">
+                                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                        </buttonCell>
+                                                                                        <connections>
+                                                                                            <action selector="recomputeNitrogenSurfaceArea:" target="b7G-Em-dfk" id="EnG-ac-SaA"/>
+                                                                                        </connections>
+                                                                                    </button>
+                                                                                </gridCell>
                                                                                 <gridCell row="itp-to-pVH" column="8CM-yc-z64" id="fec-EG-ogE">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="U0c-rb-2xE" userLabel="Volumetric Surface Area">
-                                                                                        <rect key="frame" x="46" y="90" width="151" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Volumetric Surface Area" id="siG-7J-hEu" userLabel="Volumetric Surface Area">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="U0c-rb-2xE" userLabel="Volumetric Well-Surface Area">
+                                                                                        <rect key="frame" x="11" y="90" width="186" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Volumetric Well-Surface Area" id="siG-7J-hEu" userLabel="Volumetric Well-Surface Area">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -2189,14 +2277,14 @@
                                                                                             <font key="font" metaFont="system"/>
                                                                                         </buttonCell>
                                                                                         <connections>
-                                                                                            <action selector="recomputeNitrogenSurfaceArea:" target="b7G-Em-dfk" id="YIj-VL-fZp"/>
+                                                                                            <action selector="recomputeWellSurfaceArea:" target="b7G-Em-dfk" id="YIj-VL-fZp"/>
                                                                                         </connections>
                                                                                     </button>
                                                                                 </gridCell>
                                                                                 <gridCell row="0ZQ-Ue-Lzl" column="8CM-yc-z64" id="CgC-W7-HUn">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="xj9-th-ZVV" userLabel="Gravimetric Surface Area">
-                                                                                        <rect key="frame" x="41" y="61" width="156" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gravimetric Surface Area" id="xXh-YD-ajh" userLabel="Gravimetric Surface Area">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="xj9-th-ZVV" userLabel="Gravimetric Well-Surface Area">
+                                                                                        <rect key="frame" x="6" y="61" width="191" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gravimetric Well-Surface Area" id="xXh-YD-ajh" userLabel="Gravimetric Well-Surface Area">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -2232,7 +2320,7 @@
                                                                                             <font key="font" metaFont="system"/>
                                                                                         </buttonCell>
                                                                                         <connections>
-                                                                                            <action selector="recomputeNitrogenSurfaceArea:" target="b7G-Em-dfk" id="rf8-bI-oFt"/>
+                                                                                            <action selector="recomputeWellSurfaceArea:" target="b7G-Em-dfk" id="rf8-bI-oFt"/>
                                                                                         </connections>
                                                                                     </button>
                                                                                 </gridCell>
@@ -3018,6 +3106,288 @@
                                                                 <constraint firstItem="jF6-Gg-0rc" firstAttribute="leading" secondItem="Yq1-YQ-8xg" secondAttribute="leading" id="EKx-nB-qvH"/>
                                                                 <constraint firstAttribute="trailing" secondItem="jF6-Gg-0rc" secondAttribute="trailing" constant="20" symbolic="YES" id="YMB-zR-o2R"/>
                                                                 <constraint firstAttribute="bottom" secondItem="jF6-Gg-0rc" secondAttribute="bottom" id="gwM-T7-1t0"/>
+                                                            </constraints>
+                                                        </tableCellView>
+                                                        <tableCellView identifier="BlockingPocketsGroup" translatesAutoresizingMaskIntoConstraints="NO" id="Bpg-A0-001" userLabel="Blocking Pockets Group">
+                                                            <rect key="frame" x="1" y="1930" width="495" height="16"/>
+                                                            <subviews>
+                                                                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bpg-A0-002">
+                                                                    <rect key="frame" x="12" y="0.0" width="463" height="16"/>
+                                                                    <subviews>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Bpg-A0-003">
+                                                                            <rect key="frame" x="-2" y="0.0" width="112" height="16"/>
+                                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Blocking Pockets" id="Bpg-A0-004">
+                                                                                <font key="font" metaFont="system"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                        </textField>
+                                                                    </subviews>
+                                                                    <visibilityPriorities>
+                                                                        <integer value="1000"/>
+                                                                    </visibilityPriorities>
+                                                                    <customSpacing>
+                                                                        <real value="3.4028234663852886e+38"/>
+                                                                    </customSpacing>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="Bpg-A0-002" firstAttribute="leading" secondItem="Bpg-A0-001" secondAttribute="leading" constant="12" id="Bpg-A0-005"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Bpg-A0-002" secondAttribute="trailing" constant="20" symbolic="YES" id="Bpg-A0-006"/>
+                                                                <constraint firstItem="Bpg-A0-002" firstAttribute="top" secondItem="Bpg-A0-001" secondAttribute="top" id="Bpg-A0-007"/>
+                                                                <constraint firstAttribute="bottom" secondItem="Bpg-A0-002" secondAttribute="bottom" id="Bpg-A0-008"/>
+                                                            </constraints>
+                                                            <connections>
+                                                                <outlet property="textField" destination="Bpg-A0-003" id="Bpg-A0-009"/>
+                                                            </connections>
+                                                        </tableCellView>
+                                                        <tableCellView identifier="BlockingPocketsCell" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A0-001" userLabel="Blocking Pockets Cell">
+                                                            <rect key="frame" x="1" y="1948" width="495" height="196"/>
+                                                            <subviews>
+                                                                <button verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A0-002">
+                                                                    <rect key="frame" x="11" y="164" width="152" height="24"/>
+                                                                    <buttonCell key="cell" type="push" title="Load &apos;.block&apos; File..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bpc-A0-003">
+                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                        <font key="font" metaFont="system"/>
+                                                                    </buttonCell>
+                                                                    <connections>
+                                                                        <action selector="loadBlockingPocketsFile:" target="b7G-Em-dfk" id="Bpc-A0-004"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A0-005">
+                                                                    <rect key="frame" x="171" y="168" width="180" height="16"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" id="Bpc-A0-006">
+                                                                        <font key="font" metaFont="system"/>
+                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                </textField>
+                                                                <scrollView borderType="bezel" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A0-007">
+                                                                    <rect key="frame" x="11" y="6" width="464" height="150"/>
+                                                                    <clipView key="contentView" id="Bpc-A0-008">
+                                                                        <rect key="frame" x="1" y="1" width="462" height="120"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                        <subviews>
+                                                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="fullWidth" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="16" rowSizeStyle="automatic" headerView="Bpc-A0-030" viewBased="YES" floatsGroupRows="NO" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A0-009">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="462" height="92"/>
+                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                <size key="intercellSpacing" width="4" height="3"/>
+                                                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                                                                <tableColumns>
+                                                                                    <tableColumn identifier="blockingPocketIdColumn" width="30" minWidth="24" maxWidth="1000" id="Bpc-A1-001">
+                                                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="right" title="#">
+                                                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </tableHeaderCell>
+                                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" alignment="right" title="Text Cell" id="Bpc-A1-002">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                                        <prototypeCellViews>
+                                                                                            <tableCellView identifier="blockingPocketIdRow" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A1-003">
+                                                                                                <rect key="frame" x="2" y="1" width="32" height="16"/>
+                                                                                                <subviews>
+                                                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A1-004">
+                                                                                                        <rect key="frame" x="-2" y="0.0" width="36" height="16"/>
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" id="Bpc-A1-005">
+                                                                                                            <font key="font" metaFont="system"/>
+                                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        </textFieldCell>
+                                                                                                    </textField>
+                                                                                                </subviews>
+                                                                                                <constraints>
+                                                                                                    <constraint firstItem="Bpc-A1-004" firstAttribute="leading" secondItem="Bpc-A1-003" secondAttribute="leading" id="Bpc-A1-006"/>
+                                                                                                    <constraint firstItem="Bpc-A1-004" firstAttribute="top" secondItem="Bpc-A1-003" secondAttribute="top" id="Bpc-A1-007"/>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="Bpc-A1-004" secondAttribute="trailing" id="Bpc-A1-008"/>
+                                                                                                    <constraint firstAttribute="bottom" secondItem="Bpc-A1-004" secondAttribute="bottom" id="Bpc-A1-009"/>
+                                                                                                </constraints>
+                                                                                                <connections>
+                                                                                                    <outlet property="textField" destination="Bpc-A1-004" id="Bpc-A1-010"/>
+                                                                                                </connections>
+                                                                                            </tableCellView>
+                                                                                        </prototypeCellViews>
+                                                                                    </tableColumn>
+                                                                                    <tableColumn identifier="blockingPocketXColumn" width="100" minWidth="40" maxWidth="1000" id="Bpc-A2-001">
+                                                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="right" title="x">
+                                                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </tableHeaderCell>
+                                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" alignment="right" title="Text Cell" id="Bpc-A2-002">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                                        <prototypeCellViews>
+                                                                                            <tableCellView identifier="blockingPocketXRow" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A2-003">
+                                                                                                <rect key="frame" x="38" y="1" width="104" height="16"/>
+                                                                                                <subviews>
+                                                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A2-004">
+                                                                                                        <rect key="frame" x="-2" y="0.0" width="108" height="16"/>
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" id="Bpc-A2-005">
+                                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="Bpc-A2-011"/>
+                                                                                                            <font key="font" metaFont="system"/>
+                                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        </textFieldCell>
+                                                                                                    </textField>
+                                                                                                </subviews>
+                                                                                                <constraints>
+                                                                                                    <constraint firstItem="Bpc-A2-004" firstAttribute="leading" secondItem="Bpc-A2-003" secondAttribute="leading" id="Bpc-A2-006"/>
+                                                                                                    <constraint firstItem="Bpc-A2-004" firstAttribute="top" secondItem="Bpc-A2-003" secondAttribute="top" id="Bpc-A2-007"/>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="Bpc-A2-004" secondAttribute="trailing" id="Bpc-A2-008"/>
+                                                                                                    <constraint firstAttribute="bottom" secondItem="Bpc-A2-004" secondAttribute="bottom" id="Bpc-A2-009"/>
+                                                                                                </constraints>
+                                                                                                <connections>
+                                                                                                    <outlet property="textField" destination="Bpc-A2-004" id="Bpc-A2-010"/>
+                                                                                                </connections>
+                                                                                            </tableCellView>
+                                                                                        </prototypeCellViews>
+                                                                                    </tableColumn>
+                                                                                    <tableColumn identifier="blockingPocketYColumn" width="100" minWidth="40" maxWidth="1000" id="Bpc-A3-001">
+                                                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="right" title="y">
+                                                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </tableHeaderCell>
+                                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" alignment="right" title="Text Cell" id="Bpc-A3-002">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                                        <prototypeCellViews>
+                                                                                            <tableCellView identifier="blockingPocketYRow" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A3-003">
+                                                                                                <rect key="frame" x="146" y="1" width="104" height="16"/>
+                                                                                                <subviews>
+                                                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A3-004">
+                                                                                                        <rect key="frame" x="-2" y="0.0" width="108" height="16"/>
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" id="Bpc-A3-005">
+                                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="Bpc-A3-011"/>
+                                                                                                            <font key="font" metaFont="system"/>
+                                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        </textFieldCell>
+                                                                                                    </textField>
+                                                                                                </subviews>
+                                                                                                <constraints>
+                                                                                                    <constraint firstItem="Bpc-A3-004" firstAttribute="leading" secondItem="Bpc-A3-003" secondAttribute="leading" id="Bpc-A3-006"/>
+                                                                                                    <constraint firstItem="Bpc-A3-004" firstAttribute="top" secondItem="Bpc-A3-003" secondAttribute="top" id="Bpc-A3-007"/>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="Bpc-A3-004" secondAttribute="trailing" id="Bpc-A3-008"/>
+                                                                                                    <constraint firstAttribute="bottom" secondItem="Bpc-A3-004" secondAttribute="bottom" id="Bpc-A3-009"/>
+                                                                                                </constraints>
+                                                                                                <connections>
+                                                                                                    <outlet property="textField" destination="Bpc-A3-004" id="Bpc-A3-010"/>
+                                                                                                </connections>
+                                                                                            </tableCellView>
+                                                                                        </prototypeCellViews>
+                                                                                    </tableColumn>
+                                                                                    <tableColumn identifier="blockingPocketZColumn" width="100" minWidth="40" maxWidth="1000" id="Bpc-A4-001">
+                                                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="right" title="z">
+                                                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </tableHeaderCell>
+                                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" alignment="right" title="Text Cell" id="Bpc-A4-002">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                                        <prototypeCellViews>
+                                                                                            <tableCellView identifier="blockingPocketZRow" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A4-003">
+                                                                                                <rect key="frame" x="254" y="1" width="104" height="16"/>
+                                                                                                <subviews>
+                                                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A4-004">
+                                                                                                        <rect key="frame" x="-2" y="0.0" width="108" height="16"/>
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" id="Bpc-A4-005">
+                                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="Bpc-A4-011"/>
+                                                                                                            <font key="font" metaFont="system"/>
+                                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        </textFieldCell>
+                                                                                                    </textField>
+                                                                                                </subviews>
+                                                                                                <constraints>
+                                                                                                    <constraint firstItem="Bpc-A4-004" firstAttribute="leading" secondItem="Bpc-A4-003" secondAttribute="leading" id="Bpc-A4-006"/>
+                                                                                                    <constraint firstItem="Bpc-A4-004" firstAttribute="top" secondItem="Bpc-A4-003" secondAttribute="top" id="Bpc-A4-007"/>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="Bpc-A4-004" secondAttribute="trailing" id="Bpc-A4-008"/>
+                                                                                                    <constraint firstAttribute="bottom" secondItem="Bpc-A4-004" secondAttribute="bottom" id="Bpc-A4-009"/>
+                                                                                                </constraints>
+                                                                                                <connections>
+                                                                                                    <outlet property="textField" destination="Bpc-A4-004" id="Bpc-A4-010"/>
+                                                                                                </connections>
+                                                                                            </tableCellView>
+                                                                                        </prototypeCellViews>
+                                                                                    </tableColumn>
+                                                                                    <tableColumn identifier="blockingPocketRadiusColumn" width="100" minWidth="40" maxWidth="3.4028234663852886e+38" id="Bpc-A5-001">
+                                                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="right" title="radius [Å]">
+                                                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </tableHeaderCell>
+                                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" alignment="right" title="Text Cell" id="Bpc-A5-002">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                                        <prototypeCellViews>
+                                                                                            <tableCellView identifier="blockingPocketRadiusRow" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A5-003">
+                                                                                                <rect key="frame" x="362" y="1" width="104" height="16"/>
+                                                                                                <subviews>
+                                                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="Bpc-A5-004">
+                                                                                                        <rect key="frame" x="-2" y="0.0" width="108" height="16"/>
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" id="Bpc-A5-005">
+                                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="Bpc-A5-011"/>
+                                                                                                            <font key="font" metaFont="system"/>
+                                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        </textFieldCell>
+                                                                                                    </textField>
+                                                                                                </subviews>
+                                                                                                <constraints>
+                                                                                                    <constraint firstItem="Bpc-A5-004" firstAttribute="leading" secondItem="Bpc-A5-003" secondAttribute="leading" id="Bpc-A5-006"/>
+                                                                                                    <constraint firstItem="Bpc-A5-004" firstAttribute="top" secondItem="Bpc-A5-003" secondAttribute="top" id="Bpc-A5-007"/>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="Bpc-A5-004" secondAttribute="trailing" id="Bpc-A5-008"/>
+                                                                                                    <constraint firstAttribute="bottom" secondItem="Bpc-A5-004" secondAttribute="bottom" id="Bpc-A5-009"/>
+                                                                                                </constraints>
+                                                                                                <connections>
+                                                                                                    <outlet property="textField" destination="Bpc-A5-004" id="Bpc-A5-010"/>
+                                                                                                </connections>
+                                                                                            </tableCellView>
+                                                                                        </prototypeCellViews>
+                                                                                    </tableColumn>
+                                                                                </tableColumns>
+                                                                            </tableView>
+                                                                        </subviews>
+                                                                    </clipView>
+                                                                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Bpc-A0-010">
+                                                                        <rect key="frame" x="1" y="133" width="462" height="16"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                    </scroller>
+                                                                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="Bpc-A0-011">
+                                                                        <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                    </scroller>
+                                                                    <tableHeaderView key="headerView" wantsLayer="YES" id="Bpc-A0-030">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="462" height="28"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                    </tableHeaderView>
+                                                                </scrollView>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="Bpc-A0-002" firstAttribute="leading" secondItem="Bpc-A0-001" secondAttribute="leading" constant="11" id="Bpc-A0-012"/>
+                                                                <constraint firstItem="Bpc-A0-002" firstAttribute="top" secondItem="Bpc-A0-001" secondAttribute="top" constant="8" id="Bpc-A0-013"/>
+                                                                <constraint firstItem="Bpc-A0-005" firstAttribute="leading" secondItem="Bpc-A0-002" secondAttribute="trailing" constant="8" id="Bpc-A0-014"/>
+                                                                <constraint firstItem="Bpc-A0-005" firstAttribute="centerY" secondItem="Bpc-A0-002" secondAttribute="centerY" id="Bpc-A0-015"/>
+                                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Bpc-A0-005" secondAttribute="trailing" constant="20" id="Bpc-A0-016"/>
+                                                                <constraint firstItem="Bpc-A0-007" firstAttribute="leading" secondItem="Bpc-A0-001" secondAttribute="leading" constant="11" id="Bpc-A0-017"/>
+                                                                <constraint firstItem="Bpc-A0-007" firstAttribute="top" secondItem="Bpc-A0-002" secondAttribute="bottom" constant="8" id="Bpc-A0-018"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Bpc-A0-007" secondAttribute="trailing" constant="20" symbolic="YES" id="Bpc-A0-019"/>
+                                                                <constraint firstAttribute="bottom" secondItem="Bpc-A0-007" secondAttribute="bottom" constant="6" id="Bpc-A0-020"/>
+                                                                <constraint firstItem="Bpc-A0-007" firstAttribute="height" constant="150" id="Bpc-A0-021"/>
                                                             </constraints>
                                                         </tableCellView>
                                                         <customView identifier="cellTableRowView" id="CrT-Wi-gdq" customClass="CellTableRowView" customModule="iRASPA" customModuleProvider="target">
