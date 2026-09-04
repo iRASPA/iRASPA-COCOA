@@ -348,6 +348,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
         scene[currentMovie][currentFrame].displayName = self.displayName
         scene[currentMovie][currentFrame].atoms = atoms
         scene[currentMovie][currentFrame].unknownAtoms = unknownAtoms
+        scene[currentMovie][currentFrame].applyInferredMaterialType()
         
         atoms = []
         numberOfAminoAcidAtoms = 0

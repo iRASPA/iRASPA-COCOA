@@ -121,6 +121,9 @@ public final class SKCIFParser: SKParser, ProgressReporting
   
   var chemicalFormulaStructural: String?
   var chemicalFormulaSum: String?
+  var chemicalNameCommon: String?
+  var chemicalNameSystematic: String?
+  var chemicalNameStructureType: String?
   
   var numberOfChannels: Int?
   var numberOfPockets: Int?
@@ -288,6 +291,10 @@ public final class SKCIFParser: SKParser, ProgressReporting
     scene[currentMovie][currentFrame].Df = self.Df
     scene[currentMovie][currentFrame].Dif = self.Dif
     
+    scene[currentMovie][currentFrame].applyInferredMaterialType(extraNames: [
+      self.chemicalNameCommon, self.chemicalNameSystematic, self.chemicalNameStructureType
+    ].compactMap { $0 })
+    
     progress.completedUnitCount = 1
   }
   
@@ -436,6 +443,20 @@ public final class SKCIFParser: SKParser, ProgressReporting
       case .chemical_formula_weight:
         _ = parseValue()
       case .chemical_formula_weight_meas:
+        _ = parseValue()
+      }
+    }
+    else if let chemical: Chemical = Chemical(rawValue: keyword)
+    {
+      switch chemical
+      {
+      case .chemical_name_common:
+        self.chemicalNameCommon = parseValue()
+      case .chemical_name_systematic:
+        self.chemicalNameSystematic = parseValue()
+      case .chemical_name_structure_type:
+        self.chemicalNameStructureType = parseValue()
+      default:
         _ = parseValue()
       }
     }

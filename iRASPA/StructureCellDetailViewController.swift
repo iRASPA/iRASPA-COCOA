@@ -1102,14 +1102,17 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor}).isEmpty
         {
           comboBoxRenderStructureMaterialType.isEditable = enabled
+          comboBoxRenderStructureMaterialType.removeAllItems()
+          comboBoxRenderStructureMaterialType.addItems(withObjectValues: SKStructure.MaterialType.allDisplayNames)
           
           if let value: String = self.renderStructureMaterialType
           {
-            if comboBoxRenderStructureMaterialType.indexOfItem(withObjectValue: value) == NSNotFound
+            let canonical: String = SKStructure.MaterialType.fromDisplayName(value)?.displayName ?? value
+            if comboBoxRenderStructureMaterialType.indexOfItem(withObjectValue: canonical) == NSNotFound
             {
-              comboBoxRenderStructureMaterialType.insertItem(withObjectValue: value, at: 0)
+              comboBoxRenderStructureMaterialType.insertItem(withObjectValue: canonical, at: 0)
             }
-            comboBoxRenderStructureMaterialType.selectItem(withObjectValue: value)
+            comboBoxRenderStructureMaterialType.selectItem(withObjectValue: canonical)
           }
           else
           {

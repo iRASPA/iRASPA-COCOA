@@ -221,6 +221,8 @@ public final class SKXYZParser: SKParser, ProgressReporting
         scene[currentMovie][currentFrame].displayName = self.displayName
         
         scene[currentMovie][currentFrame].atoms = atoms
+        // Periodic XYZ means "has a lattice", not "is a molecular crystal".
+        scene[currentMovie][currentFrame].applyInferredMaterialType(kind: periodic ? .crystal : nil)
       }
     }
     

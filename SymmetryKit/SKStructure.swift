@@ -73,6 +73,7 @@ public class SKStructure
   }
   
   public var kind: Kind = .crystal
+  public var materialType: MaterialType = .unspecified
   public var atoms: [SKAsymmetricAtom] = []
   public var unknownAtoms: Set<String> = []
   

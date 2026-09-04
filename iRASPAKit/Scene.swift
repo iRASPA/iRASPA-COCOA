@@ -390,10 +390,11 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           
          
           
-          // set creator etc
-          //setToCoreMOFStyle(structure: iRASPAstructure.structure)
-          //setToDDECStyle(structure: iRASPAstructure.structure)
-          structureViewer.structureMaterialType = "MOF"
+          if frame.materialType == .unspecified
+          {
+            frame.applyInferredMaterialType()
+          }
+          structureViewer.structureMaterialType = frame.materialType.displayName
           structureViewer.setRepresentationStyle(style: .default)
                     
           structureViewer.setRepresentationForceField(forceField: "Default", forceFieldSet: defaultForceField)

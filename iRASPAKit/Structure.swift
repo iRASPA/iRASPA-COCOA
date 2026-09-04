@@ -4139,7 +4139,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     // Structure properties
     guard let structureType = StructureType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
     self.structureType = structureType
-    self.structureMaterialType = try decoder.decode(String.self)
+    let decodedMaterialType: String = try decoder.decode(String.self)
+    self.structureMaterialType = SKStructure.MaterialType.fromDisplayName(decodedMaterialType)?.displayName ?? decodedMaterialType
     self.structureMass = try decoder.decode(Double.self)
     self.structureDensity = try decoder.decode(Double.self)
     self.structureHeliumVoidFraction = try decoder.decode(Double.self)

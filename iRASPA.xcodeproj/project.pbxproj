@@ -334,6 +334,7 @@
 		93793B2321CA85C2004CAD9C /* MetalBlurHorizontalPictureShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2221CA85C2004CAD9C /* MetalBlurHorizontalPictureShader.swift */; };
 		93793B2521CA85DB004CAD9C /* MetalBlurVerticalPictureShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2421CA85DB004CAD9C /* MetalBlurVerticalPictureShader.swift */; };
 		93793B2721D7FE59004CAD9C /* SKStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2621D7FE59004CAD9C /* SKStructure.swift */; };
+		93AA0005000000000000M002 /* SKMaterialType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA0005000000000000M001 /* SKMaterialType.swift */; };
 		93793B2921D943CC004CAD9C /* RKVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2821D943CB004CAD9C /* RKVertex.swift */; };
 		93793B2B21D943F1004CAD9C /* RKTextVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2A21D943F1004CAD9C /* RKTextVertex.swift */; };
 		93793B2D21D94421004CAD9C /* RKBondVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93793B2C21D94421004CAD9C /* RKBondVertex.swift */; };
@@ -953,6 +954,7 @@
 		A1C2E3F42680D7A900D47404 /* SKCIFSpaceGroupIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */; };
 		A1C2E3F42680D7A900D47406 /* SKCIFSymmetryOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */; };
 		A1C2E3F42680D7A900D47408 /* SKCIFmmCIFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C2E3F42680D7A900D47407 /* SKCIFmmCIFTests.swift */; };
+		93AA0005000000000000M004 /* SKMaterialTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA0005000000000000M003 /* SKMaterialTypeTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1998,6 +2000,7 @@
 		93793B2221CA85C2004CAD9C /* MetalBlurHorizontalPictureShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalBlurHorizontalPictureShader.swift; sourceTree = "<group>"; };
 		93793B2421CA85DB004CAD9C /* MetalBlurVerticalPictureShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalBlurVerticalPictureShader.swift; sourceTree = "<group>"; };
 		93793B2621D7FE59004CAD9C /* SKStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStructure.swift; sourceTree = "<group>"; };
+		93AA0005000000000000M001 /* SKMaterialType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMaterialType.swift; sourceTree = "<group>"; };
 		93793B2821D943CB004CAD9C /* RKVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKVertex.swift; sourceTree = "<group>"; };
 		93793B2A21D943F1004CAD9C /* RKTextVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKTextVertex.swift; sourceTree = "<group>"; };
 		93793B2C21D94421004CAD9C /* RKBondVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKBondVertex.swift; sourceTree = "<group>"; };
@@ -2725,6 +2728,7 @@
 		A1C2E3F42680D7A900D47403 /* SKCIFSpaceGroupIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFSpaceGroupIdentification.swift; sourceTree = "<group>"; };
 		A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFSymmetryOperationTests.swift; sourceTree = "<group>"; };
 		A1C2E3F42680D7A900D47407 /* SKCIFmmCIFTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFmmCIFTests.swift; sourceTree = "<group>"; };
+		93AA0005000000000000M003 /* SKMaterialTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMaterialTypeTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3679,6 +3683,7 @@
 				93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */,
 				A1C2E3F42680D7A900D47405 /* SKCIFSymmetryOperationTests.swift */,
 				A1C2E3F42680D7A900D47407 /* SKCIFmmCIFTests.swift */,
+				93AA0005000000000000M003 /* SKMaterialTypeTests.swift */,
 				936E776726B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift */,
 				93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */,
 				931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */,
@@ -4241,6 +4246,7 @@
 				939E7F52277A362F00CC654D /* SKVASPELFCARParser.swift */,
 				9364BAEE275A78A100A78FC6 /* SKGaussianCubeParser.swift */,
 				93793B2621D7FE59004CAD9C /* SKStructure.swift */,
+				93AA0005000000000000M001 /* SKMaterialType.swift */,
 				93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */,
 			);
 			name = Parsers;
@@ -5548,6 +5554,7 @@
 				9374794D1FB9EAFC008C4411 /* SKSymmetryCell.swift in Sources */,
 				939E7F53277A362F00CC654D /* SKVASPELFCARParser.swift in Sources */,
 				93793B2721D7FE59004CAD9C /* SKStructure.swift in Sources */,
+				93AA0005000000000000M002 /* SKMaterialType.swift in Sources */,
 				933700CA1EDC610800DD5961 /* SKSpaceGroupSetting.swift in Sources */,
 				93518DE126FC8112009A7B8D /* SKVTKParser.swift in Sources */,
 				93A067AF2257D7C70099A880 /* CaseInsensitiveString.swift in Sources */,
@@ -5911,6 +5918,7 @@
 				93E20F8526A5F3B200473702 /* SpaceGroupCIFTests.swift in Sources */,
 				A1C2E3F42680D7A900D47406 /* SKCIFSymmetryOperationTests.swift in Sources */,
 				A1C2E3F42680D7A900D47408 /* SKCIFmmCIFTests.swift in Sources */,
+				93AA0005000000000000M004 /* SKMaterialTypeTests.swift in Sources */,
 				93E20F8926A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift in Sources */,
 				93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */,
 				933D79C126905E290023EB94 /* ConventionalCellTests.swift in Sources */,

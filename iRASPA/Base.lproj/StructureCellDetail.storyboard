@@ -1880,15 +1880,30 @@
                                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                             <objectValues>
                                                                                                 <string>Unspecified</string>
+                                                                                                <string>Molecule</string>
+                                                                                                <string>Protein</string>
+                                                                                                <string>DNA/RNA</string>
+                                                                                                <string>Molecular crystal</string>
                                                                                                 <string>Silica</string>
                                                                                                 <string>Aluminosilicate</string>
                                                                                                 <string>Aluminophosphate</string>
                                                                                                 <string>Metallophosphate</string>
-                                                                                                <string>Silicialuminophosphate</string>
+                                                                                                <string>Silicoaluminophosphate</string>
                                                                                                 <string>Zeolite</string>
                                                                                                 <string>MOF</string>
-                                                                                                <string>COF</string>
                                                                                                 <string>ZIF</string>
+                                                                                                <string>COF</string>
+                                                                                                <string>Carbon</string>
+                                                                                                <string>Oxide</string>
+                                                                                                <string>HOF</string>
+                                                                                                <string>PAF</string>
+                                                                                                <string>PIM</string>
+                                                                                                <string>Polymer</string>
+                                                                                                <string>Ionic liquid</string>
+                                                                                                <string>Clay</string>
+                                                                                                <string>Perovskite</string>
+                                                                                                <string>Alloy</string>
+                                                                                                <string>Glass</string>
                                                                                             </objectValues>
                                                                                         </comboBoxCell>
                                                                                         <connections>

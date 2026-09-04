@@ -46,10 +46,10 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     ("Polygonal prism", .polygonalPrismPrimitive)
   ]
 
-  private let materialNames: [String] = [
-    "Unspecified", "Silica", "Aluminosilicate", "Metallophosphate",
-    "Silicoaluminophosphate", "Zeolite", "MOF", "ZIF"
-  ]
+  private var materialNames: [String]
+  {
+    SKStructure.MaterialType.allDisplayNames
+  }
 
   private enum Section
   {
@@ -602,7 +602,9 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     {
     case 0:
       var options = materialNames
-      let current = structure?.structureMaterialType ?? "Unspecified"
+      let current = SKStructure.MaterialType.fromDisplayName(structure?.structureMaterialType ?? "Unspecified")?.displayName
+        ?? structure?.structureMaterialType
+        ?? "Unspecified"
       if !options.contains(current) { options.insert(current, at: 0) }
       let selectedIndex = options.firstIndex(of: current)
       return menuRow("Material", options: options, selectedIndex: selectedIndex) { [weak self] index in
