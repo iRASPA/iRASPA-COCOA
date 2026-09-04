@@ -109,6 +109,17 @@ public struct SKGeometricSurface
     return atomVDW + 0.5 * probeSigma
   }
   
+  /// Smallest probe sigma used when building a geometric surface, in Å. Below this the sheet
+  /// coincides with the Forcefield or VDW atoms and the two imposters still z-fight, even when
+  /// both shade per sample. The inspector may store zero; the surface is inflated behind the
+  /// scenes. Atom draw radii are not capped.
+  public static let minimumProbeSigma: Double = 0.001
+  
+  public static func clampedProbeSigma(_ probeSigma: Double) -> Double
+  {
+    return max(probeSigma, minimumProbeSigma)
+  }
+  
   /// Builds the patches of the union of the given spheres.
   public static func build(fractionalPositions: [SIMD3<Double>],
                            radii: [Double],
@@ -277,7 +288,7 @@ public struct SKGeometricSurface
                            subdivisions: Int = 1) -> SKGeometricSurface
   {
     let count = min(fractionalPositions.count, potentialParameters.count)
-    let radii: [Double] = (0..<count).map { inflatedRadius(atomSigma: potentialParameters[$0].y, probeSigma: probeSigma) }
+    let radii: [Double] = (0..<count).map { inflatedRadius(atomSigma: potentialParameters[$0].y, probeSigma: clampedProbeSigma(probeSigma)) }
     return build(fractionalPositions: Array(fractionalPositions.prefix(count)),
                  radii: radii,
                  cell: cell,
@@ -298,7 +309,7 @@ public struct SKGeometricSurface
     let radii: [Double] = (0..<count).map { i in
       let elementId = elementIdentifiers[i]
       let vdw = (elementId >= 0 && elementId < elements.count) ? elements[elementId].VDWRadius : 0.0
-      return inflatedVanDerWaalsRadius(atomVDW: vdw, probeSigma: probeSigma)
+      return inflatedVanDerWaalsRadius(atomVDW: vdw, probeSigma: clampedProbeSigma(probeSigma))
     }
     return build(fractionalPositions: Array(fractionalPositions.prefix(count)),
                  radii: radii,

@@ -41,16 +41,21 @@ import SymmetryKit
 /// Draws the geometric accessible surface as sphere-imposter patches. Each patch is the exposed
 /// part of one probe-inflated atom; the fragment shader discards the spherical caps neighbouring
 /// atoms cut out of it. The inflation is either half mixed Lennard-Jones sigma or Bondi VDW plus
-/// half the probe sigma, according to the rendering method.
+/// half the probe sigma, according to the rendering method. Still frames and pictures shade per
+/// MSAA sample; rotating uses the per-pixel pair, the same switch as the atom imposters.
 class MetalGeometricSurfaceShader
 {
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderObject]] = [[]]
   
   var orthographicOpaquePipeLine: MTLRenderPipelineState! = nil
+  var orthographicOpaquePerPixelPipeLine: MTLRenderPipelineState! = nil
   var orthographicTransparentPipeLine: MTLRenderPipelineState! = nil
+  var orthographicTransparentPerPixelPipeLine: MTLRenderPipelineState! = nil
   var perspectiveOpaquePipeLine: MTLRenderPipelineState! = nil
+  var perspectiveOpaquePerPixelPipeLine: MTLRenderPipelineState! = nil
   var perspectiveTransparentPipeLine: MTLRenderPipelineState! = nil
+  var perspectiveTransparentPerPixelPipeLine: MTLRenderPipelineState! = nil
   
   var indexBuffer: MTLBuffer! = nil
   var vertexBuffer: MTLBuffer! = nil
@@ -72,7 +77,7 @@ class MetalGeometricSurfaceShader
     transparentDepth.isDepthWriteEnabled = false
     transparentDepthState = device.makeDepthStencilState(descriptor: transparentDepth)
     
-    func makePipeline(vertex: String, fragment: String, blended: Bool) -> MTLRenderPipelineState
+    func makePipeline(vertex: String, fragment: String, blended: Bool, alphaToCoverage: Bool = false) -> MTLRenderPipelineState
     {
       let descriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
       descriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
@@ -82,6 +87,7 @@ class MetalGeometricSurfaceShader
       descriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
       descriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
       descriptor.vertexDescriptor = vertexDescriptor
+      descriptor.isAlphaToCoverageEnabled = alphaToCoverage
       if blended
       {
         descriptor.colorAttachments[0].isBlendingEnabled = true
@@ -103,9 +109,13 @@ class MetalGeometricSurfaceShader
     }
     
     orthographicOpaquePipeLine = makePipeline(vertex: "GeometricSurfaceOrthographicVertexShader", fragment: "GeometricSurfaceOrthographicFragmentShader", blended: false)
+    orthographicOpaquePerPixelPipeLine = makePipeline(vertex: "GeometricSurfaceOrthographicVertexShader", fragment: "GeometricSurfaceOrthographicPerPixelFragmentShader", blended: false, alphaToCoverage: true)
     orthographicTransparentPipeLine = makePipeline(vertex: "GeometricSurfaceOrthographicVertexShader", fragment: "GeometricSurfaceOrthographicFragmentShader", blended: true)
+    orthographicTransparentPerPixelPipeLine = makePipeline(vertex: "GeometricSurfaceOrthographicVertexShader", fragment: "GeometricSurfaceOrthographicPerPixelFragmentShader", blended: true)
     perspectiveOpaquePipeLine = makePipeline(vertex: "GeometricSurfacePerspectiveVertexShader", fragment: "GeometricSurfacePerspectiveFragmentShader", blended: false)
+    perspectiveOpaquePerPixelPipeLine = makePipeline(vertex: "GeometricSurfacePerspectiveVertexShader", fragment: "GeometricSurfacePerspectivePerPixelFragmentShader", blended: false, alphaToCoverage: true)
     perspectiveTransparentPipeLine = makePipeline(vertex: "GeometricSurfacePerspectiveVertexShader", fragment: "GeometricSurfacePerspectiveFragmentShader", blended: true)
+    perspectiveTransparentPerPixelPipeLine = makePipeline(vertex: "GeometricSurfacePerspectiveVertexShader", fragment: "GeometricSurfacePerspectivePerPixelFragmentShader", blended: true)
   }
   
   public func buildVertexBuffers(device: MTLDevice)
@@ -279,9 +289,20 @@ class MetalGeometricSurfaceShader
   private func render(_ commandEncoder: MTLRenderCommandEncoder, opaque: Bool, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, isosurfaceUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, camera: RKCamera?, sceneIndex: Int?, movieIndex: Int?, structureIndex: Int?)
   {
     let perspective: Bool = camera?.frustrumType == .perspective
-    let pipeLine: MTLRenderPipelineState = opaque
-      ? (perspective ? perspectiveOpaquePipeLine : orthographicOpaquePipeLine)
-      : (perspective ? perspectiveTransparentPipeLine : orthographicTransparentPipeLine)
+    let perSample: Bool = RKMetal.perSampleImposterShading
+    let pipeLine: MTLRenderPipelineState
+    if opaque
+    {
+      pipeLine = perspective
+        ? (perSample ? perspectiveOpaquePipeLine : perspectiveOpaquePerPixelPipeLine)
+        : (perSample ? orthographicOpaquePipeLine : orthographicOpaquePerPixelPipeLine)
+    }
+    else
+    {
+      pipeLine = perspective
+        ? (perSample ? perspectiveTransparentPipeLine : perspectiveTransparentPerPixelPipeLine)
+        : (perSample ? orthographicTransparentPipeLine : orthographicTransparentPerPixelPipeLine)
+    }
     
     commandEncoder.setDepthStencilState(opaque ? opaqueDepthState : transparentDepthState)
     commandEncoder.setRenderPipelineState(pipeLine)

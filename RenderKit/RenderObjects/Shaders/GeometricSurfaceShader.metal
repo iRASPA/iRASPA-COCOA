@@ -59,6 +59,49 @@ struct GeometricSurfaceImposterVertexOut
   float4 modelFromView4 [[flat]];
 };
 
+// Fragment input matched to the vertex output by member name. Ray-defining members are
+// interpolated per MSAA sample so the still path evaluates depth at the same points as the atoms.
+struct GeometricSurfaceImposterFragmentShaderIn
+{
+  float4 position [[position]];
+  float4 eye_position;
+  float4 instancePosition [[flat]];
+  float2 texcoords [[sample_perspective]];
+  float3 frag_pos [[sample_perspective]];
+  float3 frag_center [[flat]];
+  float3 V;
+  float4 sphere_radius [[flat]];
+  uint firstClip [[flat]];
+  uint clipCount [[flat]];
+  uint clipToCell [[flat]];
+  float3 cellOrigin [[flat]];
+  float4 modelFromView1 [[flat]];
+  float4 modelFromView2 [[flat]];
+  float4 modelFromView3 [[flat]];
+  float4 modelFromView4 [[flat]];
+};
+
+// Per-pixel ("fast") variant: default center interpolation, one fragment per pixel under MSAA.
+struct GeometricSurfaceImposterPerPixelFragmentShaderIn
+{
+  float4 position [[position]];
+  float4 eye_position;
+  float4 instancePosition [[flat]];
+  float2 texcoords;
+  float3 frag_pos;
+  float3 frag_center [[flat]];
+  float3 V;
+  float4 sphere_radius [[flat]];
+  uint firstClip [[flat]];
+  uint clipCount [[flat]];
+  uint clipToCell [[flat]];
+  float3 cellOrigin [[flat]];
+  float4 modelFromView1 [[flat]];
+  float4 modelFromView2 [[flat]];
+  float4 modelFromView3 [[flat]];
+  float4 modelFromView4 [[flat]];
+};
+
 vertex GeometricSurfaceImposterVertexOut GeometricSurfaceOrthographicVertexShader(const device InPerVertex *vertices [[buffer(0)]],
                                                                                   const device GeometricSurfacePatchInstance *patches [[buffer(1)]],
                                                                                   constant FrameUniforms& frameUniforms [[buffer(2)]],
@@ -212,19 +255,26 @@ static float4 shadeGeometricSurface(float3 N,
   return float4(hsv2rgb(hsv) * opacity, opacity);
 }
 
-fragment FragOutput GeometricSurfaceOrthographicFragmentShader(GeometricSurfaceImposterVertexOut vert [[stage_in]],
-                                                               constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                               constant StructureUniforms& structureUniforms [[buffer(1)]],
-                                                               constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
-                                                               constant LightUniforms& lightUniforms [[buffer(3)]],
-                                                               const device GeometricSurfaceClip *clips [[buffer(4)]])
+template <typename VertexIn, bool AnalyticCoverage>
+static FragOutput GeometricSurfaceOrthographicFragmentImpl(VertexIn vert,
+                                                           constant FrameUniforms& frameUniforms,
+                                                           constant IsosurfaceUniforms& isosurfaceUniforms,
+                                                           constant LightUniforms& lightUniforms,
+                                                           const device GeometricSurfaceClip *clips,
+                                                           thread float &coverage)
 {
   FragOutput output;
   
   float x = vert.texcoords.x;
   float y = vert.texcoords.y;
   float zz = 1.0 - x * x - y * y;
-  if (zz <= 0.0)
+  coverage = 1.0;
+  if (AnalyticCoverage)
+  {
+    coverage = coverageFromEdge(zz);
+    zz = max(zz, 0.0);
+  }
+  else if (zz <= 0.0)
   {
     discard_fragment();
   }
@@ -262,12 +312,42 @@ fragment FragOutput GeometricSurfaceOrthographicFragmentShader(GeometricSurfaceI
   return output;
 }
 
-fragment FragOutput GeometricSurfacePerspectiveFragmentShader(GeometricSurfaceImposterVertexOut vert [[stage_in]],
-                                                              constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                              constant StructureUniforms& structureUniforms [[buffer(1)]],
-                                                              constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
-                                                              constant LightUniforms& lightUniforms [[buffer(3)]],
-                                                              const device GeometricSurfaceClip *clips [[buffer(4)]])
+fragment FragOutput GeometricSurfaceOrthographicFragmentShader(GeometricSurfaceImposterFragmentShaderIn vert [[stage_in]],
+                                                               constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                               constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                               constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
+                                                               constant LightUniforms& lightUniforms [[buffer(3)]],
+                                                               const device GeometricSurfaceClip *clips [[buffer(4)]])
+{
+  float coverage;
+  return GeometricSurfaceOrthographicFragmentImpl<GeometricSurfaceImposterFragmentShaderIn, false>(vert, frameUniforms, isosurfaceUniforms, lightUniforms, clips, coverage);
+}
+
+// "fast" per-pixel variant: identical shading, but with center interpolation the fragment shader runs
+// once per pixel even under MSAA. Silhouette coverage is written as alpha; the opaque pipeline's
+// alpha-to-coverage then keeps only that fraction of the pixel's samples, including their depth,
+// so the surface and the atoms depth-test at the same kind of rim.
+fragment FragOutput GeometricSurfaceOrthographicPerPixelFragmentShader(GeometricSurfaceImposterPerPixelFragmentShaderIn vert [[stage_in]],
+                                                                       constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                       constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                       constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
+                                                                       constant LightUniforms& lightUniforms [[buffer(3)]],
+                                                                       const device GeometricSurfaceClip *clips [[buffer(4)]])
+{
+  float coverage;
+  FragOutput output = GeometricSurfaceOrthographicFragmentImpl<GeometricSurfaceImposterPerPixelFragmentShaderIn, true>(vert, frameUniforms, isosurfaceUniforms, lightUniforms, clips, coverage);
+  if (!(coverage > 0.0)) discard_fragment();
+  output.albedo.w *= coverage;
+  return output;
+}
+
+template <typename VertexIn, bool AnalyticCoverage>
+static FragOutput GeometricSurfacePerspectiveFragmentImpl(VertexIn vert,
+                                                          constant FrameUniforms& frameUniforms,
+                                                          constant IsosurfaceUniforms& isosurfaceUniforms,
+                                                          constant LightUniforms& lightUniforms,
+                                                          const device GeometricSurfaceClip *clips,
+                                                          thread float &coverage)
 {
   FragOutput output;
   
@@ -277,7 +357,13 @@ fragment FragOutput GeometricSurfacePerspectiveFragmentShader(GeometricSurfaceIm
   float B = 2.0 * dot(rij, vij);
   float C = dot(rij, rij) - vert.sphere_radius.z * vert.sphere_radius.z;
   float argument = B * B - 4.0 * A * C;
-  if (argument < 0.0)
+  coverage = 1.0;
+  if (AnalyticCoverage)
+  {
+    coverage = coverageFromEdge(argument);
+    argument = max(argument, 0.0);
+  }
+  else if (argument < 0.0)
   {
     discard_fragment();
   }
@@ -311,5 +397,30 @@ fragment FragOutput GeometricSurfacePerspectiveFragmentShader(GeometricSurfaceIm
   
   float3 V = normalize(vert.V);
   output.albedo = shadeGeometricSurface(N, V, float4(hit, 1.0), frontfacing, lightUniforms, isosurfaceUniforms);
+  return output;
+}
+
+fragment FragOutput GeometricSurfacePerspectiveFragmentShader(GeometricSurfaceImposterFragmentShaderIn vert [[stage_in]],
+                                                              constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                              constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                              constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
+                                                              constant LightUniforms& lightUniforms [[buffer(3)]],
+                                                              const device GeometricSurfaceClip *clips [[buffer(4)]])
+{
+  float coverage;
+  return GeometricSurfacePerspectiveFragmentImpl<GeometricSurfaceImposterFragmentShaderIn, false>(vert, frameUniforms, isosurfaceUniforms, lightUniforms, clips, coverage);
+}
+
+fragment FragOutput GeometricSurfacePerspectivePerPixelFragmentShader(GeometricSurfaceImposterPerPixelFragmentShaderIn vert [[stage_in]],
+                                                                      constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                                                      constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                                                      constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
+                                                                      constant LightUniforms& lightUniforms [[buffer(3)]],
+                                                                      const device GeometricSurfaceClip *clips [[buffer(4)]])
+{
+  float coverage;
+  FragOutput output = GeometricSurfacePerspectiveFragmentImpl<GeometricSurfaceImposterPerPixelFragmentShaderIn, true>(vert, frameUniforms, isosurfaceUniforms, lightUniforms, clips, coverage);
+  if (!(coverage > 0.0)) discard_fragment();
+  output.albedo.w *= coverage;
   return output;
 }
