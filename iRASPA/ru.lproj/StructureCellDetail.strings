@@ -178,6 +178,9 @@
 /* Class = "NSMenuItem"; title = "Argon"; ObjectID = "gay-1o-b6B"; */
 "gay-1o-b6B.title" = "Аргон";
 
+/* Class = "NSMenuItem"; title = "Connolly"; ObjectID = "Prb-mi-Cnl"; */
+"Prb-mi-Cnl.title" = "Connolly";
+
 /* Class = "NSTextFieldCell"; title = "[g/mol]"; ObjectID = "gBf-y0-O3M"; */
 "gBf-y0-O3M.title" = "[g/mol]";
 
@@ -361,11 +364,11 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "Угол X";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
-"EnV-lc-SaA.title" = "Объемная площадь поверхности Umin";
+/* Class = "NSTextFieldCell"; title = "Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
+"EnV-lc-SaA.title" = "Площадь поверхности Umin";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
-"siG-7J-hEu.title" = "Объемная площадь well-поверхности";
+/* Class = "NSTextFieldCell"; title = "Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
+"siG-7J-hEu.title" = "Площадь well-поверхности";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
 "swk-Q8-afT.title" = "Кристаллический растворитель";
@@ -466,17 +469,23 @@
 /* Class = "NSMenuItem"; title = "RASPA Volumetric Data"; ObjectID = "xOm-9h-Hai"; */
 "xOm-9h-Hai.title" = "Объемные данные RASPA";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
-"EnG-lc-SaA.title" = "Гравиметрическая площадь поверхности Umin";
+/* Class = "NSTextFieldCell"; title = "Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
+"EnG-lc-SaA.title" = "Площадь поверхности Umin";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
-"xXh-YD-ajh.title" = "Гравим. площадь well-поверхности";
+/* Class = "NSTextFieldCell"; title = "Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
+"xXh-YD-ajh.title" = "Площадь well-поверхности";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
-"Geo-lc-Vol.title" = "Объемная геометрическая площадь поверхности";
+/* Class = "NSTextFieldCell"; title = "FF Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
+"Geo-lc-Vol.title" = "Геометрическая площадь поверхности FF";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
-"Geo-lc-Grv.title" = "Гравиметрическая геометрическая площадь поверхности";
+/* Class = "NSTextFieldCell"; title = "FF Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
+"Geo-lc-Grv.title" = "Геометрическая площадь поверхности FF";
+
+/* Class = "NSTextFieldCell"; title = "VDW Geometric Surface Area"; ObjectID = "Vdw-lc-Vol"; */
+"Vdw-lc-Vol.title" = "Геометрическая площадь поверхности VDW";
+
+/* Class = "NSTextFieldCell"; title = "VDW Geometric Surface Area"; ObjectID = "Vdw-lc-Grv"; */
+"Vdw-lc-Grv.title" = "Геометрическая площадь поверхности VDW";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
 "Y0x-AR-NvS.placeholderString" = "Максимум Z";

@@ -1257,9 +1257,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           popUpbuttonProbeParticle.isEditable = enabled
-          if let probeMolecule: Structure.ProbeMolecule = self.renderFrameworkProbeMolecule
+          if let probeMolecule: Structure.ProbeMolecule = self.renderFrameworkProbeMolecule,
+             let index = Structure.ProbeMolecule.selectableCases.firstIndex(of: probeMolecule)
           {
-            popUpbuttonProbeParticle.selectItem(at: probeMolecule.rawValue)
+            popUpbuttonProbeParticle.selectItem(at: index)
           }
         }
       }
@@ -1341,6 +1342,43 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           else
           {
             textFieldRenderStructureGravimetricNitrogenSurfaceArea.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      
+      if let textFieldRenderStructureVolumetricVanDerWaalsGeometricSurfaceArea: NSTextField = view.viewWithTag(22) as? NSTextField
+      {
+        textFieldRenderStructureVolumetricVanDerWaalsGeometricSurfaceArea.isEditable = false
+        textFieldRenderStructureVolumetricVanDerWaalsGeometricSurfaceArea.stringValue = ""
+        textFieldRenderStructureVolumetricVanDerWaalsGeometricSurfaceArea.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldRenderStructureVolumetricVanDerWaalsGeometricSurfaceArea.isEnabled = enabled
+          if let structureVolumetricVanDerWaalsGeometricSurfaceArea: Double = self.renderStructureVolumetricVanDerWaalsGeometricSurfaceArea
+          {
+            textFieldRenderStructureVolumetricVanDerWaalsGeometricSurfaceArea.doubleValue = structureVolumetricVanDerWaalsGeometricSurfaceArea
+          }
+          else
+          {
+            textFieldRenderStructureVolumetricVanDerWaalsGeometricSurfaceArea.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let textFieldRenderStructureGravimetricVanDerWaalsGeometricSurfaceArea: NSTextField = view.viewWithTag(23) as? NSTextField
+      {
+        textFieldRenderStructureGravimetricVanDerWaalsGeometricSurfaceArea.isEditable = false
+        textFieldRenderStructureGravimetricVanDerWaalsGeometricSurfaceArea.stringValue = ""
+        textFieldRenderStructureGravimetricVanDerWaalsGeometricSurfaceArea.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldRenderStructureGravimetricVanDerWaalsGeometricSurfaceArea.isEnabled = enabled
+          if let structureGravimetricVanDerWaalsGeometricSurfaceArea: Double = self.renderStructureGravimetricVanDerWaalsGeometricSurfaceArea
+          {
+            textFieldRenderStructureGravimetricVanDerWaalsGeometricSurfaceArea.doubleValue = structureGravimetricVanDerWaalsGeometricSurfaceArea
+          }
+          else
+          {
+            textFieldRenderStructureGravimetricVanDerWaalsGeometricSurfaceArea.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1468,15 +1506,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           buttonComputeVolumetricSurfaceArea.isEnabled = enabled
         }
       }
-    
-      if let buttonComputeGeometricSurfaceArea: NSButton = view.viewWithTag(11) as? NSButton
-      {
-        buttonComputeGeometricSurfaceArea.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
-        {
-          buttonComputeGeometricSurfaceArea.isEnabled = enabled
-        }
-      }
       
       if let buttonComputeEnergyVolumetricSurfaceArea: NSButton = view.viewWithTag(16) as? NSButton
       {
@@ -1484,15 +1513,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           buttonComputeEnergyVolumetricSurfaceArea.isEnabled = enabled
-        }
-      }
-    
-      if let buttonComputeEnergyGravimetricSurfaceArea: NSButton = view.viewWithTag(17) as? NSButton
-      {
-        buttonComputeEnergyGravimetricSurfaceArea.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
-        {
-          buttonComputeEnergyGravimetricSurfaceArea.isEnabled = enabled
         }
       }
       
@@ -1504,13 +1524,13 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           buttonComputeGeometricVolumetricSurfaceArea.isEnabled = enabled
         }
       }
-    
-      if let buttonComputeGeometricGravimetricSurfaceArea: NSButton = view.viewWithTag(19) as? NSButton
+      
+      if let buttonComputeVanDerWaalsGeometricSurfaceArea: NSButton = view.viewWithTag(25) as? NSButton
       {
-        buttonComputeGeometricGravimetricSurfaceArea.isEnabled = false
+        buttonComputeVanDerWaalsGeometricSurfaceArea.isEnabled = false
         if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
-          buttonComputeGeometricGravimetricSurfaceArea.isEnabled = enabled
+          buttonComputeVanDerWaalsGeometricSurfaceArea.isEnabled = enabled
         }
       }
   
@@ -3616,9 +3636,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     self.view.window?.makeFirstResponder(self.cellOutlineView)
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      let renderFrameworkProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)
+       sender.indexOfSelectedItem >= 0,
+       sender.indexOfSelectedItem < Structure.ProbeMolecule.selectableCases.count
     {
-      self.renderFrameworkProbeMolecule = renderFrameworkProbeMolecule
+      self.renderFrameworkProbeMolecule = Structure.ProbeMolecule.selectableCases[sender.indexOfSelectedItem]
       
       self.recomputeFrameworkProbeDependentProperties()
     }
@@ -3651,7 +3672,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
                                          potentialParameters: structure.potentialParameters,
                                          probeParameters: SIMD2<Double>(structure.frameworkProbeEpsilon, structure.frameworkProbeSigma),
                                          blockingPockets: applyingBlockingPockets ? structure.blockingPockets : structure.appliedBlockingPockets,
-                                         mass: structure.structureMass)
+                                         mass: structure.structureMass,
+                                         elementIdentifiers: structure.atomUnitCellElementIdentifiers)
       return (structure, snapshot)
     }
   }
@@ -3694,6 +3716,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     for (i, result) in geometricResults.enumerated()
     {
       structures[i].structureGeometricSurfaceArea = result.area
+    }
+    let vanDerWaalsResults: [SKSurfaceAreaResult] = SKGeometricSurface.vanDerWaalsSurfaceAreas(of: self.frameworkSnapshots(applyingBlockingPockets: true).map { $0.1 })
+    for (i, result) in vanDerWaalsResults.enumerated()
+    {
+      structures[i].structureVanDerWaalsGeometricSurfaceArea = result.area
     }
     
     self.windowController?.document?.updateChangeCount(.changeDone)
@@ -3766,6 +3793,25 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       for (i, result) in results.enumerated()
       {
         pairs[i].0.structureGeometricSurfaceArea = result.area
+      }
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.structuralProbeCell])
+    }
+  }
+  
+  @IBAction func recomputeVanDerWaalsGeometricSurfaceArea(_ sender: NSButton)
+  {
+    self.view.window?.makeFirstResponder(self.cellOutlineView)
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    {
+      let pairs = self.frameworkSnapshots(applyingBlockingPockets: true)
+      let results: [SKSurfaceAreaResult] = SKGeometricSurface.vanDerWaalsSurfaceAreas(of: pairs.map { $0.1 })
+      for (i, result) in results.enumerated()
+      {
+        pairs[i].0.structureVanDerWaalsGeometricSurfaceArea = result.area
       }
       
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -4839,6 +4885,32 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     set(newValue)
     {
       self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricGeometricSurfaceArea = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureVolumetricVanDerWaalsGeometricSurfaceArea: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureVolumetricVanDerWaalsGeometricSurfaceArea})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureVolumetricVanDerWaalsGeometricSurfaceArea = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureGravimetricVanDerWaalsGeometricSurfaceArea: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricVanDerWaalsGeometricSurfaceArea})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricVanDerWaalsGeometricSurfaceArea = newValue ?? 0.0}
     }
   }
   

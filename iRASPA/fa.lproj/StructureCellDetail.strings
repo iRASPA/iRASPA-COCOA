@@ -178,6 +178,9 @@
 /* Class = "NSMenuItem"; title = "Argon"; ObjectID = "gay-1o-b6B"; */
 "gay-1o-b6B.title" = "آرگون";
 
+/* Class = "NSMenuItem"; title = "Connolly"; ObjectID = "Prb-mi-Cnl"; */
+"Prb-mi-Cnl.title" = "Connolly";
+
 /* Class = "NSTextFieldCell"; title = "[g/mol]"; ObjectID = "gBf-y0-O3M"; */
 "gBf-y0-O3M.title" = "[g/mol]";
 
@@ -361,11 +364,11 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "زاویه X";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
-"EnV-lc-SaA.title" = "سطح ویژه حجمی Umin";
+/* Class = "NSTextFieldCell"; title = "Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
+"EnV-lc-SaA.title" = "سطح ویژه Umin";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
-"siG-7J-hEu.title" = "سطح ویژه حجمی Well";
+/* Class = "NSTextFieldCell"; title = "Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
+"siG-7J-hEu.title" = "سطح ویژه Well";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
 "swk-Q8-afT.title" = "حلال کریستال";
@@ -466,17 +469,23 @@
 /* Class = "NSMenuItem"; title = "RASPA Volumetric Data"; ObjectID = "xOm-9h-Hai"; */
 "xOm-9h-Hai.title" = "داده های حجمی RASPA";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
-"EnG-lc-SaA.title" = "سطح گرانش Umin";
+/* Class = "NSTextFieldCell"; title = "Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
+"EnG-lc-SaA.title" = "سطح ویژه Umin";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
-"xXh-YD-ajh.title" = "سطح گرانش Well";
+/* Class = "NSTextFieldCell"; title = "Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
+"xXh-YD-ajh.title" = "سطح ویژه Well";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
-"Geo-lc-Vol.title" = "سطح ویژه هندسی حجمی";
+/* Class = "NSTextFieldCell"; title = "FF Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
+"Geo-lc-Vol.title" = "سطح ویژه هندسی FF";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
-"Geo-lc-Grv.title" = "سطح ویژه هندسی جرمی";
+/* Class = "NSTextFieldCell"; title = "FF Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
+"Geo-lc-Grv.title" = "سطح ویژه هندسی FF";
+
+/* Class = "NSTextFieldCell"; title = "VDW Geometric Surface Area"; ObjectID = "Vdw-lc-Vol"; */
+"Vdw-lc-Vol.title" = "سطح ویژه هندسی VDW";
+
+/* Class = "NSTextFieldCell"; title = "VDW Geometric Surface Area"; ObjectID = "Vdw-lc-Grv"; */
+"Vdw-lc-Grv.title" = "سطح ویژه هندسی VDW";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
 "Y0x-AR-NvS.placeholderString" = "بیشترین Z";

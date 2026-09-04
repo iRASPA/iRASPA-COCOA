@@ -91,6 +91,9 @@
 /* Class = "NSTextFieldCell"; title = "Primitive Properties"; ObjectID = "A1A-Jh-xnr"; */
 "A1A-Jh-xnr.title" = "Primitive Properties";
 
+/* Class = "NSMenuItem"; title = "Connolly"; ObjectID = "Ads-mi-Cnl"; */
+"Ads-mi-Cnl.title" = "Connolly";
+
 /* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "AjV-MB-P5w"; */
 "AjV-MB-P5w.title" = "CO₂";
 

@@ -1839,13 +1839,13 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="StructuralPropertiesCell" translatesAutoresizingMaskIntoConstraints="NO" id="tbS-Tf-Zx0" userLabel="Structural Properties Cell">
-                                                            <rect key="frame" x="1" y="1031" width="495" height="212"/>
+                                                            <rect key="frame" x="1" y="1031" width="495" height="225"/>
                                                             <subviews>
-                                                                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I6b-8k-mcR">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="212"/>
+                                                                <stackView distribution="fill" orientation="vertical" alignment="fill" spacing="8" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I6b-8k-mcR">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="225"/>
                                                                     <subviews>
                                                                         <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="8" columnSpacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IVK-Bm-GxU">
-                                                                            <rect key="frame" x="8" y="8" width="467" height="196"/>
+                                                                            <rect key="frame" x="8" y="8" width="467" height="209"/>
                                                                             <rows>
                                                                                 <gridRow id="Ldg-fB-Wll"/>
                                                                                 <gridRow id="FFc-rw-Prp"/>
@@ -2119,12 +2119,17 @@
                                                                                 <gridCell row="lEF-dx-ZZq" column="M8m-6O-qVQ" id="2k3-k1-iYw"/>
                                                                             </gridCells>
                                                                         </gridView>
+                                                                        <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Prp-bx-Sep">
+                                                                            <rect key="frame" x="8" y="217" width="459" height="5"/>
+                                                                        </box>
                                                                     </subviews>
                                                                     <edgeInsets key="edgeInsets" left="8" right="0.0" top="8" bottom="8"/>
                                                                     <visibilityPriorities>
                                                                         <integer value="1000"/>
+                                                                        <integer value="1000"/>
                                                                     </visibilityPriorities>
                                                                     <customSpacing>
+                                                                        <real value="3.4028234663852886e+38"/>
                                                                         <real value="3.4028234663852886e+38"/>
                                                                     </customSpacing>
                                                                 </stackView>
@@ -2137,25 +2142,25 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="StructuralProbeCell" translatesAutoresizingMaskIntoConstraints="NO" id="UOl-sD-WWY" userLabel="Structural Probe Cell">
-                                                            <rect key="frame" x="1" y="1213" width="495" height="348"/>
+                                                            <rect key="frame" x="1" y="1213" width="495" height="419"/>
                                                             <subviews>
-                                                                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ugh-V4-NJx">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="348"/>
+                                                                <stackView distribution="fill" orientation="vertical" alignment="fill" spacing="8" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ugh-V4-NJx">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="419"/>
                                                                     <subviews>
                                                                         <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="8" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uHm-39-iH6">
-                                                                            <rect key="frame" x="8" y="8" width="467" height="332"/>
+                                                                            <rect key="frame" x="8" y="8" width="467" height="403"/>
                                                                             <rows>
                                                                                 <gridRow id="mUq-Sf-Ag1"/>
                                                                                 <gridRow id="Prb-rw-Eps"/>
                                                                                 <gridRow id="Prb-rw-Sig"/>
+                                                                                <gridRow id="Vdw-rw-Vol"/>
+                                                                                <gridRow id="Vdw-rw-Grv"/>
                                                                                 <gridRow id="Geo-rw-Vol"/>
                                                                                 <gridRow id="Geo-rw-Grv"/>
                                                                                 <gridRow id="EnV-rw-SaA"/>
                                                                                 <gridRow id="EnG-rw-SaA"/>
                                                                                 <gridRow id="itp-to-pVH"/>
                                                                                 <gridRow id="0ZQ-Ue-Lzl"/>
-                                                                                <gridRow id="BLJ-da-5OD"/>
-                                                                                <gridRow id="8uo-Cx-pS1"/>
                                                                             </rows>
                                                                             <columns>
                                                                                 <gridColumn xPlacement="trailing" id="8CM-yc-z64"/>
@@ -2191,7 +2196,8 @@
                                                                                                     <menuItem title="Xenon" tag="4" id="EoT-Wn-jDW"/>
                                                                                                     <menuItem title="Krypton" tag="4" id="zSC-HO-4oc"/>
                                                                                                     <menuItem title="Argon" tag="4" id="gay-1o-b6B"/>
-                                    <menuItem title="Custom" tag="9" id="Prb-mi-Cst"/>
+                                                                                                    <menuItem title="Connolly" tag="10" id="Prb-mi-Cnl"/>
+                                                                                                    <menuItem title="Custom" tag="9" id="Prb-mi-Cst"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>
@@ -2272,10 +2278,76 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="Prb-rw-Sig" column="HwQ-Q9-aoX" id="Prb-c3-Sig"/>
-                                                                                <gridCell row="Geo-rw-Vol" column="8CM-yc-z64" id="Geo-c0-Vol">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-lb-Vol" userLabel="Volumetric Geometric Surface Area">
+                                                                                <gridCell row="Vdw-rw-Vol" column="8CM-yc-z64" id="Vdw-c0-Vol">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-lb-Vol" userLabel="VDW Geometric Surface Area">
                                                                                         <rect key="frame" x="11" y="90" width="186" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Volumetric Geometric Surface Area" id="Geo-lc-Vol" userLabel="Volumetric Geometric Surface Area">
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="VDW Geometric Surface Area" id="Vdw-lc-Vol" userLabel="VDW Geometric Surface Area">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Vdw-rw-Vol" column="DEf-ke-SgU" id="Vdw-c1-Vol">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="22" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-tf-Vol">
+                                                                                        <rect key="frame" x="203" y="87" width="165" height="21"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Vdw-tc-Vol">
+                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="Vdw-fm-Vol"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Vdw-rw-Vol" column="nSC-dm-sGl" id="Vdw-c2-Vol">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-un-Vol">
+                                                                                        <rect key="frame" x="374" y="90" width="57" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="[m²/cm³]" id="Vdw-uc-Vol">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Vdw-rw-Vol" column="HwQ-Q9-aoX" id="Vdw-c3-Vol">
+                                                                                    <button key="contentView" verticalHuggingPriority="750" tag="25" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-bt-Vol">
+                                                                                        <rect key="frame" x="430" y="80" width="44" height="32"/>
+                                                                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRefreshTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Vdw-bc-Vol">
+                                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                        </buttonCell>
+                                                                                        <connections>
+                                                                                            <action selector="recomputeVanDerWaalsGeometricSurfaceArea:" target="b7G-Em-dfk" id="Vdw-ac-Vol"/>
+                                                                                        </connections>
+                                                                                    </button>
+                                                                                </gridCell>
+                                                                                <gridCell row="Vdw-rw-Grv" column="8CM-yc-z64" id="Vdw-c0-Grv"/>
+                                                                                <gridCell row="Vdw-rw-Grv" column="DEf-ke-SgU" id="Vdw-c1-Grv">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="23" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-tf-Grv">
+                                                                                        <rect key="frame" x="203" y="58" width="165" height="21"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Vdw-tc-Grv">
+                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="Vdw-fm-Grv"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Vdw-rw-Grv" column="nSC-dm-sGl" id="Vdw-c2-Grv">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-un-Grv">
+                                                                                        <rect key="frame" x="374" y="61" width="57" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="[m²/g]" id="Vdw-uc-Grv">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Vdw-rw-Grv" column="HwQ-Q9-aoX" id="Vdw-c3-Grv"/>
+                                                                                <gridCell row="Geo-rw-Vol" column="8CM-yc-z64" id="Geo-c0-Vol">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-lb-Vol" userLabel="FF Geometric Surface Area">
+                                                                                        <rect key="frame" x="11" y="90" width="186" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="FF Geometric Surface Area" id="Geo-lc-Vol" userLabel="FF Geometric Surface Area">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -2315,16 +2387,7 @@
                                                                                         </connections>
                                                                                     </button>
                                                                                 </gridCell>
-                                                                                <gridCell row="Geo-rw-Grv" column="8CM-yc-z64" id="Geo-c0-Grv">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-lb-Grv" userLabel="Gravimetric Geometric Surface Area">
-                                                                                        <rect key="frame" x="6" y="61" width="191" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gravimetric Geometric Surface Area" id="Geo-lc-Grv" userLabel="Gravimetric Geometric Surface Area">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
+                                                                                <gridCell row="Geo-rw-Grv" column="8CM-yc-z64" id="Geo-c0-Grv"/>
                                                                                 <gridCell row="Geo-rw-Grv" column="DEf-ke-SgU" id="Geo-c1-Grv">
                                                                                     <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="15" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-tf-Grv">
                                                                                         <rect key="frame" x="203" y="58" width="165" height="21"/>
@@ -2346,22 +2409,11 @@
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                 </gridCell>
-                                                                                <gridCell row="Geo-rw-Grv" column="HwQ-Q9-aoX" id="Geo-c3-Grv">
-                                                                                    <button key="contentView" verticalHuggingPriority="750" tag="19" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-bt-Grv">
-                                                                                        <rect key="frame" x="430" y="51" width="44" height="32"/>
-                                                                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRefreshTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Geo-bc-Grv">
-                                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                        </buttonCell>
-                                                                                        <connections>
-                                                                                            <action selector="recomputeGeometricSurfaceArea:" target="b7G-Em-dfk" id="Geo-ac-Grv"/>
-                                                                                        </connections>
-                                                                                    </button>
-                                                                                </gridCell>
+                                                                                <gridCell row="Geo-rw-Grv" column="HwQ-Q9-aoX" id="Geo-c3-Grv"/>
                                                                                 <gridCell row="EnV-rw-SaA" column="8CM-yc-z64" id="EnV-c0-SaA">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-lb-SaA" userLabel="Volumetric Umin Surface Area">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-lb-SaA" userLabel="Umin Surface Area">
                                                                                         <rect key="frame" x="46" y="148" width="151" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Volumetric Umin Surface Area" id="EnV-lc-SaA" userLabel="Volumetric Umin Surface Area">
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Umin Surface Area" id="EnV-lc-SaA" userLabel="Umin Surface Area">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -2401,16 +2453,7 @@
                                                                                         </connections>
                                                                                     </button>
                                                                                 </gridCell>
-                                                                                <gridCell row="EnG-rw-SaA" column="8CM-yc-z64" id="EnG-c0-SaA">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnG-lb-SaA" userLabel="Gravimetric Umin Surface Area">
-                                                                                        <rect key="frame" x="41" y="119" width="156" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gravimetric Umin Surface Area" id="EnG-lc-SaA" userLabel="Gravimetric Umin Surface Area">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
+                                                                                <gridCell row="EnG-rw-SaA" column="8CM-yc-z64" id="EnG-c0-SaA"/>
                                                                                 <gridCell row="EnG-rw-SaA" column="DEf-ke-SgU" id="EnG-c1-SaA">
                                                                                     <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="EnG-tf-SaA">
                                                                                         <rect key="frame" x="203" y="116" width="165" height="21"/>
@@ -2432,22 +2475,11 @@
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                 </gridCell>
-                                                                                <gridCell row="EnG-rw-SaA" column="HwQ-Q9-aoX" id="EnG-c3-SaA">
-                                                                                    <button key="contentView" verticalHuggingPriority="750" tag="17" translatesAutoresizingMaskIntoConstraints="NO" id="EnG-bt-SaA">
-                                                                                        <rect key="frame" x="430" y="109" width="44" height="32"/>
-                                                                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRefreshTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="EnG-bc-SaA">
-                                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                        </buttonCell>
-                                                                                        <connections>
-                                                                                            <action selector="recomputeNitrogenSurfaceArea:" target="b7G-Em-dfk" id="EnG-ac-SaA"/>
-                                                                                        </connections>
-                                                                                    </button>
-                                                                                </gridCell>
+                                                                                <gridCell row="EnG-rw-SaA" column="HwQ-Q9-aoX" id="EnG-c3-SaA"/>
                                                                                 <gridCell row="itp-to-pVH" column="8CM-yc-z64" id="fec-EG-ogE">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="U0c-rb-2xE" userLabel="Volumetric Well-Surface Area">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="U0c-rb-2xE" userLabel="Well-Surface Area">
                                                                                         <rect key="frame" x="11" y="90" width="186" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Volumetric Well-Surface Area" id="siG-7J-hEu" userLabel="Volumetric Well-Surface Area">
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Well-Surface Area" id="siG-7J-hEu" userLabel="Well-Surface Area">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -2487,16 +2519,7 @@
                                                                                         </connections>
                                                                                     </button>
                                                                                 </gridCell>
-                                                                                <gridCell row="0ZQ-Ue-Lzl" column="8CM-yc-z64" id="CgC-W7-HUn">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="xj9-th-ZVV" userLabel="Gravimetric Well-Surface Area">
-                                                                                        <rect key="frame" x="6" y="61" width="191" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gravimetric Well-Surface Area" id="xXh-YD-ajh" userLabel="Gravimetric Well-Surface Area">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
+                                                                                <gridCell row="0ZQ-Ue-Lzl" column="8CM-yc-z64" id="CgC-W7-HUn"/>
                                                                                 <gridCell row="0ZQ-Ue-Lzl" column="DEf-ke-SgU" id="z3q-PS-nrs">
                                                                                     <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="NSw-hI-nbE">
                                                                                         <rect key="frame" x="203" y="58" width="165" height="21"/>
@@ -2518,19 +2541,26 @@
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                 </gridCell>
-                                                                                <gridCell row="0ZQ-Ue-Lzl" column="HwQ-Q9-aoX" id="uBs-4p-n2I">
-                                                                                    <button key="contentView" verticalHuggingPriority="750" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="ZsO-Ed-54o">
-                                                                                        <rect key="frame" x="430" y="51" width="44" height="32"/>
-                                                                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRefreshTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pGa-FZ-aa3">
-                                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                        </buttonCell>
-                                                                                        <connections>
-                                                                                            <action selector="recomputeWellSurfaceArea:" target="b7G-Em-dfk" id="rf8-bI-oFt"/>
-                                                                                        </connections>
-                                                                                    </button>
-                                                                                </gridCell>
-                                                                                <gridCell row="BLJ-da-5OD" column="8CM-yc-z64" id="hwp-vk-42H">
+                                                                                <gridCell row="0ZQ-Ue-Lzl" column="HwQ-Q9-aoX" id="uBs-4p-n2I"/>
+                                                                            </gridCells>
+                                                                        </gridView>
+                                                                        <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Chn-bx-Sep">
+                                                                            <rect key="frame" x="8" y="8" width="459" height="5"/>
+                                                                        </box>
+                                                                        <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="8" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Chn-gd-Sys">
+                                                                            <rect key="frame" x="8" y="8" width="467" height="58"/>
+                                                                            <rows>
+                                                                                <gridRow id="BLJ-da-5OD"/>
+                                                                                <gridRow id="8uo-Cx-pS1"/>
+                                                                            </rows>
+                                                                            <columns>
+                                                                                <gridColumn xPlacement="trailing" id="Chn-col-Lbl"/>
+                                                                                <gridColumn id="Chn-col-Val"/>
+                                                                                <gridColumn id="Chn-col-Unt"/>
+                                                                                <gridColumn width="30" id="Chn-col-Btn"/>
+                                                                            </columns>
+                                                                            <gridCells>
+                                                                                <gridCell row="BLJ-da-5OD" column="Chn-col-Lbl" id="hwp-vk-42H">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Yok-sP-3pL">
                                                                                         <rect key="frame" x="20" y="32" width="177" height="16"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Number of Channel Systems" id="92b-lC-W5K">
@@ -2540,7 +2570,7 @@
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                 </gridCell>
-                                                                                <gridCell row="BLJ-da-5OD" column="DEf-ke-SgU" id="JxX-yq-Du4">
+                                                                                <gridCell row="BLJ-da-5OD" column="Chn-col-Val" id="JxX-yq-Du4">
                                                                                     <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="gF2-cN-ZKn">
                                                                                         <rect key="frame" x="203" y="29" width="165" height="21"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="xdK-ii-8gQ">
@@ -2554,7 +2584,7 @@
                                                                                         </connections>
                                                                                     </textField>
                                                                                 </gridCell>
-                                                                                <gridCell row="BLJ-da-5OD" column="nSC-dm-sGl" id="gmy-iv-n8d">
+                                                                                <gridCell row="BLJ-da-5OD" column="Chn-col-Unt" id="gmy-iv-n8d">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="XIJ-ZA-ZHw">
                                                                                         <rect key="frame" x="374" y="32" width="57" height="16"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="[-]" id="8pV-IL-oyJ">
@@ -2564,8 +2594,8 @@
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                 </gridCell>
-                                                                                <gridCell row="BLJ-da-5OD" column="HwQ-Q9-aoX" id="6nj-9c-dtp"/>
-                                                                                <gridCell row="8uo-Cx-pS1" column="8CM-yc-z64" id="DZ9-lJ-HSc">
+                                                                                <gridCell row="BLJ-da-5OD" column="Chn-col-Btn" id="6nj-9c-dtp"/>
+                                                                                <gridCell row="8uo-Cx-pS1" column="Chn-col-Lbl" id="DZ9-lJ-HSc">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="WNo-lM-4FE">
                                                                                         <rect key="frame" x="-2" y="3" width="199" height="16"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Number of Inaccessible Pockets" id="lTN-44-tVw">
@@ -2575,7 +2605,7 @@
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                 </gridCell>
-                                                                                <gridCell row="8uo-Cx-pS1" column="DEf-ke-SgU" id="QeS-Tx-gP2">
+                                                                                <gridCell row="8uo-Cx-pS1" column="Chn-col-Val" id="QeS-Tx-gP2">
                                                                                     <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="ePM-dm-ChH">
                                                                                         <rect key="frame" x="203" y="0.0" width="165" height="21"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="CgV-3a-eRv">
@@ -2589,7 +2619,7 @@
                                                                                         </connections>
                                                                                     </textField>
                                                                                 </gridCell>
-                                                                                <gridCell row="8uo-Cx-pS1" column="nSC-dm-sGl" id="I17-S3-NeP">
+                                                                                <gridCell row="8uo-Cx-pS1" column="Chn-col-Unt" id="I17-S3-NeP">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="2z6-g2-sgD">
                                                                                         <rect key="frame" x="374" y="3" width="57" height="16"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="[-]" id="pC8-T5-EKr">
@@ -2599,15 +2629,19 @@
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                 </gridCell>
-                                                                                <gridCell row="8uo-Cx-pS1" column="HwQ-Q9-aoX" id="jWs-gg-gLx"/>
+                                                                                <gridCell row="8uo-Cx-pS1" column="Chn-col-Btn" id="jWs-gg-gLx"/>
                                                                             </gridCells>
                                                                         </gridView>
                                                                     </subviews>
                                                                     <edgeInsets key="edgeInsets" left="8" right="0.0" top="8" bottom="8"/>
                                                                     <visibilityPriorities>
                                                                         <integer value="1000"/>
+                                                                        <integer value="1000"/>
+                                                                        <integer value="1000"/>
                                                                     </visibilityPriorities>
                                                                     <customSpacing>
+                                                                        <real value="3.4028234663852886e+38"/>
+                                                                        <real value="3.4028234663852886e+38"/>
                                                                         <real value="3.4028234663852886e+38"/>
                                                                     </customSpacing>
                                                                 </stackView>

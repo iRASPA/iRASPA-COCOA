@@ -3705,11 +3705,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
            !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
         {
           popUpbuttonProbeParticle.isEditable = enabled && adsorptionSurfaceOn
-          if let rawValue: Int = self.renderAdsorptionSurfaceProbeMolecule?.rawValue
+          if let probeMolecule = self.renderAdsorptionSurfaceProbeMolecule,
+             let index = Structure.ProbeMolecule.selectableCases.firstIndex(of: probeMolecule)
           {
             popUpbuttonProbeParticle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             
-            popUpbuttonProbeParticle.selectItem(at: rawValue)
+            popUpbuttonProbeParticle.selectItem(at: index)
           }
           else
           {
@@ -9078,9 +9079,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeAdsorptionSurfaceProbeMolecule(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       let adsorptionSurfaceProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)
+       sender.indexOfSelectedItem >= 0,
+       sender.indexOfSelectedItem < Structure.ProbeMolecule.selectableCases.count
     {
-      self.renderAdsorptionSurfaceProbeMolecule = adsorptionSurfaceProbeMolecule
+      self.renderAdsorptionSurfaceProbeMolecule = Structure.ProbeMolecule.selectableCases[sender.indexOfSelectedItem]
       self.recomputeAdsorptionIsosurface()
     }
   }

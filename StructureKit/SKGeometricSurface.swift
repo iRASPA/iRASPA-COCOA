@@ -325,8 +325,9 @@ public struct SKGeometricSurface
     return SIMD3<Double>(s.x - floor(s.x), s.y - floor(s.y), s.z - floor(s.z))
   }
   
-  /// Exact geometric accessible surface area of each snapshot, in the same volumetric and gravimetric
-  /// units as the nitrogen and well-surface areas. Blocking pockets on the snapshot are always applied.
+  /// Exact force-field geometric accessible surface area of each snapshot, in the same volumetric
+  /// and gravimetric units as the nitrogen and well-surface areas. Blocking pockets on the snapshot
+  /// are always applied.
   public static func surfaceAreas(of snapshots: [SKFrameworkSnapshot]) -> [SKSurfaceAreaResult]
   {
     return snapshots.map { snapshot in
@@ -335,6 +336,19 @@ public struct SKGeometricSurface
                                              probeSigma: snapshot.probeParameters.y,
                                              cell: snapshot.cell,
                                              blockingPockets: snapshot.blockingPockets)
+      return SKSurfaceAreaResult(area: surface.area, structure: snapshot)
+    }
+  }
+  
+  /// Exact van der Waals geometric accessible surface area of each snapshot (Bondi radii).
+  public static func vanDerWaalsSurfaceAreas(of snapshots: [SKFrameworkSnapshot]) -> [SKSurfaceAreaResult]
+  {
+    return snapshots.map { snapshot in
+      let surface = SKGeometricSurface.buildVanDerWaals(fractionalPositions: snapshot.positions,
+                                                        elementIdentifiers: snapshot.elementIdentifiers,
+                                                        probeSigma: snapshot.probeParameters.y,
+                                                        cell: snapshot.cell,
+                                                        blockingPockets: snapshot.blockingPockets)
       return SKSurfaceAreaResult(area: surface.area, structure: snapshot)
     }
   }

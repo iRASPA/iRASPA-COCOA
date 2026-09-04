@@ -16,6 +16,9 @@
 /* Class = "NSMenuItem"; title = "Argon"; ObjectID = "2pH-Ma-VI0"; */
 "2pH-Ma-VI0.title" = "أرجون";
 
+/* Class = "NSMenuItem"; title = "Connolly"; ObjectID = "Ads-mi-Cnl"; */
+"Ads-mi-Cnl.title" = "Connolly";
+
 /* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "3MQ-hD-0K8"; */
 "3MQ-hD-0K8.title" = "CO₂";
 

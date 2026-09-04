@@ -33,7 +33,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     ("Helium", .helium), ("Methane", .methane), ("Nitrogen", .nitrogen),
     ("Hydrogen", .hydrogen), ("Water", .water), ("CO₂", .co2),
     ("Xenon", .xenon), ("Krypton", .krypton), ("Argon", .argon),
-    ("Custom", .custom)
+    ("Connolly", .connolly), ("Custom", .custom)
   ]
 
   // Section indices, in the same order as the Cocoa outline groups

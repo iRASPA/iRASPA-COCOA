@@ -175,6 +175,9 @@
 /* Class = "NSMenuItem"; title = "Argon"; ObjectID = "gay-1o-b6B"; */
 "gay-1o-b6B.title" = "Argón";
 
+/* Class = "NSMenuItem"; title = "Connolly"; ObjectID = "Prb-mi-Cnl"; */
+"Prb-mi-Cnl.title" = "Connolly";
+
 /* Class = "NSTextFieldCell"; title = "[g/mol]"; ObjectID = "gBf-y0-O3M"; */
 "gBf-y0-O3M.title" = "[g/mol]";
 
@@ -358,11 +361,11 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "Ángulo X";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
-"EnV-lc-SaA.title" = "Área superficial volumétrica Umin";
+/* Class = "NSTextFieldCell"; title = "Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
+"EnV-lc-SaA.title" = "Área superficial Umin";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
-"siG-7J-hEu.title" = "Área superficial volumétrica del pozo";
+/* Class = "NSTextFieldCell"; title = "Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
+"siG-7J-hEu.title" = "Área superficial del pozo";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
 "swk-Q8-afT.title" = "Disolvente cristal";
@@ -463,17 +466,23 @@
 /* Class = "NSMenuItem"; title = "RASPA Volumetric Data"; ObjectID = "xOm-9h-Hai"; */
 "xOm-9h-Hai.title" = "Datos volumétricos RASPA";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
-"EnG-lc-SaA.title" = "Área superficial gravimétrica Umin";
+/* Class = "NSTextFieldCell"; title = "Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
+"EnG-lc-SaA.title" = "Área superficial Umin";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
-"xXh-YD-ajh.title" = "Área superficial gravimétrica del pozo";
+/* Class = "NSTextFieldCell"; title = "Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
+"xXh-YD-ajh.title" = "Área superficial del pozo";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
-"Geo-lc-Vol.title" = "Área superficial geométrica volumétrica";
+/* Class = "NSTextFieldCell"; title = "FF Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
+"Geo-lc-Vol.title" = "Área superficial geométrica FF";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
-"Geo-lc-Grv.title" = "Área superficial geométrica gravimétrica";
+/* Class = "NSTextFieldCell"; title = "FF Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
+"Geo-lc-Grv.title" = "Área superficial geométrica FF";
+
+/* Class = "NSTextFieldCell"; title = "VDW Geometric Surface Area"; ObjectID = "Vdw-lc-Vol"; */
+"Vdw-lc-Vol.title" = "Área superficial geométrica VDW";
+
+/* Class = "NSTextFieldCell"; title = "VDW Geometric Surface Area"; ObjectID = "Vdw-lc-Grv"; */
+"Vdw-lc-Grv.title" = "Área superficial geométrica VDW";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
 "Y0x-AR-NvS.placeholderString" = "Máximo Z";

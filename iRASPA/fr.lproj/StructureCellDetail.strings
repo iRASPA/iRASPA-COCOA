@@ -316,6 +316,9 @@
 /* Class = "NSMenuItem"; title = "Argon"; ObjectID = "gay-1o-b6B"; */
 "gay-1o-b6B.title" = "Argon";
 
+/* Class = "NSMenuItem"; title = "Connolly"; ObjectID = "Prb-mi-Cnl"; */
+"Prb-mi-Cnl.title" = "Connolly";
+
 /* Class = "NSMenuItem"; title = "Crystal Polygonal Prism"; ObjectID = "h3A-5g-irg"; */
 "h3A-5g-irg.title" = "Prisme polygonal en cristal";
 
@@ -406,11 +409,11 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "Angle X";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
-"EnV-lc-SaA.title" = "Surface volumétrique Umin";
+/* Class = "NSTextFieldCell"; title = "Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
+"EnV-lc-SaA.title" = "Surface Umin";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
-"siG-7J-hEu.title" = "Well-surface volumétrique";
+/* Class = "NSTextFieldCell"; title = "Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
+"siG-7J-hEu.title" = "Well-surface";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
 "swk-Q8-afT.title" = "Solvant cristallin";
@@ -469,17 +472,23 @@
 /* Class = "NSTextFieldCell"; title = "Dimensionality of Pore System"; ObjectID = "vwN-1o-Umq"; */
 "vwN-1o-Umq.title" = "Dimensionnalité du système de pores";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
-"EnG-lc-SaA.title" = "Surface gravimétrique Umin";
+/* Class = "NSTextFieldCell"; title = "Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
+"EnG-lc-SaA.title" = "Surface Umin";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
-"xXh-YD-ajh.title" = "Well-surface gravimétrique";
+/* Class = "NSTextFieldCell"; title = "Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
+"xXh-YD-ajh.title" = "Well-surface";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
-"Geo-lc-Vol.title" = "Surface géométrique volumétrique";
+/* Class = "NSTextFieldCell"; title = "FF Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
+"Geo-lc-Vol.title" = "Surface géométrique FF";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
-"Geo-lc-Grv.title" = "Surface géométrique gravimétrique";
+/* Class = "NSTextFieldCell"; title = "FF Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
+"Geo-lc-Grv.title" = "Surface géométrique FF";
+
+/* Class = "NSTextFieldCell"; title = "VDW Geometric Surface Area"; ObjectID = "Vdw-lc-Vol"; */
+"Vdw-lc-Vol.title" = "Surface géométrique VDW";
+
+/* Class = "NSTextFieldCell"; title = "VDW Geometric Surface Area"; ObjectID = "Vdw-lc-Grv"; */
+"Vdw-lc-Grv.title" = "Surface géométrique VDW";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "xax-w6-E1h"; */
 "xax-w6-E1h.title" = "Tourner -90";

@@ -82,7 +82,10 @@ public struct SKFrameworkSnapshot
   // Of the unit cell, in gram per mole.
   public let mass: Double
   
-  public init(cell: SKCell, positions: [SIMD3<Double>], potentialParameters: [SIMD2<Double>], probeParameters: SIMD2<Double>, blockingPockets: [SIMD4<Double>] = [], mass: Double = 0.0)
+  /// Atomic numbers of `positions`, for the van der Waals geometric surface.
+  public let elementIdentifiers: [Int]
+  
+  public init(cell: SKCell, positions: [SIMD3<Double>], potentialParameters: [SIMD2<Double>], probeParameters: SIMD2<Double>, blockingPockets: [SIMD4<Double>] = [], mass: Double = 0.0, elementIdentifiers: [Int] = [])
   {
     self.cell = cell
     self.positions = positions
@@ -90,11 +93,12 @@ public struct SKFrameworkSnapshot
     self.probeParameters = probeParameters
     self.blockingPockets = blockingPockets
     self.mass = mass
+    self.elementIdentifiers = elementIdentifiers
   }
   
   public init(_ structure: SKRenderAdsorptionSurfaceStructure)
   {
-    self.init(cell: structure.cell, positions: structure.atomUnitCellPositions, potentialParameters: structure.potentialParameters, probeParameters: structure.frameworkProbeParameters, blockingPockets: structure.appliedBlockingPockets, mass: structure.structureMass)
+    self.init(cell: structure.cell, positions: structure.atomUnitCellPositions, potentialParameters: structure.potentialParameters, probeParameters: structure.frameworkProbeParameters, blockingPockets: structure.appliedBlockingPockets, mass: structure.structureMass, elementIdentifiers: structure.atomUnitCellElementIdentifiers)
   }
   
   /// Snapshot that always includes the structure's blocking pockets, whether or not they are applied
@@ -102,7 +106,7 @@ public struct SKFrameworkSnapshot
   /// area even when "Apply blocking pockets" is off in Appearance.
   public static func applyingBlockingPockets(_ structure: SKRenderAdsorptionSurfaceStructure) -> SKFrameworkSnapshot
   {
-    return SKFrameworkSnapshot(cell: structure.cell, positions: structure.atomUnitCellPositions, potentialParameters: structure.potentialParameters, probeParameters: structure.frameworkProbeParameters, blockingPockets: structure.blockingPockets, mass: structure.structureMass)
+    return SKFrameworkSnapshot(cell: structure.cell, positions: structure.atomUnitCellPositions, potentialParameters: structure.potentialParameters, probeParameters: structure.frameworkProbeParameters, blockingPockets: structure.blockingPockets, mass: structure.structureMass, elementIdentifiers: structure.atomUnitCellElementIdentifiers)
   }
 }
 

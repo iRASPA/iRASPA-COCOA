@@ -50,7 +50,7 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
 public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, RKRenderBlockingPocketsSource, AtomStructureEditor, BondStructureEditor, AnnotationEditor, InfoEditor, StructuralPropertyEditor
 {
-  private static var classVersionNumber: Int = 16
+  private static var classVersionNumber: Int = 17
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   {
@@ -336,6 +336,15 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     }
   }
   
+  public var structureVanDerWaalsGeometricSurfaceArea: Double = 0.0
+  {
+    didSet
+    {
+      self.structureGravimetricVanDerWaalsGeometricSurfaceArea = structureVanDerWaalsGeometricSurfaceArea * SKConstant.AvogadroConstantPerAngstromSquared / self.structureMass
+      self.structureVolumetricVanDerWaalsGeometricSurfaceArea = structureVanDerWaalsGeometricSurfaceArea * 1e4 / self.cell.volume
+    }
+  }
+  
   // MARK: protocol RKRenderObjectSource implementation
   // =====================================================================
   
@@ -430,6 +439,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var structureGravimetricWellSurfaceArea: Double = 0.0
   public var structureVolumetricGeometricSurfaceArea: Double = 0.0
   public var structureGravimetricGeometricSurfaceArea: Double = 0.0
+  public var structureVolumetricVanDerWaalsGeometricSurfaceArea: Double = 0.0
+  public var structureGravimetricVanDerWaalsGeometricSurfaceArea: Double = 0.0
   public var structureNumberOfChannelSystems: Int = 0
   public var structureNumberOfInaccessiblePockets: Int = 0
   public var structureDimensionalityOfPoreSystem: Int = 0
@@ -560,6 +571,14 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     case krypton = 7
     case argon = 8
     case custom = 9
+    /// Vanishing probe (ε = 0, σ = 0). Appended so documents that stored Custom as 9 keep loading.
+    case connolly = 10
+    
+    /// Probe particles offered in Volumetric Data and Cell → Probe Sphere, in menu order.
+    /// Connolly sits after Argon without renumbering Custom.
+    public static let selectableCases: [ProbeMolecule] = [
+      .helium, .methane, .nitrogen, .hydrogen, .water, .co2, .xenon, .krypton, .argon, .connolly, .custom
+    ]
     
     public var namedParameters: SIMD2<Double>?
     {
@@ -586,6 +605,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         return SIMD2<Double>(162.58, 3.6274)
       case .argon:
         return SIMD2<Double>(119.8, 3.34)
+      case .connolly:
+        return SIMD2<Double>(0.0, 0.0)
       case .custom:
         return nil
       }
@@ -593,7 +614,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     
     public static func matching(_ parameters: SIMD2<Double>, tolerance: Double = 1.0e-6) -> ProbeMolecule
     {
-      let named: [ProbeMolecule] = [.helium, .methane, .nitrogen, .hydrogen, .water, .co2, .xenon, .krypton, .argon]
+      let named: [ProbeMolecule] = [.helium, .methane, .nitrogen, .hydrogen, .water, .co2, .xenon, .krypton, .argon, .connolly]
       for probe in named
       {
         guard let candidate = probe.namedParameters else { continue }
@@ -753,6 +774,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.structureGravimetricWellSurfaceArea = copy.structureGravimetricWellSurfaceArea
     self.structureVolumetricGeometricSurfaceArea = copy.structureVolumetricGeometricSurfaceArea
     self.structureGravimetricGeometricSurfaceArea = copy.structureGravimetricGeometricSurfaceArea
+    self.structureVolumetricVanDerWaalsGeometricSurfaceArea = copy.structureVolumetricVanDerWaalsGeometricSurfaceArea
+    self.structureGravimetricVanDerWaalsGeometricSurfaceArea = copy.structureGravimetricVanDerWaalsGeometricSurfaceArea
     self.structureNumberOfChannelSystems = copy.structureNumberOfChannelSystems
     self.structureNumberOfInaccessiblePockets = copy.structureNumberOfInaccessiblePockets
     self.structureDimensionalityOfPoreSystem = copy.structureDimensionalityOfPoreSystem
@@ -1152,6 +1175,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.structureGravimetricWellSurfaceArea = cellStructureViewer.structureGravimetricWellSurfaceArea
       self.structureVolumetricGeometricSurfaceArea = cellStructureViewer.structureVolumetricGeometricSurfaceArea
       self.structureGravimetricGeometricSurfaceArea = cellStructureViewer.structureGravimetricGeometricSurfaceArea
+      self.structureVolumetricVanDerWaalsGeometricSurfaceArea = cellStructureViewer.structureVolumetricVanDerWaalsGeometricSurfaceArea
+      self.structureGravimetricVanDerWaalsGeometricSurfaceArea = cellStructureViewer.structureGravimetricVanDerWaalsGeometricSurfaceArea
       self.structureNumberOfChannelSystems = cellStructureViewer.structureNumberOfChannelSystems
       self.structureNumberOfInaccessiblePockets = cellStructureViewer.structureNumberOfInaccessiblePockets
       self.structureDimensionalityOfPoreSystem = cellStructureViewer.structureDimensionalityOfPoreSystem
@@ -1272,6 +1297,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.structureGravimetricWellSurfaceArea = clone.structureGravimetricWellSurfaceArea
     self.structureVolumetricGeometricSurfaceArea = clone.structureVolumetricGeometricSurfaceArea
     self.structureGravimetricGeometricSurfaceArea = clone.structureGravimetricGeometricSurfaceArea
+    self.structureVolumetricVanDerWaalsGeometricSurfaceArea = clone.structureVolumetricVanDerWaalsGeometricSurfaceArea
+    self.structureGravimetricVanDerWaalsGeometricSurfaceArea = clone.structureGravimetricVanDerWaalsGeometricSurfaceArea
     self.structureNumberOfChannelSystems = clone.structureNumberOfChannelSystems
     self.structureNumberOfInaccessiblePockets = clone.structureNumberOfInaccessiblePockets
     self.structureDimensionalityOfPoreSystem = clone.structureDimensionalityOfPoreSystem
@@ -3887,6 +3914,9 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     encoder.encode(self.adsorptionSurfaceProbeEpsilon)
     encoder.encode(self.adsorptionSurfaceProbeSigma)
     
+    encoder.encode(self.structureVolumetricVanDerWaalsGeometricSurfaceArea)
+    encoder.encode(self.structureGravimetricVanDerWaalsGeometricSurfaceArea)
+    
     super.binaryEncode(to: encoder)
   }
   
@@ -4369,6 +4399,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       {
         self.adsorptionSurfaceProbeEpsilon = try decoder.decode(Double.self)
         self.adsorptionSurfaceProbeSigma = try decoder.decode(Double.self)
+      }
+      
+      if readVersionNumber >= 17 // introduced in version 17
+      {
+        self.structureVolumetricVanDerWaalsGeometricSurfaceArea = try decoder.decode(Double.self)
+        self.structureGravimetricVanDerWaalsGeometricSurfaceArea = try decoder.decode(Double.self)
       }
       
       try super.init(fromBinary: decoder)

@@ -55,6 +55,8 @@ public protocol StructuralPropertyViewer: AnyObject
   var structureGravimetricWellSurfaceArea: Double {get}
   var structureVolumetricGeometricSurfaceArea: Double {get}
   var structureGravimetricGeometricSurfaceArea: Double {get}
+  var structureVolumetricVanDerWaalsGeometricSurfaceArea: Double {get}
+  var structureGravimetricVanDerWaalsGeometricSurfaceArea: Double {get}
   var structureNumberOfChannelSystems: Int {get}
   var structureNumberOfInaccessiblePockets: Int {get}
   var structureDimensionalityOfPoreSystem: Int {get}
@@ -81,6 +83,8 @@ public protocol StructuralPropertyEditor: StructuralPropertyViewer
   var structureGravimetricWellSurfaceArea: Double {get set}
   var structureVolumetricGeometricSurfaceArea: Double {get set}
   var structureGravimetricGeometricSurfaceArea: Double {get set}
+  var structureVolumetricVanDerWaalsGeometricSurfaceArea: Double {get set}
+  var structureGravimetricVanDerWaalsGeometricSurfaceArea: Double {get set}
   var structureNumberOfChannelSystems: Int {get set}
   var structureNumberOfInaccessiblePockets: Int {get set}
   var structureDimensionalityOfPoreSystem: Int {get set}

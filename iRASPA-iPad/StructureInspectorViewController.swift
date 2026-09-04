@@ -30,7 +30,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     ("Helium", .helium), ("Methane", .methane), ("Nitrogen", .nitrogen),
     ("Hydrogen", .hydrogen), ("Water", .water), ("CO₂", .co2),
     ("Xenon", .xenon), ("Krypton", .krypton), ("Argon", .argon),
-    ("Custom", .custom)
+    ("Connolly", .connolly), ("Custom", .custom)
   ]
 
   private let materialKinds: [(String, SKStructure.Kind)] = [
@@ -211,8 +211,8 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .orientation: return 7
     case .origin: return 3
     case .transformContent: return 7
-    case .structural: return 8
-    case .probe: return 14
+    case .structural: return 9
+    case .probe: return 18
     case .channels: return 4
     case .spaceGroup: return 5
     case .centering: return 5
@@ -257,11 +257,12 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .transformContent:
       if indexPath.row == 6 { applyContentShift() }
     case .structural:
-      if indexPath.row == 7 { computeHeliumVoidFraction() }
+      if indexPath.row == 8 { computeHeliumVoidFraction() }
     case .probe:
-      if indexPath.row == 5 { computeGeometricSurfaceArea() }
-      if indexPath.row == 8 { computeNitrogenSurfaceArea() }
-      if indexPath.row == 11 { computeWellSurfaceArea() }
+      if indexPath.row == 5 { computeVanDerWaalsGeometricSurfaceArea() }
+      if indexPath.row == 8 { computeGeometricSurfaceArea() }
+      if indexPath.row == 11 { computeNitrogenSurfaceArea() }
+      if indexPath.row == 14 { computeWellSurfaceArea() }
     case .actions:
       switch indexPath.row
       {
@@ -638,6 +639,8 @@ final class StructureInspectorViewController: CollapsibleTableViewController
       return infoRow("Specific volume (cm³/g)", value: structure.map { String(format: "%.5f", $0.structureSpecificVolume) })
     case 6:
       return infoRow("Accessible pore volume (cm³/g)", value: structure.map { String(format: "%.5f", $0.structureAccessiblePoreVolume) })
+    case 7:
+      return separatorRow()
     default:
       return actionRow(isComputing ? "Computing helium void fraction…" : "Compute helium void fraction")
     }
@@ -678,24 +681,32 @@ final class StructureInspectorViewController: CollapsibleTableViewController
         self.recomputeProbeSurfaces()
       }
     case 3:
-      return infoRow("Volumetric geometric surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricGeometricSurfaceArea) })
+      return infoRow("VDW geometric surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricVanDerWaalsGeometricSurfaceArea) })
     case 4:
-      return infoRow("Gravimetric geometric surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricGeometricSurfaceArea) })
+      return infoRow("", value: structure.map { String(format: "%.3f m²/g", $0.structureGravimetricVanDerWaalsGeometricSurfaceArea) })
     case 5:
-      return actionRow(isComputing ? "Computing geometric surface area…" : "Compute geometric surface area")
+      return actionRow(isComputing ? "Computing VDW geometric surface area…" : "Compute VDW geometric surface area")
     case 6:
-      return infoRow("Volumetric Umin surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricNitrogenSurfaceArea) })
+      return infoRow("FF geometric surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricGeometricSurfaceArea) })
     case 7:
-      return infoRow("Gravimetric Umin surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricNitrogenSurfaceArea) })
+      return infoRow("", value: structure.map { String(format: "%.3f m²/g", $0.structureGravimetricGeometricSurfaceArea) })
     case 8:
-      return actionRow(isComputing ? "Computing Umin surface area…" : "Compute Umin surface area")
+      return actionRow(isComputing ? "Computing FF geometric surface area…" : "Compute FF geometric surface area")
     case 9:
-      return infoRow("Volumetric well-surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricWellSurfaceArea) })
+      return infoRow("Umin surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricNitrogenSurfaceArea) })
     case 10:
-      return infoRow("Gravimetric well-surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricWellSurfaceArea) })
+      return infoRow("", value: structure.map { String(format: "%.3f m²/g", $0.structureGravimetricNitrogenSurfaceArea) })
     case 11:
-      return actionRow(isComputing ? "Computing well-surface area…" : "Compute well-surface area")
+      return actionRow(isComputing ? "Computing Umin surface area…" : "Compute Umin surface area")
     case 12:
+      return infoRow("Well-surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricWellSurfaceArea) })
+    case 13:
+      return infoRow("", value: structure.map { String(format: "%.3f m²/g", $0.structureGravimetricWellSurfaceArea) })
+    case 14:
+      return actionRow(isComputing ? "Computing well-surface area…" : "Compute well-surface area")
+    case 15:
+      return separatorRow()
+    case 16:
       return intFieldRow("Number of channel systems", value: structure?.structureNumberOfChannelSystems ?? 0) { [weak self] value in
         self?.allStructures().forEach { $0.structureNumberOfChannelSystems = value }
         self?.document.updateChangeCount(.done)
@@ -1116,12 +1127,41 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     }
   }
 
+  private func computeVanDerWaalsGeometricSurfaceArea()
+  {
+    guard !isComputing else { return }
+    let structures = computeTargets()
+    guard !structures.isEmpty else {
+      LogQueue.shared.warning(destination: nil, message: "No structure with unit-cell positions to compute a VDW geometric surface area")
+      return
+    }
+    isComputing = true
+    tableView.reloadData()
+    let payload = structures.map { frameworkSnapshot(for: $0, applyingBlockingPockets: true) }
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      let results = SKGeometricSurface.vanDerWaalsSurfaceAreas(of: payload)
+      DispatchQueue.main.async {
+        guard let self else { return }
+        for (i, result) in results.enumerated() where structures.indices.contains(i)
+        {
+          structures[i].structureVanDerWaalsGeometricSurfaceArea = result.area
+          structures[i].recomputeDensityProperties()
+        }
+        self.isComputing = false
+        self.document.updateChangeCount(.done)
+        self.tableView.reloadData()
+        let text = structures.map { String(format: "%.1f m²/g", $0.structureGravimetricVanDerWaalsGeometricSurfaceArea) }.joined(separator: ", ")
+        LogQueue.shared.info(destination: nil, message: "VDW geometric surface area: \(text)")
+      }
+    }
+  }
+
   private func computeGeometricSurfaceArea()
   {
     guard !isComputing else { return }
     let structures = computeTargets()
     guard !structures.isEmpty else {
-      LogQueue.shared.warning(destination: nil, message: "No structure with unit-cell positions to compute a geometric surface area")
+      LogQueue.shared.warning(destination: nil, message: "No structure with unit-cell positions to compute an FF geometric surface area")
       return
     }
     isComputing = true
@@ -1140,7 +1180,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
         self.document.updateChangeCount(.done)
         self.tableView.reloadData()
         let text = structures.map { String(format: "%.1f m²/g", $0.structureGravimetricGeometricSurfaceArea) }.joined(separator: ", ")
-        LogQueue.shared.info(destination: nil, message: "Geometric surface area: \(text)")
+        LogQueue.shared.info(destination: nil, message: "FF geometric surface area: \(text)")
       }
     }
   }
@@ -1238,7 +1278,8 @@ final class StructureInspectorViewController: CollapsibleTableViewController
                                potentialParameters: structure.potentialParameters,
                                probeParameters: SIMD2<Double>(structure.frameworkProbeEpsilon, structure.frameworkProbeSigma),
                                blockingPockets: applyingBlockingPockets ? structure.blockingPockets : structure.appliedBlockingPockets,
-                               mass: structure.structureMass)
+                               mass: structure.structureMass,
+                               elementIdentifiers: structure.atomUnitCellElementIdentifiers)
   }
 
   private func recomputeProbeSurfaces()
@@ -1255,6 +1296,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     let geometricPayload = structures.map { frameworkSnapshot(for: $0, applyingBlockingPockets: true) }
     DispatchQueue.global(qos: .userInitiated).async { [weak self] in
       let geometric = SKGeometricSurface.surfaceAreas(of: geometricPayload)
+      let vanDerWaals = SKGeometricSurface.vanDerWaalsSurfaceAreas(of: geometricPayload)
       let energy = try? SKNitrogenSurfaceArea.computeEnergySurface(structures: energyPayload)
       let well = try? SKNitrogenSurfaceArea.compute(structures: energyPayload)
       DispatchQueue.main.async {
@@ -1262,6 +1304,10 @@ final class StructureInspectorViewController: CollapsibleTableViewController
         for (i, result) in geometric.enumerated() where structures.indices.contains(i)
         {
           structures[i].structureGeometricSurfaceArea = result.area
+        }
+        for (i, result) in vanDerWaals.enumerated() where structures.indices.contains(i)
+        {
+          structures[i].structureVanDerWaalsGeometricSurfaceArea = result.area
         }
         if let energy
         {
@@ -1524,6 +1570,25 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     cell.selectionStyle = .none
     cell.textLabel?.text = title
     cell.detailTextLabel?.text = value ?? "—"
+    return cell
+  }
+
+  private func separatorRow() -> UITableViewCell
+  {
+    let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+    cell.selectionStyle = .none
+    cell.backgroundColor = .clear
+    let line = UIView()
+    line.translatesAutoresizingMaskIntoConstraints = false
+    line.backgroundColor = .separator
+    cell.contentView.addSubview(line)
+    NSLayoutConstraint.activate([
+      line.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale),
+      line.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor),
+      line.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor),
+      line.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
+      cell.contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 12)
+    ])
     return cell
   }
 
