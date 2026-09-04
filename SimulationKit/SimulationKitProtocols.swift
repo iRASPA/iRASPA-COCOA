@@ -50,6 +50,8 @@ public protocol SKRenderAdsorptionSurfaceStructure
   var frameworkProbeParameters: SIMD2<Double> {get}
   
   // Spheres the probe may not enter, as a fractional position of the unit cell with a radius in angstrom.
+  var blockingPockets: [SIMD4<Double>] {get}
+  
   // Empty unless the structure asks for its blocking pockets to be applied, so a grid computation can pass
   // this on without knowing about the setting.
   var appliedBlockingPockets: [SIMD4<Double>] {get}
@@ -90,6 +92,14 @@ public struct SKFrameworkSnapshot
   public init(_ structure: SKRenderAdsorptionSurfaceStructure)
   {
     self.init(cell: structure.cell, positions: structure.atomUnitCellPositions, potentialParameters: structure.potentialParameters, probeParameters: structure.frameworkProbeParameters, blockingPockets: structure.appliedBlockingPockets, mass: structure.structureMass)
+  }
+  
+  /// Snapshot that always includes the structure's blocking pockets, whether or not they are applied
+  /// to a drawn surface. Geometric surface area uses this: an inaccessible cage is cut out of the
+  /// area even when "Apply blocking pockets" is off in Appearance.
+  public static func applyingBlockingPockets(_ structure: SKRenderAdsorptionSurfaceStructure) -> SKFrameworkSnapshot
+  {
+    return SKFrameworkSnapshot(cell: structure.cell, positions: structure.atomUnitCellPositions, potentialParameters: structure.potentialParameters, probeParameters: structure.frameworkProbeParameters, blockingPockets: structure.blockingPockets, mass: structure.structureMass)
   }
 }
 

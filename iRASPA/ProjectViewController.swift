@@ -2345,6 +2345,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
               let snapshots: [SKFrameworkSnapshot] = structures.map(SKFrameworkSnapshot.init)
               let energyResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.computeEnergySurface(structures: snapshots)
               let wellResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.compute(structures: snapshots)
+              let geometricResults: [SKSurfaceAreaResult] = SKGeometricSurface.surfaceAreas(of: structures.map(SKFrameworkSnapshot.applyingBlockingPockets))
               for (i, result) in energyResults.enumerated()
               {
                 structures[i].structureNitrogenSurfaceArea = result.area
@@ -2352,6 +2353,10 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
               for (i, result) in wellResults.enumerated()
               {
                 structures[i].structureWellSurfaceArea = result.area
+              }
+              for (i, result) in geometricResults.enumerated()
+              {
+                structures[i].structureGeometricSurfaceArea = result.area
               }
               LogQueue.shared.info(destination: self.view.window?.windowController, message: "Computed surface area for " + projectStructure.displayName)
             }

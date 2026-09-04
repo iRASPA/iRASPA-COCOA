@@ -220,6 +220,9 @@
 /* Class = "NSMenuItem"; title = "Well Surface Overlay"; ObjectID = "Wel-Ov-rl0"; */
 "Wel-Ov-rl0.title" = "Наложение поверхности потенциальной ямы";
 
+/* Class = "NSMenuItem"; title = "Geometric Surface"; ObjectID = "Geo-Su-rf0"; */
+"Geo-Su-rf0.title" = "Геометрическая поверхность";
+
 /* Class = "NSMenuItem"; title = "32x32x32"; ObjectID = "C6X-Mp-y1T"; */
 "C6X-Mp-y1T.title" = "32x32x32";
 

@@ -406,8 +406,8 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "Angle X";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Surface Area"; ObjectID = "EnV-lc-SaA"; */
-"EnV-lc-SaA.title" = "Surface volumétrique (azote)";
+/* Class = "NSTextFieldCell"; title = "Volumetric Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
+"EnV-lc-SaA.title" = "Surface volumétrique Umin";
 
 /* Class = "NSTextFieldCell"; title = "Volumetric Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
 "siG-7J-hEu.title" = "Well-surface volumétrique";
@@ -469,11 +469,17 @@
 /* Class = "NSTextFieldCell"; title = "Dimensionality of Pore System"; ObjectID = "vwN-1o-Umq"; */
 "vwN-1o-Umq.title" = "Dimensionnalité du système de pores";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area"; ObjectID = "EnG-lc-SaA"; */
-"EnG-lc-SaA.title" = "Surface gravimétrique (azote)";
+/* Class = "NSTextFieldCell"; title = "Gravimetric Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
+"EnG-lc-SaA.title" = "Surface gravimétrique Umin";
 
 /* Class = "NSTextFieldCell"; title = "Gravimetric Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
 "xXh-YD-ajh.title" = "Well-surface gravimétrique";
+
+/* Class = "NSTextFieldCell"; title = "Volumetric Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
+"Geo-lc-Vol.title" = "Surface géométrique volumétrique";
+
+/* Class = "NSTextFieldCell"; title = "Gravimetric Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
+"Geo-lc-Grv.title" = "Surface géométrique gravimétrique";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "xax-w6-E1h"; */
 "xax-w6-E1h.title" = "Tourner -90";

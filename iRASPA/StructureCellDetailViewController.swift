@@ -1264,6 +1264,43 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
+      if let textFieldRenderStructureVolumetricGeometricSurfaceArea: NSTextField = view.viewWithTag(14) as? NSTextField
+      {
+        textFieldRenderStructureVolumetricGeometricSurfaceArea.isEditable = false
+        textFieldRenderStructureVolumetricGeometricSurfaceArea.stringValue = ""
+        textFieldRenderStructureVolumetricGeometricSurfaceArea.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldRenderStructureVolumetricGeometricSurfaceArea.isEnabled = enabled
+          if let structureVolumetricGeometricSurfaceArea: Double = self.renderStructureVolumetricGeometricSurfaceArea
+          {
+            textFieldRenderStructureVolumetricGeometricSurfaceArea.doubleValue = structureVolumetricGeometricSurfaceArea
+          }
+          else
+          {
+            textFieldRenderStructureVolumetricGeometricSurfaceArea.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let textFieldRenderStructureGravimetricGeometricSurfaceArea: NSTextField = view.viewWithTag(15) as? NSTextField
+      {
+        textFieldRenderStructureGravimetricGeometricSurfaceArea.isEditable = false
+        textFieldRenderStructureGravimetricGeometricSurfaceArea.stringValue = ""
+        textFieldRenderStructureGravimetricGeometricSurfaceArea.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldRenderStructureGravimetricGeometricSurfaceArea.isEnabled = enabled
+          if let structureGravimetricGeometricSurfaceArea: Double = self.renderStructureGravimetricGeometricSurfaceArea
+          {
+            textFieldRenderStructureGravimetricGeometricSurfaceArea.doubleValue = structureGravimetricGeometricSurfaceArea
+          }
+          else
+          {
+            textFieldRenderStructureGravimetricGeometricSurfaceArea.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      
       if let textFieldRenderStructureVolumetricWellSurfaceArea: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldRenderStructureVolumetricWellSurfaceArea.isEditable = false
@@ -1375,6 +1412,24 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           buttonComputeEnergyGravimetricSurfaceArea.isEnabled = enabled
+        }
+      }
+      
+      if let buttonComputeGeometricVolumetricSurfaceArea: NSButton = view.viewWithTag(18) as? NSButton
+      {
+        buttonComputeGeometricVolumetricSurfaceArea.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          buttonComputeGeometricVolumetricSurfaceArea.isEnabled = enabled
+        }
+      }
+    
+      if let buttonComputeGeometricGravimetricSurfaceArea: NSButton = view.viewWithTag(19) as? NSButton
+      {
+        buttonComputeGeometricGravimetricSurfaceArea.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          buttonComputeGeometricGravimetricSurfaceArea.isEnabled = enabled
         }
       }
   
@@ -3464,6 +3519,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         let snapshots: [SKFrameworkSnapshot] = structures.map(SKFrameworkSnapshot.init)
         let energyResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.computeEnergySurface(structures: snapshots)
         let wellResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.compute(structures: snapshots)
+        let geometricResults: [SKSurfaceAreaResult] = SKGeometricSurface.surfaceAreas(of: structures.map(SKFrameworkSnapshot.applyingBlockingPockets))
         for (i, result) in energyResults.enumerated()
         {
           structures[i].structureNitrogenSurfaceArea = result.area
@@ -3471,6 +3527,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         for (i, result) in wellResults.enumerated()
         {
           structures[i].structureWellSurfaceArea = result.area
+        }
+        for (i, result) in geometricResults.enumerated()
+        {
+          structures[i].structureGeometricSurfaceArea = result.area
         }
       }
       catch let error
@@ -3529,6 +3589,24 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
         return
+      }
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.structuralProbeCell])
+    }
+  }
+  
+  @IBAction func recomputeGeometricSurfaceArea(_ sender: NSButton)
+  {
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    {
+      let structures: [Structure & StructuralPropertyEditor & VolumetricDataViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & VolumetricDataViewer})
+      let results: [SKSurfaceAreaResult] = SKGeometricSurface.surfaceAreas(of: structures.map(SKFrameworkSnapshot.applyingBlockingPockets))
+      for (i, result) in results.enumerated()
+      {
+        structures[i].structureGeometricSurfaceArea = result.area
       }
       
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -4544,6 +4622,32 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     set(newValue)
     {
       self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricWellSurfaceArea = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureVolumetricGeometricSurfaceArea: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureVolumetricGeometricSurfaceArea})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureVolumetricGeometricSurfaceArea = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureGravimetricGeometricSurfaceArea: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricGeometricSurfaceArea})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.structureGravimetricGeometricSurfaceArea = newValue ?? 0.0}
     }
   }
   

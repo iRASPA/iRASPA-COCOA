@@ -338,7 +338,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
       self.renderer.buildStructureUniforms(device: device)
     
       self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: {})
-      
+      self.renderer.geometricSurfaceShader.updateGeometricSurface(device: device, windowController: hostWindowController)
       self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: {})
 
       view.renderQuality = RKRenderQuality.high
@@ -363,7 +363,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
       self.renderer.buildStructureUniforms(device: device)
     
       self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: {})
-      
+      self.renderer.geometricSurfaceShader.updateGeometricSurface(device: device, windowController: hostWindowController)
       self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: {})
     
       view.renderQuality = RKRenderQuality.high
@@ -573,6 +573,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
        let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
       self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: completionHandler)
+      self.renderer.geometricSurfaceShader.updateGeometricSurface(device: device, windowController: hostWindowController)
       self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: hostWindowController, completionHandler: completionHandler)
     }
   }

@@ -47,6 +47,9 @@ public enum RKEnergySurfaceType: Int
   // method so it can be superimposed on a copy of the structure showing the well surface, each with its
   // own material.
   case wellSurfaceOverlay = 3
+  /// The exact geometric accessible surface: the union of the probe-inflated atoms, drawn as
+  /// spherical patches rather than a triangulated level set.
+  case geometricSurface = 4
 
   /// Whether the surface is a triangle mesh drawn by the isosurface pipeline, the well surface being the
   /// iso-surface mapped onto the locus of energy minima rather than a separate construction.
@@ -55,7 +58,7 @@ public enum RKEnergySurfaceType: Int
     switch self
     {
     case .isoSurface, .wellSurface, .wellSurfaceOverlay: return true
-    case .volumeRendering: return false
+    case .volumeRendering, .geometricSurface: return false
     }
   }
 }

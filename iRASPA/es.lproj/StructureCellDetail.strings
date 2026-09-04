@@ -358,8 +358,8 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "Ángulo X";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Surface Area"; ObjectID = "EnV-lc-SaA"; */
-"EnV-lc-SaA.title" = "Área superficial volumétrica (nitrógeno)";
+/* Class = "NSTextFieldCell"; title = "Volumetric Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
+"EnV-lc-SaA.title" = "Área superficial volumétrica Umin";
 
 /* Class = "NSTextFieldCell"; title = "Volumetric Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
 "siG-7J-hEu.title" = "Área superficial volumétrica del pozo";
@@ -463,11 +463,17 @@
 /* Class = "NSMenuItem"; title = "RASPA Volumetric Data"; ObjectID = "xOm-9h-Hai"; */
 "xOm-9h-Hai.title" = "Datos volumétricos RASPA";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area"; ObjectID = "EnG-lc-SaA"; */
-"EnG-lc-SaA.title" = "Área superficial gravimétrica (nitrógeno)";
+/* Class = "NSTextFieldCell"; title = "Gravimetric Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
+"EnG-lc-SaA.title" = "Área superficial gravimétrica Umin";
 
 /* Class = "NSTextFieldCell"; title = "Gravimetric Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
 "xXh-YD-ajh.title" = "Área superficial gravimétrica del pozo";
+
+/* Class = "NSTextFieldCell"; title = "Volumetric Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
+"Geo-lc-Vol.title" = "Área superficial geométrica volumétrica";
+
+/* Class = "NSTextFieldCell"; title = "Gravimetric Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
+"Geo-lc-Grv.title" = "Área superficial geométrica gravimétrica";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
 "Y0x-AR-NvS.placeholderString" = "Máximo Z";

@@ -406,8 +406,8 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "Γωνία X";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Surface Area"; ObjectID = "EnV-lc-SaA"; */
-"EnV-lc-SaA.title" = "Ογκομετρική επιφάνεια (άζωτο)";
+/* Class = "NSTextFieldCell"; title = "Volumetric Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
+"EnV-lc-SaA.title" = "Ογκομετρική επιφάνεια Umin";
 
 /* Class = "NSTextFieldCell"; title = "Volumetric Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
 "siG-7J-hEu.title" = "Ογκομετρική επιφάνεια φρέατος";
@@ -469,11 +469,17 @@
 /* Class = "NSTextFieldCell"; title = "Dimensionality of Pore System"; ObjectID = "vwN-1o-Umq"; */
 "vwN-1o-Umq.title" = "Διάσταση του συστήματος πόρων";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area"; ObjectID = "EnG-lc-SaA"; */
-"EnG-lc-SaA.title" = "Βαρυμετρική επιφάνεια (άζωτο)";
+/* Class = "NSTextFieldCell"; title = "Gravimetric Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
+"EnG-lc-SaA.title" = "Βαρυμετρική επιφάνεια Umin";
 
 /* Class = "NSTextFieldCell"; title = "Gravimetric Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
 "xXh-YD-ajh.title" = "Βαρυμετρική επιφάνεια φρέατος";
+
+/* Class = "NSTextFieldCell"; title = "Volumetric Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
+"Geo-lc-Vol.title" = "Ογκομετρική γεωμετρική επιφάνεια";
+
+/* Class = "NSTextFieldCell"; title = "Gravimetric Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
+"Geo-lc-Grv.title" = "Βαρυμετρική γεωμετρική επιφάνεια";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "xax-w6-E1h"; */
 "xax-w6-E1h.title" = "Γυρίζω -90";

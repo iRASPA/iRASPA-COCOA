@@ -361,8 +361,8 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "Угол X";
 
-/* Class = "NSTextFieldCell"; title = "Volumetric Surface Area"; ObjectID = "EnV-lc-SaA"; */
-"EnV-lc-SaA.title" = "Объемная площадь поверхности (азот)";
+/* Class = "NSTextFieldCell"; title = "Volumetric Umin Surface Area"; ObjectID = "EnV-lc-SaA"; */
+"EnV-lc-SaA.title" = "Объемная площадь поверхности Umin";
 
 /* Class = "NSTextFieldCell"; title = "Volumetric Well-Surface Area"; ObjectID = "siG-7J-hEu"; */
 "siG-7J-hEu.title" = "Объемная площадь well-поверхности";
@@ -466,11 +466,17 @@
 /* Class = "NSMenuItem"; title = "RASPA Volumetric Data"; ObjectID = "xOm-9h-Hai"; */
 "xOm-9h-Hai.title" = "Объемные данные RASPA";
 
-/* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area"; ObjectID = "EnG-lc-SaA"; */
-"EnG-lc-SaA.title" = "Гравим. площадь поверхности (азот)";
+/* Class = "NSTextFieldCell"; title = "Gravimetric Umin Surface Area"; ObjectID = "EnG-lc-SaA"; */
+"EnG-lc-SaA.title" = "Гравиметрическая площадь поверхности Umin";
 
 /* Class = "NSTextFieldCell"; title = "Gravimetric Well-Surface Area"; ObjectID = "xXh-YD-ajh"; */
 "xXh-YD-ajh.title" = "Гравим. площадь well-поверхности";
+
+/* Class = "NSTextFieldCell"; title = "Volumetric Geometric Surface Area"; ObjectID = "Geo-lc-Vol"; */
+"Geo-lc-Vol.title" = "Объемная геометрическая площадь поверхности";
+
+/* Class = "NSTextFieldCell"; title = "Gravimetric Geometric Surface Area"; ObjectID = "Geo-lc-Grv"; */
+"Geo-lc-Grv.title" = "Гравиметрическая геометрическая площадь поверхности";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
 "Y0x-AR-NvS.placeholderString" = "Максимум Z";

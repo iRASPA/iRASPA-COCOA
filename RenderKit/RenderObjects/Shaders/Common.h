@@ -116,6 +116,30 @@ typedef struct InPerInstanceAttributes
   int tag;
 } InPerInstanceAttributes;
 
+/// One spherical patch of the geometric accessible surface: the exposed part of a probe-inflated
+/// atom, drawn as a sphere imposter and clipped in the fragment shader against `clipCount`
+/// neighbouring spheres starting at `firstClip` in the clip buffer.
+typedef struct GeometricSurfacePatchInstance
+{
+  float4 position;
+  float4 scale;
+  /// Cartesian origin of the unit cell this copy is clipped to. A wrap-around copy of a patch that
+  /// stuck out through a face is still clipped to this same cell, so the overflow is drawn on the
+  /// opposite face rather than outside the box.
+  float4 cellOrigin;
+  uint firstClip;
+  uint clipCount;
+  /// Non-zero: discard hits whose fractional coordinates relative to `cellOrigin` fall outside [0, 1).
+  uint clipToCell;
+  uint pad1;
+} GeometricSurfacePatchInstance;
+
+/// A neighbouring inflated atom that cuts a patch, as a Cartesian centre and radius in angstrom.
+typedef struct GeometricSurfaceClip
+{
+  float4 sphere;
+} GeometricSurfaceClip;
+
 
 typedef struct InPerInstanceTextAttributes
 {

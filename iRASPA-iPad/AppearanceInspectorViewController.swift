@@ -1060,7 +1060,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
         self?.allStructures().forEach { $0.applyBlockingPockets = isOn }
       }
     case 2:
-      return menuRow("Rendering method", options: ["Isosurface", "Volume rendering", "Well surface", "Well surface overlay"],
+      return menuRow("Rendering method", options: ["Isosurface", "Volume rendering", "Well surface", "Well surface overlay", "Geometric surface"],
                      selectedIndex: structure?.adsorptionSurfaceRenderingMethod.rawValue, effect: .surfaceRecompute) { [weak self] index in
         let method = RKEnergySurfaceType(rawValue: index) ?? .isoSurface
         self?.allStructures().forEach { $0.adsorptionSurfaceRenderingMethod = method }

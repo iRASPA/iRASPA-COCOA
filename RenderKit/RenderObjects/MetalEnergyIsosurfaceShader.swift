@@ -332,8 +332,14 @@ class MetalEnergyIsosurfaceShader
             // The well surface and its filament overlay are level sets of the analytic force field; the
             // iso-surface and the volume rendering are level sets and samplings of the energy grid. When
             // the well field is unavailable (imported volumetric data has no analytic form) the iso-surface
-            // stands in for it.
+            // stands in for it. The geometric surface is the union of the probe-inflated atoms, drawn as
+            // imposters, and does not use a grid at all.
             let renderingMethod: RKEnergySurfaceType = structure.adsorptionSurfaceRenderingMethod
+            if renderingMethod == .geometricSurface
+            {
+              vertexBuffer[i][j] = nil
+              continue
+            }
             var isWellSurface: Bool = renderingMethod == .wellSurface || renderingMethod == .wellSurfaceOverlay
             
             var fieldData: [Float] = []

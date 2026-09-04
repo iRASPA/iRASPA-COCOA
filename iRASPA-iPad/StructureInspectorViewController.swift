@@ -211,7 +211,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .origin: return 3
     case .transformContent: return 7
     case .structural: return 7
-    case .probe: return 9
+    case .probe: return 12
     case .channels: return 4
     case .spaceGroup: return 5
     case .centering: return 5
@@ -257,8 +257,9 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .structural:
       if indexPath.row == 6 { computeHeliumVoidFraction() }
     case .probe:
-      if indexPath.row == 3 { computeNitrogenSurfaceArea() }
-      if indexPath.row == 6 { computeWellSurfaceArea() }
+      if indexPath.row == 3 { computeGeometricSurfaceArea() }
+      if indexPath.row == 6 { computeNitrogenSurfaceArea() }
+      if indexPath.row == 9 { computeWellSurfaceArea() }
     case .actions:
       switch indexPath.row
       {
@@ -639,18 +640,24 @@ final class StructureInspectorViewController: CollapsibleTableViewController
         self.document.updateChangeCount(.done)
       }
     case 1:
-      return infoRow("Volumetric surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricNitrogenSurfaceArea) })
+      return infoRow("Volumetric geometric surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricGeometricSurfaceArea) })
     case 2:
-      return infoRow("Gravimetric surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricNitrogenSurfaceArea) })
+      return infoRow("Gravimetric geometric surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricGeometricSurfaceArea) })
     case 3:
-      return actionRow(isComputing ? "Computing surface area…" : "Compute surface area")
+      return actionRow(isComputing ? "Computing geometric surface area…" : "Compute geometric surface area")
     case 4:
-      return infoRow("Volumetric well-surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricWellSurfaceArea) })
+      return infoRow("Volumetric Umin surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricNitrogenSurfaceArea) })
     case 5:
-      return infoRow("Gravimetric well-surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricWellSurfaceArea) })
+      return infoRow("Gravimetric Umin surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricNitrogenSurfaceArea) })
     case 6:
-      return actionRow(isComputing ? "Computing well-surface area…" : "Compute well-surface area")
+      return actionRow(isComputing ? "Computing Umin surface area…" : "Compute Umin surface area")
     case 7:
+      return infoRow("Volumetric well-surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricWellSurfaceArea) })
+    case 8:
+      return infoRow("Gravimetric well-surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricWellSurfaceArea) })
+    case 9:
+      return actionRow(isComputing ? "Computing well-surface area…" : "Compute well-surface area")
+    case 10:
       return intFieldRow("Number of channel systems", value: structure?.structureNumberOfChannelSystems ?? 0) { [weak self] value in
         self?.allStructures().forEach { $0.structureNumberOfChannelSystems = value }
         self?.document.updateChangeCount(.done)
@@ -1067,6 +1074,35 @@ final class StructureInspectorViewController: CollapsibleTableViewController
         self.tableView.reloadData()
         let text = results.map { String(format: "%.4f", $0.voidFraction) }.joined(separator: ", ")
         LogQueue.shared.info(destination: nil, message: "Helium void fraction: \(text)")
+      }
+    }
+  }
+
+  private func computeGeometricSurfaceArea()
+  {
+    guard !isComputing else { return }
+    let structures = computeTargets()
+    guard !structures.isEmpty else {
+      LogQueue.shared.warning(destination: nil, message: "No structure with unit-cell positions to compute a geometric surface area")
+      return
+    }
+    isComputing = true
+    tableView.reloadData()
+    let payload = structures.map(SKFrameworkSnapshot.applyingBlockingPockets)
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      let results = SKGeometricSurface.surfaceAreas(of: payload)
+      DispatchQueue.main.async {
+        guard let self else { return }
+        for (i, result) in results.enumerated() where structures.indices.contains(i)
+        {
+          structures[i].structureGeometricSurfaceArea = result.area
+          structures[i].recomputeDensityProperties()
+        }
+        self.isComputing = false
+        self.document.updateChangeCount(.done)
+        self.tableView.reloadData()
+        let text = structures.map { String(format: "%.1f m²/g", $0.structureGravimetricGeometricSurfaceArea) }.joined(separator: ", ")
+        LogQueue.shared.info(destination: nil, message: "Geometric surface area: \(text)")
       }
     }
   }

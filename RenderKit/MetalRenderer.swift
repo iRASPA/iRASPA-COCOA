@@ -67,6 +67,7 @@ public class MetalRenderer
   var boundingBoxSphereShader: MetalBoundingBoxSphereShader = MetalBoundingBoxSphereShader()
   
   var isosurfaceShader: MetalEnergyIsosurfaceShader = MetalEnergyIsosurfaceShader()
+  var geometricSurfaceShader: MetalGeometricSurfaceShader = MetalGeometricSurfaceShader()
   var blockingPocketsShader: MetalBlockingPocketsShader = MetalBlockingPocketsShader()
   var ribbonShader: MetalRibbonShader = MetalRibbonShader()
   var ribbonSelectionShader: MetalRibbonSelectionShader = MetalRibbonSelectionShader()
@@ -243,6 +244,9 @@ public class MetalRenderer
     
     isosurfaceShader.renderDataSource = renderDataSource
     isosurfaceShader.renderStructures = renderStructures
+    
+    geometricSurfaceShader.renderDataSource = renderDataSource
+    geometricSurfaceShader.renderStructures = renderStructures
     
     blockingPocketsShader.renderDataSource = renderDataSource
     blockingPocketsShader.renderStructures = renderStructures
@@ -554,6 +558,7 @@ public class MetalRenderer
     boundingBoxSphereShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     isosurfaceShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    geometricSurfaceShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     blockingPocketsShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     ribbonShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     ribbonSelectionShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
@@ -679,6 +684,7 @@ public class MetalRenderer
     
     isosurfaceShader.buildInstanceBuffers(device: device)
     isosurfaceShader.buildVertexBuffers()
+    geometricSurfaceShader.buildVertexBuffers(device: device)
     blockingPocketsShader.buildVertexBuffers(device: device)
     ribbonShader.buildVertexBuffers(device: device)
     volumeRenderedSurfaceShader.buildVertexBuffers(device: device)
@@ -920,6 +926,8 @@ public class MetalRenderer
     
     self.isosurfaceShader.renderOpaqueIsosurfaceWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
+    self.geometricSurfaceShader.renderOpaqueWithEncoder(commandEncoder, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, camera: camera)
+    
     if !suppressMolecularGeometry
     {
       self.ribbonShader.renderWithEncoder(commandEncoder, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.ribbonTextures, shadowMask: shadowMask, size: size)
@@ -1089,6 +1097,8 @@ public class MetalRenderer
       self.volumeRenderedSurfaceShader.renderVolumeRenderedVolumetricDataWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
       
       self.isosurfaceShader.renderTransparentIsosurfacesWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
+      self.geometricSurfaceShader.renderTransparentWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, camera: camera)
       
       self.blockingPocketsShader.renderWithEncoder(commandEncoder, sceneIndex: item.sceneIndex, movieIndex: item.movieIndex, structureIndex: item.structureIndex, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, blockingPocketUniformBuffers: blockingPocketUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
@@ -1395,6 +1405,7 @@ public class MetalRenderer
       self.buildStructureUniforms(device: device)
     
       self.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
+      self.geometricSurfaceShader.updateGeometricSurface(device: device, windowController: nil)
       self.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
       
       if renderMode == .rayTracing && !pathTracing

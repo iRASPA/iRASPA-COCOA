@@ -2092,15 +2092,17 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="StructuralProbeCell" translatesAutoresizingMaskIntoConstraints="NO" id="UOl-sD-WWY" userLabel="Structural Probe Cell">
-                                                            <rect key="frame" x="1" y="1213" width="495" height="232"/>
+                                                            <rect key="frame" x="1" y="1213" width="495" height="290"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ugh-V4-NJx">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="232"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="290"/>
                                                                     <subviews>
                                                                         <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="8" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uHm-39-iH6">
-                                                                            <rect key="frame" x="8" y="8" width="467" height="216"/>
+                                                                            <rect key="frame" x="8" y="8" width="467" height="274"/>
                                                                             <rows>
                                                                                 <gridRow id="mUq-Sf-Ag1"/>
+                                                                                <gridRow id="Geo-rw-Vol"/>
+                                                                                <gridRow id="Geo-rw-Grv"/>
                                                                                 <gridRow id="EnV-rw-SaA"/>
                                                                                 <gridRow id="EnG-rw-SaA"/>
                                                                                 <gridRow id="itp-to-pVH"/>
@@ -2152,10 +2154,96 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="mUq-Sf-Ag1" column="nSC-dm-sGl" id="ap5-Aj-LuT"/>
                                                                                 <gridCell row="mUq-Sf-Ag1" column="HwQ-Q9-aoX" id="Y8M-G1-2uD"/>
+                                                                                <gridCell row="Geo-rw-Vol" column="8CM-yc-z64" id="Geo-c0-Vol">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-lb-Vol" userLabel="Volumetric Geometric Surface Area">
+                                                                                        <rect key="frame" x="11" y="90" width="186" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Volumetric Geometric Surface Area" id="Geo-lc-Vol" userLabel="Volumetric Geometric Surface Area">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Geo-rw-Vol" column="DEf-ke-SgU" id="Geo-c1-Vol">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="14" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-tf-Vol">
+                                                                                        <rect key="frame" x="203" y="87" width="165" height="21"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Geo-tc-Vol">
+                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="Geo-fm-Vol"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Geo-rw-Vol" column="nSC-dm-sGl" id="Geo-c2-Vol">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-un-Vol">
+                                                                                        <rect key="frame" x="374" y="90" width="57" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="[m²/cm³]" id="Geo-uc-Vol">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Geo-rw-Vol" column="HwQ-Q9-aoX" id="Geo-c3-Vol">
+                                                                                    <button key="contentView" verticalHuggingPriority="750" tag="18" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-bt-Vol">
+                                                                                        <rect key="frame" x="430" y="80" width="44" height="32"/>
+                                                                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRefreshTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Geo-bc-Vol">
+                                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                        </buttonCell>
+                                                                                        <connections>
+                                                                                            <action selector="recomputeGeometricSurfaceArea:" target="b7G-Em-dfk" id="Geo-ac-Vol"/>
+                                                                                        </connections>
+                                                                                    </button>
+                                                                                </gridCell>
+                                                                                <gridCell row="Geo-rw-Grv" column="8CM-yc-z64" id="Geo-c0-Grv">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-lb-Grv" userLabel="Gravimetric Geometric Surface Area">
+                                                                                        <rect key="frame" x="6" y="61" width="191" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gravimetric Geometric Surface Area" id="Geo-lc-Grv" userLabel="Gravimetric Geometric Surface Area">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Geo-rw-Grv" column="DEf-ke-SgU" id="Geo-c1-Grv">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="15" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-tf-Grv">
+                                                                                        <rect key="frame" x="203" y="58" width="165" height="21"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Geo-tc-Grv">
+                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="Geo-fm-Grv"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Geo-rw-Grv" column="nSC-dm-sGl" id="Geo-c2-Grv">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-un-Grv">
+                                                                                        <rect key="frame" x="374" y="61" width="57" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="[m²/g]" id="Geo-uc-Grv">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Geo-rw-Grv" column="HwQ-Q9-aoX" id="Geo-c3-Grv">
+                                                                                    <button key="contentView" verticalHuggingPriority="750" tag="19" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-bt-Grv">
+                                                                                        <rect key="frame" x="430" y="51" width="44" height="32"/>
+                                                                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRefreshTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Geo-bc-Grv">
+                                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                        </buttonCell>
+                                                                                        <connections>
+                                                                                            <action selector="recomputeGeometricSurfaceArea:" target="b7G-Em-dfk" id="Geo-ac-Grv"/>
+                                                                                        </connections>
+                                                                                    </button>
+                                                                                </gridCell>
                                                                                 <gridCell row="EnV-rw-SaA" column="8CM-yc-z64" id="EnV-c0-SaA">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-lb-SaA" userLabel="Volumetric Surface Area">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-lb-SaA" userLabel="Volumetric Umin Surface Area">
                                                                                         <rect key="frame" x="46" y="148" width="151" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Volumetric Surface Area" id="EnV-lc-SaA" userLabel="Volumetric Surface Area">
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Volumetric Umin Surface Area" id="EnV-lc-SaA" userLabel="Volumetric Umin Surface Area">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -2196,9 +2284,9 @@
                                                                                     </button>
                                                                                 </gridCell>
                                                                                 <gridCell row="EnG-rw-SaA" column="8CM-yc-z64" id="EnG-c0-SaA">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnG-lb-SaA" userLabel="Gravimetric Surface Area">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="EnG-lb-SaA" userLabel="Gravimetric Umin Surface Area">
                                                                                         <rect key="frame" x="41" y="119" width="156" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gravimetric Surface Area" id="EnG-lc-SaA" userLabel="Gravimetric Surface Area">
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gravimetric Umin Surface Area" id="EnG-lc-SaA" userLabel="Gravimetric Umin Surface Area">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

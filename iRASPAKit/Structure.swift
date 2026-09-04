@@ -50,7 +50,7 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
 public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, RKRenderBlockingPocketsSource, AtomStructureEditor, BondStructureEditor, AnnotationEditor, InfoEditor, StructuralPropertyEditor
 {
-  private static var classVersionNumber: Int = 13
+  private static var classVersionNumber: Int = 14
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   {
@@ -344,6 +344,15 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     }
   }
   
+  public var structureGeometricSurfaceArea: Double = 0.0
+  {
+    didSet
+    {
+      self.structureGravimetricGeometricSurfaceArea = structureGeometricSurfaceArea * SKConstant.AvogadroConstantPerAngstromSquared / self.structureMass
+      self.structureVolumetricGeometricSurfaceArea = structureGeometricSurfaceArea * 1e4 / self.cell.volume
+    }
+  }
+  
   // MARK: protocol RKRenderObjectSource implementation
   // =====================================================================
   
@@ -436,6 +445,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var structureGravimetricNitrogenSurfaceArea: Double = 0.0
   public var structureVolumetricWellSurfaceArea: Double = 0.0
   public var structureGravimetricWellSurfaceArea: Double = 0.0
+  public var structureVolumetricGeometricSurfaceArea: Double = 0.0
+  public var structureGravimetricGeometricSurfaceArea: Double = 0.0
   public var structureNumberOfChannelSystems: Int = 0
   public var structureNumberOfInaccessiblePockets: Int = 0
   public var structureDimensionalityOfPoreSystem: Int = 0
@@ -706,6 +717,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.structureGravimetricNitrogenSurfaceArea = copy.structureGravimetricNitrogenSurfaceArea
     self.structureVolumetricWellSurfaceArea = copy.structureVolumetricWellSurfaceArea
     self.structureGravimetricWellSurfaceArea = copy.structureGravimetricWellSurfaceArea
+    self.structureVolumetricGeometricSurfaceArea = copy.structureVolumetricGeometricSurfaceArea
+    self.structureGravimetricGeometricSurfaceArea = copy.structureGravimetricGeometricSurfaceArea
     self.structureNumberOfChannelSystems = copy.structureNumberOfChannelSystems
     self.structureNumberOfInaccessiblePockets = copy.structureNumberOfInaccessiblePockets
     self.structureDimensionalityOfPoreSystem = copy.structureDimensionalityOfPoreSystem
@@ -1095,6 +1108,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.structureGravimetricNitrogenSurfaceArea = cellStructureViewer.structureGravimetricNitrogenSurfaceArea
       self.structureVolumetricWellSurfaceArea = cellStructureViewer.structureVolumetricWellSurfaceArea
       self.structureGravimetricWellSurfaceArea = cellStructureViewer.structureGravimetricWellSurfaceArea
+      self.structureVolumetricGeometricSurfaceArea = cellStructureViewer.structureVolumetricGeometricSurfaceArea
+      self.structureGravimetricGeometricSurfaceArea = cellStructureViewer.structureGravimetricGeometricSurfaceArea
       self.structureNumberOfChannelSystems = cellStructureViewer.structureNumberOfChannelSystems
       self.structureNumberOfInaccessiblePockets = cellStructureViewer.structureNumberOfInaccessiblePockets
       self.structureDimensionalityOfPoreSystem = cellStructureViewer.structureDimensionalityOfPoreSystem
@@ -1213,6 +1228,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.structureGravimetricNitrogenSurfaceArea = clone.structureGravimetricNitrogenSurfaceArea
     self.structureVolumetricWellSurfaceArea = clone.structureVolumetricWellSurfaceArea
     self.structureGravimetricWellSurfaceArea = clone.structureGravimetricWellSurfaceArea
+    self.structureVolumetricGeometricSurfaceArea = clone.structureVolumetricGeometricSurfaceArea
+    self.structureGravimetricGeometricSurfaceArea = clone.structureGravimetricGeometricSurfaceArea
     self.structureNumberOfChannelSystems = clone.structureNumberOfChannelSystems
     self.structureNumberOfInaccessiblePockets = clone.structureNumberOfInaccessiblePockets
     self.structureDimensionalityOfPoreSystem = clone.structureDimensionalityOfPoreSystem
@@ -3795,6 +3812,9 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     encoder.encode(self.structureVolumetricWellSurfaceArea)
     encoder.encode(self.structureGravimetricWellSurfaceArea)
     
+    encoder.encode(self.structureVolumetricGeometricSurfaceArea)
+    encoder.encode(self.structureGravimetricGeometricSurfaceArea)
+    
     super.binaryEncode(to: encoder)
   }
   
@@ -4258,6 +4278,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       {
         self.structureVolumetricWellSurfaceArea = try decoder.decode(Double.self)
         self.structureGravimetricWellSurfaceArea = try decoder.decode(Double.self)
+      }
+      
+      if readVersionNumber >= 14 // introduced in version 14
+      {
+        self.structureVolumetricGeometricSurfaceArea = try decoder.decode(Double.self)
+        self.structureGravimetricGeometricSurfaceArea = try decoder.decode(Double.self)
       }
       
       try super.init(fromBinary: decoder)

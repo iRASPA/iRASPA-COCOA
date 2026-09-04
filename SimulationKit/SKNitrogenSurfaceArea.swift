@@ -22,7 +22,7 @@ public struct SKSurfaceAreaResult
   // In square metre per cubic centimetre.
   public let volumetric: Double
 
-  fileprivate init(area: Double, structure: SKFrameworkSnapshot)
+  init(area: Double, structure: SKFrameworkSnapshot)
   {
     self.area = area
     self.gravimetric = structure.mass > 0.0 ? area * SKConstant.AvogadroConstantPerAngstromSquared / structure.mass : 0.0
