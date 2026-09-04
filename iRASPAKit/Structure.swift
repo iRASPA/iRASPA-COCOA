@@ -2231,14 +2231,11 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       {
       case .sticks_and_balls:
         asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
-        self.atomScaleFactor = 0.7
         self.bondScaleFactor = 0.15
       case .vdw:
-        self.atomScaleFactor = 1.0
         self.bondScaleFactor = 0.15
         asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
       case .unity:
-        self.atomScaleFactor = 1.0
         self.bondScaleFactor = 0.25
         asymmetricAtoms.forEach{$0.drawRadius = bondScaleFactor}
       }
@@ -2255,14 +2252,11 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       {
       case .sticks_and_balls:
         asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
-        self.atomScaleFactor = 0.7
         self.bondScaleFactor = 0.15
       case .vdw:
-        self.atomScaleFactor = 1.0
         self.bondScaleFactor = 0.15
         asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
       case .unity:
-        self.atomScaleFactor = 1.0
         self.bondScaleFactor = 0.25
         asymmetricAtoms.forEach{$0.drawRadius = bondScaleFactor}
       }

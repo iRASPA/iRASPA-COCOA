@@ -674,7 +674,10 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
       return menuRow("Type", options: ["Ball and stick", "Van der Waals", "Unity"],
                      selectedIndex: structure?.atomRepresentationType.rawValue, effect: .scene) { [weak self] index in
         let type = Structure.RepresentationType(rawValue: index) ?? .sticks_and_balls
-        self?.allStructures().forEach { $0.setRepresentationType(type: type) }
+        self?.allStructures().forEach {
+          $0.setRepresentationType(type: type)
+          $0.recheckRepresentationStyle()
+        }
       }
     case 1:
       let styles = Structure.RepresentationStyle.selectableCases

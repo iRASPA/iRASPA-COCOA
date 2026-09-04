@@ -6509,7 +6509,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       self.setRepresentationType(type: representationType)
       
       self.recheckRepresentationStyle()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.atomsScalingCell, self.bondsScalingCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: iRASPAObjects.flatMap{$0.selectedRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: iRASPAObjects.flatMap{$0.selectedRenderFrames})
