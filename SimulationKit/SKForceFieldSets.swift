@@ -32,12 +32,13 @@
 
 import Foundation
 import BinaryCodable
+import SymmetryKit
 
 public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
 {
   private static var classVersionNumber: Int = 1
   
-  private let numberOfPredefinedSets: Int = 1
+  private let numberOfPredefinedSets: Int = 2
   private var forceFieldSets: [SKForceFieldSet] = []
   
   public enum ForceFieldOrder: Int
@@ -47,9 +48,40 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
     case forceFieldOnly = 2
   }
   
+  public static let defaultDisplayName: String = SKForceFieldSet.defaultDisplayName
+  public static let aluminosilicateDisplayName: String = SKForceFieldSet.aluminosilicateDisplayName
+  
+  public static func suggestedDisplayName(for materialType: SKStructure.MaterialType) -> String
+  {
+    return materialType.usesAluminosilicateForceField ? aluminosilicateDisplayName : defaultDisplayName
+  }
+  
+  public static func suggestedDisplayName(forMaterialTypeName name: String) -> String
+  {
+    let materialType: SKStructure.MaterialType = SKStructure.MaterialType.fromDisplayName(name) ?? .unspecified
+    return suggestedDisplayName(for: materialType)
+  }
+  
   public init()
   {
-    forceFieldSets = [SKForceFieldSet()]
+    forceFieldSets = [SKForceFieldSet(), SKForceFieldSet.aluminosilicate()]
+  }
+  
+  /// The set that should be applied for `displayName`. Built-in non-editable tables
+  /// (Aluminosilicate) always come from code so a document saved while Default still
+  /// carried TraPPE-zeo Si/O cannot make the two sets identical.
+  public func resolvedSet(named displayName: String) -> SKForceFieldSet
+  {
+    ensurePredefinedSets()
+    if displayName == SKForceFieldSet.aluminosilicateDisplayName
+    {
+      return SKForceFieldSet.aluminosilicate()
+    }
+    if let set = forceFieldSets.first(where: {$0.displayName == displayName})
+    {
+      return set
+    }
+    return SKForceFieldSet.predefined(named: displayName)
   }
   
   public subscript(index: Int) -> SKForceFieldSet
@@ -82,8 +114,7 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   {
     get
     {
-      let index: Int = self.forceFieldSets.firstIndex(where: {$0.displayName == displayName}) ?? 0
-      return self.forceFieldSets[index]
+      return self.forceFieldSets.first(where: {$0.displayName == displayName})
     }
     
     set(newValue)
@@ -127,5 +158,38 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
     }
     
     self.forceFieldSets = try decoder.decode([SKForceFieldSet].self)
+    ensurePredefinedSets()
+  }
+  
+  private func ensurePredefinedSets()
+  {
+    if let index: Int = forceFieldSets.firstIndex(where: {$0.displayName == SKForceFieldSets.aluminosilicateDisplayName})
+    {
+      forceFieldSets[index] = SKForceFieldSet.aluminosilicate()
+    }
+    else
+    {
+      let insertIndex: Int = forceFieldSets.firstIndex(where: {$0.displayName == SKForceFieldSets.defaultDisplayName}).map {$0 + 1} ?? forceFieldSets.count
+      forceFieldSets.insert(SKForceFieldSet.aluminosilicate(), at: min(insertIndex, forceFieldSets.count))
+    }
+    restoreDefaultFrameworkTypesIfTraPPE()
+  }
+  
+  /// Default briefly used TraPPE-zeo Si/O while the Aluminosilicate set was added. Documents
+  /// saved then have the same Lennard-Jones table in both sets, so switching force field does
+  /// not change surface areas. Restore DREIDING O/Si/Al on Default when that fingerprint is present.
+  private func restoreDefaultFrameworkTypesIfTraPPE()
+  {
+    guard let defaultSet: SKForceFieldSet = forceFieldSets.first(where: {$0.displayName == SKForceFieldSets.defaultDisplayName}),
+          let oxygen: SKForceFieldType = defaultSet["O"] else { return }
+    let looksLikeTraPPEOxygen: Bool = abs(oxygen.potentialParameters.x - 53.0) < 1.0e-6 && abs(oxygen.potentialParameters.y - 3.30) < 1.0e-6
+    guard looksLikeTraPPEOxygen else { return }
+    
+    for symbol in ["O", "Si", "Al"]
+    {
+      guard let canonical: SKForceFieldType = SKForceFieldSet.defaultType(symbol: symbol),
+            let index: Int = defaultSet.atomTypeList.firstIndex(where: {$0.forceFieldStringIdentifier == symbol}) else { continue }
+      defaultSet.atomTypeList[index] = canonical
+    }
   }
 }

@@ -33,7 +33,7 @@
 import Foundation
 import SymmetryKit
 import SimulationKit
-import SymmetryKit
+import simd
 
 public protocol StructuralPropertyViewer: AnyObject
 {
@@ -42,6 +42,8 @@ public protocol StructuralPropertyViewer: AnyObject
   var structureType: Structure.StructureType {get}
   var structureMaterialType: String {get}
   var frameworkProbeMolecule: Structure.ProbeMolecule {get}
+  var frameworkProbeEpsilon: Double {get}
+  var frameworkProbeSigma: Double {get}
   var structureMass: Double {get}
   var structureDensity: Double {get}
   var structureHeliumVoidFraction: Double {get}
@@ -66,6 +68,8 @@ public protocol StructuralPropertyEditor: StructuralPropertyViewer
   var structureType: Structure.StructureType {get set}
   var structureMaterialType: String {get set}
   var frameworkProbeMolecule: Structure.ProbeMolecule {get set}
+  var frameworkProbeEpsilon: Double {get set}
+  var frameworkProbeSigma: Double {get set}
   var structureMass: Double {get set}
   var structureDensity: Double {get set}
   var structureHeliumVoidFraction: Double {get set}
@@ -83,4 +87,29 @@ public protocol StructuralPropertyEditor: StructuralPropertyViewer
   var structureLargestCavityDiameter : Double {get set}
   var structureRestrictingPoreLimitingDiameter: Double {get set}
   var structureLargestCavityDiameterAlongAViablePath : Double {get set}
+}
+
+extension StructuralPropertyEditor
+{
+  public func applyFrameworkProbeMolecule(_ probe: Structure.ProbeMolecule)
+  {
+    frameworkProbeMolecule = probe
+    if let parameters = probe.namedParameters
+    {
+      frameworkProbeEpsilon = parameters.x
+      frameworkProbeSigma = parameters.y
+    }
+  }
+  
+  public func setFrameworkProbeEpsilon(_ value: Double)
+  {
+    frameworkProbeEpsilon = value
+    frameworkProbeMolecule = Structure.ProbeMolecule.matching(SIMD2<Double>(frameworkProbeEpsilon, frameworkProbeSigma))
+  }
+  
+  public func setFrameworkProbeSigma(_ value: Double)
+  {
+    frameworkProbeSigma = value
+    frameworkProbeMolecule = Structure.ProbeMolecule.matching(SIMD2<Double>(frameworkProbeEpsilon, frameworkProbeSigma))
+  }
 }

@@ -120,6 +120,18 @@ extension SKStructure
       return allCases.first { $0.displayName.caseInsensitiveCompare(trimmed) == .orderedSame }
     }
     
+    /// Zeolite-family types share the Calero/Auerbach aluminosilicate force field.
+    public var usesAluminosilicateForceField: Bool
+    {
+      switch self
+      {
+      case .zeolite, .silica, .aluminosilicate, .aluminophosphate, .metallophosphate, .silicoaluminophosphate:
+        return true
+      default:
+        return false
+      }
+    }
+    
     /// Classification from Kind plus atom atomic numbers, with optional CIF / file-name hints.
     /// HOF, PAF, PIM, polymer, ionic liquid, clay, perovskite, alloy, and glass are
     /// not inferred — the user can select them in the combo box.

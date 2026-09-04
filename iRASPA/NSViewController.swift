@@ -93,3 +93,25 @@ extension NSViewController
   }
 }
 */
+
+extension NSTextField
+{
+  func setEpsilonOverKBTitle()
+  {
+    // NSTextField clips NSSuperScript and can draw nothing unless attributed
+    // editing is on, so the subscript is a smaller font with a lowered baseline.
+    let font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+    let string = "Epsilon/kB"
+    let attributed = NSMutableAttributedString(string: string, attributes: [
+      .font: font,
+      .foregroundColor: NSColor.labelColor
+    ])
+    let bRange = (string as NSString).range(of: "B")
+    attributed.addAttributes([
+      .font: NSFont.systemFont(ofSize: font.pointSize * 0.75),
+      .baselineOffset: -(font.pointSize * 0.2)
+    ], range: bRange)
+    self.allowsEditingTextAttributes = true
+    self.attributedStringValue = attributed
+  }
+}

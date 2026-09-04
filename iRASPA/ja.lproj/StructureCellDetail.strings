@@ -292,8 +292,8 @@
 /* Class = "NSTextFieldCell"; title = "β"; ObjectID = "o5e-Ej-avz"; */
 "o5e-Ej-avz.title" = "β";
 
-/* Class = "NSTextFieldCell"; title = "Probe Molecule"; ObjectID = "OFQ-fA-vGT"; */
-"OFQ-fA-vGT.title" = "プローブ分子";
+/* Class = "NSTextFieldCell"; title = "Probe Sphere"; ObjectID = "OFQ-fA-vGT"; */
+"OFQ-fA-vGT.title" = "プローブ球";
 
 /* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "OfX-2V-31n"; */
 "OfX-2V-31n.title" = "ボリューム";

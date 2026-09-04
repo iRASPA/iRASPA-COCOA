@@ -1839,15 +1839,16 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="StructuralPropertiesCell" translatesAutoresizingMaskIntoConstraints="NO" id="tbS-Tf-Zx0" userLabel="Structural Properties Cell">
-                                                            <rect key="frame" x="1" y="1031" width="495" height="180"/>
+                                                            <rect key="frame" x="1" y="1031" width="495" height="212"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I6b-8k-mcR">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="180"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="212"/>
                                                                     <subviews>
                                                                         <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="8" columnSpacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IVK-Bm-GxU">
-                                                                            <rect key="frame" x="8" y="8" width="467" height="164"/>
+                                                                            <rect key="frame" x="8" y="8" width="467" height="196"/>
                                                                             <rows>
                                                                                 <gridRow id="Ldg-fB-Wll"/>
+                                                                                <gridRow id="FFc-rw-Prp"/>
                                                                                 <gridRow id="O2d-tg-4OJ"/>
                                                                                 <gridRow id="XLa-CY-6br"/>
                                                                                 <gridRow id="9OI-ww-rXi"/>
@@ -1913,6 +1914,35 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="Ldg-fB-Wll" column="x76-Rb-iIC" id="OSX-lc-0j0"/>
                                                                                 <gridCell row="Ldg-fB-Wll" column="M8m-6O-qVQ" id="DUF-Ic-oGl"/>
+                                                                                <gridCell row="FFc-rw-Prp" column="uTV-WV-I3X" id="FFc-gc-lbl">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="FFc-tf-lbl">
+                                                                                        <rect key="frame" x="75" y="119" width="72" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Force Field" id="FFc-tc-lbl">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="FFc-rw-Prp" column="9uj-oz-M2g" id="FFc-gc-pop">
+                                                                                    <popUpButton key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="FFc-pu-btn" userLabel="Force field" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
+                                                                                        <rect key="frame" x="157" y="112" width="214" height="25"/>
+                                                                                        <popUpButtonCell key="cell" type="push" title="Default" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="FFc-it-def" id="FFc-pc-btn">
+                                                                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <menu key="menu" id="FFc-mn-btn">
+                                                                                                <items>
+                                                                                                    <menuItem title="Default" state="on" id="FFc-it-def"/>
+                                                                                                </items>
+                                                                                            </menu>
+                                                                                        </popUpButtonCell>
+                                                                                        <connections>
+                                                                                            <action selector="changeStructureForceField:" target="b7G-Em-dfk" id="FFc-ac-chg"/>
+                                                                                        </connections>
+                                                                                    </popUpButton>
+                                                                                </gridCell>
+                                                                                <gridCell row="FFc-rw-Prp" column="x76-Rb-iIC" id="FFc-gc-e1"/>
+                                                                                <gridCell row="FFc-rw-Prp" column="M8m-6O-qVQ" id="FFc-gc-e2"/>
                                                                                 <gridCell row="O2d-tg-4OJ" column="uTV-WV-I3X" id="nII-rE-LMc">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="cDA-5F-S7t">
                                                                                         <rect key="frame" x="111" y="119" width="36" height="16"/>
@@ -2107,15 +2137,17 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="StructuralProbeCell" translatesAutoresizingMaskIntoConstraints="NO" id="UOl-sD-WWY" userLabel="Structural Probe Cell">
-                                                            <rect key="frame" x="1" y="1213" width="495" height="290"/>
+                                                            <rect key="frame" x="1" y="1213" width="495" height="348"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ugh-V4-NJx">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="290"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="348"/>
                                                                     <subviews>
                                                                         <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="8" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uHm-39-iH6">
-                                                                            <rect key="frame" x="8" y="8" width="467" height="274"/>
+                                                                            <rect key="frame" x="8" y="8" width="467" height="332"/>
                                                                             <rows>
                                                                                 <gridRow id="mUq-Sf-Ag1"/>
+                                                                                <gridRow id="Prb-rw-Eps"/>
+                                                                                <gridRow id="Prb-rw-Sig"/>
                                                                                 <gridRow id="Geo-rw-Vol"/>
                                                                                 <gridRow id="Geo-rw-Grv"/>
                                                                                 <gridRow id="EnV-rw-SaA"/>
@@ -2135,7 +2167,7 @@
                                                                                 <gridCell row="mUq-Sf-Ag1" column="8CM-yc-z64" id="pQV-lU-Ynp">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Pde-8E-vUS">
                                                                                         <rect key="frame" x="98" y="119" width="99" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Probe Molecule" id="OFQ-fA-vGT">
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Probe Sphere" id="OFQ-fA-vGT">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -2159,6 +2191,7 @@
                                                                                                     <menuItem title="Xenon" tag="4" id="EoT-Wn-jDW"/>
                                                                                                     <menuItem title="Krypton" tag="4" id="zSC-HO-4oc"/>
                                                                                                     <menuItem title="Argon" tag="4" id="gay-1o-b6B"/>
+                                    <menuItem title="Custom" tag="9" id="Prb-mi-Cst"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>
@@ -2169,6 +2202,76 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="mUq-Sf-Ag1" column="nSC-dm-sGl" id="ap5-Aj-LuT"/>
                                                                                 <gridCell row="mUq-Sf-Ag1" column="HwQ-Q9-aoX" id="Y8M-G1-2uD"/>
+                                                                                <gridCell row="Prb-rw-Eps" column="8CM-yc-z64" id="Prb-c0-Eps">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="120" translatesAutoresizingMaskIntoConstraints="NO" id="Prb-lb-Eps" userLabel="Epsilon/kB">
+                                                                                        <rect key="frame" x="99" y="90" width="98" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Epsilon/kB" id="Prb-lc-Eps" userLabel="Epsilon/kB">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Prb-rw-Eps" column="DEf-ke-SgU" id="Prb-c1-Eps">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="20" translatesAutoresizingMaskIntoConstraints="NO" id="Prb-tf-Eps">
+                                                                                        <rect key="frame" x="203" y="87" width="165" height="21"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Prb-tc-Eps">
+                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="6" id="Prb-fm-Eps"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                        <connections>
+                                                                                            <action selector="setFrameworkProbeEpsilon:" target="b7G-Em-dfk" id="Prb-ac-Eps"/>
+                                                                                        </connections>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Prb-rw-Eps" column="nSC-dm-sGl" id="Prb-c2-Eps">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Prb-un-Eps">
+                                                                                        <rect key="frame" x="374" y="90" width="23" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="[K]" id="Prb-uc-Eps">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Prb-rw-Eps" column="HwQ-Q9-aoX" id="Prb-c3-Eps"/>
+                                                                                <gridCell row="Prb-rw-Sig" column="8CM-yc-z64" id="Prb-c0-Sig">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Prb-lb-Sig" userLabel="Sigma">
+                                                                                        <rect key="frame" x="151" y="61" width="46" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sigma" id="Prb-lc-Sig" userLabel="Sigma">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Prb-rw-Sig" column="DEf-ke-SgU" id="Prb-c1-Sig">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" tag="21" translatesAutoresizingMaskIntoConstraints="NO" id="Prb-tf-Sig">
+                                                                                        <rect key="frame" x="203" y="58" width="165" height="21"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Prb-tc-Sig">
+                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="6" id="Prb-fm-Sig"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                        <connections>
+                                                                                            <action selector="setFrameworkProbeSigma:" target="b7G-Em-dfk" id="Prb-ac-Sig"/>
+                                                                                        </connections>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Prb-rw-Sig" column="nSC-dm-sGl" id="Prb-c2-Sig">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Prb-un-Sig">
+                                                                                        <rect key="frame" x="374" y="61" width="23" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="[Å]" id="Prb-uc-Sig">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Prb-rw-Sig" column="HwQ-Q9-aoX" id="Prb-c3-Sig"/>
                                                                                 <gridCell row="Geo-rw-Vol" column="8CM-yc-z64" id="Geo-c0-Vol">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-lb-Vol" userLabel="Volumetric Geometric Surface Area">
                                                                                         <rect key="frame" x="11" y="90" width="186" height="16"/>

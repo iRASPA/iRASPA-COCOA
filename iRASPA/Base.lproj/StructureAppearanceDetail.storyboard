@@ -3557,7 +3557,7 @@
                                                                                 <gridRow id="zBq-TS-hYD"/>
                                                                                 <gridRow id="zYp-aK-FdO"/>
                                                                                 <gridRow id="Kep-Py-0Xm"/>
-                                                                                <gridRow id="rhh-m2-OvQ"/>
+                                                                                <gridRow hidden="YES" id="rhh-m2-OvQ"/>
                                                                                 <gridRow id="pw1-Io-Vor"/>
                                                                                 <gridRow id="cueAt-rw-000"/>
                                                                             </rows>
@@ -5750,19 +5750,21 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="AdsorptionPropertiesCell" misplaced="YES" id="fbQ-n9-248" userLabel="Adsorption Properties Cell">
-                                                            <rect key="frame" x="1" y="4698" width="495" height="393"/>
+                                                            <rect key="frame" x="1" y="4698" width="495" height="473"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="7" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Blc-Pf-3cu">
-                                                                    <rect key="frame" x="8" y="4" width="469" height="401"/>
+                                                                    <rect key="frame" x="8" y="4" width="469" height="481"/>
                                                                     <subviews>
                                                                         <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" xPlacement="fill" yPlacement="fill" rowAlignment="none" rowSpacing="16" columnSpacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="WVG-FA-4dD">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="438" height="401"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="438" height="481"/>
                                                                             <rows>
                                                                                 <gridRow id="ncA-GB-Ycz"/>
                                                                                 <gridRow id="Blk-Ap-ly0"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="OkC-WC-wVI"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="C1r-l1-HuV"/>
+                                                                                <gridRow rowAlignment="firstBaseline" id="Ads-rw-Eps"/>
+                                                                                <gridRow rowAlignment="firstBaseline" id="Ads-rw-Sig"/>
                                                                                 <gridRow rowAlignment="none" id="Blk-Sp-tr0"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="8h7-jb-nL2"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="SzU-an-ufR"/>
@@ -5850,6 +5852,7 @@
                                                                                                     <menuItem title="Xenon" tag="4" id="H2i-9W-aWi"/>
                                                                                                     <menuItem title="Krypton" tag="4" id="HUP-G5-rVx"/>
                                                                                                     <menuItem title="Argon" tag="4" id="2pH-Ma-VI0"/>
+                                                                                                    <menuItem title="Custom" tag="9" id="Ads-mi-Cst"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>
@@ -5859,6 +5862,74 @@
                                                                                     </popUpButton>
                                                                                 </gridCell>
                                                                                 <gridCell row="C1r-l1-HuV" column="8wk-Gx-Y8W" id="9cU-eO-hhJ"/>
+                                                                                <gridCell row="Ads-rw-Eps" column="OhW-Iw-Tbh" id="Ads-c0-Eps">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="760" tag="120" translatesAutoresizingMaskIntoConstraints="NO" id="Ads-lb-Eps" userLabel="Epsilon/kB">
+                                                                                        <rect key="frame" x="20" y="237" width="94" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Epsilon/kB" id="Ads-lc-Eps" userLabel="Epsilon/kB">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Ads-rw-Eps" column="tj8-DZ-Ldh" id="Ads-c1-Eps">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="210" verticalHuggingPriority="750" tag="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ads-tf-Eps">
+                                                                                        <rect key="frame" x="143" y="233" width="174" height="24"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Ads-tc-Eps">
+                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="6" id="Ads-fm-Eps"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                        <connections>
+                                                                                            <action selector="setAdsorptionSurfaceProbeEpsilon:" target="A5d-Ag-J3w" id="Ads-ac-Eps"/>
+                                                                                        </connections>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Ads-rw-Eps" column="8wk-Gx-Y8W" id="Ads-c2-Eps">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ads-un-Eps">
+                                                                                        <rect key="frame" x="348" y="237" width="23" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" title="[K]" id="Ads-uc-Eps">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Ads-rw-Sig" column="OhW-Iw-Tbh" id="Ads-c0-Sig">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Ads-lb-Sig" userLabel="Sigma">
+                                                                                        <rect key="frame" x="72" y="197" width="42" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Sigma" id="Ads-lc-Sig" userLabel="Sigma">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Ads-rw-Sig" column="tj8-DZ-Ldh" id="Ads-c1-Sig">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="210" verticalHuggingPriority="750" tag="21" translatesAutoresizingMaskIntoConstraints="NO" id="Ads-tf-Sig">
+                                                                                        <rect key="frame" x="143" y="193" width="174" height="24"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Ads-tc-Sig">
+                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="6" id="Ads-fm-Sig"/>
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                        <connections>
+                                                                                            <action selector="setAdsorptionSurfaceProbeSigma:" target="A5d-Ag-J3w" id="Ads-ac-Sig"/>
+                                                                                        </connections>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Ads-rw-Sig" column="8wk-Gx-Y8W" id="Ads-c2-Sig">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ads-un-Sig">
+                                                                                        <rect key="frame" x="348" y="197" width="23" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" title="[Å]" id="Ads-uc-Sig">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
                                                                                 <gridCell row="Blk-Ap-ly0" column="OhW-Iw-Tbh" headOfMergedCell="Blk-Ap-c10" xPlacement="leading" id="Blk-Ap-c10">
                                                                                     <button key="contentView" tag="111" horizontalHuggingPriority="260" verticalHuggingPriority="260" translatesAutoresizingMaskIntoConstraints="NO" id="Blk-Ap-btn">
                                                                                         <rect key="frame" x="0.0" y="353" width="164" height="16"/>

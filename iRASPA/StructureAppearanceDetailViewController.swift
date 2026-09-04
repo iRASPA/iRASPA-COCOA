@@ -2044,6 +2044,20 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
+  private func hideGridRow(containing view: NSView)
+  {
+    var ancestor: NSView? = view.superview
+    while let current = ancestor
+    {
+      if let grid = current as? NSGridView, let cell = grid.cell(for: view)
+      {
+        cell.row?.isHidden = true
+        return
+      }
+      ancestor = current.superview
+    }
+  }
+  
   func setPropertiesAtomTableCells(on view: NSTableCellView, identifier: String, enabled: Bool)
   {
     switch(identifier)
@@ -2152,35 +2166,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      // Force Field
+      // Force Field set is chosen in Cell → Structural Properties.
       if let popUpbuttonForceField: iRASPAPopUpButton = view.viewWithTag(4) as? iRASPAPopUpButton
       {
-        if let document: iRASPADocument = self.windowController?.currentDocument
-        {
-          popUpbuttonForceField.removeAllItems()
-          for i in 0..<document.forceFieldSets.count
-          {
-            let forceFieldSet: SKForceFieldSet = document.forceFieldSets[i]
-            popUpbuttonForceField.addItem(withTitle: forceFieldSet.displayName)
-          }
-        }
-        
-        popUpbuttonForceField.isEditable = false
-        if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
-        {
-          popUpbuttonForceField.isEditable = enabled
-          
-          if let rawValue: String = self.getRepresentationForceField()
-          {
-            popUpbuttonForceField.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
-            popUpbuttonForceField.selectItem(withTitle: rawValue)
-          }
-          else
-          {
-            popUpbuttonForceField.setTitle(NSLocalizedString("Multiple Values", comment: ""))
-          }
-        }
+        hideGridRow(containing: popUpbuttonForceField)
       }
       
       
@@ -3725,6 +3714,52 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           else
           {
             popUpbuttonProbeParticle.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
+      
+      if let epsilonLabel: NSTextField = view.viewWithTag(120) as? NSTextField
+      {
+        epsilonLabel.setEpsilonOverKBTitle()
+      }
+      
+      if let textFieldAdsorptionSurfaceProbeEpsilon: NSTextField = view.viewWithTag(20) as? NSTextField
+      {
+        textFieldAdsorptionSurfaceProbeEpsilon.isEditable = false
+        textFieldAdsorptionSurfaceProbeEpsilon.stringValue = ""
+        textFieldAdsorptionSurfaceProbeEpsilon.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
+        {
+          textFieldAdsorptionSurfaceProbeEpsilon.isEnabled = enabled && adsorptionSurfaceOn
+          textFieldAdsorptionSurfaceProbeEpsilon.isEditable = enabled && adsorptionSurfaceOn
+          if let adsorptionSurfaceProbeEpsilon: Double = self.renderAdsorptionSurfaceProbeEpsilon
+          {
+            textFieldAdsorptionSurfaceProbeEpsilon.doubleValue = adsorptionSurfaceProbeEpsilon
+          }
+          else
+          {
+            textFieldAdsorptionSurfaceProbeEpsilon.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let textFieldAdsorptionSurfaceProbeSigma: NSTextField = view.viewWithTag(21) as? NSTextField
+      {
+        textFieldAdsorptionSurfaceProbeSigma.isEditable = false
+        textFieldAdsorptionSurfaceProbeSigma.stringValue = ""
+        textFieldAdsorptionSurfaceProbeSigma.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is VolumetricDataViewer}).isEmpty
+        {
+          textFieldAdsorptionSurfaceProbeSigma.isEnabled = enabled && adsorptionSurfaceOn
+          textFieldAdsorptionSurfaceProbeSigma.isEditable = enabled && adsorptionSurfaceOn
+          if let adsorptionSurfaceProbeSigma: Double = self.renderAdsorptionSurfaceProbeSigma
+          {
+            textFieldAdsorptionSurfaceProbeSigma.doubleValue = adsorptionSurfaceProbeSigma
+          }
+          else
+          {
+            textFieldAdsorptionSurfaceProbeSigma.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -9046,14 +9081,39 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
        let adsorptionSurfaceProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)
     {
       self.renderAdsorptionSurfaceProbeMolecule = adsorptionSurfaceProbeMolecule
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: iRASPAObjects.flatMap{$0.selectedRenderFrames})
-      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
+      self.recomputeAdsorptionIsosurface()
     }
+  }
+  
+  @IBAction func setAdsorptionSurfaceProbeEpsilon(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderAdsorptionSurfaceProbeEpsilon = sender.doubleValue
+      self.recomputeAdsorptionIsosurface()
+    }
+  }
+  
+  @IBAction func setAdsorptionSurfaceProbeSigma(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderAdsorptionSurfaceProbeSigma = sender.doubleValue
+      self.recomputeAdsorptionIsosurface()
+    }
+  }
+  
+  private func recomputeAdsorptionIsosurface()
+  {
+    self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: iRASPAObjects.flatMap{$0.selectedRenderFrames})
+    self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
+    
+    self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+    self.windowController?.document?.updateChangeCount(.changeDone)
+    self.proxyProject?.representedObject.isEdited = true
+    
+    self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
   }
   
   @IBAction func toggleShowBlockingPockets(_ sender: NSButton)
@@ -12419,7 +12479,33 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.applyAdsorptionSurfaceProbeMolecule(newValue ?? .helium)}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceProbeEpsilon: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceProbeEpsilon})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.setAdsorptionSurfaceProbeEpsilon(newValue ?? 0.0)}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceProbeSigma: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceProbeSigma})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.setAdsorptionSurfaceProbeSigma(newValue ?? 0.0)}
     }
   }
   

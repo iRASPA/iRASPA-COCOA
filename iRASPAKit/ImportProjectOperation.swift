@@ -89,6 +89,7 @@ public class ImportProjectOperation: FKGroupOperation, @unchecked Sendable
       {
         if $0 is Protein || $0 is ProteinCrystal || $0 is DNA || $0 is DNACrystal {return}
         $0.setRepresentationStyle(style: .default, colorSets: colorSets)
+        $0.setRepresentationForceField(forceField: SKForceFieldSets.suggestedDisplayName(forMaterialTypeName: $0.structureMaterialType), forceFieldSets: forceFieldSets)
       }
       
       let computeBondsGroupOperation: ComputeBondsGroupOperation = ComputeBondsGroupOperation(structures: projectStructureNode.sceneList.allObjects, windowController: windowController)

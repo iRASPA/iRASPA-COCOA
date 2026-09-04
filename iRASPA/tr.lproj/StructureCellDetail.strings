@@ -160,8 +160,8 @@
 /* Class = "NSTextFieldCell"; placeholderString = "cy"; ObjectID = "NtP-sh-9XR"; */
 "NtP-sh-9XR.placeholderString" = "cy";
 
-/* Class = "NSTextFieldCell"; title = "Probe Molecule"; ObjectID = "OFQ-fA-vGT"; */
-"OFQ-fA-vGT.title" = "Prob Molekülü";
+/* Class = "NSTextFieldCell"; title = "Probe Sphere"; ObjectID = "OFQ-fA-vGT"; */
+"OFQ-fA-vGT.title" = "Prob Küresi";
 
 /* Class = "NSTextFieldCell"; title = "CY"; ObjectID = "OU6-Uu-uVv"; */
 "OU6-Uu-uVv.title" = "CY";

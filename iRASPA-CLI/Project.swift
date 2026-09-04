@@ -74,7 +74,7 @@ class Project
       projectStructureNode=ProjectStructureNode(name: displayName, sceneList: sceneList)
       
       projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationStyle(style: .default, colorSets: colorSets)}
-      projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationForceField(forceField: "Default", forceFieldSets: forceFieldSets)}
+      projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
       
       projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach{$0.reComputeBonds()}
       

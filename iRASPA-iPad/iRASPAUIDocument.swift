@@ -189,11 +189,9 @@ final class iRASPAUIDocument: UIDocument, ForceFieldViewer
       if structure is Protein || structure is ProteinCrystal || structure is DNA || structure is DNACrystal { continue }
       structure.setRepresentationStyle(style: .default, colorSets: colorSets)
     }
-    // Bonds were already computed during Scene import; only the force field
-    // needs to come from this document's sets.
     for structure in structures
     {
-      structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)
+      structure.setRepresentationForceField(forceField: SKForceFieldSets.suggestedDisplayName(forMaterialTypeName: structure.structureMaterialType), forceFieldSets: forceFieldSets)
     }
     projectStructureNode.setInitialSelectionIfNeeded()
     documentData.projectData.insertNode(node, inItem: documentData.projectLocalRootNode, atIndex: documentData.projectLocalRootNode.childNodes.count)

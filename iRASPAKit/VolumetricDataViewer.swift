@@ -51,6 +51,8 @@ public protocol VolumetricDataViewer: AnyObject
   var adsorptionTransparencyThreshold: Double {get set}
   var adsorptionSurfaceIsoValue: Double {get set}
   var adsorptionSurfaceProbeMolecule: Structure.ProbeMolecule {get set}
+  var adsorptionSurfaceProbeEpsilon: Double {get set}
+  var adsorptionSurfaceProbeSigma: Double {get set}
   
   var adsorptionSurfaceRenderingMethod: RKEnergySurfaceType {get set}
   var adsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction {get set}
@@ -84,4 +86,29 @@ public protocol VolumetricDataViewer: AnyObject
 public protocol VolumetricDataEditor: VolumetricDataViewer
 {
   var encompassingPowerOfTwoCubicGridSize: Int {get set}
+}
+
+extension VolumetricDataViewer
+{
+  public func applyAdsorptionSurfaceProbeMolecule(_ probe: Structure.ProbeMolecule)
+  {
+    adsorptionSurfaceProbeMolecule = probe
+    if let parameters = probe.namedParameters
+    {
+      adsorptionSurfaceProbeEpsilon = parameters.x
+      adsorptionSurfaceProbeSigma = parameters.y
+    }
+  }
+  
+  public func setAdsorptionSurfaceProbeEpsilon(_ value: Double)
+  {
+    adsorptionSurfaceProbeEpsilon = value
+    adsorptionSurfaceProbeMolecule = Structure.ProbeMolecule.matching(SIMD2<Double>(adsorptionSurfaceProbeEpsilon, adsorptionSurfaceProbeSigma))
+  }
+  
+  public func setAdsorptionSurfaceProbeSigma(_ value: Double)
+  {
+    adsorptionSurfaceProbeSigma = value
+    adsorptionSurfaceProbeMolecule = Structure.ProbeMolecule.matching(SIMD2<Double>(adsorptionSurfaceProbeEpsilon, adsorptionSurfaceProbeSigma))
+  }
 }

@@ -153,3 +153,16 @@ class CollapsibleTableViewController: UITableViewController
     tableView.reloadSections(IndexSet(integer: tableSection), with: .automatic)
   }
 }
+
+func epsilonOverKBRowTitle(font: UIFont, unit: String = "K") -> NSAttributedString
+{
+  let string = "Epsilon/kB (\(unit))"
+  let attributed = NSMutableAttributedString(string: string, attributes: [.font: font])
+  let bRange = (string as NSString).range(of: "B")
+  let subscriptFont = font.withSize(font.pointSize * 0.7)
+  attributed.addAttributes([
+    .font: subscriptFont,
+    .baselineOffset: -font.pointSize * 0.18
+  ], range: bRange)
+  return attributed
+}

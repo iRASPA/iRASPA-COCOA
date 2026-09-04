@@ -192,7 +192,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       
       if let atomColorView: NSColorWell = view?.viewWithTag(4) as? NSColorWell
       {
-        atomColorView.color = document.colorSets[selectedColorSetIndex][uniqueForceFieldName] ?? NSColor.black
+        atomColorView.color = document.colorSets[selectedColorSetIndex][uniqueForceFieldName] ?? document.colorSets[selectedColorSetIndex][element.chemicalSymbol] ?? NSColor.black
         atomColorView.isEnabled = document.colorSets[selectedColorSetIndex].editable
       }
       

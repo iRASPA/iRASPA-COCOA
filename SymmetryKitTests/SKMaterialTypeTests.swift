@@ -25,6 +25,39 @@ final class SKMaterialTypeTests: XCTestCase
     XCTAssertNil(SKStructure.MaterialType.fromDisplayName("Unknown"))
   }
   
+  func testAluminosilicateForceFieldMaterialTypes()
+  {
+    XCTAssertTrue(SKStructure.MaterialType.zeolite.usesAluminosilicateForceField)
+    XCTAssertTrue(SKStructure.MaterialType.silica.usesAluminosilicateForceField)
+    XCTAssertTrue(SKStructure.MaterialType.aluminosilicate.usesAluminosilicateForceField)
+    XCTAssertTrue(SKStructure.MaterialType.aluminophosphate.usesAluminosilicateForceField)
+    XCTAssertTrue(SKStructure.MaterialType.metallophosphate.usesAluminosilicateForceField)
+    XCTAssertTrue(SKStructure.MaterialType.silicoaluminophosphate.usesAluminosilicateForceField)
+    XCTAssertFalse(SKStructure.MaterialType.unspecified.usesAluminosilicateForceField)
+    XCTAssertFalse(SKStructure.MaterialType.mof.usesAluminosilicateForceField)
+    XCTAssertFalse(SKStructure.MaterialType.zif.usesAluminosilicateForceField)
+    XCTAssertFalse(SKStructure.MaterialType.molecule.usesAluminosilicateForceField)
+  }
+  
+  func testCaleroAuerbachChargeNeutrality()
+  {
+    let qO = -1.025
+    let qOa = -1.2
+    let qSi = 2.05
+    let qAl = 1.75
+    let qP = 2.35
+    let qNa = 1.0
+    let qCa = 2.0
+    // All-silica SiO2
+    XCTAssertEqual(qSi + 2.0 * qO, 0.0, accuracy: 1e-12)
+    // One Al substitution + four Si–O–Al oxygens, compensated by Na+
+    XCTAssertEqual(qAl - qSi + 4.0 * (qOa - qO) + qNa, 0.0, accuracy: 1e-12)
+    // Two Al substitutions compensated by Ca2+
+    XCTAssertEqual(2.0 * (qAl - qSi + 4.0 * (qOa - qO)) + qCa, 0.0, accuracy: 1e-12)
+    // AlPO4 with uniform oxygen charge
+    XCTAssertEqual(qAl + qP + 4.0 * qO, 0.0, accuracy: 1e-12)
+  }
+  
   func testAllSilicaZeolite()
   {
     XCTAssertEqual(infer([14, 8]), .zeolite)

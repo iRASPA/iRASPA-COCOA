@@ -29,7 +29,8 @@ final class StructureInspectorViewController: CollapsibleTableViewController
   private let probes: [(String, Structure.ProbeMolecule)] = [
     ("Helium", .helium), ("Methane", .methane), ("Nitrogen", .nitrogen),
     ("Hydrogen", .hydrogen), ("Water", .water), ("CO₂", .co2),
-    ("Xenon", .xenon), ("Krypton", .krypton), ("Argon", .argon)
+    ("Xenon", .xenon), ("Krypton", .krypton), ("Argon", .argon),
+    ("Custom", .custom)
   ]
 
   private let materialKinds: [(String, SKStructure.Kind)] = [
@@ -210,8 +211,8 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .orientation: return 7
     case .origin: return 3
     case .transformContent: return 7
-    case .structural: return 7
-    case .probe: return 12
+    case .structural: return 8
+    case .probe: return 14
     case .channels: return 4
     case .spaceGroup: return 5
     case .centering: return 5
@@ -249,17 +250,18 @@ final class StructureInspectorViewController: CollapsibleTableViewController
 
   override func inspectorDidSelect(at indexPath: IndexPath)
   {
+    tableView.endEditing(true)
     tableView.deselectRow(at: indexPath, animated: true)
     switch sections[indexPath.section]
     {
     case .transformContent:
       if indexPath.row == 6 { applyContentShift() }
     case .structural:
-      if indexPath.row == 6 { computeHeliumVoidFraction() }
+      if indexPath.row == 7 { computeHeliumVoidFraction() }
     case .probe:
-      if indexPath.row == 3 { computeGeometricSurfaceArea() }
-      if indexPath.row == 6 { computeNitrogenSurfaceArea() }
-      if indexPath.row == 9 { computeWellSurfaceArea() }
+      if indexPath.row == 5 { computeGeometricSurfaceArea() }
+      if indexPath.row == 8 { computeNitrogenSurfaceArea() }
+      if indexPath.row == 11 { computeWellSurfaceArea() }
     case .actions:
       switch indexPath.row
       {
@@ -610,17 +612,31 @@ final class StructureInspectorViewController: CollapsibleTableViewController
       return menuRow("Material", options: options, selectedIndex: selectedIndex) { [weak self] index in
         guard let self else { return }
         self.allStructures().forEach { $0.structureMaterialType = options[index] }
+        let suggested = SKForceFieldSets.suggestedDisplayName(forMaterialTypeName: options[index])
+        self.allStructures().forEach { $0.setRepresentationForceField(forceField: suggested, forceFieldSets: self.document.forceFieldSets) }
         self.document.updateChangeCount(.done)
+        self.onChange?()
       }
     case 1:
-      return infoRow("Mass (g/mol per uc)", value: structure.map { String(format: "%.4f", $0.structureMass) })
+      var names: [String] = []
+      for index in 0..<document.forceFieldSets.count { names.append(document.forceFieldSets[index].displayName) }
+      let selected = names.firstIndex(where: { $0 == structure?.atomForceFieldIdentifier })
+      return menuRow("Force field", options: names, selectedIndex: selected) { [weak self] index in
+        guard let self else { return }
+        self.allStructures().forEach { $0.setRepresentationForceField(forceField: names[index], forceFieldSets: self.document.forceFieldSets) }
+        self.document.updateChangeCount(.done)
+        self.onChange?()
+        self.onSurfaceChange?()
+      }
     case 2:
-      return infoRow("Density (kg/m³)", value: structure.map { String(format: "%.4f", $0.structureDensity) })
+      return infoRow("Mass (g/mol per uc)", value: structure.map { String(format: "%.4f", $0.structureMass) })
     case 3:
-      return infoRow("Helium void fraction", value: structure.map { String(format: "%.5f", $0.structureHeliumVoidFraction) })
+      return infoRow("Density (kg/m³)", value: structure.map { String(format: "%.4f", $0.structureDensity) })
     case 4:
-      return infoRow("Specific volume (cm³/g)", value: structure.map { String(format: "%.5f", $0.structureSpecificVolume) })
+      return infoRow("Helium void fraction", value: structure.map { String(format: "%.5f", $0.structureHeliumVoidFraction) })
     case 5:
+      return infoRow("Specific volume (cm³/g)", value: structure.map { String(format: "%.5f", $0.structureSpecificVolume) })
+    case 6:
       return infoRow("Accessible pore volume (cm³/g)", value: structure.map { String(format: "%.5f", $0.structureAccessiblePoreVolume) })
     default:
       return actionRow(isComputing ? "Computing helium void fraction…" : "Compute helium void fraction")
@@ -636,30 +652,50 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case 0:
       let current = structure?.frameworkProbeMolecule ?? .nitrogen
       let selectedIndex = probes.firstIndex(where: { $0.1 == current })
-      return menuRow("Probe molecule", options: probes.map { $0.0 }, selectedIndex: selectedIndex) { [weak self] index in
+      return menuRow("Probe sphere", options: probes.map { $0.0 }, selectedIndex: selectedIndex) { [weak self] index in
         guard let self else { return }
-        self.allStructures().forEach { $0.frameworkProbeMolecule = self.probes[index].1 }
+        self.allStructures().forEach { $0.applyFrameworkProbeMolecule(self.probes[index].1) }
         self.document.updateChangeCount(.done)
+        self.recomputeProbeSurfaces()
       }
     case 1:
-      return infoRow("Volumetric geometric surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricGeometricSurfaceArea) })
+      let cell = fieldRow("Epsilon (K)", value: structure?.frameworkProbeEpsilon ?? 0, format: "%.4f") { [weak self] value in
+        guard let self else { return }
+        self.allStructures().forEach { $0.setFrameworkProbeEpsilon(value) }
+        self.document.updateChangeCount(.done)
+        self.recomputeProbeSurfaces()
+      }
+      if let label = cell.textLabel
+      {
+        label.attributedText = epsilonOverKBRowTitle(font: label.font ?? UIFont.preferredFont(forTextStyle: .body))
+      }
+      return cell
     case 2:
-      return infoRow("Gravimetric geometric surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricGeometricSurfaceArea) })
+      return fieldRow("Sigma (Å)", value: structure?.frameworkProbeSigma ?? 0, format: "%.4f") { [weak self] value in
+        guard let self else { return }
+        self.allStructures().forEach { $0.setFrameworkProbeSigma(value) }
+        self.document.updateChangeCount(.done)
+        self.recomputeProbeSurfaces()
+      }
     case 3:
-      return actionRow(isComputing ? "Computing geometric surface area…" : "Compute geometric surface area")
+      return infoRow("Volumetric geometric surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricGeometricSurfaceArea) })
     case 4:
-      return infoRow("Volumetric Umin surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricNitrogenSurfaceArea) })
+      return infoRow("Gravimetric geometric surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricGeometricSurfaceArea) })
     case 5:
-      return infoRow("Gravimetric Umin surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricNitrogenSurfaceArea) })
+      return actionRow(isComputing ? "Computing geometric surface area…" : "Compute geometric surface area")
     case 6:
-      return actionRow(isComputing ? "Computing Umin surface area…" : "Compute Umin surface area")
+      return infoRow("Volumetric Umin surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricNitrogenSurfaceArea) })
     case 7:
-      return infoRow("Volumetric well-surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricWellSurfaceArea) })
+      return infoRow("Gravimetric Umin surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricNitrogenSurfaceArea) })
     case 8:
-      return infoRow("Gravimetric well-surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricWellSurfaceArea) })
+      return actionRow(isComputing ? "Computing Umin surface area…" : "Compute Umin surface area")
     case 9:
-      return actionRow(isComputing ? "Computing well-surface area…" : "Compute well-surface area")
+      return infoRow("Volumetric well-surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricWellSurfaceArea) })
     case 10:
+      return infoRow("Gravimetric well-surface area (m²/g)", value: structure.map { String(format: "%.3f", $0.structureGravimetricWellSurfaceArea) })
+    case 11:
+      return actionRow(isComputing ? "Computing well-surface area…" : "Compute well-surface area")
+    case 12:
       return intFieldRow("Number of channel systems", value: structure?.structureNumberOfChannelSystems ?? 0) { [weak self] value in
         self?.allStructures().forEach { $0.structureNumberOfChannelSystems = value }
         self?.document.updateChangeCount(.done)
@@ -1060,7 +1096,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     }
     isComputing = true
     tableView.reloadData()
-    let payload = structures.map(SKFrameworkSnapshot.init)
+    let payload = structures.map { frameworkSnapshot(for: $0) }
     DispatchQueue.global(qos: .userInitiated).async { [weak self] in
       let results = SKVoidFraction.compute(structures: payload)
       DispatchQueue.main.async {
@@ -1090,7 +1126,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     }
     isComputing = true
     tableView.reloadData()
-    let payload = structures.map(SKFrameworkSnapshot.applyingBlockingPockets)
+    let payload = structures.map { frameworkSnapshot(for: $0, applyingBlockingPockets: true) }
     DispatchQueue.global(qos: .userInitiated).async { [weak self] in
       let results = SKGeometricSurface.surfaceAreas(of: payload)
       DispatchQueue.main.async {
@@ -1119,7 +1155,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     }
     isComputing = true
     tableView.reloadData()
-    let payload = structures.map(SKFrameworkSnapshot.init)
+    let payload = structures.map { frameworkSnapshot(for: $0) }
     DispatchQueue.global(qos: .userInitiated).async { [weak self] in
       do
       {
@@ -1159,7 +1195,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     }
     isComputing = true
     tableView.reloadData()
-    let payload = structures.map(SKFrameworkSnapshot.init)
+    let payload = structures.map { frameworkSnapshot(for: $0) }
     DispatchQueue.global(qos: .userInitiated).async { [weak self] in
       do
       {
@@ -1193,6 +1229,60 @@ final class StructureInspectorViewController: CollapsibleTableViewController
   {
     let all = project?.allObjects.compactMap({ $0 as? Structure }) ?? []
     return all.filter { !$0.atomUnitCellPositions.isEmpty }
+  }
+
+  private func frameworkSnapshot(for structure: Structure, applyingBlockingPockets: Bool = false) -> SKFrameworkSnapshot
+  {
+    return SKFrameworkSnapshot(cell: structure.cell,
+                               positions: structure.atomUnitCellPositions,
+                               potentialParameters: structure.potentialParameters,
+                               probeParameters: SIMD2<Double>(structure.frameworkProbeEpsilon, structure.frameworkProbeSigma),
+                               blockingPockets: applyingBlockingPockets ? structure.blockingPockets : structure.appliedBlockingPockets,
+                               mass: structure.structureMass)
+  }
+
+  private func recomputeProbeSurfaces()
+  {
+    let structures = computeTargets()
+    guard !structures.isEmpty else {
+      tableView.reloadData()
+      return
+    }
+    guard !isComputing else { return }
+    isComputing = true
+    tableView.reloadData()
+    let energyPayload = structures.map { frameworkSnapshot(for: $0) }
+    let geometricPayload = structures.map { frameworkSnapshot(for: $0, applyingBlockingPockets: true) }
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      let geometric = SKGeometricSurface.surfaceAreas(of: geometricPayload)
+      let energy = try? SKNitrogenSurfaceArea.computeEnergySurface(structures: energyPayload)
+      let well = try? SKNitrogenSurfaceArea.compute(structures: energyPayload)
+      DispatchQueue.main.async {
+        guard let self else { return }
+        for (i, result) in geometric.enumerated() where structures.indices.contains(i)
+        {
+          structures[i].structureGeometricSurfaceArea = result.area
+        }
+        if let energy
+        {
+          for (i, result) in energy.enumerated() where structures.indices.contains(i)
+          {
+            structures[i].structureNitrogenSurfaceArea = result.area
+          }
+        }
+        if let well
+        {
+          for (i, result) in well.enumerated() where structures.indices.contains(i)
+          {
+            structures[i].structureWellSurfaceArea = result.area
+          }
+        }
+        structures.forEach { $0.recomputeDensityProperties() }
+        self.isComputing = false
+        self.document.updateChangeCount(.done)
+        self.tableView.reloadData()
+      }
+    }
   }
 
   // MARK: Add atom / delete atoms / primitives

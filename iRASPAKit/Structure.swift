@@ -50,7 +50,7 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
 public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, RKRenderBlockingPocketsSource, AtomStructureEditor, BondStructureEditor, AnnotationEditor, InfoEditor, StructuralPropertyEditor
 {
-  private static var classVersionNumber: Int = 14
+  private static var classVersionNumber: Int = 16
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   {
@@ -228,6 +228,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   // =====================================================================
   
   public var adsorptionSurfaceProbeMolecule: ProbeMolecule = .helium
+  public var adsorptionSurfaceProbeEpsilon: Double = 10.9
+  public var adsorptionSurfaceProbeSigma: Double = 2.64
   
   public var potentialParameters: [SIMD2<Double>] {return []}
   
@@ -243,30 +245,29 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var encompassingPowerOfTwoCubicGridSize: Int = 7
   public var adsorptionSurfaceProbeParameters: SIMD2<Double>
   {
-    switch(adsorptionSurfaceProbeMolecule)
+    return SIMD2<Double>(adsorptionSurfaceProbeEpsilon, adsorptionSurfaceProbeSigma)
+  }
+  
+  public func applyAdsorptionSurfaceProbeMolecule(_ probe: ProbeMolecule)
+  {
+    adsorptionSurfaceProbeMolecule = probe
+    if let parameters = probe.namedParameters
     {
-    case .helium:
-      return SIMD2<Double>(10.9, 2.64)
-    case .nitrogen:
-      return SIMD2<Double>(36.0,3.31)
-    case .methane:
-      return SIMD2<Double>(158.5,3.72)
-    case .hydrogen:
-      return SIMD2<Double>(36.7,2.958)
-    case .water:
-      return SIMD2<Double>(89.633,3.097)
-    case .co2:
-      // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
-      return SIMD2<Double>(236.1,3.72)
-    case .xenon:
-      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return SIMD2<Double>(226.14,3.949)
-    case .krypton:
-      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return SIMD2<Double>(162.58,3.6274)
-    case .argon:
-      return SIMD2<Double>(119.8,3.34)
+      adsorptionSurfaceProbeEpsilon = parameters.x
+      adsorptionSurfaceProbeSigma = parameters.y
     }
+  }
+  
+  public func setAdsorptionSurfaceProbeEpsilon(_ value: Double)
+  {
+    adsorptionSurfaceProbeEpsilon = value
+    adsorptionSurfaceProbeMolecule = ProbeMolecule.matching(SIMD2<Double>(adsorptionSurfaceProbeEpsilon, adsorptionSurfaceProbeSigma))
+  }
+  
+  public func setAdsorptionSurfaceProbeSigma(_ value: Double)
+  {
+    adsorptionSurfaceProbeSigma = value
+    adsorptionSurfaceProbeMolecule = ProbeMolecule.matching(SIMD2<Double>(adsorptionSurfaceProbeEpsilon, adsorptionSurfaceProbeSigma))
   }
   public var adsorptionSurfaceNumberOfTriangles: Int = 0
   
@@ -300,30 +301,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   
   public var frameworkProbeParameters: SIMD2<Double>
   {
-    switch(frameworkProbeMolecule)
-    {
-    case .helium:
-      return SIMD2<Double>(10.9, 2.64)
-    case .nitrogen:
-      return SIMD2<Double>(36.0,3.31)
-    case .methane:
-      return SIMD2<Double>(158.5,3.72)
-    case .hydrogen:
-      return SIMD2<Double>(36.7,2.958)
-    case .water:
-      return SIMD2<Double>(89.633,3.097)
-    case .co2:
-      // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
-      return SIMD2<Double>(236.1,3.72)
-    case .xenon:
-      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return SIMD2<Double>(226.14,3.949)
-    case .krypton:
-      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return SIMD2<Double>(162.58,3.6274)
-    case .argon:
-      return SIMD2<Double>(119.8,3.34)
-    }
+    return SIMD2<Double>(frameworkProbeEpsilon, frameworkProbeSigma)
   }
   
   public var structureNitrogenSurfaceArea: Double = 0.0
@@ -576,9 +554,56 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     case xenon = 6
     case krypton = 7
     case argon = 8
+    case custom = 9
+    
+    public var namedParameters: SIMD2<Double>?
+    {
+      switch self
+      {
+      case .helium:
+        return SIMD2<Double>(10.9, 2.64)
+      case .nitrogen:
+        return SIMD2<Double>(36.0, 3.31)
+      case .methane:
+        return SIMD2<Double>(158.5, 3.72)
+      case .hydrogen:
+        return SIMD2<Double>(36.7, 2.958)
+      case .water:
+        return SIMD2<Double>(89.633, 3.097)
+      case .co2:
+        // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
+        return SIMD2<Double>(236.1, 3.72)
+      case .xenon:
+        // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
+        return SIMD2<Double>(226.14, 3.949)
+      case .krypton:
+        // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
+        return SIMD2<Double>(162.58, 3.6274)
+      case .argon:
+        return SIMD2<Double>(119.8, 3.34)
+      case .custom:
+        return nil
+      }
+    }
+    
+    public static func matching(_ parameters: SIMD2<Double>, tolerance: Double = 1.0e-6) -> ProbeMolecule
+    {
+      let named: [ProbeMolecule] = [.helium, .methane, .nitrogen, .hydrogen, .water, .co2, .xenon, .krypton, .argon]
+      for probe in named
+      {
+        guard let candidate = probe.namedParameters else { continue }
+        if abs(candidate.x - parameters.x) <= tolerance && abs(candidate.y - parameters.y) <= tolerance
+        {
+          return probe
+        }
+      }
+      return .custom
+    }
   }
   
   public var frameworkProbeMolecule: ProbeMolecule = .nitrogen
+  public var frameworkProbeEpsilon: Double = 36.0
+  public var frameworkProbeSigma: Double = 3.31
 
   public var canRemoveSymmetry: Bool
   {
@@ -892,6 +917,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     
     // adsorption surface
     self.frameworkProbeMolecule = copy.frameworkProbeMolecule
+    self.frameworkProbeEpsilon = copy.frameworkProbeEpsilon
+    self.frameworkProbeSigma = copy.frameworkProbeSigma
 
     self.drawAdsorptionSurface = copy.drawAdsorptionSurface
     self.adsorptionSurfaceOpacity = copy.adsorptionSurfaceOpacity
@@ -902,6 +929,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.adsorptionSurfaceNumberOfTriangles = copy.adsorptionSurfaceNumberOfTriangles
     
     self.adsorptionSurfaceProbeMolecule = copy.adsorptionSurfaceProbeMolecule
+    self.adsorptionSurfaceProbeEpsilon = copy.adsorptionSurfaceProbeEpsilon
+    self.adsorptionSurfaceProbeSigma = copy.adsorptionSurfaceProbeSigma
     
     self.adsorptionSurfaceFrontSideHDR = copy.adsorptionSurfaceFrontSideHDR
     self.adsorptionSurfaceFrontSideHDRExposure = copy.adsorptionSurfaceFrontSideHDRExposure
@@ -1062,6 +1091,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.adsorptionTransparencyThreshold = adsorptionViewer.adsorptionTransparencyThreshold
       self.adsorptionSurfaceIsoValue = adsorptionViewer.adsorptionSurfaceIsoValue
       self.adsorptionSurfaceProbeMolecule = adsorptionViewer.adsorptionSurfaceProbeMolecule
+      self.adsorptionSurfaceProbeEpsilon = adsorptionViewer.adsorptionSurfaceProbeEpsilon
+      self.adsorptionSurfaceProbeSigma = adsorptionViewer.adsorptionSurfaceProbeSigma
       
       self.adsorptionSurfaceRenderingMethod = adsorptionViewer.adsorptionSurfaceRenderingMethod
       self.adsorptionVolumeTransferFunction = adsorptionViewer.adsorptionVolumeTransferFunction
@@ -1099,6 +1130,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.structureType = cellStructureViewer.structureType
       self.structureMaterialType = cellStructureViewer.structureMaterialType
       self.frameworkProbeMolecule = cellStructureViewer.frameworkProbeMolecule
+      self.frameworkProbeEpsilon = cellStructureViewer.frameworkProbeEpsilon
+      self.frameworkProbeSigma = cellStructureViewer.frameworkProbeSigma
       self.structureMass = cellStructureViewer.structureMass
       self.structureDensity = cellStructureViewer.structureDensity
       self.structureHeliumVoidFraction = cellStructureViewer.structureHeliumVoidFraction
@@ -1391,6 +1424,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     
     // adsorption surface
     self.frameworkProbeMolecule = clone.frameworkProbeMolecule
+    self.frameworkProbeEpsilon = clone.frameworkProbeEpsilon
+    self.frameworkProbeSigma = clone.frameworkProbeSigma
 
     self.drawAdsorptionSurface = clone.drawAdsorptionSurface
     self.adsorptionSurfaceOpacity = clone.adsorptionSurfaceOpacity
@@ -1401,6 +1436,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.adsorptionSurfaceNumberOfTriangles = clone.adsorptionSurfaceNumberOfTriangles
     
     self.adsorptionSurfaceProbeMolecule = clone.adsorptionSurfaceProbeMolecule
+    self.adsorptionSurfaceProbeEpsilon = clone.adsorptionSurfaceProbeEpsilon
+    self.adsorptionSurfaceProbeSigma = clone.adsorptionSurfaceProbeSigma
     
     self.adsorptionSurfaceFrontSideHDR = clone.adsorptionSurfaceFrontSideHDR
     self.adsorptionSurfaceFrontSideHDRExposure = clone.adsorptionSurfaceFrontSideHDRExposure
@@ -1629,26 +1666,26 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   
   public func setRepresentationForceField(forceField: String?, forceFieldSet: SKForceFieldSet, for asymmetricAtoms: [SKAsymmetricAtom])
   {
-    switch(self.atomForceFieldOrder)
+    if forceFieldSet.displayName == SKForceFieldSet.aluminosilicateDisplayName
     {
-    case .elementOnly:
-      asymmetricAtoms.forEach{atom in
-        atom.potentialParameters = forceFieldSet[PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)
-        let atomicNumber: Int = atom.elementIdentifier
-        let elementString: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-        atom.bondDistanceCriteria = forceFieldSet[elementString]?.userDefinedRadius ?? 0.0
+      assignAluminosilicateOxygenTypes(to: asymmetricAtoms)
+    }
+    else
+    {
+      for atom in asymmetricAtoms where atom.uniqueForceFieldName == SKForceFieldSet.bridgingAluminumOxygenIdentifier && forceFieldSet[SKForceFieldSet.bridgingAluminumOxygenIdentifier] == nil
+      {
+        atom.uniqueForceFieldName = "O"
       }
-    case .forceFieldOnly:
-      asymmetricAtoms.forEach{atom in
-        atom.potentialParameters = forceFieldSet[atom.uniqueForceFieldName]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)
-        atom.bondDistanceCriteria = forceFieldSet[atom.uniqueForceFieldName]?.userDefinedRadius ?? 1.0
-      }
-    case .forceFieldFirst:
-      asymmetricAtoms.forEach{atom in
-        atom.potentialParameters = forceFieldSet[atom.uniqueForceFieldName]?.potentialParameters ?? forceFieldSet[PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)
-        let atomicNumber: Int = atom.elementIdentifier
-        let elementString: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-        atom.bondDistanceCriteria = forceFieldSet[atom.uniqueForceFieldName]?.userDefinedRadius ?? forceFieldSet[elementString]?.userDefinedRadius ?? 0.0
+    }
+    
+    for atom in asymmetricAtoms
+    {
+      let type: SKForceFieldType? = resolvedForceFieldType(for: atom, in: forceFieldSet)
+      atom.potentialParameters = type?.potentialParameters ?? SIMD2<Double>(0.0, 0.0)
+      atom.bondDistanceCriteria = type?.userDefinedRadius ?? ((self.atomForceFieldOrder == .forceFieldOnly) ? 1.0 : 0.0)
+      if forceFieldSet.displayName == SKForceFieldSet.aluminosilicateDisplayName
+      {
+        atom.charge = type?.charge ?? 0.0
       }
     }
     
@@ -1667,17 +1704,62 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     }
   }
   
+  private func resolvedForceFieldType(for atom: SKAsymmetricAtom, in forceFieldSet: SKForceFieldSet) -> SKForceFieldType?
+  {
+    let elementString: String = PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol
+    switch(self.atomForceFieldOrder)
+    {
+    case .elementOnly:
+      return forceFieldSet[atom.uniqueForceFieldName] ?? forceFieldSet[elementString] ?? SKForceFieldSet.defaultType(symbol: elementString)
+    case .forceFieldOnly:
+      return forceFieldSet[atom.uniqueForceFieldName] ?? SKForceFieldSet.defaultType(symbol: elementString)
+    case .forceFieldFirst:
+      return forceFieldSet[atom.uniqueForceFieldName] ?? forceFieldSet[elementString] ?? SKForceFieldSet.defaultType(symbol: elementString)
+    }
+  }
+  
+  private func assignAluminosilicateOxygenTypes(to asymmetricAtoms: [SKAsymmetricAtom])
+  {
+    func fractionalPositions(atomicNumbers: Set<Int>) -> [SIMD3<Double>]
+    {
+      var result: [SIMD3<Double>] = []
+      for atom in asymmetricAtoms where atomicNumbers.contains(atom.elementIdentifier)
+      {
+        if atom.copies.isEmpty
+        {
+          result.append(atom.position)
+        }
+        else
+        {
+          result.append(contentsOf: atom.copies.map(\.position))
+        }
+      }
+      return result
+    }
+    
+    let tPositions: [SIMD3<Double>] = fractionalPositions(atomicNumbers: SKForceFieldSet.trivalentTAtomAtomicNumbers)
+    let unitCell: double3x3 = cell.unitCell
+    for atom in asymmetricAtoms where atom.elementIdentifier == 8
+    {
+      if atom.uniqueForceFieldName != "O" && atom.uniqueForceFieldName != SKForceFieldSet.bridgingAluminumOxygenIdentifier
+      {
+        continue
+      }
+      let oxygenPositions: [SIMD3<Double>] = atom.copies.isEmpty ? [atom.position] : atom.copies.map(\.position)
+      let bridgesAluminum: Bool = oxygenPositions.contains {
+        SKForceFieldSet.isBridgingAluminumOxygen(oxygenFractional: $0, tAtomFractionals: tPositions, unitCell: unitCell)
+      }
+      atom.uniqueForceFieldName = bridgesAluminum ? SKForceFieldSet.bridgingAluminumOxygenIdentifier : "O"
+    }
+  }
+  
   
   public func setRepresentationForceField(forceField: String?, forceFieldSets: SKForceFieldSets)
   {
     if let forceField = forceField
     {
       self.atomForceFieldIdentifier = forceField
-      
-      if let forceFieldSet: SKForceFieldSet = forceFieldSets[self.atomForceFieldIdentifier]
-      {
-        setRepresentationForceField(forceField: forceField, forceFieldSet: forceFieldSet)
-      }
+      setRepresentationForceField(forceField: forceField, forceFieldSet: forceFieldSets.resolvedSet(named: forceField))
     }
   }
   
@@ -1686,11 +1768,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     if let forceField = forceField
     {
       self.atomForceFieldIdentifier = forceField
-      
-      if let forceFieldSet: SKForceFieldSet = forceFieldSets[self.atomForceFieldIdentifier]
-      {
-        setRepresentationForceField(forceField: forceField, forceFieldSet: forceFieldSet, for: asymmetricAtoms)
-      }
+      setRepresentationForceField(forceField: forceField, forceFieldSet: forceFieldSets.resolvedSet(named: forceField), for: asymmetricAtoms)
     }
   }
   
@@ -1711,6 +1789,13 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         asymmetricAtoms.forEach{$0.potentialParameters = forceFieldSet[$0.uniqueForceFieldName]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)}
       case .forceFieldFirst:
         asymmetricAtoms.forEach{$0.potentialParameters = forceFieldSet[$0.uniqueForceFieldName]?.potentialParameters ?? forceFieldSet[PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].chemicalSymbol]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)}
+    }
+    asymmetricAtoms.forEach { atom in
+      if forceFieldSet.displayName == SKForceFieldSet.aluminosilicateDisplayName,
+         let type = resolvedForceFieldType(for: atom, in: forceFieldSet)
+      {
+        atom.charge = type.charge
+      }
     }
   }
   
@@ -1743,11 +1828,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     if let order = order
     {
       self.atomForceFieldOrder = order
-      
-      if let forceFieldSet: SKForceFieldSet = forceFieldSets[self.atomForceFieldIdentifier]
-      {
-        setRepresentationForceFieldOrder(order: order, forceFieldSet: forceFieldSet)
-      }
+      setRepresentationForceFieldOrder(order: order, forceFieldSet: forceFieldSets.resolvedSet(named: self.atomForceFieldIdentifier))
     }
   }
   
@@ -1830,7 +1911,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.atomDiffuseIntensity = 1.0
         self.atomSpecularIntensity = 1.0
         self.atomShininess = 6.0
-        self.atomForceFieldIdentifier = "Default"
         self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
         self.atomColorSchemeOrder = .elementOnly
         
@@ -1885,7 +1965,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.atomSpecularIntensity = 0.2
         self.atomShininess = 4.0
         self.atomScaleFactor = 1.0
-        self.atomForceFieldIdentifier = "Default"
         self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.rasmol.rawValue
         self.atomColorSchemeOrder = .elementOnly
         
@@ -1928,7 +2007,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.atomHDR = true
         self.atomHDRExposure = 1.5
         self.atomScaleFactor = 1.0
-        self.atomForceFieldIdentifier = "Default"
         self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
         self.atomColorSchemeOrder = .elementOnly
         
@@ -1978,7 +2056,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
           drawAtoms = true
         }
         atomScaleFactor = 1.0
-        atomForceFieldIdentifier = "Default"
         atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
         atomColorSchemeOrder = .elementOnly
         atomAmbientOcclusion = false
@@ -2054,7 +2131,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
        (self.atomShininess ==~ 6.0) &&
        (self.atomScaleFactor ==~ 0.7) &&
        self.atomRepresentationType == .sticks_and_balls &&
-       self.atomForceFieldIdentifier == "Default" &&
        self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
        self.atomColorSchemeOrder == .elementOnly &&
        bondsDrawn &&
@@ -2118,7 +2194,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
        (self.atomShininess ==~ 4.0) &&
        (self.atomScaleFactor ==~ 1.0) &&
        self.atomRepresentationType == .vdw &&
-       self.atomForceFieldIdentifier == "Default" &&
        self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.rasmol.rawValue &&
        self.atomColorSchemeOrder == .elementOnly &&
       self.atomSelectionStyle == .WorleyNoise3D &&
@@ -2142,7 +2217,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       (self.atomSaturation ==~ 1.0) &&
       (self.atomValue ==~ 1.0) &&
       self.atomRepresentationType == .unity &&
-      self.atomForceFieldIdentifier == "Default" &&
       self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
       self.atomColorSchemeOrder == .elementOnly &&
       (self.atomScaleFactor ==~ 1.0) &&
@@ -2194,7 +2268,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     }
     else if atomsDrawn &&
       self.atomRepresentationType == .unity &&
-      self.atomForceFieldIdentifier == "Default" &&
       self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
       self.atomColorSchemeOrder == .elementOnly &&
       (self.atomScaleFactor ==~ 1.0) &&
@@ -3809,6 +3882,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     encoder.encode(self.structureVolumetricGeometricSurfaceArea)
     encoder.encode(self.structureGravimetricGeometricSurfaceArea)
     
+    encoder.encode(self.frameworkProbeEpsilon)
+    encoder.encode(self.frameworkProbeSigma)
+    
+    encoder.encode(self.adsorptionSurfaceProbeEpsilon)
+    encoder.encode(self.adsorptionSurfaceProbeSigma)
+    
     super.binaryEncode(to: encoder)
   }
   
@@ -4281,6 +4360,18 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.structureGravimetricGeometricSurfaceArea = try decoder.decode(Double.self)
       }
       
+      if readVersionNumber >= 15 // introduced in version 15
+      {
+        self.frameworkProbeEpsilon = try decoder.decode(Double.self)
+        self.frameworkProbeSigma = try decoder.decode(Double.self)
+      }
+      
+      if readVersionNumber >= 16 // introduced in version 16
+      {
+        self.adsorptionSurfaceProbeEpsilon = try decoder.decode(Double.self)
+        self.adsorptionSurfaceProbeSigma = try decoder.decode(Double.self)
+      }
+      
       try super.init(fromBinary: decoder)
     }
     else
@@ -4316,6 +4407,18 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.authorAffiliationCountryName = legacyAuthorAffiliationCountryName
       
       self.creationDate = legacyCreationDate
+    }
+    
+    if readVersionNumber < 15, let parameters = frameworkProbeMolecule.namedParameters
+    {
+      self.frameworkProbeEpsilon = parameters.x
+      self.frameworkProbeSigma = parameters.y
+    }
+    
+    if readVersionNumber < 16, let parameters = adsorptionSurfaceProbeMolecule.namedParameters
+    {
+      self.adsorptionSurfaceProbeEpsilon = parameters.x
+      self.adsorptionSurfaceProbeSigma = parameters.y
     }
     
     // Reapplying the style resets the cueing along with the rest of the material, the style owning it

@@ -38,7 +38,7 @@ import simd
 // Note that this is 'value'-type
 public struct SKForceFieldType: BinaryDecodable, BinaryEncodable
 {
-  private static var classVersionNumber: Int = 2
+  private static var classVersionNumber: Int = 3
 
   public var forceFieldStringIdentifier: String = ""
   public var editable: Bool = true
@@ -47,9 +47,10 @@ public struct SKForceFieldType: BinaryDecodable, BinaryEncodable
   public var potentialParameters: SIMD2<Double> = SIMD2<Double>(0.0,0.0)
   public var mass: Double = 0.0
   public var userDefinedRadius: Double = 0.0
+  public var charge: Double = 0.0
   public var isVisible: Bool = true
   
-  public init(forceFieldStringIdentifier: String, atomicNumber: Int, sortIndex: Int, potentialParameters: SIMD2<Double>, mass: Double, userDefinedRadius: Double)
+  public init(forceFieldStringIdentifier: String, atomicNumber: Int, sortIndex: Int, potentialParameters: SIMD2<Double>, mass: Double, userDefinedRadius: Double, charge: Double = 0.0)
   {
     self.forceFieldStringIdentifier = forceFieldStringIdentifier
     self.atomicNumber = atomicNumber
@@ -57,6 +58,7 @@ public struct SKForceFieldType: BinaryDecodable, BinaryEncodable
     self.potentialParameters = potentialParameters
     self.mass = mass
     self.userDefinedRadius = userDefinedRadius
+    self.charge = charge
   }
   
   // MARK: -
@@ -73,6 +75,7 @@ public struct SKForceFieldType: BinaryDecodable, BinaryEncodable
     encoder.encode(self.mass)
     encoder.encode(self.userDefinedRadius)
     encoder.encode(self.isVisible)
+    encoder.encode(self.charge)
   }
   
   // MARK: -
@@ -100,6 +103,12 @@ public struct SKForceFieldType: BinaryDecodable, BinaryEncodable
     if readVersionNumber >= 2 // introduced in version 2
     {
       isVisible = try decoder.decode(Bool.self)
+    }
+    
+    self.charge = 0.0
+    if readVersionNumber >= 3
+    {
+      self.charge = try decoder.decode(Double.self)
     }
   }
   

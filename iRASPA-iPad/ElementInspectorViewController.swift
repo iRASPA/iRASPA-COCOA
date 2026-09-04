@@ -288,7 +288,7 @@ final class ElementInspectorViewController: UIViewController, UITableViewDataSou
     cell.configure(index: row,
                    type: forceFieldType,
                    element: element,
-                   color: currentColorSet[uniqueName] ?? .black,
+                   color: currentColorSet[uniqueName] ?? currentColorSet[element.chemicalSymbol] ?? .black,
                    setEditable: editable,
                    isDefaultType: isDefault,
                    colorEditable: currentColorSet.editable)
@@ -337,6 +337,11 @@ final class ElementInspectorViewController: UIViewController, UITableViewDataSou
       guard let self, self.currentForceFieldSet.editable else { return }
       let epsilon = self.currentForceFieldSet.atomTypeList[row].potentialParameters.x
       self.currentForceFieldSet.atomTypeList[row].potentialParameters = SIMD2<Double>(epsilon, sigma)
+      self.applyForceFieldToStructures()
+    }
+    cell.onChargeChange = { [weak self] charge in
+      guard let self, self.currentForceFieldSet.editable else { return }
+      self.currentForceFieldSet.atomTypeList[row].charge = charge
       self.applyForceFieldToStructures()
     }
     cell.onColorChange = { [weak self] color in
@@ -393,6 +398,7 @@ private final class ElementTypeCell: UITableViewCell
   var onUserRadiusChange: ((Double) -> Void)?
   var onEpsilonChange: ((Double) -> Void)?
   var onSigmaChange: ((Double) -> Void)?
+  var onChargeChange: ((Double) -> Void)?
   var onColorChange: ((UIColor) -> Void)?
 
   private let indexLabel = UILabel()
@@ -408,6 +414,7 @@ private final class ElementTypeCell: UITableViewCell
   private let oxidationValue = UILabel()
   private let epsilonField = UITextField()
   private let sigmaField = UITextField()
+  private let chargeField = UITextField()
 
   private let massField = UITextField()
   private let atomicRadiusValue = UILabel()
@@ -487,6 +494,9 @@ private final class ElementTypeCell: UITableViewCell
     configureNumberField(sigmaField) { [weak self] text in
       if let value = Double(text) { self?.onSigmaChange?(value) }
     }
+    configureNumberField(chargeField) { [weak self] text in
+      if let value = Double(text) { self?.onChargeChange?(value) }
+    }
 
     let leftColumn = UIStackView(arrangedSubviews: [
       fieldRow("Number", control: numberField),
@@ -495,7 +505,8 @@ private final class ElementTypeCell: UITableViewCell
       infoRow("Period", value: periodValue),
       infoRow("Oxidation States", value: oxidationValue),
       fieldRow("Epsilon", control: epsilonField, unit: "K"),
-      fieldRow("Sigma", control: sigmaField, unit: "Å")
+      fieldRow("Sigma", control: sigmaField, unit: "Å"),
+      fieldRow("Charge", control: chargeField, unit: "e")
     ])
     leftColumn.axis = .vertical
     leftColumn.spacing = 6
@@ -640,6 +651,8 @@ private final class ElementTypeCell: UITableViewCell
     epsilonField.isEnabled = setEditable
     sigmaField.text = String(format: "%.5f", type.potentialParameters.y)
     sigmaField.isEnabled = setEditable
+    chargeField.text = String(format: "%.4f", type.charge)
+    chargeField.isEnabled = setEditable
   }
 
   override func prepareForReuse()
@@ -653,6 +666,7 @@ private final class ElementTypeCell: UITableViewCell
     onUserRadiusChange = nil
     onEpsilonChange = nil
     onSigmaChange = nil
+    onChargeChange = nil
     onColorChange = nil
   }
 }

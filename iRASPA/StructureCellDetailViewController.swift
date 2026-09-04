@@ -1120,6 +1120,40 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
+      if let popUpbuttonForceField: iRASPAPopUpButton = view.viewWithTag(11) as? iRASPAPopUpButton
+      {
+        if let document: iRASPADocument = self.windowController?.currentDocument ?? (self.windowController?.document as? iRASPADocument)
+        {
+          let action = popUpbuttonForceField.action
+          let target = popUpbuttonForceField.target
+          popUpbuttonForceField.action = nil
+          popUpbuttonForceField.removeAllItems()
+          for i in 0..<document.forceFieldSets.count
+          {
+            popUpbuttonForceField.addItem(withTitle: document.forceFieldSets[i].displayName)
+          }
+          popUpbuttonForceField.action = action
+          popUpbuttonForceField.target = target
+        }
+        
+        popUpbuttonForceField.isEditable = false
+        popUpbuttonForceField.toolTip = "Force field used to compute helium void fraction, surface areas, and adsorption energy surfaces"
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
+        {
+          popUpbuttonForceField.isEditable = enabled
+          
+          if let rawValue: String = self.getRepresentationForceField()
+          {
+            popUpbuttonForceField.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpbuttonForceField.selectItem(withTitle: rawValue)
+          }
+          else
+          {
+            popUpbuttonForceField.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
       if let textFieldRenderStructureMass: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldRenderStructureMass.isEditable = false
@@ -1216,7 +1250,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
 
     case "StructuralProbeCell":
-      // Probe molecule
+      // Probe sphere
       if let popUpbuttonProbeParticle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
         popUpbuttonProbeParticle.isEditable = false
@@ -1226,6 +1260,50 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           if let probeMolecule: Structure.ProbeMolecule = self.renderFrameworkProbeMolecule
           {
             popUpbuttonProbeParticle.selectItem(at: probeMolecule.rawValue)
+          }
+        }
+      }
+      
+      if let epsilonLabel: NSTextField = view.viewWithTag(120) as? NSTextField
+      {
+        epsilonLabel.setEpsilonOverKBTitle()
+      }
+      
+      if let textFieldFrameworkProbeEpsilon: NSTextField = view.viewWithTag(20) as? NSTextField
+      {
+        textFieldFrameworkProbeEpsilon.isEditable = false
+        textFieldFrameworkProbeEpsilon.stringValue = ""
+        textFieldFrameworkProbeEpsilon.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldFrameworkProbeEpsilon.isEnabled = enabled
+          textFieldFrameworkProbeEpsilon.isEditable = enabled
+          if let frameworkProbeEpsilon: Double = self.renderFrameworkProbeEpsilon
+          {
+            textFieldFrameworkProbeEpsilon.doubleValue = frameworkProbeEpsilon
+          }
+          else
+          {
+            textFieldFrameworkProbeEpsilon.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let textFieldFrameworkProbeSigma: NSTextField = view.viewWithTag(21) as? NSTextField
+      {
+        textFieldFrameworkProbeSigma.isEditable = false
+        textFieldFrameworkProbeSigma.stringValue = ""
+        textFieldFrameworkProbeSigma.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldFrameworkProbeSigma.isEnabled = enabled
+          textFieldFrameworkProbeSigma.isEditable = enabled
+          if let frameworkProbeSigma: Double = self.renderFrameworkProbeSigma
+          {
+            textFieldFrameworkProbeSigma.doubleValue = frameworkProbeSigma
+          }
+          else
+          {
+            textFieldFrameworkProbeSigma.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -3468,7 +3546,34 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
       self.renderStructureMaterialType = sender.stringValue
+      self.applyStructureForceField(named: SKForceFieldSets.suggestedDisplayName(forMaterialTypeName: sender.stringValue))
+      self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
     }
+  }
+  
+  @IBAction func changeStructureForceField(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
+    {
+      self.applyStructureForceField(named: sender.titleOfSelectedItem ?? SKForceFieldSets.defaultDisplayName)
+      
+      self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  private func applyStructureForceField(named name: String)
+  {
+    guard let document: iRASPADocument = self.windowController?.currentDocument ?? (self.windowController?.document as? iRASPADocument) else { return }
+    
+    self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.setRepresentationForceField(forceField: name, forceFieldSets: document.forceFieldSets)}
+    self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.recheckRepresentationStyle()}
+    
+    self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [])
+    self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: {})
+    self.windowController?.detailTabViewController?.renderViewController?.reloadRenderData()
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
   }
   
   @IBAction func setHeliumVoidFraction(_ sender: NSTextField)
@@ -3509,57 +3614,106 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeFrameworkProbeMolecule(_ sender: NSPopUpButton)
   {
+    self.view.window?.makeFirstResponder(self.cellOutlineView)
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       let renderFrameworkProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)
     {
       self.renderFrameworkProbeMolecule = renderFrameworkProbeMolecule
       
-      self.renderRecomputeDensityProperties()
-      
-      do
-      {
-        let structures: [Structure] = self.iRASPAObjects.compactMap({$0.object as? Structure})
-        let snapshots: [SKFrameworkSnapshot] = structures.map(SKFrameworkSnapshot.init)
-        let energyResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.computeEnergySurface(structures: snapshots)
-        let wellResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.compute(structures: snapshots)
-        let geometricResults: [SKSurfaceAreaResult] = SKGeometricSurface.surfaceAreas(of: structures.map(SKFrameworkSnapshot.applyingBlockingPockets))
-        for (i, result) in energyResults.enumerated()
-        {
-          structures[i].structureNitrogenSurfaceArea = result.area
-        }
-        for (i, result) in wellResults.enumerated()
-        {
-          structures[i].structureWellSurfaceArea = result.area
-        }
-        for (i, result) in geometricResults.enumerated()
-        {
-          structures[i].structureGeometricSurfaceArea = result.area
-        }
-      }
-      catch let error
-      {
-        LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
-        return
-      }
-      
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-      
-      self.updateOutlineView(identifiers: [self.structuralProbeCell])
+      self.recomputeFrameworkProbeDependentProperties()
     }
+  }
+  
+  @IBAction func setFrameworkProbeEpsilon(_ sender: NSTextField)
+  {
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    {
+      self.renderFrameworkProbeEpsilon = sender.doubleValue
+      self.recomputeFrameworkProbeDependentProperties()
+    }
+  }
+  
+  @IBAction func setFrameworkProbeSigma(_ sender: NSTextField)
+  {
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    {
+      self.renderFrameworkProbeSigma = sender.doubleValue
+      self.recomputeFrameworkProbeDependentProperties()
+    }
+  }
+  
+  private func frameworkSnapshots(applyingBlockingPockets: Bool = false) -> [(Structure, SKFrameworkSnapshot)]
+  {
+    let structures: [Structure] = self.iRASPAObjects.compactMap({$0.object as? Structure})
+    return structures.map { structure in
+      let snapshot = SKFrameworkSnapshot(cell: structure.cell,
+                                         positions: structure.atomUnitCellPositions,
+                                         potentialParameters: structure.potentialParameters,
+                                         probeParameters: SIMD2<Double>(structure.frameworkProbeEpsilon, structure.frameworkProbeSigma),
+                                         blockingPockets: applyingBlockingPockets ? structure.blockingPockets : structure.appliedBlockingPockets,
+                                         mass: structure.structureMass)
+      return (structure, snapshot)
+    }
+  }
+  
+  private func recomputeFrameworkProbeDependentProperties()
+  {
+    self.renderRecomputeDensityProperties()
+    
+    let pairs = self.frameworkSnapshots()
+    let structures = pairs.map { $0.0 }
+    let snapshots = pairs.map { $0.1 }
+    
+    do
+    {
+      let energyResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.computeEnergySurface(structures: snapshots)
+      for (i, result) in energyResults.enumerated()
+      {
+        structures[i].structureNitrogenSurfaceArea = result.area
+      }
+    }
+    catch let error
+    {
+      LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
+    }
+    
+    do
+    {
+      let wellResults: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.compute(structures: snapshots)
+      for (i, result) in wellResults.enumerated()
+      {
+        structures[i].structureWellSurfaceArea = result.area
+      }
+    }
+    catch let error
+    {
+      LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
+    }
+    
+    let geometricResults: [SKSurfaceAreaResult] = SKGeometricSurface.surfaceAreas(of: self.frameworkSnapshots(applyingBlockingPockets: true).map { $0.1 })
+    for (i, result) in geometricResults.enumerated()
+    {
+      structures[i].structureGeometricSurfaceArea = result.area
+    }
+    
+    self.windowController?.document?.updateChangeCount(.changeDone)
+    self.proxyProject?.representedObject.isEdited = true
+    
+    self.updateOutlineView(identifiers: [self.structuralProbeCell])
   }
   
   @IBAction func recomputeNitrogenSurfaceArea(_ sender: NSButton)
   {
+    self.view.window?.makeFirstResponder(self.cellOutlineView)
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
      do
       {
-        let structures: [Structure & StructuralPropertyEditor & VolumetricDataViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & VolumetricDataViewer})
-        let results: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.computeEnergySurface(structures: structures.map(SKFrameworkSnapshot.init))
+        let pairs = self.frameworkSnapshots()
+        let results: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.computeEnergySurface(structures: pairs.map { $0.1 })
         for (i, result) in results.enumerated()
         {
-          structures[i].structureNitrogenSurfaceArea = result.area
+          pairs[i].0.structureNitrogenSurfaceArea = result.area
         }
       }
       catch let error
@@ -3577,15 +3731,16 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func recomputeWellSurfaceArea(_ sender: NSButton)
   {
+    self.view.window?.makeFirstResponder(self.cellOutlineView)
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
      do
       {
-        let structures: [Structure & StructuralPropertyEditor & VolumetricDataViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & VolumetricDataViewer})
-        let results: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.compute(structures: structures.map(SKFrameworkSnapshot.init))
+        let pairs = self.frameworkSnapshots()
+        let results: [SKSurfaceAreaResult] = try SKNitrogenSurfaceArea.compute(structures: pairs.map { $0.1 })
         for (i, result) in results.enumerated()
         {
-          structures[i].structureWellSurfaceArea = result.area
+          pairs[i].0.structureWellSurfaceArea = result.area
         }
       }
       catch let error
@@ -3603,13 +3758,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func recomputeGeometricSurfaceArea(_ sender: NSButton)
   {
+    self.view.window?.makeFirstResponder(self.cellOutlineView)
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      let structures: [Structure & StructuralPropertyEditor & VolumetricDataViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyEditor & VolumetricDataViewer})
-      let results: [SKSurfaceAreaResult] = SKGeometricSurface.surfaceAreas(of: structures.map(SKFrameworkSnapshot.applyingBlockingPockets))
+      let pairs = self.frameworkSnapshots(applyingBlockingPockets: true)
+      let results: [SKSurfaceAreaResult] = SKGeometricSurface.surfaceAreas(of: pairs.map { $0.1 })
       for (i, result) in results.enumerated()
       {
-        structures[i].structureGeometricSurfaceArea = result.area
+        pairs[i].0.structureGeometricSurfaceArea = result.area
       }
       
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -4498,6 +4654,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     }
   }
   
+  public func getRepresentationForceField() -> String?
+  {
+    let set: Set<String> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureEditor)?.getRepresentationForceField() })
+    return set.count == 1 ? set.first : nil
+  }
+  
   public var renderStructureMass: Double?
   {
     get
@@ -4567,12 +4729,38 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.frameworkProbeMolecule.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor)?.frameworkProbeMolecule.rawValue})
       return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor & VolumetricDataViewer)?.frameworkProbeMolecule = newValue ?? .helium}
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor)?.applyFrameworkProbeMolecule(newValue ?? .helium)}
+    }
+  }
+  
+  public var renderFrameworkProbeEpsilon: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor)?.frameworkProbeEpsilon})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor)?.setFrameworkProbeEpsilon(newValue ?? 0.0)}
+    }
+  }
+  
+  public var renderFrameworkProbeSigma: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyEditor)?.frameworkProbeSigma})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyEditor)?.setFrameworkProbeSigma(newValue ?? 0.0)}
     }
   }
   

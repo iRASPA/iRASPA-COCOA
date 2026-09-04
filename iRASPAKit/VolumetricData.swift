@@ -44,7 +44,7 @@ import MathKit
 
 public class VolumetricData: Object, VolumetricDataViewer, RKRenderUnitCellSource
 {  
-  private static var classVersionNumber: Int = 2
+  private static var classVersionNumber: Int = 3
   
   public override var materialType: Object.ObjectType
   {
@@ -70,32 +70,11 @@ public class VolumetricData: Object, VolumetricDataViewer, RKRenderUnitCellSourc
   public var encompassingPowerOfTwoCubicGridSize: Int = 7
   
   public var adsorptionSurfaceProbeMolecule: Structure.ProbeMolecule = .helium
+  public var adsorptionSurfaceProbeEpsilon: Double = 10.9
+  public var adsorptionSurfaceProbeSigma: Double = 2.64
   public var adsorptionSurfaceProbeParameters: SIMD2<Double>
   {
-    switch(adsorptionSurfaceProbeMolecule)
-    {
-    case .helium:
-      return SIMD2<Double>(10.9, 2.64)
-    case .nitrogen:
-      return SIMD2<Double>(36.0,3.31)
-    case .methane:
-      return SIMD2<Double>(158.5,3.72)
-    case .hydrogen:
-      return SIMD2<Double>(36.7,2.958)
-    case .water:
-      return SIMD2<Double>(89.633,3.097)
-    case .co2:
-      // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
-      return SIMD2<Double>(236.1,3.72)
-    case .xenon:
-      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return SIMD2<Double>(226.14,3.949)
-    case .krypton:
-      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return SIMD2<Double>(162.58,3.6274)
-    case .argon:
-      return SIMD2<Double>(119.8,3.34)
-    }
+    return SIMD2<Double>(adsorptionSurfaceProbeEpsilon, adsorptionSurfaceProbeSigma)
   }
   public var adsorptionSurfaceNumberOfTriangles: Int = 0
   
@@ -157,6 +136,8 @@ public class VolumetricData: Object, VolumetricDataViewer, RKRenderUnitCellSourc
       self.adsorptionTransparencyThreshold = isosurfaceViewer.adsorptionTransparencyThreshold
       self.adsorptionSurfaceIsoValue = isosurfaceViewer.adsorptionSurfaceIsoValue
       self.adsorptionSurfaceProbeMolecule = isosurfaceViewer.adsorptionSurfaceProbeMolecule
+      self.adsorptionSurfaceProbeEpsilon = isosurfaceViewer.adsorptionSurfaceProbeEpsilon
+      self.adsorptionSurfaceProbeSigma = isosurfaceViewer.adsorptionSurfaceProbeSigma
       
       self.adsorptionSurfaceRenderingMethod = isosurfaceViewer.adsorptionSurfaceRenderingMethod
       self.adsorptionVolumeTransferFunction = isosurfaceViewer.adsorptionVolumeTransferFunction
@@ -367,6 +348,9 @@ public class VolumetricData: Object, VolumetricDataViewer, RKRenderUnitCellSourc
     encoder.encode(self.adsorptionSurfaceBackSideSpecularIntensity)
     encoder.encode(self.adsorptionSurfaceBackSideShininess)
     
+    encoder.encode(self.adsorptionSurfaceProbeEpsilon)
+    encoder.encode(self.adsorptionSurfaceProbeSigma)
+    
     encoder.encode(Int(0x6f6b6195))
     
     super.binaryEncode(to: encoder)
@@ -430,6 +414,17 @@ public class VolumetricData: Object, VolumetricDataViewer, RKRenderUnitCellSourc
       self.adsorptionSurfaceBackSideDiffuseIntensity = try decoder.decode(Double.self)
       self.adsorptionSurfaceBackSideSpecularIntensity = try decoder.decode(Double.self)
       self.adsorptionSurfaceBackSideShininess = try decoder.decode(Double.self)
+      
+      if readVersionNumber >= 3 // introduced in version 3
+      {
+        self.adsorptionSurfaceProbeEpsilon = try decoder.decode(Double.self)
+        self.adsorptionSurfaceProbeSigma = try decoder.decode(Double.self)
+      }
+      else if let parameters = adsorptionSurfaceProbeMolecule.namedParameters
+      {
+        self.adsorptionSurfaceProbeEpsilon = parameters.x
+        self.adsorptionSurfaceProbeSigma = parameters.y
+      }
     }
     
     let magicNumber = try decoder.decode(Int.self)

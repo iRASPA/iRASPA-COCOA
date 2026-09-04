@@ -32,6 +32,7 @@
 
 import Foundation
 import simd
+import MathKit
 import SymmetryKit
 import BinaryCodable
 
@@ -43,6 +44,13 @@ public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
   public var referenceCount: Int = 0  // Legacy
   public var editable = true
   public var atomTypeList: [SKForceFieldType] = []
+  
+  public static let defaultDisplayName: String = "Default"
+  public static let aluminosilicateDisplayName: String = "Aluminosilicate"
+  /// Bridging oxygen in Si–O–Al (and Ga/B analogues).
+  public static let bridgingAluminumOxygenIdentifier: String = "Oa"
+  /// Distance cutoff (Å) for classifying an oxygen as bonded to a trivalent T-atom.
+  public static let oxygenAluminumBondCutoff: Double = 2.1
   
   public init(name: String, forceFieldSet: SKForceFieldSet, editable: Bool = true)
   {
@@ -83,6 +91,10 @@ public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
   
   public static func isDefaultForceFieldType(uniqueForceFieldName: String) -> Bool
   {
+    if uniqueForceFieldName == bridgingAluminumOxygenIdentifier
+    {
+      return true
+    }
     return SKForceFieldSet.defaultForceField.contains(where: {$0.forceFieldStringIdentifier == uniqueForceFieldName})
   }
   
@@ -132,13 +144,13 @@ public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
     SKForceFieldType(forceFieldStringIdentifier: "B", atomicNumber:   5, sortIndex:   4, potentialParameters: SIMD2<Double>(47.8058,3.58141), mass: 10.881, userDefinedRadius: 0.84), // DREIDING
     SKForceFieldType(forceFieldStringIdentifier: "C", atomicNumber:   6, sortIndex:   5, potentialParameters: SIMD2<Double>(47.8562, 3.47299), mass: 12.0107, userDefinedRadius: 0.76), // DREIDING
     SKForceFieldType(forceFieldStringIdentifier: "N", atomicNumber:   7, sortIndex:   6, potentialParameters: SIMD2<Double>(38.9492,3.26256), mass: 14.0067, userDefinedRadius: 0.71), // DREIDING
-    SKForceFieldType(forceFieldStringIdentifier: "O", atomicNumber:   8, sortIndex:   7, potentialParameters: SIMD2<Double>(53.0, 3.30), mass: 15.9994, userDefinedRadius: 0.66), // TraPPE-ZEO
+    SKForceFieldType(forceFieldStringIdentifier: "O", atomicNumber:   8, sortIndex:   7, potentialParameters: SIMD2<Double>(48.1581,3.03315), mass: 15.9994, userDefinedRadius: 0.66), // DREIDING
     SKForceFieldType(forceFieldStringIdentifier: "F", atomicNumber:   9, sortIndex:   8, potentialParameters: SIMD2<Double>(36.4834,3.0932), mass: 18.9984032, userDefinedRadius: 0.57), // DREIDING
     SKForceFieldType(forceFieldStringIdentifier: "Ne", atomicNumber:  10, sortIndex:   9, potentialParameters: SIMD2<Double>(21.1350972,2.889184543), mass: 20.1797, userDefinedRadius: 0.58), // UFF
     SKForceFieldType(forceFieldStringIdentifier: "Na", atomicNumber:  11, sortIndex:  10, potentialParameters: SIMD2<Double>(15.096498,2.657550876), mass: 22.98976928, userDefinedRadius: 1.66), // UFF
     SKForceFieldType(forceFieldStringIdentifier: "Mg", atomicNumber:  12, sortIndex:  11, potentialParameters: SIMD2<Double>(55.8570426,2.691405028), mass: 24.305, userDefinedRadius: 1.41), // UFF
-    SKForceFieldType(forceFieldStringIdentifier: "Al", atomicNumber:  13, sortIndex:  12, potentialParameters: SIMD2<Double>(22.6183,2.30), mass: 26.9815386, userDefinedRadius: 1.21), // chosen same as Si from TraPPE-ZEO but with epsilon ratio from DREIDING (4.39/4.27)*22.0 = 22.6183
-    SKForceFieldType(forceFieldStringIdentifier: "Si", atomicNumber:  14, sortIndex:  13, potentialParameters: SIMD2<Double>(22.0,2.30), mass: 28.0855, userDefinedRadius: 1.11), // TraPPE-ZEO
+    SKForceFieldType(forceFieldStringIdentifier: "Al", atomicNumber:  13, sortIndex:  12, potentialParameters: SIMD2<Double>(155.998,3.91105), mass: 26.9815386, userDefinedRadius: 1.21), // DREIDING
+    SKForceFieldType(forceFieldStringIdentifier: "Si", atomicNumber:  14, sortIndex:  13, potentialParameters: SIMD2<Double>(155.998,3.80414), mass: 28.0855, userDefinedRadius: 1.11), // DREIDING
     SKForceFieldType(forceFieldStringIdentifier: "P", atomicNumber:  15, sortIndex:  14, potentialParameters: SIMD2<Double>(161.03, 3.69723), mass: 30.973762, userDefinedRadius: 1.07), // DREIDING
     SKForceFieldType(forceFieldStringIdentifier: "S", atomicNumber:  16, sortIndex:  15, potentialParameters: SIMD2<Double>(173.107,3.59032), mass: 32.065, userDefinedRadius: 1.05), // DREIDING
     SKForceFieldType(forceFieldStringIdentifier: "Cl", atomicNumber:  17, sortIndex:  16, potentialParameters: SIMD2<Double>(142.562, 3.51932), mass: 35.453, userDefinedRadius: 1.02), // DREIDING
@@ -244,5 +256,106 @@ public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
     SKForceFieldType(forceFieldStringIdentifier: "Uus", atomicNumber: 117, sortIndex: 116, potentialParameters: SIMD2<Double>(5.5353826, 2.882948252), mass: 294, userDefinedRadius: 1.65), // same as "No"
     SKForceFieldType(forceFieldStringIdentifier: "Uuo", atomicNumber: 118, sortIndex: 117, potentialParameters: SIMD2<Double>(5.5353826, 2.882948252), mass: 294, userDefinedRadius: 1.57)  // same as "No"
   ]
+  
+  public static func defaultType(symbol: String) -> SKForceFieldType?
+  {
+    return defaultForceField.first(where: {$0.forceFieldStringIdentifier == symbol})
+  }
+  
+  public static func predefined(named name: String) -> SKForceFieldSet
+  {
+    if name == aluminosilicateDisplayName
+    {
+      return aluminosilicate()
+    }
+    return SKForceFieldSet()
+  }
+  
+  /// Calero / García-Pérez / Auerbach aluminosilicate zeolite force field.
+  /// Charges: q(Si)=+2.05, q(O_Si)=−1.025, q(Al)=+1.75, q(O_Al)=−1.2, q(P)=+2.35;
+  /// extra-framework cations carry their formal charge. Lennard-Jones: TraPPE-zeo
+  /// for framework T/O, UFF sizes for cations (GenericZeolites convention).
+  public static func aluminosilicate() -> SKForceFieldSet
+  {
+    let set = SKForceFieldSet()
+    set.displayName = aluminosilicateDisplayName
+    set.editable = false
+    set.atomTypeList = makeAluminosilicateForceField()
+    return set
+  }
+  
+  /// Trivalent T-atoms whose neighboring oxygens are typed `Oa` (q = −1.2).
+  public static let trivalentTAtomAtomicNumbers: Set<Int> = [5, 13, 31] // B, Al, Ga
+  
+  public static func isBridgingAluminumOxygen(oxygenFractional: SIMD3<Double>, tAtomFractionals: [SIMD3<Double>], unitCell: double3x3) -> Bool
+  {
+    let cutoffSquared: Double = oxygenAluminumBondCutoff * oxygenAluminumBondCutoff
+    for tPosition in tAtomFractionals
+    {
+      var ds: SIMD3<Double> = oxygenFractional - tPosition
+      ds.x -= ds.x.rounded(.toNearestOrAwayFromZero)
+      ds.y -= ds.y.rounded(.toNearestOrAwayFromZero)
+      ds.z -= ds.z.rounded(.toNearestOrAwayFromZero)
+      let dr: SIMD3<Double> = unitCell * ds
+      if simd_dot(dr, dr) < cutoffSquared
+      {
+        return true
+      }
+    }
+    return false
+  }
+  
+  public func resolvedType(forceFieldName: String, atomicNumber: Int) -> SKForceFieldType?
+  {
+    let symbol: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+    return self[forceFieldName] ?? self[symbol] ?? SKForceFieldSet.defaultType(symbol: symbol)
+  }
+  
+  private static func cation(_ symbol: String, charge: Double) -> SKForceFieldType
+  {
+    let base: SKForceFieldType = defaultType(symbol: symbol)!
+    return SKForceFieldType(forceFieldStringIdentifier: symbol, atomicNumber: base.atomicNumber, sortIndex: base.sortIndex, potentialParameters: base.potentialParameters, mass: base.mass, userDefinedRadius: base.userDefinedRadius, charge: charge)
+  }
+  
+  private static func tAtom(_ symbol: String, atomicNumber: Int, charge: Double, radius: Double, mass: Double) -> SKForceFieldType
+  {
+    // TraPPE-zeo / GenericZeolites T-atom LJ (Si, Al, and analogues).
+    return SKForceFieldType(forceFieldStringIdentifier: symbol, atomicNumber: atomicNumber, sortIndex: atomicNumber, potentialParameters: SIMD2<Double>(22.0, 2.30), mass: mass, userDefinedRadius: radius, charge: charge)
+  }
+  
+  /// Framework + extra-framework types for the Calero/Auerbach charge scheme.
+  private static func makeAluminosilicateForceField() -> [SKForceFieldType]
+  {
+    return [
+    SKForceFieldType(forceFieldStringIdentifier: "O", atomicNumber: 8, sortIndex: 0, potentialParameters: SIMD2<Double>(53.0, 3.30), mass: 15.9994, userDefinedRadius: 0.66, charge: -1.025), // TraPPE-zeo LJ; q from Auerbach / García-Pérez / Calero (Si–O–Si)
+    SKForceFieldType(forceFieldStringIdentifier: "Oa", atomicNumber: 8, sortIndex: 1, potentialParameters: SIMD2<Double>(53.0, 3.30), mass: 15.9994, userDefinedRadius: 0.66, charge: -1.2), // Si–O–Al
+    tAtom("Si", atomicNumber: 14, charge: 2.05, radius: 1.11, mass: 28.0855),
+    tAtom("Al", atomicNumber: 13, charge: 1.75, radius: 1.21, mass: 26.9815386),
+    tAtom("P", atomicNumber: 15, charge: 2.35, radius: 1.07, mass: 30.973762),
+    tAtom("B", atomicNumber: 5, charge: 1.75, radius: 0.84, mass: 10.881),
+    tAtom("Ga", atomicNumber: 31, charge: 1.75, radius: 1.22, mass: 69.723),
+    tAtom("Ge", atomicNumber: 32, charge: 2.05, radius: 1.20, mass: 72.64),
+    cation("Li", charge: 1.0),
+    cation("Na", charge: 1.0),
+    cation("K", charge: 1.0),
+    cation("Rb", charge: 1.0),
+    cation("Cs", charge: 1.0),
+    cation("Ag", charge: 1.0),
+    cation("Mg", charge: 2.0),
+    cation("Ca", charge: 2.0),
+    cation("Sr", charge: 2.0),
+    cation("Ba", charge: 2.0),
+    cation("Mn", charge: 2.0),
+    cation("Fe", charge: 2.0),
+    cation("Co", charge: 2.0),
+    cation("Ni", charge: 2.0),
+    cation("Cu", charge: 2.0),
+    cation("Zn", charge: 2.0),
+    cation("Cd", charge: 2.0),
+    cation("Y", charge: 3.0),
+    cation("La", charge: 3.0),
+    cation("Ce", charge: 3.0)
+    ]
+  }
   
 }

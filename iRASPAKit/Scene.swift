@@ -320,7 +320,7 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           let elementString: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
           let color: NSColor = defaultColorSet[elementString] ?? NSColor.black
           let drawRadius: Double = (iRASPAstructure.object as? Structure)?.drawRadius(elementId: atomicNumber) ?? 1.0
-          let bondDistanceCriteria: Double = defaultForceField[displayName]?.userDefinedRadius ?? 1.0
+          let bondDistanceCriteria: Double = defaultForceField[elementString]?.userDefinedRadius ?? 1.0
           
           let structureAtom: SKAsymmetricAtom = SKAsymmetricAtom(modelAtom: atom, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
           structureAtoms.append(structureAtom)
@@ -396,8 +396,10 @@ public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodab
           }
           structureViewer.structureMaterialType = frame.materialType.displayName
           structureViewer.setRepresentationStyle(style: .default)
-                    
-          structureViewer.setRepresentationForceField(forceField: "Default", forceFieldSet: defaultForceField)
+          
+          let forceFieldName: String = SKForceFieldSets.suggestedDisplayName(for: frame.materialType)
+          let forceFieldSet: SKForceFieldSet = SKForceFieldSet.predefined(named: forceFieldName)
+          structureViewer.setRepresentationForceField(forceField: forceFieldName, forceFieldSet: forceFieldSet)
           structureViewer.setRepresentationColorScheme(colorSet: defaultColorSet)
           
           //structureViewer.reComputeBonds()

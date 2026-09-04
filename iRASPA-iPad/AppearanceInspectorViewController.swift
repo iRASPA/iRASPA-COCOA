@@ -29,6 +29,13 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
   private var primitive: Primitive?
   private var project: ProjectStructureNode?
 
+  private let probes: [(String, Structure.ProbeMolecule)] = [
+    ("Helium", .helium), ("Methane", .methane), ("Nitrogen", .nitrogen),
+    ("Hydrogen", .hydrogen), ("Water", .water), ("CO₂", .co2),
+    ("Xenon", .xenon), ("Krypton", .krypton), ("Argon", .argon),
+    ("Custom", .custom)
+  ]
+
   // Section indices, in the same order as the Cocoa outline groups
   private enum Section: Int, CaseIterable
   {
@@ -250,7 +257,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     case .ribbonHDR: return 5
     case .ribbonLighting: return 8
     case .atomsScaling: return 2
-    case .atomsRepresentation: return 6
+    case .atomsRepresentation: return 5
     case .atomsSelection: return 5
     case .atomsHDR: return 5
     case .atomsLighting: return 8
@@ -261,7 +268,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     case .bondsLighting: return 8
     case .unitCell: return 5
     case .localAxes: return 6
-    case .adsorptionProperties: return 10
+    case .adsorptionProperties: return 12
     case .adsorptionHSV: return 3
     case .adsorptionFront: return 9
     case .adsorptionBack: return 9
@@ -703,14 +710,6 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
         let order = SKColorSets.ColorOrder(rawValue: index) ?? .elementOnly
         self.allStructures().forEach { $0.setRepresentationColorOrder(order: order, colorSets: self.document.colorSets) }
       }
-    case 4:
-      var names: [String] = []
-      for index in 0..<document.forceFieldSets.count { names.append(document.forceFieldSets[index].displayName) }
-      let selected = names.firstIndex(where: { $0 == structure?.atomForceFieldIdentifier })
-      return menuRow("Force field", options: names, selectedIndex: selected, effect: .scene) { [weak self] index in
-        guard let self else { return }
-        self.allStructures().forEach { $0.setRepresentationForceField(forceField: names[index], forceFieldSets: self.document.forceFieldSets) }
-      }
     default:
       return menuRow("Force field order", options: ["Element", "Force field first", "Force field only"],
                      selectedIndex: structure?.atomForceFieldOrder.rawValue, effect: .scene) { [weak self] index in
@@ -1069,13 +1068,32 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
         self?.allStructures().forEach { $0.adsorptionSurfaceRenderingMethod = method }
       }
     case 3:
-      let probes = ["Helium", "Methane", "Nitrogen", "Hydrogen", "Water", "CO₂", "Xenon", "Krypton", "Argon"]
-      return menuRow("Probe molecule", options: probes,
-                     selectedIndex: structure?.adsorptionSurfaceProbeMolecule.rawValue, effect: .surfaceRecompute) { [weak self] index in
-        let probe = Structure.ProbeMolecule(rawValue: index) ?? .helium
-        self?.allStructures().forEach { $0.adsorptionSurfaceProbeMolecule = probe }
+      let current = structure?.adsorptionSurfaceProbeMolecule ?? .helium
+      let selectedIndex = probes.firstIndex(where: { $0.1 == current })
+      return menuRow("Probe molecule", options: probes.map { $0.0 },
+                     selectedIndex: selectedIndex, effect: .surfaceRecompute) { [weak self] index in
+        guard let self else { return }
+        self.allStructures().forEach { $0.applyAdsorptionSurfaceProbeMolecule(self.probes[index].1) }
+        self.tableView.reloadData()
       }
     case 4:
+      let cell = fieldRow("Epsilon (K)", value: structure?.adsorptionSurfaceProbeEpsilon ?? 0, format: "%.4f", effect: .surfaceRecompute) { [weak self] value in
+        guard let self else { return }
+        self.allStructures().forEach { $0.setAdsorptionSurfaceProbeEpsilon(value) }
+        self.tableView.reloadData()
+      }
+      if let label = cell.textLabel
+      {
+        label.attributedText = epsilonOverKBRowTitle(font: label.font ?? UIFont.preferredFont(forTextStyle: .body))
+      }
+      return cell
+    case 5:
+      return fieldRow("Sigma (Å)", value: structure?.adsorptionSurfaceProbeSigma ?? 0, format: "%.4f", effect: .surfaceRecompute) { [weak self] value in
+        guard let self else { return }
+        self.allStructures().forEach { $0.setAdsorptionSurfaceProbeSigma(value) }
+        self.tableView.reloadData()
+      }
+    case 6:
       let viewer = structure as? VolumetricDataViewer
       var minimum = viewer?.range.0 ?? -1000.0
       var maximum = viewer?.range.1 ?? 0.0
@@ -1083,19 +1101,19 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
       return sliderRow("Isovalue", value: structure?.adsorptionSurfaceIsoValue ?? 0.0, min: minimum, max: maximum, format: "%.1f", effect: .surfaceRecompute) { [weak self] value in
         self?.allStructures().forEach { $0.adsorptionSurfaceIsoValue = value }
       }
-    case 5:
+    case 7:
       return sliderRow("Opacity", value: structure?.adsorptionSurfaceOpacity ?? 1.0, min: 0, max: 1, effect: .surfaceAppearance) { [weak self] value in
         self?.allStructures().forEach { $0.adsorptionSurfaceOpacity = value }
       }
-    case 6:
+    case 8:
       return sliderRow("Transparency threshold", value: structure?.adsorptionTransparencyThreshold ?? 0.0, min: 0, max: 1, effect: .surfaceAppearance) { [weak self] value in
         self?.allStructures().forEach { $0.adsorptionTransparencyThreshold = value }
       }
-    case 7:
+    case 9:
       return fieldRow("Step length", value: structure?.adsorptionVolumeStepLength ?? 0.0005, format: "%.4f", effect: .surfaceAppearance) { [weak self] value in
         self?.allStructures().forEach { $0.adsorptionVolumeStepLength = value }
       }
-    case 8:
+    case 10:
       let functions = ["RASPA PES", "Cool-warm diverging", "X-ray", "Gray", "Rainbow", "Turbo", "Gnuplot", "Spectral", "Cool",
                        "Viridis", "Plasma", "Inferno", "Magma", "Cividis", "Spring", "Summer", "Autumn"]
       return menuRow("Transfer function", options: functions,
