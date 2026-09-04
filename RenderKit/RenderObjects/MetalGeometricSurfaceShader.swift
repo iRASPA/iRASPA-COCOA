@@ -40,7 +40,8 @@ import SymmetryKit
 
 /// Draws the geometric accessible surface as sphere-imposter patches. Each patch is the exposed
 /// part of one probe-inflated atom; the fragment shader discards the spherical caps neighbouring
-/// atoms cut out of it.
+/// atoms cut out of it. The inflation is either half mixed Lennard-Jones sigma or Bondi VDW plus
+/// half the probe sigma, according to the rendering method.
 class MetalGeometricSurfaceShader
 {
   var renderDataSource: RKRenderDataSource? = nil
@@ -138,7 +139,7 @@ class MetalGeometricSurfaceShader
         {
           guard let volumetric: RKRenderVolumetricDataSource = structure as? RKRenderVolumetricDataSource,
                 volumetric.drawAdsorptionSurface,
-                volumetric.adsorptionSurfaceRenderingMethod == .geometricSurface,
+                volumetric.adsorptionSurfaceRenderingMethod.isGeometricSurface,
                 let adsorption: SKRenderAdsorptionSurfaceStructure = structure as? SKRenderAdsorptionSurfaceStructure else
           {
             sceneInstances.append(nil)
@@ -147,21 +148,42 @@ class MetalGeometricSurfaceShader
           }
           
           let positions: [SIMD3<Double>] = adsorption.atomUnitCellPositions
-          let parameters: [SIMD2<Double>] = adsorption.potentialParameters
-          if positions.isEmpty || parameters.isEmpty
+          let probeSigma: Double = volumetric.adsorptionSurfaceProbeParameters.y
+          let surface: SKGeometricSurface
+          if volumetric.adsorptionSurfaceRenderingMethod == .vdwGeometricSurface
           {
-            LogQueue.shared.warning(destination: windowController, message: "No atoms to build a geometric surface on for \(structure.displayName)")
-            volumetric.adsorptionSurfaceNumberOfTriangles = 0
-            sceneInstances.append(nil)
-            sceneClips.append(nil)
-            continue
+            let elementIdentifiers: [Int] = adsorption.atomUnitCellElementIdentifiers
+            if positions.isEmpty || elementIdentifiers.isEmpty
+            {
+              LogQueue.shared.warning(destination: windowController, message: "No atoms to build a geometric surface on for \(structure.displayName)")
+              volumetric.adsorptionSurfaceNumberOfTriangles = 0
+              sceneInstances.append(nil)
+              sceneClips.append(nil)
+              continue
+            }
+            surface = SKGeometricSurface.buildVanDerWaals(fractionalPositions: positions,
+                                                          elementIdentifiers: elementIdentifiers,
+                                                          probeSigma: probeSigma,
+                                                          cell: adsorption.cell,
+                                                          blockingPockets: adsorption.appliedBlockingPockets)
           }
-          
-          let surface: SKGeometricSurface = SKGeometricSurface.build(fractionalPositions: positions,
-                                                                     potentialParameters: parameters,
-                                                                     probeSigma: volumetric.adsorptionSurfaceProbeParameters.y,
-                                                                     cell: adsorption.cell,
-                                                                     blockingPockets: adsorption.appliedBlockingPockets)
+          else
+          {
+            let parameters: [SIMD2<Double>] = adsorption.potentialParameters
+            if positions.isEmpty || parameters.isEmpty
+            {
+              LogQueue.shared.warning(destination: windowController, message: "No atoms to build a geometric surface on for \(structure.displayName)")
+              volumetric.adsorptionSurfaceNumberOfTriangles = 0
+              sceneInstances.append(nil)
+              sceneClips.append(nil)
+              continue
+            }
+            surface = SKGeometricSurface.build(fractionalPositions: positions,
+                                               potentialParameters: parameters,
+                                               probeSigma: probeSigma,
+                                               cell: adsorption.cell,
+                                               blockingPockets: adsorption.appliedBlockingPockets)
+          }
           
           let unitCell: double3x3 = adsorption.cell.unitCell
           let wrapIntoCell: Bool = structure.periodic
@@ -291,7 +313,7 @@ class MetalGeometricSurfaceShader
         if drawThis,
            let volumetric: RKRenderVolumetricDataSource = structure as? RKRenderVolumetricDataSource,
            volumetric.drawAdsorptionSurface,
-           volumetric.adsorptionSurfaceRenderingMethod == .geometricSurface,
+           volumetric.adsorptionSurfaceRenderingMethod.isGeometricSurface,
            volumetric.isVisible,
            let patchBuffer: MTLBuffer = metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
            let clips: MTLBuffer = metalBuffer(clipBuffer, sceneIndex: i, movieIndex: j)

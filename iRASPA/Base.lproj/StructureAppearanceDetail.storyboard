@@ -3589,6 +3589,7 @@
                                                                                                     </menuItem>
                                                                                                     <menuItem title="Van der Waals" id="543-nV-Xw2"/>
                                                                                                     <menuItem title="Unity" id="NUE-Dx-H8c" userLabel="Unity"/>
+                                                                                                    <menuItem title="Forcefield" id="FFd-sg-rAd" userLabel="Forcefield"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>
@@ -3660,8 +3661,8 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="Kep-Py-0Xm" column="LaK-e2-eHw" id="2uA-tq-B1Z">
                                                                                     <textField key="contentView" focusRingType="none" horizontalHuggingPriority="239" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Xmw-bs-NlS">
-                                                                                        <rect key="frame" x="89" y="121" width="39" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Order" id="eY8-q5-Em9">
+                                                                                        <rect key="frame" x="48" y="121" width="80" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Color order" id="eY8-q5-Em9">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -3719,8 +3720,8 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="pw1-Io-Vor" column="LaK-e2-eHw" id="exu-oe-gK1">
                                                                                     <textField key="contentView" focusRingType="none" horizontalHuggingPriority="240" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="YRb-Bh-JQP">
-                                                                                        <rect key="frame" x="89" y="43" width="39" height="16"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Order" id="iNJ-ng-4ga">
+                                                                                        <rect key="frame" x="18" y="43" width="110" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Force field order" id="iNJ-ng-4ga">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -3730,13 +3731,13 @@
                                                                                 <gridCell row="pw1-Io-Vor" column="3Uk-rQ-ItM" id="uiR-NG-Xpu">
                                                                                     <popUpButton key="contentView" tag="6" horizontalHuggingPriority="210" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="dva-0r-vBd" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
                                                                                         <rect key="frame" x="156" y="39" width="311" height="24"/>
-                                                                                        <popUpButtonCell key="cell" type="push" title="Element" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="WOL-ns-wXc" id="tER-kD-MIM">
+                                                                                        <popUpButtonCell key="cell" type="push" title="Force Field First" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="7mT-Qt-DKy" id="tER-kD-MIM">
                                                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                                             <font key="font" metaFont="message"/>
                                                                                             <menu key="menu" id="fv5-L8-f1E">
                                                                                                 <items>
-                                                                                                    <menuItem title="Element" state="on" id="WOL-ns-wXc"/>
-                                                                                                    <menuItem title="Force Field First" id="7mT-Qt-DKy"/>
+                                                                                                    <menuItem title="Element" id="WOL-ns-wXc"/>
+                                                                                                    <menuItem title="Force Field First" state="on" id="7mT-Qt-DKy"/>
                                                                                                     <menuItem title="Force Field Only" id="dk2-KV-Pe3"/>
                                                                                                 </items>
                                                                                             </menu>
@@ -5815,7 +5816,8 @@
                                                                                                     <menuItem title="Volume Rendering" id="c6g-Sw-8rf"/>
                                                                                                     <menuItem title="Well Surface" id="Wel-Su-rf0"/>
                                                                                                     <menuItem title="Well Surface Overlay" id="Wel-Ov-rl0"/>
-                                                                                                    <menuItem title="Geometric Surface" id="Geo-Su-rf0"/>
+                                                                                                    <menuItem title="FF Geometric Surface" id="Geo-Su-rf0"/>
+                                                                                                    <menuItem title="VDW Geometric Surface" id="Vdw-Su-rf0"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>

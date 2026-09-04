@@ -301,8 +301,8 @@
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "erk-nB-D85"; */
 "erk-nB-D85.title" = "شدت نور محیط";
 
-/* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "eY8-q5-Em9"; */
-"eY8-q5-Em9.title" = "سفارش";
+/* Class = "NSTextFieldCell"; title = "Color order"; ObjectID = "eY8-q5-Em9"; */
+"eY8-q5-Em9.title" = "ترتیب رنگ";
 
 /* Class = "NSMenuItem"; title = "Glow"; ObjectID = "F0U-6l-67M"; */
 "F0U-6l-67M.title" = "درخشش";
@@ -367,8 +367,8 @@
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "imT-16-aB9"; */
 "imT-16-aB9.title" = "مقدار";
 
-/* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
-"iNJ-ng-4ga.title" = "سفارش";
+/* Class = "NSTextFieldCell"; title = "Force field order"; ObjectID = "iNJ-ng-4ga"; */
+"iNJ-ng-4ga.title" = "ترتیب میدان نیرو";
 
 /* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "iOI-Yp-RuB"; */
 "iOI-Yp-RuB.title" = "مشخص کننده";

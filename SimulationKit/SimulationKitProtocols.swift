@@ -42,6 +42,9 @@ public protocol SKRenderAdsorptionSurfaceStructure
   var potentialParameters: [SIMD2<Double>] {get}
   
   var atomUnitCellPositions: [SIMD3<Double>] {get}
+  /// Atomic numbers of the unit-cell copies, in the same order as `atomUnitCellPositions`.
+  /// The van der Waals geometric surface reads Bondi radii from these.
+  var atomUnitCellElementIdentifiers: [Int] {get}
   var minimumGridEnergyValue: Float? {get set}
   var structureHeliumVoidFraction: Double {get set}
   var structureNitrogenSurfaceArea: Double {get set}

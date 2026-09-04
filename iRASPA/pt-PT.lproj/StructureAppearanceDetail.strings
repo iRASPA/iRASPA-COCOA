@@ -301,8 +301,8 @@
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "erk-nB-D85"; */
 "erk-nB-D85.title" = "Intensidade de luz ambient";
 
-/* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "eY8-q5-Em9"; */
-"eY8-q5-Em9.title" = "Ordenar";
+/* Class = "NSTextFieldCell"; title = "Color order"; ObjectID = "eY8-q5-Em9"; */
+"eY8-q5-Em9.title" = "Ordem de cor";
 
 /* Class = "NSMenuItem"; title = "Glow"; ObjectID = "F0U-6l-67M"; */
 "F0U-6l-67M.title" = "Brilho";
@@ -367,8 +367,8 @@
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "imT-16-aB9"; */
 "imT-16-aB9.title" = "Valor";
 
-/* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
-"iNJ-ng-4ga.title" = "Ordenar";
+/* Class = "NSTextFieldCell"; title = "Force field order"; ObjectID = "iNJ-ng-4ga"; */
+"iNJ-ng-4ga.title" = "Ordem do campo de força";
 
 /* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "iOI-Yp-RuB"; */
 "iOI-Yp-RuB.title" = "Identificador";

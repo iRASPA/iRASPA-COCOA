@@ -678,7 +678,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
     switch row
     {
     case 0:
-      return menuRow("Type", options: ["Ball and stick", "Van der Waals", "Unity"],
+      return menuRow("Type", options: ["Ball and stick", "Van der Waals", "Unity", "Forcefield"],
                      selectedIndex: structure?.atomRepresentationType.rawValue, effect: .scene) { [weak self] index in
         let type = Structure.RepresentationType(rawValue: index) ?? .sticks_and_balls
         self?.allStructures().forEach {
@@ -714,7 +714,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
       return menuRow("Force field order", options: ["Element", "Force field first", "Force field only"],
                      selectedIndex: structure?.atomForceFieldOrder.rawValue, effect: .scene) { [weak self] index in
         guard let self else { return }
-        let order = SKForceFieldSets.ForceFieldOrder(rawValue: index) ?? .elementOnly
+        let order = SKForceFieldSets.ForceFieldOrder(rawValue: index) ?? .forceFieldFirst
         self.allStructures().forEach { $0.setRepresentationForceFieldOrder(order: order, forceFieldSets: self.document.forceFieldSets) }
       }
     }
@@ -1062,7 +1062,7 @@ final class AppearanceInspectorViewController: CollapsibleTableViewController
         self?.allStructures().forEach { $0.applyBlockingPockets = isOn }
       }
     case 2:
-      return menuRow("Rendering method", options: ["Isosurface", "Volume rendering", "Well surface", "Well surface overlay", "Geometric surface"],
+      return menuRow("Rendering method", options: ["Isosurface", "Volume rendering", "Well surface", "Well surface overlay", "FF Geometric Surface", "VDW Geometric Surface"],
                      selectedIndex: structure?.adsorptionSurfaceRenderingMethod.rawValue, effect: .surfaceRecompute) { [weak self] index in
         let method = RKEnergySurfaceType(rawValue: index) ?? .isoSurface
         self?.allStructures().forEach { $0.adsorptionSurfaceRenderingMethod = method }

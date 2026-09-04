@@ -439,8 +439,8 @@
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "e5a-zk-fFj"; */
 "e5a-zk-fFj.title" = "Rasmol";
 
-/* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "eY8-q5-Em9"; */
-"eY8-q5-Em9.title" = "Σειρά";
+/* Class = "NSTextFieldCell"; title = "Color order"; ObjectID = "eY8-q5-Em9"; */
+"eY8-q5-Em9.title" = "Σειρά χρώματος";
 
 /* Class = "NSMenuItem"; title = "Objects"; ObjectID = "ehx-ML-HSl"; */
 "ehx-ML-HSl.title" = "Αντικείμενα";
@@ -466,8 +466,8 @@
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "hyu-qj-36T"; */
 "hyu-qj-36T.title" = "Ένταση διάχυτου φωτός";
 
-/* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
-"iNJ-ng-4ga.title" = "Σειρά";
+/* Class = "NSTextFieldCell"; title = "Force field order"; ObjectID = "iNJ-ng-4ga"; */
+"iNJ-ng-4ga.title" = "Σειρά πεδίου δύναμης";
 
 /* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "iOI-Yp-RuB"; */
 "iOI-Yp-RuB.title" = "Αναγνωριστικό";

@@ -35,7 +35,8 @@ import simd
 import SymmetryKit
 
 // The surface of the union of the probe-inflated atoms, measured patch by patch instead of by throwing
-// points at it.
+// points at it. The atoms may be inflated from Lennard-Jones sigma (force-field geometric surface) or
+// from Bondi van der Waals radii (VDW geometric surface); the probe contribution is ½ σ_probe in both.
 //
 // Ported from raspa3 `structurekit/diagrams/exact`. The surface in question is the sheet the probe's
 // centre traces when it is rolled over the framework. A patch is the part of one atom's sphere that
@@ -101,39 +102,37 @@ public struct SKGeometricSurface
     return 0.5 * (atomSigma + probeSigma)
   }
   
-  /// Builds the patches of the union of the probe-inflated atoms.
-  ///
-  /// `fractionalPositions` are the atoms of the home cell. Each is inflated by half the mixed sigma
-  /// with `probeSigma`. Periodic images that can reach an atom are taken from `cell`. An atom swallowed
-  /// whole by a neighbour is dropped, since it carries no exposed surface.
-  ///
-  /// `blockingPockets` are the applied pockets: a fractional centre and a radius in Å. Each is an extra
-  /// clipping sphere, the same role they play on the energy grid, so an inaccessible cage's internal
-  /// sheet is cut out rather than counted.
+  /// Inflated Bondi van der Waals radius: the VDW sphere plus the probe's collision radius
+  /// `½ σ_probe`, so a vanishing probe sits on the drawn VDW atoms.
+  public static func inflatedVanDerWaalsRadius(atomVDW: Double, probeSigma: Double) -> Double
+  {
+    return atomVDW + 0.5 * probeSigma
+  }
+  
+  /// Builds the patches of the union of the given spheres.
   public static func build(fractionalPositions: [SIMD3<Double>],
-                           potentialParameters: [SIMD2<Double>],
-                           probeSigma: Double,
+                           radii: [Double],
                            cell: SKCell,
                            blockingPockets: [SIMD4<Double>] = [],
                            subdivisions: Int = 1) -> SKGeometricSurface
   {
-    let count = min(fractionalPositions.count, potentialParameters.count)
+    let count = min(fractionalPositions.count, radii.count)
     guard count > 0 else { return SKGeometricSurface(patches: [], area: 0.0) }
     
     let unitCell: double3x3 = cell.unitCell
     var centres: [SIMD3<Double>] = []
-    var radii: [Double] = []
     centres.reserveCapacity(count)
-    radii.reserveCapacity(count)
+    var usedRadii: [Double] = []
+    usedRadii.reserveCapacity(count)
     for i in 0..<count
     {
       let wrapped = SKGeometricSurface.wrappedFractional(fractionalPositions[i])
       centres.append(unitCell * wrapped)
-      radii.append(inflatedRadius(atomSigma: potentialParameters[i].y, probeSigma: probeSigma))
+      usedRadii.append(radii[i])
     }
     
     var clipperCentres: [SIMD3<Double>] = centres
-    var clipperRadii: [Double] = radii
+    var clipperRadii: [Double] = usedRadii
     clipperCentres.reserveCapacity(count + blockingPockets.count)
     clipperRadii.reserveCapacity(count + blockingPockets.count)
     for pocket in blockingPockets
@@ -147,7 +146,7 @@ public struct SKGeometricSurface
       clipperRadii.append(pocket.w)
     }
     
-    let maxRadius = radii.max() ?? 0.0
+    let maxRadius = usedRadii.max() ?? 0.0
     let maxClipperRadius = clipperRadii.max() ?? maxRadius
     let replicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: max(maxRadius + maxClipperRadius, 1.0))
     
@@ -158,7 +157,7 @@ public struct SKGeometricSurface
     
     for atomIndex in 0..<count
     {
-      let radius = radii[atomIndex]
+      let radius = usedRadii[atomIndex]
       if radius <= 0.0
       {
         continue
@@ -261,6 +260,51 @@ public struct SKGeometricSurface
     }
     
     return SKGeometricSurface(patches: patches, area: totalArea)
+  }
+  
+  /// Force-field geometric surface: each atom is inflated by half the mixed Lennard-Jones sigma
+  /// with `probeSigma`. Periodic images that can reach an atom are taken from `cell`. An atom swallowed
+  /// whole by a neighbour is dropped, since it carries no exposed surface.
+  ///
+  /// `blockingPockets` are the applied pockets: a fractional centre and a radius in Å. Each is an extra
+  /// clipping sphere, the same role they play on the energy grid, so an inaccessible cage's internal
+  /// sheet is cut out rather than counted.
+  public static func build(fractionalPositions: [SIMD3<Double>],
+                           potentialParameters: [SIMD2<Double>],
+                           probeSigma: Double,
+                           cell: SKCell,
+                           blockingPockets: [SIMD4<Double>] = [],
+                           subdivisions: Int = 1) -> SKGeometricSurface
+  {
+    let count = min(fractionalPositions.count, potentialParameters.count)
+    let radii: [Double] = (0..<count).map { inflatedRadius(atomSigma: potentialParameters[$0].y, probeSigma: probeSigma) }
+    return build(fractionalPositions: Array(fractionalPositions.prefix(count)),
+                 radii: radii,
+                 cell: cell,
+                 blockingPockets: blockingPockets,
+                 subdivisions: subdivisions)
+  }
+  
+  /// Van der Waals geometric surface: Bondi radii inflated by half the probe sigma.
+  public static func buildVanDerWaals(fractionalPositions: [SIMD3<Double>],
+                                      elementIdentifiers: [Int],
+                                      probeSigma: Double,
+                                      cell: SKCell,
+                                      blockingPockets: [SIMD4<Double>] = [],
+                                      subdivisions: Int = 1) -> SKGeometricSurface
+  {
+    let count = min(fractionalPositions.count, elementIdentifiers.count)
+    let elements: [SKElement] = PredefinedElements.sharedInstance.elementSet
+    let radii: [Double] = (0..<count).map { i in
+      let elementId = elementIdentifiers[i]
+      let vdw = (elementId >= 0 && elementId < elements.count) ? elements[elementId].VDWRadius : 0.0
+      return inflatedVanDerWaalsRadius(atomVDW: vdw, probeSigma: probeSigma)
+    }
+    return build(fractionalPositions: Array(fractionalPositions.prefix(count)),
+                 radii: radii,
+                 cell: cell,
+                 blockingPockets: blockingPockets,
+                 subdivisions: subdivisions)
   }
   
   /// Fractional coordinates folded into the unit cube [0, 1). A patch whose centre sat outside the

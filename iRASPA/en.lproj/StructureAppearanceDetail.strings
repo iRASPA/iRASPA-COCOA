@@ -241,6 +241,9 @@
 /* Class = "NSMenuItem"; title = "Unity"; ObjectID = "NUE-Dx-H8c"; */
 "NUE-Dx-H8c.title" = "Unity";
 
+/* Class = "NSMenuItem"; title = "Forcefield"; ObjectID = "FFd-sg-rAd"; */
+"FFd-sg-rAd.title" = "Forcefield";
+
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "OC0-RP-spe"; */
 "OC0-RP-spe.title" = "Saturation";
 
@@ -436,8 +439,8 @@
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "e5a-zk-fFj"; */
 "e5a-zk-fFj.title" = "Rasmol";
 
-/* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "eY8-q5-Em9"; */
-"eY8-q5-Em9.title" = "Order";
+/* Class = "NSTextFieldCell"; title = "Color order"; ObjectID = "eY8-q5-Em9"; */
+"eY8-q5-Em9.title" = "Color order";
 
 /* Class = "NSMenuItem"; title = "Objects"; ObjectID = "ehx-ML-HSl"; */
 "ehx-ML-HSl.title" = "Objects";
@@ -463,8 +466,8 @@
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "hyu-qj-36T"; */
 "hyu-qj-36T.title" = "Diffuse Light Intensity";
 
-/* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
-"iNJ-ng-4ga.title" = "Order";
+/* Class = "NSTextFieldCell"; title = "Force field order"; ObjectID = "iNJ-ng-4ga"; */
+"iNJ-ng-4ga.title" = "Force field order";
 
 /* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "iOI-Yp-RuB"; */
 "iOI-Yp-RuB.title" = "Identifer";

@@ -296,6 +296,11 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var adsorptionSurfaceBackSideShininess: Double = 4.0
   
   public var atomUnitCellPositions: [SIMD3<Double>] {return []}
+  public var atomUnitCellElementIdentifiers: [Int]
+  {
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    return asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}.map { $0.asymmetricParentAtom.elementIdentifier }
+  }
   public var minimumGridEnergyValue: Float? = nil
   public var maximumGridEnergyValue: Float? = nil
   
@@ -529,7 +534,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   /// commonly shown with cued ribbons over plain atoms or the reverse.
   public var atomEdgeCueing: RKEdgeCueing = .off
   public var atomForceFieldIdentifier: String = "Default"
-  public var atomForceFieldOrder: SKForceFieldSets.ForceFieldOrder = .elementOnly
+  public var atomForceFieldOrder: SKForceFieldSets.ForceFieldOrder = .forceFieldFirst
   public var atomColorSchemeIdentifier: String = SKColorSets.ColorScheme.jmol.rawValue
   public var atomColorSchemeOrder: SKColorSets.ColorOrder = .elementOnly
   
@@ -617,6 +622,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     case sticks_and_balls = 0
     case vdw = 1
     case unity = 2
+    /// Atoms drawn at half the force-field Lennard-Jones sigma, the collision radius the
+    /// geometric surface uses at vanishing probe size. Appended so documents that store the
+    /// older raw values keep their meaning.
+    case forcefield = 3
   }
   
   public enum RepresentationStyle: Int
@@ -1689,19 +1698,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       }
     }
     
-    for asymmetricAtom in asymmetricAtoms
-    {
-      let elementId: Int = asymmetricAtom.elementIdentifier
-      switch(self.atomRepresentationType)
-      {
-      case .vdw:
-        asymmetricAtom.drawRadius = PredefinedElements.sharedInstance.elementSet[elementId].VDWRadius
-      case .sticks_and_balls:
-        asymmetricAtom.drawRadius = PredefinedElements.sharedInstance.elementSet[elementId].covalentRadius
-      case .unity:
-        asymmetricAtom.drawRadius = bondScaleFactor
-      }
-    }
+    applyRepresentationDrawRadius(to: asymmetricAtoms)
   }
   
   private func resolvedForceFieldType(for atom: SKAsymmetricAtom, in forceFieldSet: SKForceFieldSet) -> SKForceFieldType?
@@ -1796,6 +1793,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       {
         atom.charge = type.charge
       }
+    }
+    if atomRepresentationType == .forcefield
+    {
+      applyRepresentationDrawRadius(to: asymmetricAtoms)
     }
   }
   
@@ -2065,19 +2066,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     }
     
     
-    for asymmetricAtom in asymmetricAtoms
-    {
-      let elementId: Int = asymmetricAtom.elementIdentifier
-      switch(self.atomRepresentationType)
-      {
-      case .vdw:
-        asymmetricAtom.drawRadius = PredefinedElements.sharedInstance.elementSet[elementId].VDWRadius
-      case .sticks_and_balls:
-        asymmetricAtom.drawRadius = PredefinedElements.sharedInstance.elementSet[elementId].covalentRadius
-      case .unity:
-        asymmetricAtom.drawRadius = bondScaleFactor
-      }
-    }
+    applyRepresentationDrawRadius(to: asymmetricAtoms)
   }
   
   public func setRepresentationStyle(style: Structure.RepresentationStyle?, colorSets: SKColorSets)
@@ -2299,19 +2288,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.atomRepresentationType = type
       
       let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-    
-      switch(type)
-      {
-      case .sticks_and_balls:
-        asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
-        self.bondScaleFactor = 0.15
-      case .vdw:
-        self.bondScaleFactor = 0.15
-        asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
-      case .unity:
-        self.bondScaleFactor = 0.25
-        asymmetricAtoms.forEach{$0.drawRadius = bondScaleFactor}
-      }
+      applyRepresentationType(type, to: asymmetricAtoms)
     }
   }
   
@@ -2320,19 +2297,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     if let type = type
     {
       self.atomRepresentationType = type
-    
-      switch(type)
-      {
-      case .sticks_and_balls:
-        asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
-        self.bondScaleFactor = 0.15
-      case .vdw:
-        self.bondScaleFactor = 0.15
-        asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
-      case .unity:
-        self.bondScaleFactor = 0.25
-        asymmetricAtoms.forEach{$0.drawRadius = bondScaleFactor}
-      }
+      applyRepresentationType(type, to: asymmetricAtoms)
     }
   }
   
@@ -2351,6 +2316,40 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       return PredefinedElements.sharedInstance.elementSet[elementId].covalentRadius
     case .unity:
       return bondScaleFactor
+    case .forcefield:
+      let symbol: String = PredefinedElements.sharedInstance.elementSet[elementId].chemicalSymbol
+      let sigma: Double = SKForceFieldSet.defaultType(symbol: symbol)?.potentialParameters.y ?? 0.0
+      return SKGeometricSurface.inflatedRadius(atomSigma: sigma, probeSigma: 0.0)
+    }
+  }
+  
+  /// Space-filling force-field atoms use the same bond thickness as van der Waals; Unity is the licorice stick.
+  private func applyRepresentationType(_ type: RepresentationType, to atoms: [SKAsymmetricAtom])
+  {
+    switch type
+    {
+    case .sticks_and_balls, .vdw, .forcefield:
+      bondScaleFactor = 0.15
+    case .unity:
+      bondScaleFactor = 0.25
+    }
+    applyRepresentationDrawRadius(to: atoms)
+  }
+  
+  /// Writes each atom's draw radius from the current representation. Forcefield uses half the
+  /// atom's Lennard-Jones sigma, matching the geometric surface at vanishing probe size.
+  private func applyRepresentationDrawRadius(to atoms: [SKAsymmetricAtom])
+  {
+    switch atomRepresentationType
+    {
+    case .vdw:
+      atoms.forEach { $0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius }
+    case .sticks_and_balls:
+      atoms.forEach { $0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius }
+    case .unity:
+      atoms.forEach { $0.drawRadius = bondScaleFactor }
+    case .forcefield:
+      atoms.forEach { $0.drawRadius = SKGeometricSurface.inflatedRadius(atomSigma: $0.potentialParameters.y, probeSigma: 0.0) }
     }
   }
   

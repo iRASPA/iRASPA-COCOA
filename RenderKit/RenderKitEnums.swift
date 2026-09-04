@@ -47,9 +47,12 @@ public enum RKEnergySurfaceType: Int
   // method so it can be superimposed on a copy of the structure showing the well surface, each with its
   // own material.
   case wellSurfaceOverlay = 3
-  /// The exact geometric accessible surface: the union of the probe-inflated atoms, drawn as
-  /// spherical patches rather than a triangulated level set.
+  /// Union of probe-inflated force-field collision spheres (half the mixed Lennard-Jones sigma).
+  /// Kept as raw value 4 so documents that stored "Geometric Surface" keep that construction.
   case geometricSurface = 4
+  /// Union of probe-inflated Bondi van der Waals spheres. Appended so the popup index of
+  /// `geometricSurface` stays the force-field construction.
+  case vdwGeometricSurface = 5
 
   /// Whether the surface is a triangle mesh drawn by the isosurface pipeline, the well surface being the
   /// iso-surface mapped onto the locus of energy minima rather than a separate construction.
@@ -58,7 +61,17 @@ public enum RKEnergySurfaceType: Int
     switch self
     {
     case .isoSurface, .wellSurface, .wellSurfaceOverlay: return true
-    case .volumeRendering, .geometricSurface: return false
+    case .volumeRendering, .geometricSurface, .vdwGeometricSurface: return false
+    }
+  }
+  
+  /// Either geometric construction: spherical patches of probe-inflated atoms, not a grid iso-surface.
+  public var isGeometricSurface: Bool
+  {
+    switch self
+    {
+    case .geometricSurface, .vdwGeometricSurface: return true
+    default: return false
     }
   }
 }
