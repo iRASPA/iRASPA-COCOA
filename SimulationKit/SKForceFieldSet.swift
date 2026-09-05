@@ -46,7 +46,11 @@ public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
   public var atomTypeList: [SKForceFieldType] = []
   
   public static let defaultDisplayName: String = "Default"
-  public static let aluminosilicateDisplayName: String = "Aluminosilicate"
+  public static let aluminosilicateDisplayName: String = "Aluminosilicate Zeo-TraPPE"
+  public static let zeoliteAtlasDisplayName: String = "Aluminosilicate Zeo-Atlas"
+  public static let aluminosilicateZeoPlusPlusDisplayName: String = "Aluminosilicate Zeo++"
+  /// IZA Atlas oxygen diameter (Å): geometric hard-sphere radius 1.35 Å.
+  public static let zeoliteAtlasOxygenSigma: Double = 2.7
   /// Bridging oxygen in Si–O–Al (and Ga/B analogues).
   public static let bridgingAluminumOxygenIdentifier: String = "Oa"
   /// Distance cutoff (Å) for classifying an oxygen as bonded to a trivalent T-atom.
@@ -262,11 +266,26 @@ public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
     return defaultForceField.first(where: {$0.forceFieldStringIdentifier == symbol})
   }
   
+  public static func isAluminosilicateFamily(_ displayName: String) -> Bool
+  {
+    return [aluminosilicateDisplayName, zeoliteAtlasDisplayName, aluminosilicateZeoPlusPlusDisplayName].contains {
+      $0.caseInsensitiveCompare(displayName) == .orderedSame
+    }
+  }
+  
   public static func predefined(named name: String) -> SKForceFieldSet
   {
-    if name == aluminosilicateDisplayName
+    if name.caseInsensitiveCompare(aluminosilicateDisplayName) == .orderedSame
     {
       return aluminosilicate()
+    }
+    if name.caseInsensitiveCompare(zeoliteAtlasDisplayName) == .orderedSame
+    {
+      return zeoliteAtlas()
+    }
+    if name.caseInsensitiveCompare(aluminosilicateZeoPlusPlusDisplayName) == .orderedSame
+    {
+      return aluminosilicateZeoPlusPlus()
     }
     return SKForceFieldSet()
   }
@@ -281,6 +300,35 @@ public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
     set.displayName = aluminosilicateDisplayName
     set.editable = false
     set.atomTypeList = makeAluminosilicateForceField()
+    return set
+  }
+  
+  /// IZA Atlas of Zeolite Framework Types: same types and charges as Aluminosilicate,
+  /// but a hard-sphere oxygen framework (ε = 0, σ(O) = σ(Oa) = 2.7 Å, all other σ = 0).
+  public static func zeoliteAtlas() -> SKForceFieldSet
+  {
+    let set = SKForceFieldSet()
+    set.displayName = zeoliteAtlasDisplayName
+    set.editable = false
+    set.atomTypeList = makeAluminosilicateDerivedForceField { identifier, _ in
+      let isOxygen: Bool = identifier == "O" || identifier == bridgingAluminumOxygenIdentifier
+      return SIMD2<Double>(0.0, isOxygen ? zeoliteAtlasOxygenSigma : 0.0)
+    }
+    return set
+  }
+  
+  /// Same types and charges as Aluminosilicate, with zeo++ / CCDC van der Waals radii
+  /// stored as Lennard-Jones σ = 2r so geometric surfaces use the zeo++ sphere sizes.
+  public static func aluminosilicateZeoPlusPlus() -> SKForceFieldSet
+  {
+    let set = SKForceFieldSet()
+    set.displayName = aluminosilicateZeoPlusPlusDisplayName
+    set.editable = false
+    set.atomTypeList = makeAluminosilicateDerivedForceField { identifier, atomicNumber in
+      let symbol: String = identifier == bridgingAluminumOxygenIdentifier ? "O" : identifier
+      let radius: Double = zeoPlusPlusRadius(symbol: symbol, atomicNumber: atomicNumber)
+      return SIMD2<Double>(0.0, 2.0 * radius)
+    }
     return set
   }
   
@@ -322,6 +370,41 @@ public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
     // TraPPE-zeo / GenericZeolites T-atom LJ (Si, Al, and analogues).
     return SKForceFieldType(forceFieldStringIdentifier: symbol, atomicNumber: atomicNumber, sortIndex: atomicNumber, potentialParameters: SIMD2<Double>(22.0, 2.30), mass: mass, userDefinedRadius: radius, charge: charge)
   }
+  
+  private static func makeAluminosilicateDerivedForceField(_ parameters: (String, Int) -> SIMD2<Double>) -> [SKForceFieldType]
+  {
+    return makeAluminosilicateForceField().map { type in
+      SKForceFieldType(forceFieldStringIdentifier: type.forceFieldStringIdentifier, atomicNumber: type.atomicNumber, sortIndex: type.sortIndex, potentialParameters: parameters(type.forceFieldStringIdentifier, type.atomicNumber), mass: type.mass, userDefinedRadius: type.userDefinedRadius, charge: type.charge)
+    }
+  }
+  
+  /// CCDC van der Waals radii (Å) from zeo++ `initializeRadTable`. Unlisted elements use 2.0 Å.
+  private static func zeoPlusPlusRadius(symbol: String, atomicNumber: Int) -> Double
+  {
+    if let radius: Double = zeoPlusPlusRadii[symbol]
+    {
+      return radius
+    }
+    let element: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+    return zeoPlusPlusRadii[element] ?? 2.0
+  }
+  
+  private static let zeoPlusPlusRadii: [String: Double] = [
+    "H": 1.09, "He": 1.40, "Li": 1.82, "Be": 2.00, "B": 2.00, "C": 1.70, "N": 1.55, "O": 1.52,
+    "F": 1.47, "Ne": 1.54, "Na": 2.27, "Mg": 1.73, "Al": 2.00, "Si": 2.10, "P": 1.80, "S": 1.80,
+    "Cl": 1.75, "Ar": 1.88, "K": 2.75, "Ca": 2.00, "Sc": 2.00, "Ti": 2.00, "V": 2.00, "Cr": 2.00,
+    "Mn": 2.00, "Fe": 2.00, "Co": 2.00, "Ni": 1.63, "Cu": 1.40, "Zn": 1.39, "Ga": 1.87, "Ge": 2.00,
+    "As": 1.85, "Se": 1.90, "Br": 1.85, "Kr": 2.02, "Rb": 2.00, "Sr": 2.00, "Y": 2.00, "Zr": 2.00,
+    "Nb": 2.00, "Mo": 2.00, "Tc": 2.00, "Ru": 2.00, "Rh": 2.00, "Pd": 1.63, "Ag": 1.72, "Cd": 1.58,
+    "In": 1.93, "Sn": 2.17, "Sb": 2.00, "Te": 2.06, "I": 1.98, "Xe": 2.16, "Cs": 2.00, "Ba": 2.00,
+    "La": 2.00, "Ce": 2.00, "Pr": 2.00, "Nd": 2.00, "Pm": 2.00, "Sm": 2.00, "Eu": 2.00, "Gd": 2.00,
+    "Tb": 2.00, "Dy": 2.00, "Ho": 2.00, "Er": 2.00, "Tm": 2.00, "Yb": 2.00, "Lu": 2.00, "Hf": 2.00,
+    "Ta": 2.00, "W": 2.00, "Re": 2.00, "Os": 2.00, "Ir": 2.00, "Pt": 1.72, "Au": 1.66, "Hg": 1.55,
+    "Tl": 1.96, "Pb": 2.02, "Bi": 2.00, "Po": 2.00, "At": 2.00, "Rn": 2.00, "Fr": 2.00, "Ra": 2.00,
+    "Ac": 2.00, "Th": 2.00, "Pa": 2.00, "U": 1.86, "Np": 2.00, "Pu": 2.00, "Am": 2.00, "Cm": 2.00,
+    "Bk": 2.00, "Cf": 2.00, "Es": 2.00, "Fm": 2.00, "Md": 2.00, "No": 2.00, "Lr": 2.00, "Rf": 2.00,
+    "Db": 2.00, "Sg": 2.00, "Bh": 2.00, "Hs": 2.00, "Mt": 2.00, "Ds": 2.00
+  ]
   
   /// Framework + extra-framework types for the Calero/Auerbach charge scheme.
   private static func makeAluminosilicateForceField() -> [SKForceFieldType]

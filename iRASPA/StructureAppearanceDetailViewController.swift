@@ -1362,6 +1362,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       if let popUpButtonColorSet: iRASPAPopUpButton = view.viewWithTag(2) as? iRASPAPopUpButton
       {
+        popUpButtonColorSet.removeAllItems()
+        ProteinRibbonColorSet.allCases.forEach { popUpButtonColorSet.addItem(withTitle: $0.displayName) }
         popUpButtonColorSet.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
            !iRASPAObjects.filter({$0.object is ProteinRibbonStructureEditor}).isEmpty
@@ -1370,7 +1372,6 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           if let colorSet = self.getRibbonColorSet()
           {
-            popUpButtonColorSet.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpButtonColorSet.selectItem(withTitle: colorSet.displayName)
           }
           else

@@ -39,15 +39,20 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
 {
   private static var classVersionNumber: Int = 1
  
-  public let numberOfPredefinedSets: Int = 4
+  public let numberOfPredefinedSets: Int = 9
   private var colorSets: [SKColorSet] = []
   
-  public enum ColorScheme: String
+  public enum ColorScheme: String, CaseIterable
   {
     case jmol = "Jmol"
     case rasmol_modern = "Rasmol modern"
     case rasmol = "Rasmol"
     case vesta = "Vesta"
+    case crystalMaker = "CrystalMaker"
+    case mercury = "Mercury"
+    case pubChem = "PubChem"
+    case pymol = "PyMOL"
+    case vmdCpk = "VMD CPK"
   }
   
   public enum ColorOrder: Int
@@ -59,21 +64,20 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   
   public init()
   {
-    self.colorSets = [SKColorSet(colorScheme: SKColorSets.ColorScheme.jmol),
-                      SKColorSet(colorScheme: SKColorSets.ColorScheme.rasmol_modern),
-                      SKColorSet(colorScheme: SKColorSets.ColorScheme.rasmol),
-                      SKColorSet(colorScheme: SKColorSets.ColorScheme.vesta)]
+    self.colorSets = ColorScheme.allCases.map { SKColorSet(colorScheme: $0) }
   }
   
   public subscript(index: Int) -> SKColorSet
   {
     get
     {
+      ensurePredefinedSets()
       return self.colorSets[index % self.colorSets.count]
     }
     
     set(newValue)
     {
+      ensurePredefinedSets()
       self.colorSets[index % self.colorSets.count] = newValue
     }
   }
@@ -82,6 +86,7 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   {
     get
     {
+      ensurePredefinedSets()
       if let index: Int = self.colorSets.firstIndex(where: {$0.displayName == displayName})
       {
         return self.colorSets[index]
@@ -91,6 +96,7 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
     
     set(newValue)
     {
+      ensurePredefinedSets()
       if let index: Int = self.colorSets.firstIndex(where: {$0.displayName == displayName}),
          let newValue = newValue
       {
@@ -101,6 +107,7 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   
   public func insert(key: String, element: Int)
   {
+    ensurePredefinedSets()
     for i in 0..<colorSets.count
     {
       let chemicalElement: String = PredefinedElements.sharedInstance.elementSet[element].chemicalSymbol.capitalizeFirst
@@ -110,6 +117,7 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   
   public func remove(key: String)
   {
+    ensurePredefinedSets()
     for i in 0..<colorSets.count
     {
       self.colorSets[i][key.capitalizeFirst] = nil
@@ -123,6 +131,7 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   
   public var count: Int
   {
+    ensurePredefinedSets()
     return self.colorSets.count
   }
   
@@ -131,6 +140,7 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   
   public func binaryEncode(to encoder: BinaryEncoder)
   {
+    ensurePredefinedSets()
     encoder.encode(SKColorSets.classVersionNumber)
     encoder.encode(self.colorSets)
   }
@@ -147,6 +157,29 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
     }
     
     self.colorSets = try decoder.decode([SKColorSet].self)
+    ensurePredefinedSets()
+  }
+  
+  private func firstIndex(named name: String) -> Int?
+  {
+    return colorSets.firstIndex { $0.displayName.caseInsensitiveCompare(name) == .orderedSame }
+  }
+  
+  /// Documents saved before CrystalMaker / Mercury / PubChem / PyMOL / VMD CPK
+  /// only store the original four palettes. Insert any missing built-in after
+  /// the preceding predefined set so existing files pick up the new schemes.
+  private func ensurePredefinedSets()
+  {
+    for scheme in ColorScheme.allCases
+    {
+      guard firstIndex(named: scheme.rawValue) == nil else { continue }
+      let afterPrevious: Int? = ColorScheme.allCases.prefix { $0 != scheme }
+        .compactMap { firstIndex(named: $0.rawValue) }
+        .map { $0 + 1 }
+        .max()
+      let insertIndex: Int = afterPrevious ?? colorSets.count
+      colorSets.insert(SKColorSet(colorScheme: scheme), at: min(insertIndex, colorSets.count))
+    }
   }
 }
 

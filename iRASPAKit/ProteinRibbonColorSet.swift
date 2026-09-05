@@ -39,6 +39,11 @@ public enum ProteinRibbonColorSet: String, CaseIterable, Sendable
   case modernUI = "Modern UI"
   case biophysicalProperties = "Biophysical Properties"
   case infographic = "Infographic"
+  case rasMol = "RasMol"
+  case pymol = "PyMOL"
+  case vmd = "VMD"
+  case jmolShapely = "Jmol Shapely"
+  case chimera = "Chimera"
   
   public var displayName: String
   {
@@ -53,6 +58,11 @@ public enum ProteinRibbonColorSet: String, CaseIterable, Sendable
     case .modernUI: return SIMD3<Float>(0.25, 0.27, 0.30)
     case .biophysicalProperties: return SIMD3<Float>(1.0, 0.2, 0.6)
     case .infographic: return SIMD3<Float>(0.85, 0.75, 0.60)
+    case .rasMol: return SIMD3<Float>(1.0, 1.0, 1.0)
+    case .pymol: return SIMD3<Float>(0.0, 1.0, 0.0)
+    case .vmd: return SIMD3<Float>(1.0, 1.0, 1.0)
+    case .jmolShapely: return SIMD3<Float>(1.0, 1.0, 1.0)
+    case .chimera: return SIMD3<Float>(190.0/255.0, 190.0/255.0, 190.0/255.0)
     }
   }
   
@@ -64,6 +74,11 @@ public enum ProteinRibbonColorSet: String, CaseIterable, Sendable
     case .modernUI: return SIMD3<Float>(0.0, 0.55, 0.65)
     case .biophysicalProperties: return SIMD3<Float>(0.05, 0.25, 0.65)
     case .infographic: return SIMD3<Float>(0.75, 0.65, 0.90)
+    case .rasMol: return SIMD3<Float>(240.0/255.0, 0.0, 128.0/255.0)
+    case .pymol: return SIMD3<Float>(1.0, 0.0, 0.0)
+    case .vmd: return SIMD3<Float>(0.65, 0.0, 0.65)
+    case .jmolShapely: return SIMD3<Float>(1.0, 0.0, 128.0/255.0)
+    case .chimera: return SIMD3<Float>(1.0, 69.0/255.0, 0.0)
     }
   }
   
@@ -75,6 +90,11 @@ public enum ProteinRibbonColorSet: String, CaseIterable, Sendable
     case .modernUI: return SIMD3<Float>(0.95, 0.60, 0.15)
     case .biophysicalProperties: return SIMD3<Float>(0.40, 0.75, 1.0)
     case .infographic: return SIMD3<Float>(0.60, 0.90, 0.75)
+    case .rasMol: return SIMD3<Float>(1.0, 1.0, 0.0)
+    case .pymol: return SIMD3<Float>(1.0, 1.0, 0.0)
+    case .vmd: return SIMD3<Float>(1.0, 1.0, 0.0)
+    case .jmolShapely: return SIMD3<Float>(1.0, 200.0/255.0, 0.0)
+    case .chimera: return SIMD3<Float>(160.0/255.0, 32.0/255.0, 240.0/255.0)
     }
   }
   

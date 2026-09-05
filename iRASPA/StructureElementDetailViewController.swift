@@ -689,25 +689,43 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
     if let document: iRASPADocument = self.windowController?.currentDocument,
        !sender.stringValue.isEmpty
     {
-      let index: Int = sender.indexOfItem(withObjectValue: sender.stringValue.capitalizeFirst)
-      if index == NSNotFound
+      let typed: String = sender.stringValue
+      if let index: Int = forceFieldSetIndex(named: typed, in: document.forceFieldSets)
       {
-        let forceFieldSet: SKForceFieldSet = SKForceFieldSet(name: sender.stringValue.capitalizeFirst, forceFieldSet: document.forceFieldSets[selectedForceFieldSetIndex], editable: true)
+        self.selectedForceFieldSetIndex = index
+      }
+      else
+      {
+        let forceFieldSet: SKForceFieldSet = SKForceFieldSet(name: typed, forceFieldSet: document.forceFieldSets[selectedForceFieldSetIndex], editable: true)
       
         document.forceFieldSets.append(forceFieldSet)
         self.selectedForceFieldSetIndex = document.forceFieldSets.count - 1
       
         document.updateChangeCount(.changeDone)
-        
-        sender.reloadData()
-      }
-      else
-      {
-        self.selectedForceFieldSetIndex = index
       }
     }
     self.reloadData()
     self.windowController?.window?.makeFirstResponder(self.forceFieldTableView)
+  }
+  
+  /// Combo-box lookup used to use `capitalizeFirst`, which lowercases every character
+  /// after the first and therefore misses multi-word names such as "VMD CPK".
+  private func colorSetIndex(named name: String, in colorSets: SKColorSets) -> Int?
+  {
+    let trimmed: String = name.trimmingCharacters(in: .whitespacesAndNewlines)
+    return (0..<colorSets.count).first {
+      colorSets[$0].displayName.caseInsensitiveCompare(trimmed) == .orderedSame
+    }
+  }
+  
+  /// Combo-box lookup used to use `capitalizeFirst`, which lowercases every character
+  /// after the first and therefore misses multi-word names.
+  private func forceFieldSetIndex(named name: String, in forceFieldSets: SKForceFieldSets) -> Int?
+  {
+    let trimmed: String = name.trimmingCharacters(in: .whitespacesAndNewlines)
+    return (0..<forceFieldSets.count).first {
+      forceFieldSets[$0].displayName.caseInsensitiveCompare(trimmed) == .orderedSame
+    }
   }
   
   // select color set or add new one if not found
@@ -716,12 +734,12 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
     if let document: iRASPADocument = self.windowController?.currentDocument,
        !sender.stringValue.isEmpty
     {
-      let index: Int = sender.indexOfItem(withObjectValue: sender.stringValue.capitalizeFirst)
+      let typed: String = sender.stringValue
+      let colorSets: SKColorSets = document.colorSets
+      let index: Int = colorSetIndex(named: typed, in: colorSets) ?? NSNotFound
       if index == NSNotFound
       {
-        let colorSets: SKColorSets = document.colorSets
-        
-        let colorSet: SKColorSet = SKColorSet(name: sender.stringValue.capitalizeFirst, from: colorSets[selectedColorSetIndex], editable: true)
+        let colorSet: SKColorSet = SKColorSet(name: typed, from: colorSets[selectedColorSetIndex], editable: true)
         
         colorSets.append(colorSet)
         self.selectedColorSetIndex = colorSets.count - 1

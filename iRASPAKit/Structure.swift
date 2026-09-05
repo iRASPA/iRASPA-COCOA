@@ -1702,7 +1702,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   
   public func setRepresentationForceField(forceField: String?, forceFieldSet: SKForceFieldSet, for asymmetricAtoms: [SKAsymmetricAtom])
   {
-    if forceFieldSet.displayName == SKForceFieldSet.aluminosilicateDisplayName
+    if SKForceFieldSet.isAluminosilicateFamily(forceFieldSet.displayName)
     {
       assignAluminosilicateOxygenTypes(to: asymmetricAtoms)
     }
@@ -1719,7 +1719,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       let type: SKForceFieldType? = resolvedForceFieldType(for: atom, in: forceFieldSet)
       atom.potentialParameters = type?.potentialParameters ?? SIMD2<Double>(0.0, 0.0)
       atom.bondDistanceCriteria = type?.userDefinedRadius ?? ((self.atomForceFieldOrder == .forceFieldOnly) ? 1.0 : 0.0)
-      if forceFieldSet.displayName == SKForceFieldSet.aluminosilicateDisplayName
+      if SKForceFieldSet.isAluminosilicateFamily(forceFieldSet.displayName)
       {
         atom.charge = type?.charge ?? 0.0
       }
@@ -1815,7 +1815,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         asymmetricAtoms.forEach{$0.potentialParameters = forceFieldSet[$0.uniqueForceFieldName]?.potentialParameters ?? forceFieldSet[PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].chemicalSymbol]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)}
     }
     asymmetricAtoms.forEach { atom in
-      if forceFieldSet.displayName == SKForceFieldSet.aluminosilicateDisplayName,
+      if SKForceFieldSet.isAluminosilicateFamily(forceFieldSet.displayName),
          let type = resolvedForceFieldType(for: atom, in: forceFieldSet)
       {
         atom.charge = type.charge

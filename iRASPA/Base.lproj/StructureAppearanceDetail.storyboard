@@ -1779,6 +1779,11 @@
                                                                                                     <menuItem title="Modern UI" id="Rbn-CS-Mod"/>
                                                                                                     <menuItem title="Biophysical Properties" id="Rbn-CS-Bio"/>
                                                                                                     <menuItem title="Infographic" id="Rbn-CS-Inf"/>
+                                                                                                    <menuItem title="RasMol" id="Rbn-CS-Ras"/>
+                                                                                                    <menuItem title="PyMOL" id="Rbn-CS-Pym"/>
+                                                                                                    <menuItem title="VMD" id="Rbn-CS-Vmd"/>
+                                                                                                    <menuItem title="Jmol Shapely" id="Rbn-CS-Jms"/>
+                                                                                                    <menuItem title="Chimera" id="Rbn-CS-Chi"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>
@@ -2727,6 +2732,11 @@
                                                                                                     <menuItem title="Modern UI" id="zGz-Uc-JTY"/>
                                                                                                     <menuItem title="Biophysical Properties" id="zHm-2g-SHZ"/>
                                                                                                     <menuItem title="Infographic" id="nVB-uY-Cem"/>
+                                                                                                    <menuItem title="RasMol" id="rid-CS-Ras"/>
+                                                                                                    <menuItem title="PyMOL" id="rid-CS-Pym"/>
+                                                                                                    <menuItem title="VMD" id="rid-CS-Vmd"/>
+                                                                                                    <menuItem title="Jmol Shapely" id="rid-CS-Jms"/>
+                                                                                                    <menuItem title="Chimera" id="rid-CS-Chi"/>
                                                                                                 </items>
                                                                                             </menu>
                                                                                         </popUpButtonCell>

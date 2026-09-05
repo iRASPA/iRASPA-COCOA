@@ -38,7 +38,7 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
 {
   private static var classVersionNumber: Int = 1
   
-  private let numberOfPredefinedSets: Int = 2
+  private let numberOfPredefinedSets: Int = 4
   private var forceFieldSets: [SKForceFieldSet] = []
   
   public enum ForceFieldOrder: Int
@@ -50,6 +50,8 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   
   public static let defaultDisplayName: String = SKForceFieldSet.defaultDisplayName
   public static let aluminosilicateDisplayName: String = SKForceFieldSet.aluminosilicateDisplayName
+  public static let zeoliteAtlasDisplayName: String = SKForceFieldSet.zeoliteAtlasDisplayName
+  public static let aluminosilicateZeoPlusPlusDisplayName: String = SKForceFieldSet.aluminosilicateZeoPlusPlusDisplayName
   
   public static func suggestedDisplayName(for materialType: SKStructure.MaterialType) -> String
   {
@@ -64,18 +66,24 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   
   public init()
   {
-    forceFieldSets = [SKForceFieldSet(), SKForceFieldSet.aluminosilicate()]
+    forceFieldSets = [
+      SKForceFieldSet(),
+      SKForceFieldSet.aluminosilicate(),
+      SKForceFieldSet.zeoliteAtlas(),
+      SKForceFieldSet.aluminosilicateZeoPlusPlus()
+    ]
   }
   
   /// The set that should be applied for `displayName`. Built-in non-editable tables
-  /// (Aluminosilicate) always come from code so a document saved while Default still
-  /// carried TraPPE-zeo Si/O cannot make the two sets identical.
+  /// (Aluminosilicate and the geometric zeolite sets) always come from code so a
+  /// document saved while Default still carried TraPPE-zeo Si/O cannot make the
+  /// tables identical.
   public func resolvedSet(named displayName: String) -> SKForceFieldSet
   {
     ensurePredefinedSets()
-    if displayName == SKForceFieldSet.aluminosilicateDisplayName
+    if SKForceFieldSet.isAluminosilicateFamily(displayName)
     {
-      return SKForceFieldSet.aluminosilicate()
+      return SKForceFieldSet.predefined(named: displayName)
     }
     if let set = forceFieldSets.first(where: {$0.displayName == displayName})
     {
@@ -88,6 +96,7 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   {
     get
     {
+      ensurePredefinedSets()
       return self.forceFieldSets[index % self.forceFieldSets.count]
     }
     
@@ -114,12 +123,13 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   {
     get
     {
-      return self.forceFieldSets.first(where: {$0.displayName == displayName})
+      ensurePredefinedSets()
+      return firstIndex(named: displayName).map { forceFieldSets[$0] }
     }
     
     set(newValue)
     {
-      if let index: Int = self.forceFieldSets.firstIndex(where: {$0.displayName == displayName}),
+      if let index: Int = firstIndex(named: displayName),
          let newValue = newValue
       {
         self.forceFieldSets[index] = newValue
@@ -129,11 +139,18 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   
   public func append(_ forceFieldSet: SKForceFieldSet)
   {
+    if firstIndex(named: forceFieldSet.displayName) != nil,
+       SKForceFieldSet.isAluminosilicateFamily(forceFieldSet.displayName) ||
+       forceFieldSet.displayName.caseInsensitiveCompare(SKForceFieldSets.defaultDisplayName) == .orderedSame
+    {
+      return
+    }
     self.forceFieldSets.append(forceFieldSet)
   }
   
   public var count: Int
   {
+    ensurePredefinedSets()
     return self.forceFieldSets.count
   }
   
@@ -142,6 +159,7 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   
   public func binaryEncode(to encoder: BinaryEncoder)
   {
+    ensurePredefinedSets()
     encoder.encode(SKForceFieldSets.classVersionNumber)
     encoder.encode(forceFieldSets)
   }
@@ -161,16 +179,43 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
     ensurePredefinedSets()
   }
   
+  private func firstIndex(named name: String) -> Int?
+  {
+    return forceFieldSets.firstIndex { $0.displayName.caseInsensitiveCompare(name) == .orderedSame }
+  }
+  
   private func ensurePredefinedSets()
   {
-    if let index: Int = forceFieldSets.firstIndex(where: {$0.displayName == SKForceFieldSets.aluminosilicateDisplayName})
-    {
-      forceFieldSets[index] = SKForceFieldSet.aluminosilicate()
+    let predefined: [(String, () -> SKForceFieldSet)] = [
+      (SKForceFieldSet.aluminosilicateDisplayName, SKForceFieldSet.aluminosilicate),
+      (SKForceFieldSet.zeoliteAtlasDisplayName, SKForceFieldSet.zeoliteAtlas),
+      (SKForceFieldSet.aluminosilicateZeoPlusPlusDisplayName, SKForceFieldSet.aluminosilicateZeoPlusPlus)
+    ]
+    forceFieldSets.removeAll {
+      let name = $0.displayName
+      return name.caseInsensitiveCompare("Aluminosilicate") == .orderedSame
+          || name.caseInsensitiveCompare("Zeolite Atlas") == .orderedSame
+          || name.caseInsensitiveCompare("Aluminosilicate Zeolite Atlas") == .orderedSame
     }
-    else
+    for (name, factory) in predefined
     {
-      let insertIndex: Int = forceFieldSets.firstIndex(where: {$0.displayName == SKForceFieldSets.defaultDisplayName}).map {$0 + 1} ?? forceFieldSets.count
-      forceFieldSets.insert(SKForceFieldSet.aluminosilicate(), at: min(insertIndex, forceFieldSets.count))
+      let matches: [Int] = forceFieldSets.indices.filter {
+        forceFieldSets[$0].displayName.caseInsensitiveCompare(name) == .orderedSame
+      }
+      if let first: Int = matches.first
+      {
+        forceFieldSets[first] = factory()
+        for index in matches.dropFirst().reversed()
+        {
+          forceFieldSets.remove(at: index)
+        }
+      }
+      else
+      {
+        let afterPrevious: Int? = predefined.prefix { $0.0 != name }.compactMap { firstIndex(named: $0.0) }.map { $0 + 1 }.max()
+        let insertIndex: Int = afterPrevious ?? firstIndex(named: SKForceFieldSets.defaultDisplayName).map { $0 + 1 } ?? forceFieldSets.count
+        forceFieldSets.insert(factory(), at: min(insertIndex, forceFieldSets.count))
+      }
     }
     restoreDefaultFrameworkTypesIfTraPPE()
   }
