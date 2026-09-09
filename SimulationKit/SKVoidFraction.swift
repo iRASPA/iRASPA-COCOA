@@ -21,11 +21,12 @@ public class SKVoidFraction
   // The Boltzmann-averaged fraction of the unit cell a helium atom can occupy at room temperature, and the
   // deepest energy on the grid.
   //
-  // A grid point inside an applied blocking pocket is left out of the average: the pocket is pore the probe is
+  // A grid point inside a blocking pocket is left out of the average: the pocket is pore the probe is
   // not allowed into, so it is not void, however deep the well it hides. It stays in the denominator, so what
-  // comes out is the fraction of the whole cell that is accessible void. Which points those are has to be asked
-  // for separately rather than read off the masked grid, because the mask the kernel writes is a depth ramp
-  // meant for level sets (see SKMetalFramework.blockedGridPoints).
+  // comes out is the fraction of the whole cell that is accessible void. Callers always pass the structure's
+  // pockets, whether or not "Apply blocking pockets" is on for the drawn surface. Which points those are has
+  // to be asked for separately rather than read off the masked grid, because the mask the kernel writes is a
+  // depth ramp meant for level sets (see SKMetalFramework.blockedGridPoints).
   public static func compute(structures: [SKFrameworkSnapshot]) -> [(minimumEnergyValue: Double, voidFraction: Double)]
   {
     var results: [(minimumEnergyValue: Double, voidFraction: Double)] = []

@@ -96,7 +96,7 @@ class Project
   
   public var voidFractions: [Double]
   {
-    return SKVoidFraction.compute(structures: frameworkSnapshots).map{$0.voidFraction}
+    return SKVoidFraction.compute(structures: projectStructureNode.sceneList.allAdsorptionSurfaceStructures.map(SKFrameworkSnapshot.applyingBlockingPockets)).map{$0.voidFraction}
   }
   
   public var surfaceAreas: ([Double], [Double])

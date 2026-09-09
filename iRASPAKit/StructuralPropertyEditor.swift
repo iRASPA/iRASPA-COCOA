@@ -63,6 +63,14 @@ public protocol StructuralPropertyViewer: AnyObject
   var structureLargestCavityDiameter: Double {get}
   var structureRestrictingPoreLimitingDiameter: Double {get}
   var structureLargestCavityDiameterAlongAViablePath : Double {get}
+  var structureRestrictingPoreLimitingDiameter2: Double {get}
+  var structureLargestCavityDiameterAlongAViablePath2: Double {get}
+  var structureWindow1Size: SIMD2<Double> {get}
+  var structureWindow2Size: SIMD2<Double> {get}
+  var structureWindow3Size: SIMD2<Double> {get}
+  var structureWindow1RingAtoms: Int {get}
+  var structureWindow2RingAtoms: Int {get}
+  var structureWindow3RingAtoms: Int {get}
 }
 
 public protocol StructuralPropertyEditor: StructuralPropertyViewer
@@ -91,6 +99,14 @@ public protocol StructuralPropertyEditor: StructuralPropertyViewer
   var structureLargestCavityDiameter : Double {get set}
   var structureRestrictingPoreLimitingDiameter: Double {get set}
   var structureLargestCavityDiameterAlongAViablePath : Double {get set}
+  var structureRestrictingPoreLimitingDiameter2: Double {get set}
+  var structureLargestCavityDiameterAlongAViablePath2: Double {get set}
+  var structureWindow1Size: SIMD2<Double> {get set}
+  var structureWindow2Size: SIMD2<Double> {get set}
+  var structureWindow3Size: SIMD2<Double> {get set}
+  var structureWindow1RingAtoms: Int {get set}
+  var structureWindow2RingAtoms: Int {get set}
+  var structureWindow3RingAtoms: Int {get set}
 }
 
 extension StructuralPropertyEditor

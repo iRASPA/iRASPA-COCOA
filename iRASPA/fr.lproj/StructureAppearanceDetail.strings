@@ -130,8 +130,8 @@
 /* Class = "NSButtonCell"; title = "Show Blocking Pockets"; ObjectID = "BkP-Pr-bcl"; */
 "BkP-Pr-bcl.title" = "Afficher les poches de blocage";
 
-/* Class = "NSButtonCell"; title = "Apply Blocking Pockets"; ObjectID = "Blk-Ap-cel"; */
-"Blk-Ap-cel.title" = "Appliquer les poches de blocage";
+/* Class = "NSTextFieldCell"; title = "Apply Blocking Pockets"; ObjectID = "Blk-Ap-tcl"; */
+"Blk-Ap-tcl.title" = "Appliquer les poches de blocage";
 
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "BMS-ba-E5g"; */
 "BMS-ba-E5g.title" = "Élément chimique";

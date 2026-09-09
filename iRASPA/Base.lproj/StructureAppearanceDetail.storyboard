@@ -5771,7 +5771,7 @@
                                                                             <rect key="frame" x="0.0" y="0.0" width="438" height="481"/>
                                                                             <rows>
                                                                                 <gridRow id="ncA-GB-Ycz"/>
-                                                                                <gridRow id="Blk-Ap-ly0"/>
+                                                                                <gridRow rowAlignment="firstBaseline" id="Blk-Ap-ly0"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="OkC-WC-wVI"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="C1r-l1-HuV"/>
                                                                                 <gridRow rowAlignment="firstBaseline" id="Ads-rw-Eps"/>
@@ -5943,10 +5943,20 @@
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                 </gridCell>
-                                                                                <gridCell row="Blk-Ap-ly0" column="OhW-Iw-Tbh" headOfMergedCell="Blk-Ap-c10" xPlacement="leading" id="Blk-Ap-c10">
+                                                                                <gridCell row="Blk-Ap-ly0" column="OhW-Iw-Tbh" id="Blk-Ap-c10">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Blk-Ap-tfd">
+                                                                                        <rect key="frame" x="-2" y="353" width="143" height="16"/>
+                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Apply Blocking Pockets" id="Blk-Ap-tcl">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                    </textField>
+                                                                                </gridCell>
+                                                                                <gridCell row="Blk-Ap-ly0" column="tj8-DZ-Ldh" xPlacement="leading" id="Blk-Ap-c20">
                                                                                     <button key="contentView" tag="111" horizontalHuggingPriority="260" verticalHuggingPriority="260" translatesAutoresizingMaskIntoConstraints="NO" id="Blk-Ap-btn">
-                                                                                        <rect key="frame" x="0.0" y="353" width="164" height="16"/>
-                                                                                        <buttonCell key="cell" type="check" title="Apply Blocking Pockets" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="Blk-Ap-cel">
+                                                                                        <rect key="frame" x="143" y="353" width="18" height="16"/>
+                                                                                        <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Blk-Ap-cel">
                                                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                                             <font key="font" metaFont="system"/>
                                                                                         </buttonCell>
@@ -5955,7 +5965,6 @@
                                                                                         </connections>
                                                                                     </button>
                                                                                 </gridCell>
-                                                                                <gridCell row="Blk-Ap-ly0" column="tj8-DZ-Ldh" headOfMergedCell="Blk-Ap-c10" id="Blk-Ap-c20"/>
                                                                                 <gridCell row="Blk-Ap-ly0" column="8wk-Gx-Y8W" id="Blk-Ap-c30"/>
                                                                                 <gridCell row="Blk-Sp-tr0" column="OhW-Iw-Tbh" headOfMergedCell="Blk-Sp-c10" xPlacement="fill" yPlacement="center" id="Blk-Sp-c10">
                                                                                     <box key="contentView" verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Blk-Sp-box">

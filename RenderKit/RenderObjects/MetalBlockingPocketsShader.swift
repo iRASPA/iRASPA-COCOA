@@ -36,7 +36,9 @@ import Foundation
 /// Draws the blocking pockets of a structure as translucent spheres of the radius they were read with.
 ///
 /// The pockets enclose the atoms and the iso-surface they overlap, so they are drawn in the transparent
-/// pass in back-to-front order alongside the iso-surface and the transparent primitives.
+/// pass in back-to-front order alongside the iso-surface and the transparent primitives. Fragments
+/// outside the unit cell are discarded, and a pocket that crossed a face is wrapped to the opposite
+/// side so the two clipped pieces stay inside the cell.
 class MetalBlockingPocketsShader
 {
   var renderDataSource: RKRenderDataSource? = nil

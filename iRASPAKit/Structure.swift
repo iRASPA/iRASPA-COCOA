@@ -50,7 +50,7 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
 public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, RKRenderBlockingPocketsSource, AtomStructureEditor, BondStructureEditor, AnnotationEditor, InfoEditor, StructuralPropertyEditor
 {
-  private static var classVersionNumber: Int = 17
+  private static var classVersionNumber: Int = 22
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   {
@@ -447,6 +447,54 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var structureLargestCavityDiameter : Double = 0.0
   public var structureRestrictingPoreLimitingDiameter: Double = 0.0
   public var structureLargestCavityDiameterAlongAViablePath : Double = 0.0
+  public var structureRestrictingPoreLimitingDiameter2: Double = 0.0
+  public var structureLargestCavityDiameterAlongAViablePath2: Double = 0.0
+  public var structureWindow1Size: SIMD2<Double> = SIMD2<Double>()
+  public var structureWindow2Size: SIMD2<Double> = SIMD2<Double>()
+  public var structureWindow3Size: SIMD2<Double> = SIMD2<Double>()
+  public var structureWindow1RingAtoms: Int = 0
+  public var structureWindow2RingAtoms: Int = 0
+  public var structureWindow3RingAtoms: Int = 0
+  
+  public func structureWindowSize(_ index: Int) -> SIMD2<Double>
+  {
+    switch index
+    {
+    case 0: return structureWindow1Size
+    case 1: return structureWindow2Size
+    default: return structureWindow3Size
+    }
+  }
+  
+  public func setStructureWindowSize(_ index: Int, _ value: SIMD2<Double>)
+  {
+    switch index
+    {
+    case 0: structureWindow1Size = value
+    case 1: structureWindow2Size = value
+    default: structureWindow3Size = value
+    }
+  }
+  
+  public func structureWindowRingAtoms(_ index: Int) -> Int
+  {
+    switch index
+    {
+    case 0: return structureWindow1RingAtoms
+    case 1: return structureWindow2RingAtoms
+    default: return structureWindow3RingAtoms
+    }
+  }
+  
+  public func setStructureWindowRingAtoms(_ index: Int, _ value: Int)
+  {
+    switch index
+    {
+    case 0: structureWindow1RingAtoms = value
+    case 1: structureWindow2RingAtoms = value
+    default: structureWindow3RingAtoms = value
+    }
+  }
   
   // the fractional position (x,y,z) and the radius in Angstrom (w) of the blocking pockets
   public var blockingPockets: [SIMD4<Double>] = []
@@ -630,6 +678,38 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public var frameworkProbeMolecule: ProbeMolecule = .nitrogen
   public var frameworkProbeEpsilon: Double = 36.0
   public var frameworkProbeSigma: Double = 3.31
+  
+  /// Probe used to decide which cages are inaccessible pockets when blocking spheres are computed.
+  public var blockingPocketProbeMolecule: ProbeMolecule = .helium
+  public var blockingPocketProbeEpsilon: Double = 10.9
+  public var blockingPocketProbeSigma: Double = 2.64
+  
+  public var blockingPocketProbeParameters: SIMD2<Double>
+  {
+    return SIMD2<Double>(blockingPocketProbeEpsilon, blockingPocketProbeSigma)
+  }
+  
+  public func applyBlockingPocketProbeMolecule(_ probe: ProbeMolecule)
+  {
+    blockingPocketProbeMolecule = probe
+    if let parameters = probe.namedParameters
+    {
+      blockingPocketProbeEpsilon = parameters.x
+      blockingPocketProbeSigma = parameters.y
+    }
+  }
+  
+  public func setBlockingPocketProbeEpsilon(_ value: Double)
+  {
+    blockingPocketProbeEpsilon = value
+    blockingPocketProbeMolecule = ProbeMolecule.matching(SIMD2<Double>(blockingPocketProbeEpsilon, blockingPocketProbeSigma))
+  }
+  
+  public func setBlockingPocketProbeSigma(_ value: Double)
+  {
+    blockingPocketProbeSigma = value
+    blockingPocketProbeMolecule = ProbeMolecule.matching(SIMD2<Double>(blockingPocketProbeEpsilon, blockingPocketProbeSigma))
+  }
 
   public var canRemoveSymmetry: Bool
   {
@@ -782,8 +862,19 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.structureLargestCavityDiameter = copy.structureLargestCavityDiameter
     self.structureRestrictingPoreLimitingDiameter = copy.structureRestrictingPoreLimitingDiameter
     self.structureLargestCavityDiameterAlongAViablePath = copy.structureLargestCavityDiameterAlongAViablePath
+    self.structureRestrictingPoreLimitingDiameter2 = copy.structureRestrictingPoreLimitingDiameter2
+    self.structureLargestCavityDiameterAlongAViablePath2 = copy.structureLargestCavityDiameterAlongAViablePath2
+    self.structureWindow1Size = copy.structureWindow1Size
+    self.structureWindow2Size = copy.structureWindow2Size
+    self.structureWindow3Size = copy.structureWindow3Size
+    self.structureWindow1RingAtoms = copy.structureWindow1RingAtoms
+    self.structureWindow2RingAtoms = copy.structureWindow2RingAtoms
+    self.structureWindow3RingAtoms = copy.structureWindow3RingAtoms
     
     self.blockingPockets = copy.blockingPockets
+    self.blockingPocketProbeMolecule = copy.blockingPocketProbeMolecule
+    self.blockingPocketProbeEpsilon = copy.blockingPocketProbeEpsilon
+    self.blockingPocketProbeSigma = copy.blockingPocketProbeSigma
     self.drawBlockingPockets = copy.drawBlockingPockets
     self.applyBlockingPockets = copy.applyBlockingPockets
     
@@ -1183,6 +1274,14 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.structureLargestCavityDiameter = cellStructureViewer.structureLargestCavityDiameter
       self.structureRestrictingPoreLimitingDiameter = cellStructureViewer.structureRestrictingPoreLimitingDiameter
       self.structureLargestCavityDiameterAlongAViablePath = cellStructureViewer.structureLargestCavityDiameterAlongAViablePath
+      self.structureRestrictingPoreLimitingDiameter2 = cellStructureViewer.structureRestrictingPoreLimitingDiameter2
+      self.structureLargestCavityDiameterAlongAViablePath2 = cellStructureViewer.structureLargestCavityDiameterAlongAViablePath2
+      self.structureWindow1Size = cellStructureViewer.structureWindow1Size
+      self.structureWindow2Size = cellStructureViewer.structureWindow2Size
+      self.structureWindow3Size = cellStructureViewer.structureWindow3Size
+      self.structureWindow1RingAtoms = cellStructureViewer.structureWindow1RingAtoms
+      self.structureWindow2RingAtoms = cellStructureViewer.structureWindow2RingAtoms
+      self.structureWindow3RingAtoms = cellStructureViewer.structureWindow3RingAtoms
     }
     
     if let annotationViewer: AnnotationEditor = object as? AnnotationEditor
@@ -1305,8 +1404,19 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.structureLargestCavityDiameter = clone.structureLargestCavityDiameter
     self.structureRestrictingPoreLimitingDiameter = clone.structureRestrictingPoreLimitingDiameter
     self.structureLargestCavityDiameterAlongAViablePath = clone.structureLargestCavityDiameterAlongAViablePath
+    self.structureRestrictingPoreLimitingDiameter2 = clone.structureRestrictingPoreLimitingDiameter2
+    self.structureLargestCavityDiameterAlongAViablePath2 = clone.structureLargestCavityDiameterAlongAViablePath2
+    self.structureWindow1Size = clone.structureWindow1Size
+    self.structureWindow2Size = clone.structureWindow2Size
+    self.structureWindow3Size = clone.structureWindow3Size
+    self.structureWindow1RingAtoms = clone.structureWindow1RingAtoms
+    self.structureWindow2RingAtoms = clone.structureWindow2RingAtoms
+    self.structureWindow3RingAtoms = clone.structureWindow3RingAtoms
     
     self.blockingPockets = clone.blockingPockets
+    self.blockingPocketProbeMolecule = clone.blockingPocketProbeMolecule
+    self.blockingPocketProbeEpsilon = clone.blockingPocketProbeEpsilon
+    self.blockingPocketProbeSigma = clone.blockingPocketProbeSigma
     self.drawBlockingPockets = clone.drawBlockingPockets
     self.applyBlockingPockets = clone.applyBlockingPockets
     
@@ -2684,22 +2794,54 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   /// cell just like the atoms do, and the radius is used unchanged as the sphere radius in Angstrom.
   /// Every sphere shares one material, which travels in the uniforms, so an instance carries only its
   /// placement.
+  ///
+  /// A sphere that sits near a face, edge or corner of a periodic cell sticks out of that cell. The
+  /// protruding cap is drawn again on the opposite side, as many lattice images as the radius needs,
+  /// so a pocket at the origin fills all eight corners and a sphere larger than the cell wraps more
+  /// than once.
   public var renderBlockingPockets: [RKInPerInstanceAttributesAtoms]
   {
     guard !blockingPockets.isEmpty else {return []}
     
     var data: [RKInPerInstanceAttributesAtoms] = []
-    data.reserveCapacity(blockingPockets.count * cell.totalNumberOfReplicas)
+    
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+    
+    func wrapRange(center: Double, radius: Double, width: Double, replicaMin: Int, replicaMax: Int) -> ClosedRange<Int>
+    {
+      guard self.periodic, width > 1.0e-12, radius > 0.0 else {return replicaMin...replicaMax}
+      let fractionalRadius: Double = radius / width
+      let boxMin: Double = Double(replicaMin)
+      let boxMax: Double = Double(replicaMax) + 1.0
+      let wrappedMin: Int = Int(ceil(boxMin - center - fractionalRadius + 1.0e-12))
+      let wrappedMax: Int = Int(floor(boxMax - center + fractionalRadius - 1.0e-12))
+      let lower: Int = min(replicaMin, wrappedMin)
+      let upper: Int = max(replicaMax, wrappedMax)
+      return lower...max(lower, upper)
+    }
+    
+    let widths: SIMD3<Double> = self.cell.perpendicularWidths
     
     for blockingPocket in blockingPockets
     {
       let position: SIMD3<Double> = SIMD3<Double>.flip(v: SIMD3<Double>(blockingPocket.x, blockingPocket.y, blockingPocket.z), flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+      let base: SIMD3<Double> = position + cell.contentShift
+      let radius: Double = blockingPocket.w
       
-      for k1 in cell.minimumReplica.x...cell.maximumReplica.x
+      let rangeX: ClosedRange<Int> = wrapRange(center: base.x, radius: radius, width: widths.x, replicaMin: minimumReplicaX, replicaMax: maximumReplicaX)
+      let rangeY: ClosedRange<Int> = wrapRange(center: base.y, radius: radius, width: widths.y, replicaMin: minimumReplicaY, replicaMax: maximumReplicaY)
+      let rangeZ: ClosedRange<Int> = wrapRange(center: base.z, radius: radius, width: widths.z, replicaMin: minimumReplicaZ, replicaMax: maximumReplicaZ)
+      
+      for k1 in rangeX
       {
-        for k2 in cell.minimumReplica.y...cell.maximumReplica.y
+        for k2 in rangeY
         {
-          for k3 in cell.minimumReplica.z...cell.maximumReplica.z
+          for k3 in rangeZ
           {
             let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: position.x + Double(k1), y: position.y + Double(k2), z: position.z + Double(k3)) + cell.contentShift
             let cartesianPosition: SIMD3<Double> = cell.convertToCartesian(fractionalPosition)
@@ -3917,6 +4059,20 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     encoder.encode(self.structureVolumetricVanDerWaalsGeometricSurfaceArea)
     encoder.encode(self.structureGravimetricVanDerWaalsGeometricSurfaceArea)
     
+    encoder.encode(self.structureWindow1Size)
+    encoder.encode(self.structureWindow2Size)
+    encoder.encode(self.structureWindow3Size)
+    encoder.encode(self.structureWindow1RingAtoms)
+    encoder.encode(self.structureWindow2RingAtoms)
+    encoder.encode(self.structureWindow3RingAtoms)
+    
+    encoder.encode(self.blockingPocketProbeMolecule.rawValue)
+    encoder.encode(self.blockingPocketProbeEpsilon)
+    encoder.encode(self.blockingPocketProbeSigma)
+    
+    encoder.encode(self.structureRestrictingPoreLimitingDiameter2)
+    encoder.encode(self.structureLargestCavityDiameterAlongAViablePath2)
+    
     super.binaryEncode(to: encoder)
   }
   
@@ -4407,6 +4563,37 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         self.structureGravimetricVanDerWaalsGeometricSurfaceArea = try decoder.decode(Double.self)
       }
       
+      if readVersionNumber >= 18 // introduced in version 18
+      {
+        self.structureWindow1Size = try decoder.decode(SIMD2<Double>.self)
+        self.structureWindow2Size = try decoder.decode(SIMD2<Double>.self)
+        self.structureWindow3Size = try decoder.decode(SIMD2<Double>.self)
+      }
+      
+      if readVersionNumber >= 19 // introduced in version 19
+      {
+        self.structureWindow1RingAtoms = try decoder.decode(Int.self)
+        self.structureWindow2RingAtoms = try decoder.decode(Int.self)
+        self.structureWindow3RingAtoms = try decoder.decode(Int.self)
+      }
+      
+      if readVersionNumber >= 20 // introduced in version 20
+      {
+        self.blockingPocketProbeMolecule = ProbeMolecule(rawValue: try decoder.decode(Int.self)) ?? .helium
+      }
+      
+      if readVersionNumber >= 21 // introduced in version 21
+      {
+        self.blockingPocketProbeEpsilon = try decoder.decode(Double.self)
+        self.blockingPocketProbeSigma = try decoder.decode(Double.self)
+      }
+      
+      if readVersionNumber >= 22 // introduced in version 22
+      {
+        self.structureRestrictingPoreLimitingDiameter2 = try decoder.decode(Double.self)
+        self.structureLargestCavityDiameterAlongAViablePath2 = try decoder.decode(Double.self)
+      }
+      
       try super.init(fromBinary: decoder)
     }
     else
@@ -4454,6 +4641,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     {
       self.adsorptionSurfaceProbeEpsilon = parameters.x
       self.adsorptionSurfaceProbeSigma = parameters.y
+    }
+    
+    if readVersionNumber < 21, let parameters = blockingPocketProbeMolecule.namedParameters
+    {
+      self.blockingPocketProbeEpsilon = parameters.x
+      self.blockingPocketProbeSigma = parameters.y
     }
     
     // Reapplying the style resets the cueing along with the rest of the material, the style owning it

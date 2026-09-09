@@ -272,6 +272,9 @@
 		93AA0002000000000000W002 /* SKMetalWellSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA0002000000000000W001 /* SKMetalWellSurface.swift */; };
 		93AA0004000000000000S002 /* SKSphereSweep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA0004000000000000S001 /* SKSphereSweep.swift */; };
 		93AA0004000000000000S004 /* SKGeometricSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA0004000000000000S003 /* SKGeometricSurface.swift */; };
+		93AA0004000000000000A002 /* SKVoronoi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA0004000000000000A001 /* SKVoronoi.swift */; };
+		93AA0004000000000000A004 /* SKApolloniusDiagram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA0004000000000000A003 /* SKApolloniusDiagram.swift */; };
+		93AA0004000000000000A006 /* SKApolloniusPoreAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AA0004000000000000A005 /* SKApolloniusPoreAnalysis.swift */; };
 		937479581FB9ED8F008C4411 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
 		937737EB2680D7A900D47499 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
 		937737F22680D7F600D47499 /* SpaceGroupSpglibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937737F12680D7F600D47499 /* SpaceGroupSpglibTests.swift */; };
@@ -1937,6 +1940,9 @@
 		93AA0002000000000000W001 /* SKMetalWellSurface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalWellSurface.swift; sourceTree = "<group>"; };
 		93AA0004000000000000S001 /* SKSphereSweep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSphereSweep.swift; sourceTree = "<group>"; };
 		93AA0004000000000000S003 /* SKGeometricSurface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKGeometricSurface.swift; sourceTree = "<group>"; };
+		93AA0004000000000000A001 /* SKVoronoi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVoronoi.swift; sourceTree = "<group>"; };
+		93AA0004000000000000A003 /* SKApolloniusDiagram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKApolloniusDiagram.swift; sourceTree = "<group>"; };
+		93AA0004000000000000A005 /* SKApolloniusPoreAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKApolloniusPoreAnalysis.swift; sourceTree = "<group>"; };
 		93AA0004000000000000S005 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		937737E62680D7A900D47499 /* SymmetryKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SymmetryKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		937737EA2680D7A900D47499 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2984,6 +2990,9 @@
 			children = (
 				93AA0004000000000000S001 /* SKSphereSweep.swift */,
 				93AA0004000000000000S003 /* SKGeometricSurface.swift */,
+				93AA0004000000000000A001 /* SKVoronoi.swift */,
+				93AA0004000000000000A003 /* SKApolloniusDiagram.swift */,
+				93AA0004000000000000A005 /* SKApolloniusPoreAnalysis.swift */,
 				93AA0004000000000000S005 /* LICENSE */,
 			);
 			path = StructureKit;
@@ -5513,6 +5522,9 @@
 				93AA0002000000000000W002 /* SKMetalWellSurface.swift in Sources */,
 				93AA0004000000000000S002 /* SKSphereSweep.swift in Sources */,
 				93AA0004000000000000S004 /* SKGeometricSurface.swift in Sources */,
+				93AA0004000000000000A002 /* SKVoronoi.swift in Sources */,
+				93AA0004000000000000A004 /* SKApolloniusDiagram.swift in Sources */,
+				93AA0004000000000000A006 /* SKApolloniusPoreAnalysis.swift in Sources */,
 				93BDF7651FB638810006692C /* SimulationKitProtocols.swift in Sources */,
 				93DA9EE523DEFE4600FB4E51 /* SimulationKitErrors.swift in Sources */,
 				937807DF21C598E200EC4466 /* SKNitrogenSurfaceArea.swift in Sources */,

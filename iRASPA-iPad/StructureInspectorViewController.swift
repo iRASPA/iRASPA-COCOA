@@ -8,7 +8,8 @@ import simd
 
 /// Faithful iPad version of the Cocoa "Cell" detail view (StructureCellDetailViewController).
 /// Groups mirror the Cocoa outline view: Box (material, bounding box, unit cell, volume,
-/// replicas, orientation, origin), Transform Content, Structural, and Symmetry.
+/// replicas, orientation, origin), Transform Content, Structural Properties, Channel/Window
+/// Information, Blocking Pockets, and Symmetry Properties.
 final class StructureInspectorViewController: CollapsibleTableViewController
 {
   let document: iRASPAUIDocument
@@ -66,9 +67,11 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case structural
     case probe
     case channels
+    case windows
     case spaceGroup
     case centering
     case symmetryProperties
+    case blockingPockets
     case actions
     case movies
   }
@@ -78,7 +81,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     var list: [Section] = [.material, .boundingBox, .unitCell, .cellVectors, .volume,
                            .replicas, .orientation, .origin, .transformContent,
                            .structural, .probe, .channels,
-                           .spaceGroup, .centering, .symmetryProperties, .actions]
+                           .blockingPockets, .spaceGroup, .centering, .symmetryProperties, .actions]
     if showsMovies
     {
       list.append(.movies)
@@ -158,6 +161,8 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .material: return "Cell/Bounding-Box Properties"
     case .transformContent: return "Transform Content"
     case .structural: return "Structural Properties"
+    case .channels: return "Channel/Window Information"
+    case .blockingPockets: return "Blocking Pockets"
     case .spaceGroup: return "Symmetry Properties"
     default: return nil
     }
@@ -179,9 +184,11 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .structural: return "Properties"
     case .probe: return "Probe"
     case .channels: return "Channels"
+    case .windows: return "Windows"
     case .spaceGroup: return "Space Group"
     case .centering: return "Centering"
     case .symmetryProperties: return "Properties"
+    case .blockingPockets: return "Pockets"
     case .actions: return "Actions"
     case .movies: return "Movies"
     }
@@ -212,11 +219,13 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .origin: return 3
     case .transformContent: return 7
     case .structural: return 9
-    case .probe: return 18
-    case .channels: return 4
+    case .probe: return 22
+    case .channels: return 10
+    case .windows: return 0
     case .spaceGroup: return 5
     case .centering: return 5
     case .symmetryProperties: return 9
+    case .blockingPockets: return 5
     case .actions: return 11
     case .movies:
       let extra = maxFrameCount() > 1 ? 3 : 0
@@ -240,9 +249,11 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .structural: return structuralCell(row: indexPath.row)
     case .probe: return probeCell(row: indexPath.row)
     case .channels: return channelsCell(row: indexPath.row)
+    case .windows: return windowsCell(row: indexPath.row)
     case .spaceGroup: return spaceGroupCell(row: indexPath.row)
     case .centering: return centeringCell(row: indexPath.row)
     case .symmetryProperties: return symmetryPropertiesCell(row: indexPath.row)
+    case .blockingPockets: return blockingPocketsCell(row: indexPath.row)
     case .actions: return actionsCell(row: indexPath.row)
     case .movies: return moviesCell(row: indexPath.row)
     }
@@ -263,6 +274,14 @@ final class StructureInspectorViewController: CollapsibleTableViewController
       if indexPath.row == 8 { computeGeometricSurfaceArea() }
       if indexPath.row == 11 { computeNitrogenSurfaceArea() }
       if indexPath.row == 14 { computeWellSurfaceArea() }
+      if indexPath.row == 17 { computeApolloniusChannels() }
+      if indexPath.row == 19 { computeApolloniusChannels() }
+      if indexPath.row == 21 { computeApolloniusChannels() }
+    case .channels:
+      if indexPath.row == 1 { computeApolloniusDiameters() }
+      if indexPath.row == 9 { computeApolloniusWindows() }
+    case .blockingPockets:
+      if indexPath.row == 4 { computeBlockingPockets() }
     case .actions:
       switch indexPath.row
       {
@@ -711,11 +730,22 @@ final class StructureInspectorViewController: CollapsibleTableViewController
         self?.allStructures().forEach { $0.structureNumberOfChannelSystems = value }
         self?.document.updateChangeCount(.done)
       }
-    default:
+    case 17:
+      return actionRow(isComputing ? "Computing channel systems…" : "Compute channel systems")
+    case 18:
+      return intFieldRow("Dimensionality of pore system", value: structure?.structureDimensionalityOfPoreSystem ?? 0) { [weak self] value in
+        self?.allStructures().forEach { $0.structureDimensionalityOfPoreSystem = value }
+        self?.document.updateChangeCount(.done)
+      }
+    case 19:
+      return actionRow(isComputing ? "Computing dimensionality…" : "Compute dimensionality")
+    case 20:
       return intFieldRow("Inaccessible pockets", value: structure?.structureNumberOfInaccessiblePockets ?? 0) { [weak self] value in
         self?.allStructures().forEach { $0.structureNumberOfInaccessiblePockets = value }
         self?.document.updateChangeCount(.done)
       }
+    default:
+      return actionRow(isComputing ? "Computing inaccessible pockets…" : "Compute inaccessible pockets")
     }
   }
 
@@ -726,26 +756,72 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     switch row
     {
     case 0:
-      return intFieldRow("Dimensionality of pore system", value: structure?.structureDimensionalityOfPoreSystem ?? 0) { [weak self] value in
-        self?.allStructures().forEach { $0.structureDimensionalityOfPoreSystem = value }
-        self?.document.updateChangeCount(.done)
-      }
-    case 1:
       return fieldRow("Largest cavity diameter (Å)", value: structure?.structureLargestCavityDiameter ?? 0, format: "%.4f") { [weak self] value in
         self?.allStructures().forEach { $0.structureLargestCavityDiameter = value }
         self?.document.updateChangeCount(.done)
       }
+    case 1:
+      return actionRow(isComputing ? "Computing Di, Df, Dif…" : "Compute Di, Df, Dif")
     case 2:
       return fieldRow("Pore limiting diameter (Å)", value: structure?.structureRestrictingPoreLimitingDiameter ?? 0, format: "%.4f") { [weak self] value in
         self?.allStructures().forEach { $0.structureRestrictingPoreLimitingDiameter = value }
         self?.document.updateChangeCount(.done)
       }
-    default:
+    case 3:
       return fieldRow("Cavity diameter, viable path (Å)", value: structure?.structureLargestCavityDiameterAlongAViablePath ?? 0, format: "%.4f") { [weak self] value in
         self?.allStructures().forEach { $0.structureLargestCavityDiameterAlongAViablePath = value }
         self?.document.updateChangeCount(.done)
       }
+    case 4:
+      return fieldRow("Pore limiting diameter (Å)", value: structure?.structureRestrictingPoreLimitingDiameter2 ?? 0, format: "%.4f") { [weak self] value in
+        self?.allStructures().forEach { $0.structureRestrictingPoreLimitingDiameter2 = value }
+        self?.document.updateChangeCount(.done)
+      }
+    case 5:
+      return fieldRow("Cavity diameter, viable path (Å)", value: structure?.structureLargestCavityDiameterAlongAViablePath2 ?? 0, format: "%.4f") { [weak self] value in
+        self?.allStructures().forEach { $0.structureLargestCavityDiameterAlongAViablePath2 = value }
+        self?.document.updateChangeCount(.done)
+      }
+    default:
+      return windowsCell(row: row - 6)
     }
+  }
+
+  // MARK: Windows
+
+  private func windowsCell(row: Int) -> UITableViewCell
+  {
+    if row == 3
+    {
+      return actionRow(isComputing ? "Computing window sizes…" : "Compute window sizes")
+    }
+    let index = min(max(row, 0), 2)
+    let size = structure?.structureWindowSize(index) ?? SIMD2<Double>()
+    let ringAtoms = structure?.structureWindowRingAtoms(index) ?? 0
+    return windowFieldRow("Window \(index + 1)",
+                          smallest: size.x,
+                          largest: size.y,
+                          ringAtoms: ringAtoms,
+                          applySmallest: { [weak self] value in
+                            self?.setWindowComponent(index: index, isLargest: false, value: value)
+                          },
+                          applyLargest: { [weak self] value in
+                            self?.setWindowComponent(index: index, isLargest: true, value: value)
+                          },
+                          applyRingAtoms: { [weak self] value in
+                            self?.allStructures().forEach { $0.setStructureWindowRingAtoms(index, value) }
+                            self?.document.updateChangeCount(.done)
+                          })
+  }
+
+  private func setWindowComponent(index: Int, isLargest: Bool, value: Double)
+  {
+    allStructures().forEach { structure in
+      var size = structure.structureWindowSize(index)
+      if isLargest { size.y = value } else { size.x = value }
+      structure.setStructureWindowSize(index, size)
+    }
+    document.updateChangeCount(.done)
   }
 
   // MARK: Space group
@@ -863,6 +939,48 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case 6: return "Schoenflies"
     case 7: return "Symmorphicity"
     default: return "Number of elements"
+    }
+  }
+
+  // MARK: Blocking pockets
+
+  private func blockingPocketsCell(row: Int) -> UITableViewCell
+  {
+    switch row
+    {
+    case 0:
+      let count = structure?.blockingPockets.count ?? 0
+      return infoRow("Blocking pockets", value: "\(count)")
+    case 1:
+      let current = structure?.blockingPocketProbeMolecule ?? .helium
+      let selectedIndex = probes.firstIndex(where: { $0.1 == current })
+      return menuRow("Probe sphere", options: probes.map { $0.0 }, selectedIndex: selectedIndex) { [weak self] index in
+        guard let self else { return }
+        self.allStructures().forEach { $0.applyBlockingPocketProbeMolecule(self.probes[index].1) }
+        self.document.updateChangeCount(.done)
+        self.tableView.reloadData()
+      }
+    case 2:
+      let cell = fieldRow("Epsilon (K)", value: structure?.blockingPocketProbeEpsilon ?? 0, format: "%.4f") { [weak self] value in
+        guard let self else { return }
+        self.allStructures().forEach { $0.setBlockingPocketProbeEpsilon(value) }
+        self.document.updateChangeCount(.done)
+        self.tableView.reloadData()
+      }
+      if let label = cell.textLabel
+      {
+        label.attributedText = epsilonOverKBRowTitle(font: label.font ?? UIFont.preferredFont(forTextStyle: .body))
+      }
+      return cell
+    case 3:
+      return fieldRow("Sigma (Å)", value: structure?.blockingPocketProbeSigma ?? 0, format: "%.4f") { [weak self] value in
+        guard let self else { return }
+        self.allStructures().forEach { $0.setBlockingPocketProbeSigma(value) }
+        self.document.updateChangeCount(.done)
+        self.tableView.reloadData()
+      }
+    default:
+      return actionRow(isComputing ? "Computing blocking pockets…" : "Compute blocking pockets")
     }
   }
 
@@ -1107,7 +1225,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     }
     isComputing = true
     tableView.reloadData()
-    let payload = structures.map { frameworkSnapshot(for: $0) }
+    let payload = structures.map { frameworkSnapshot(for: $0, applyingBlockingPockets: true) }
     DispatchQueue.global(qos: .userInitiated).async { [weak self] in
       let results = SKVoidFraction.compute(structures: payload)
       DispatchQueue.main.async {
@@ -1225,6 +1343,124 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     }
   }
 
+  private func computeApolloniusChannels()
+  {
+    computeApolloniusPoreProperties(fillChannels: true, fillDiameters: false, done: "Channel systems")
+  }
+  
+  private func computeApolloniusDiameters()
+  {
+    computeApolloniusPoreProperties(fillChannels: false, fillDiameters: true, fillWindows: false, done: "Pore diameters")
+  }
+  
+  private func computeApolloniusWindows()
+  {
+    computeApolloniusPoreProperties(fillChannels: false, fillDiameters: false, fillWindows: true, done: "Window sizes")
+  }
+  
+  private func computeBlockingPockets()
+  {
+    guard !isComputing else { return }
+    let structures = computeTargets()
+    guard !structures.isEmpty else {
+      LogQueue.shared.warning(destination: nil, message: "No structure with unit-cell positions to compute blocking pockets")
+      return
+    }
+    isComputing = true
+    tableView.reloadData()
+    let payload = structures.map { structure in
+      SKFrameworkSnapshot(cell: structure.cell,
+                          positions: structure.atomUnitCellPositions,
+                          potentialParameters: structure.potentialParameters,
+                          probeParameters: structure.blockingPocketProbeParameters,
+                          blockingPockets: [],
+                          mass: structure.structureMass,
+                          elementIdentifiers: structure.atomUnitCellElementIdentifiers)
+    }
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      let results = SKApolloniusPoreAnalysis.computeBlockingPockets(structures: payload)
+      DispatchQueue.main.async {
+        guard let self else { return }
+        for (i, pockets) in results.enumerated() where structures.indices.contains(i)
+        {
+          structures[i].blockingPockets = pockets
+        }
+        self.isComputing = false
+        self.document.updateChangeCount(.done)
+        self.tableView.reloadData()
+        self.onChange?()
+        self.onSurfaceChange?()
+        let count = results.map { $0.count }.reduce(0, +)
+        LogQueue.shared.info(destination: nil, message: "Computed \(count) blocking pockets")
+      }
+    }
+  }
+  
+  private func computeApolloniusPoreProperties(fillChannels: Bool, fillDiameters: Bool, fillWindows: Bool = false, done: String)
+  {
+    guard !isComputing else { return }
+    let structures = computeTargets()
+    guard !structures.isEmpty else {
+      LogQueue.shared.warning(destination: nil, message: "No structure with unit-cell positions to compute Apollonius pore properties")
+      return
+    }
+    isComputing = true
+    tableView.reloadData()
+    let payload = structures.map { frameworkSnapshot(for: $0) }
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      let results = SKApolloniusPoreAnalysis.compute(structures: payload)
+      DispatchQueue.main.async {
+        guard let self else { return }
+        for (i, result) in results.enumerated() where structures.indices.contains(i)
+        {
+          if fillChannels
+          {
+            structures[i].structureNumberOfChannelSystems = result.channels.numberOfChannels
+            structures[i].structureNumberOfInaccessiblePockets = result.channels.numberOfPockets
+            structures[i].structureDimensionalityOfPoreSystem = result.channels.dimensionality
+          }
+          if fillDiameters
+          {
+            structures[i].structureLargestCavityDiameter = result.diameters.includedSphereDiameter
+            structures[i].structureRestrictingPoreLimitingDiameter = result.diameters.freeSphereDiameter
+            structures[i].structureLargestCavityDiameterAlongAViablePath = result.diameters.includedAlongFreePathDiameter
+            structures[i].structureRestrictingPoreLimitingDiameter2 = result.diameters.freeSphereDiameter2
+            structures[i].structureLargestCavityDiameterAlongAViablePath2 = result.diameters.includedAlongFreePathDiameter2
+          }
+          if fillWindows
+          {
+            structures[i].structureWindow1Size = result.windows.sizes[0]
+            structures[i].structureWindow2Size = result.windows.sizes[1]
+            structures[i].structureWindow3Size = result.windows.sizes[2]
+            structures[i].structureWindow1RingAtoms = result.windows.ringAtomCounts[0]
+            structures[i].structureWindow2RingAtoms = result.windows.ringAtomCounts[1]
+            structures[i].structureWindow3RingAtoms = result.windows.ringAtomCounts[2]
+          }
+        }
+        self.isComputing = false
+        self.document.updateChangeCount(.done)
+        self.tableView.reloadData()
+        if fillChannels
+        {
+          let text = results.map { "\($0.channels.numberOfChannels) ch, \($0.channels.numberOfPockets) pockets, dim \($0.channels.dimensionality)" }.joined(separator: "; ")
+          LogQueue.shared.info(destination: nil, message: "\(done): \(text)")
+        }
+        if fillDiameters
+        {
+          let text = results.map { String(format: "Di %.4f, Df %.4f / %.4f, Dif %.4f / %.4f Å", $0.diameters.includedSphereDiameter, $0.diameters.freeSphereDiameter, $0.diameters.freeSphereDiameter2, $0.diameters.includedAlongFreePathDiameter, $0.diameters.includedAlongFreePathDiameter2) }.joined(separator: "; ")
+          LogQueue.shared.info(destination: nil, message: "\(done): \(text)")
+        }
+        if fillWindows
+        {
+          let text = results.map { result in
+            result.windows.sizes.prefix(2).map { String(format: "%.4f × %.4f", $0.x, $0.y) }.joined(separator: "; ")
+          }.joined(separator: " | ")
+          LogQueue.shared.info(destination: nil, message: "\(done): \(text) Å")
+        }
+      }
+    }
+  }
+  
   private func computeWellSurfaceArea()
   {
     guard !isComputing else { return }
@@ -1714,6 +1950,69 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     cell.selectionStyle = .none
     cell.textLabel?.text = title
     cell.accessoryView = makeNumberField(value: value, format: format, width: 100, apply: apply)
+    return cell
+  }
+
+  private func dualFieldRow(_ title: String, first: Double, second: Double, format: String = "%.4f", applyFirst: @escaping (Double) -> Void, applySecond: @escaping (Double) -> Void) -> UITableViewCell
+  {
+    let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+    cell.selectionStyle = .none
+    cell.textLabel?.text = title
+    let stack = UIStackView()
+    stack.axis = .horizontal
+    stack.alignment = .center
+    stack.spacing = 6
+    let times = UILabel()
+    times.text = "x"
+    times.textAlignment = .center
+    times.font = UIFont.preferredFont(forTextStyle: .body)
+    times.setContentHuggingPriority(.required, for: .horizontal)
+    stack.addArrangedSubview(makeNumberField(value: first, format: format, width: 72, apply: applyFirst))
+    stack.addArrangedSubview(times)
+    stack.addArrangedSubview(makeNumberField(value: second, format: format, width: 72, apply: applySecond))
+    stack.frame = CGRect(x: 0, y: 0, width: 164, height: 30)
+    cell.accessoryView = stack
+    return cell
+  }
+
+  private func windowFieldRow(_ title: String,
+                              smallest: Double,
+                              largest: Double,
+                              ringAtoms: Int,
+                              applySmallest: @escaping (Double) -> Void,
+                              applyLargest: @escaping (Double) -> Void,
+                              applyRingAtoms: @escaping (Int) -> Void) -> UITableViewCell
+  {
+    let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+    cell.selectionStyle = .none
+    cell.textLabel?.text = title
+    let stack = UIStackView()
+    stack.axis = .horizontal
+    stack.alignment = .center
+    stack.spacing = 6
+    let times = UILabel()
+    times.text = "x"
+    times.textAlignment = .center
+    times.font = UIFont.preferredFont(forTextStyle: .body)
+    times.setContentHuggingPriority(.required, for: .horizontal)
+    let angstrom = UILabel()
+    angstrom.text = "Å"
+    angstrom.font = UIFont.preferredFont(forTextStyle: .footnote)
+    angstrom.setContentHuggingPriority(.required, for: .horizontal)
+    let ringLabel = UILabel()
+    ringLabel.text = "ring: "
+    ringLabel.font = UIFont.preferredFont(forTextStyle: .body)
+    ringLabel.setContentHuggingPriority(.required, for: .horizontal)
+    stack.addArrangedSubview(makeNumberField(value: smallest, format: "%.4f", width: 64, apply: applySmallest))
+    stack.addArrangedSubview(times)
+    stack.addArrangedSubview(makeNumberField(value: largest, format: "%.4f", width: 64, apply: applyLargest))
+    stack.addArrangedSubview(angstrom)
+    stack.addArrangedSubview(ringLabel)
+    stack.addArrangedSubview(makeNumberField(value: Double(ringAtoms), format: "%.0f", width: 36) { value in
+      applyRingAtoms(Int(value))
+    })
+    stack.frame = CGRect(x: 0, y: 0, width: 280, height: 30)
+    cell.accessoryView = stack
     return cell
   }
 

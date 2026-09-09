@@ -2332,7 +2332,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           
             let structures: [Structure] = projectStructure.allObjects.compactMap({$0 as? Structure})
             
-            let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: structures.map(SKFrameworkSnapshot.init))
+            let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: structures.map(SKFrameworkSnapshot.applyingBlockingPockets))
             
             for (i, result) in results.enumerated()
             {

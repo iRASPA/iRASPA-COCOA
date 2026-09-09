@@ -76,6 +76,54 @@
 /* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "Bj5-6C-Yn3"; */
 "Bj5-6C-Yn3.title" = "Azot";
 
+/* Class = "NSTextFieldCell"; title = "Epsilon/kB"; ObjectID = "Bpc-Ep-lcl"; */
+"Bpc-Ep-lcl.title" = "Epsilon/kB";
+
+/* Class = "NSTextFieldCell"; title = "[K]"; ObjectID = "Bpc-Ep-ucl"; */
+"Bpc-Ep-ucl.title" = "[K]";
+
+/* Class = "NSMenuItem"; title = "Argon"; ObjectID = "Bpc-Pr-Ar"; */
+"Bpc-Pr-Ar.title" = "Argon";
+
+/* Class = "NSMenuItem"; title = "Connolly"; ObjectID = "Bpc-Pr-Cn"; */
+"Bpc-Pr-Cn.title" = "Connolly";
+
+/* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "Bpc-Pr-CO"; */
+"Bpc-Pr-CO.title" = "CO₂";
+
+/* Class = "NSMenuItem"; title = "Custom"; ObjectID = "Bpc-Pr-Cu"; */
+"Bpc-Pr-Cu.title" = "Custom";
+
+/* Class = "NSMenuItem"; title = "Helium"; ObjectID = "Bpc-Pr-He"; */
+"Bpc-Pr-He.title" = "Helyum";
+
+/* Class = "NSMenuItem"; title = "Hydrogen"; ObjectID = "Bpc-Pr-Hy"; */
+"Bpc-Pr-Hy.title" = "Hidrojen";
+
+/* Class = "NSMenuItem"; title = "Krypton"; ObjectID = "Bpc-Pr-Kr"; */
+"Bpc-Pr-Kr.title" = "Kripton";
+
+/* Class = "NSTextFieldCell"; title = "Probe Sphere"; ObjectID = "Bpc-Pr-lcl"; */
+"Bpc-Pr-lcl.title" = "Prob Küresi";
+
+/* Class = "NSMenuItem"; title = "Methane"; ObjectID = "Bpc-Pr-Me"; */
+"Bpc-Pr-Me.title" = "Metan";
+
+/* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "Bpc-Pr-Ni"; */
+"Bpc-Pr-Ni.title" = "Azot";
+
+/* Class = "NSMenuItem"; title = "Water"; ObjectID = "Bpc-Pr-Wa"; */
+"Bpc-Pr-Wa.title" = "Su";
+
+/* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "Bpc-Pr-Xe"; */
+"Bpc-Pr-Xe.title" = "Xenon";
+
+/* Class = "NSTextFieldCell"; title = "Sigma"; ObjectID = "Bpc-Sg-lcl"; */
+"Bpc-Sg-lcl.title" = "Sigma";
+
+/* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "Bpc-Sg-ucl"; */
+"Bpc-Sg-ucl.title" = "[Å]";
+
 /* Class = "NSBox"; title = "Channel Information"; ObjectID = "Bsc-yB-qAX"; */
 "Bsc-yB-qAX.title" = "Kanal Bilgileri";
 
@@ -90,6 +138,9 @@
 
 /* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "CcD-DW-aQM"; */
 "CcD-DW-aQM.title" = "[Å]";
+
+/* Class = "NSTextFieldCell"; title = "Channel/Window Information"; ObjectID = "Cwg-A0-004"; */
+"Cwg-A0-004.title" = "Kanal/Pencere Bilgileri";
 
 /* Class = "NSTextFieldCell"; title = "Maximum"; ObjectID = "DCo-vl-STs"; */
 "DCo-vl-STs.title" = "Maksimum";

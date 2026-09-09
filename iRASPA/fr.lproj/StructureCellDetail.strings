@@ -76,6 +76,54 @@
 /* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "Bj5-6C-Yn3"; */
 "Bj5-6C-Yn3.title" = "Azote";
 
+/* Class = "NSTextFieldCell"; title = "Epsilon/kB"; ObjectID = "Bpc-Ep-lcl"; */
+"Bpc-Ep-lcl.title" = "Epsilon/kB";
+
+/* Class = "NSTextFieldCell"; title = "[K]"; ObjectID = "Bpc-Ep-ucl"; */
+"Bpc-Ep-ucl.title" = "[K]";
+
+/* Class = "NSMenuItem"; title = "Argon"; ObjectID = "Bpc-Pr-Ar"; */
+"Bpc-Pr-Ar.title" = "Argon";
+
+/* Class = "NSMenuItem"; title = "Connolly"; ObjectID = "Bpc-Pr-Cn"; */
+"Bpc-Pr-Cn.title" = "Connolly";
+
+/* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "Bpc-Pr-CO"; */
+"Bpc-Pr-CO.title" = "CO₂";
+
+/* Class = "NSMenuItem"; title = "Custom"; ObjectID = "Bpc-Pr-Cu"; */
+"Bpc-Pr-Cu.title" = "Custom";
+
+/* Class = "NSMenuItem"; title = "Helium"; ObjectID = "Bpc-Pr-He"; */
+"Bpc-Pr-He.title" = "Hélium";
+
+/* Class = "NSMenuItem"; title = "Hydrogen"; ObjectID = "Bpc-Pr-Hy"; */
+"Bpc-Pr-Hy.title" = "Hydrogène";
+
+/* Class = "NSMenuItem"; title = "Krypton"; ObjectID = "Bpc-Pr-Kr"; */
+"Bpc-Pr-Kr.title" = "Krypton";
+
+/* Class = "NSTextFieldCell"; title = "Probe Sphere"; ObjectID = "Bpc-Pr-lcl"; */
+"Bpc-Pr-lcl.title" = "Sphère de sonde";
+
+/* Class = "NSMenuItem"; title = "Methane"; ObjectID = "Bpc-Pr-Me"; */
+"Bpc-Pr-Me.title" = "Méthane";
+
+/* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "Bpc-Pr-Ni"; */
+"Bpc-Pr-Ni.title" = "Azote";
+
+/* Class = "NSMenuItem"; title = "Water"; ObjectID = "Bpc-Pr-Wa"; */
+"Bpc-Pr-Wa.title" = "L'eau";
+
+/* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "Bpc-Pr-Xe"; */
+"Bpc-Pr-Xe.title" = "Xénon";
+
+/* Class = "NSTextFieldCell"; title = "Sigma"; ObjectID = "Bpc-Sg-lcl"; */
+"Bpc-Sg-lcl.title" = "Sigma";
+
+/* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "Bpc-Sg-ucl"; */
+"Bpc-Sg-ucl.title" = "[Å]";
+
 /* Class = "NSBox"; title = "Channel Information"; ObjectID = "Bsc-yB-qAX"; */
 "Bsc-yB-qAX.title" = "Informations sur la chaîne";
 
@@ -90,6 +138,9 @@
 
 /* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "CcD-DW-aQM"; */
 "CcD-DW-aQM.title" = "[Å]";
+
+/* Class = "NSTextFieldCell"; title = "Channel/Window Information"; ObjectID = "Cwg-A0-004"; */
+"Cwg-A0-004.title" = "Informations canal/fenêtre";
 
 /* Class = "NSTextFieldCell"; title = "Maximum"; ObjectID = "DCo-vl-STs"; */
 "DCo-vl-STs.title" = "Maximum";

@@ -102,8 +102,8 @@ public struct SKFrameworkSnapshot
   }
   
   /// Snapshot that always includes the structure's blocking pockets, whether or not they are applied
-  /// to a drawn surface. Geometric surface area uses this: an inaccessible cage is cut out of the
-  /// area even when "Apply blocking pockets" is off in Appearance.
+  /// to a drawn surface. Helium void fraction and geometric surface area use this: an inaccessible
+  /// cage is cut out even when "Apply blocking pockets" is off in Appearance.
   public static func applyingBlockingPockets(_ structure: SKRenderAdsorptionSurfaceStructure) -> SKFrameworkSnapshot
   {
     return SKFrameworkSnapshot(cell: structure.cell, positions: structure.atomUnitCellPositions, potentialParameters: structure.potentialParameters, probeParameters: structure.frameworkProbeParameters, blockingPockets: structure.blockingPockets, mass: structure.structureMass, elementIdentifiers: structure.atomUnitCellElementIdentifiers)

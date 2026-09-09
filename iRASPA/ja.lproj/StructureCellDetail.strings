@@ -91,6 +91,54 @@
 /* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "Bj5-6C-Yn3"; */
 "Bj5-6C-Yn3.title" = "窒素";
 
+/* Class = "NSTextFieldCell"; title = "Epsilon/kB"; ObjectID = "Bpc-Ep-lcl"; */
+"Bpc-Ep-lcl.title" = "イプシロン/kB";
+
+/* Class = "NSTextFieldCell"; title = "[K]"; ObjectID = "Bpc-Ep-ucl"; */
+"Bpc-Ep-ucl.title" = "[K]";
+
+/* Class = "NSMenuItem"; title = "Argon"; ObjectID = "Bpc-Pr-Ar"; */
+"Bpc-Pr-Ar.title" = "アルゴン";
+
+/* Class = "NSMenuItem"; title = "Connolly"; ObjectID = "Bpc-Pr-Cn"; */
+"Bpc-Pr-Cn.title" = "Connolly";
+
+/* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "Bpc-Pr-CO"; */
+"Bpc-Pr-CO.title" = "CO₂";
+
+/* Class = "NSMenuItem"; title = "Custom"; ObjectID = "Bpc-Pr-Cu"; */
+"Bpc-Pr-Cu.title" = "Custom";
+
+/* Class = "NSMenuItem"; title = "Helium"; ObjectID = "Bpc-Pr-He"; */
+"Bpc-Pr-He.title" = "ヘリウム";
+
+/* Class = "NSMenuItem"; title = "Hydrogen"; ObjectID = "Bpc-Pr-Hy"; */
+"Bpc-Pr-Hy.title" = "水素";
+
+/* Class = "NSMenuItem"; title = "Krypton"; ObjectID = "Bpc-Pr-Kr"; */
+"Bpc-Pr-Kr.title" = "クリプトン";
+
+/* Class = "NSTextFieldCell"; title = "Probe Sphere"; ObjectID = "Bpc-Pr-lcl"; */
+"Bpc-Pr-lcl.title" = "プローブ球";
+
+/* Class = "NSMenuItem"; title = "Methane"; ObjectID = "Bpc-Pr-Me"; */
+"Bpc-Pr-Me.title" = "メタン";
+
+/* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "Bpc-Pr-Ni"; */
+"Bpc-Pr-Ni.title" = "窒素";
+
+/* Class = "NSMenuItem"; title = "Water"; ObjectID = "Bpc-Pr-Wa"; */
+"Bpc-Pr-Wa.title" = "水";
+
+/* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "Bpc-Pr-Xe"; */
+"Bpc-Pr-Xe.title" = "キセノン";
+
+/* Class = "NSTextFieldCell"; title = "Sigma"; ObjectID = "Bpc-Sg-lcl"; */
+"Bpc-Sg-lcl.title" = "シグマ";
+
+/* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "Bpc-Sg-ucl"; */
+"Bpc-Sg-ucl.title" = "[Å]";
+
 /* Class = "NSBox"; title = "Channel Information"; ObjectID = "Bsc-yB-qAX"; */
 "Bsc-yB-qAX.title" = "チャネル情報";
 
@@ -117,6 +165,9 @@
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "CSF-1Y-UQa"; */
 "CSF-1Y-UQa.title" = "テキストセル";
+
+/* Class = "NSTextFieldCell"; title = "Channel/Window Information"; ObjectID = "Cwg-A0-004"; */
+"Cwg-A0-004.title" = "チャネル/ウィンドウ情報";
 
 /* Class = "NSTextFieldCell"; title = "Restricting Pore Diameter (Df)"; ObjectID = "d4y-Ea-h9U"; */
 "d4y-Ea-h9U.title" = "細孔径の制限 (Df)";

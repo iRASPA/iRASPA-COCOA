@@ -40,6 +40,8 @@ struct BlockingPocketVertexShaderOut
   
   float3 N;
   float3 V;
+  // Object space, which is the space the unit-cell clip planes are written in.
+  float4 modelPosition;
 };
 
 /// A blocking pocket is a sphere of a given radius in Angstrom around a position in the cell, so the
@@ -56,6 +58,7 @@ vertex BlockingPocketVertexShaderOut BlockingPocketSphereVertexShader(const devi
   BlockingPocketVertexShaderOut vert;
   
   float4 pos = float4((positions[iid].scale * vertices[vid].position + positions[iid].position).xyz, 1.0);
+  vert.modelPosition = pos;
   
   vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * vertices[vid].normal).xyz;
   
@@ -70,6 +73,10 @@ vertex BlockingPocketVertexShaderOut BlockingPocketSphereVertexShader(const devi
 /// Both faces of the sphere are drawn, so the normal is flipped on the inside to keep the far wall of a
 /// pocket shaded rather than black. The opacity travels in the alpha of the diffuse colour and the result
 /// is premultiplied by it, which is what the blend state of the transparent pass expects.
+///
+/// Fragments outside the unit cell (the replica box) are discarded. A pocket that sat on a face is
+/// wrapped to the opposite side as a second instance, so the two clipped pieces reconstruct the sphere
+/// inside the cell rather than leaving a cap sticking out.
 fragment float4 BlockingPocketSphereFragmentShader(BlockingPocketVertexShaderOut vert [[stage_in]],
                                                    constant StructureUniforms& structureUniforms [[buffer(0)]],
                                                    constant FrameUniforms& frameUniforms [[buffer(1)]],
@@ -77,6 +84,13 @@ fragment float4 BlockingPocketSphereFragmentShader(BlockingPocketVertexShaderOut
                                                    constant BlockingPocketUniforms& blockingPocketUniforms [[buffer(3)]],
                                                    bool frontfacing [[ front_facing ]])
 {
+  if (dot(structureUniforms.clipPlaneLeft, vert.modelPosition) < 0.0) discard_fragment();
+  if (dot(structureUniforms.clipPlaneRight, vert.modelPosition) < 0.0) discard_fragment();
+  if (dot(structureUniforms.clipPlaneTop, vert.modelPosition) < 0.0) discard_fragment();
+  if (dot(structureUniforms.clipPlaneBottom, vert.modelPosition) < 0.0) discard_fragment();
+  if (dot(structureUniforms.clipPlaneFront, vert.modelPosition) < 0.0) discard_fragment();
+  if (dot(structureUniforms.clipPlaneBack, vert.modelPosition) < 0.0) discard_fragment();
+  
   float3 N = normalize(vert.N);
   float3 V = normalize(vert.V);
   
