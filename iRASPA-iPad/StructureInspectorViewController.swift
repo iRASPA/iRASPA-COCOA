@@ -219,13 +219,13 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     case .origin: return 3
     case .transformContent: return 7
     case .structural: return 9
-    case .probe: return 22
+    case .probe: return 15
     case .channels: return 10
     case .windows: return 0
     case .spaceGroup: return 5
     case .centering: return 5
     case .symmetryProperties: return 9
-    case .blockingPockets: return 5
+    case .blockingPockets: return 12
     case .actions: return 11
     case .movies:
       let extra = maxFrameCount() > 1 ? 3 : 0
@@ -274,14 +274,14 @@ final class StructureInspectorViewController: CollapsibleTableViewController
       if indexPath.row == 8 { computeGeometricSurfaceArea() }
       if indexPath.row == 11 { computeNitrogenSurfaceArea() }
       if indexPath.row == 14 { computeWellSurfaceArea() }
-      if indexPath.row == 17 { computeApolloniusChannels() }
-      if indexPath.row == 19 { computeApolloniusChannels() }
-      if indexPath.row == 21 { computeApolloniusChannels() }
     case .channels:
       if indexPath.row == 1 { computeApolloniusDiameters() }
       if indexPath.row == 9 { computeApolloniusWindows() }
     case .blockingPockets:
       if indexPath.row == 4 { computeBlockingPockets() }
+      if indexPath.row == 7 { computeApolloniusChannels() }
+      if indexPath.row == 9 { computeApolloniusChannels() }
+      if indexPath.row == 11 { computeApolloniusChannels() }
     case .actions:
       switch indexPath.row
       {
@@ -721,31 +721,8 @@ final class StructureInspectorViewController: CollapsibleTableViewController
       return infoRow("Well-surface area (m²/cm³)", value: structure.map { String(format: "%.3f", $0.structureVolumetricWellSurfaceArea) })
     case 13:
       return infoRow("", value: structure.map { String(format: "%.3f m²/g", $0.structureGravimetricWellSurfaceArea) })
-    case 14:
-      return actionRow(isComputing ? "Computing well-surface area…" : "Compute well-surface area")
-    case 15:
-      return separatorRow()
-    case 16:
-      return intFieldRow("Number of channel systems", value: structure?.structureNumberOfChannelSystems ?? 0) { [weak self] value in
-        self?.allStructures().forEach { $0.structureNumberOfChannelSystems = value }
-        self?.document.updateChangeCount(.done)
-      }
-    case 17:
-      return actionRow(isComputing ? "Computing channel systems…" : "Compute channel systems")
-    case 18:
-      return intFieldRow("Dimensionality of pore system", value: structure?.structureDimensionalityOfPoreSystem ?? 0) { [weak self] value in
-        self?.allStructures().forEach { $0.structureDimensionalityOfPoreSystem = value }
-        self?.document.updateChangeCount(.done)
-      }
-    case 19:
-      return actionRow(isComputing ? "Computing dimensionality…" : "Compute dimensionality")
-    case 20:
-      return intFieldRow("Inaccessible pockets", value: structure?.structureNumberOfInaccessiblePockets ?? 0) { [weak self] value in
-        self?.allStructures().forEach { $0.structureNumberOfInaccessiblePockets = value }
-        self?.document.updateChangeCount(.done)
-      }
     default:
-      return actionRow(isComputing ? "Computing inaccessible pockets…" : "Compute inaccessible pockets")
+      return actionRow(isComputing ? "Computing well-surface area…" : "Compute well-surface area")
     }
   }
 
@@ -979,8 +956,31 @@ final class StructureInspectorViewController: CollapsibleTableViewController
         self.document.updateChangeCount(.done)
         self.tableView.reloadData()
       }
-    default:
+    case 4:
       return actionRow(isComputing ? "Computing blocking pockets…" : "Compute blocking pockets")
+    case 5:
+      return separatorRow()
+    case 6:
+      return intFieldRow("Number of channel systems", value: structure?.structureNumberOfChannelSystems ?? 0) { [weak self] value in
+        self?.allStructures().forEach { $0.structureNumberOfChannelSystems = value }
+        self?.document.updateChangeCount(.done)
+      }
+    case 7:
+      return actionRow(isComputing ? "Computing channel systems…" : "Compute channel systems")
+    case 8:
+      return intFieldRow("Dimensionality of pore system", value: structure?.structureDimensionalityOfPoreSystem ?? 0) { [weak self] value in
+        self?.allStructures().forEach { $0.structureDimensionalityOfPoreSystem = value }
+        self?.document.updateChangeCount(.done)
+      }
+    case 9:
+      return actionRow(isComputing ? "Computing dimensionality…" : "Compute dimensionality")
+    case 10:
+      return intFieldRow("Inaccessible pockets", value: structure?.structureNumberOfInaccessiblePockets ?? 0) { [weak self] value in
+        self?.allStructures().forEach { $0.structureNumberOfInaccessiblePockets = value }
+        self?.document.updateChangeCount(.done)
+      }
+    default:
+      return actionRow(isComputing ? "Computing inaccessible pockets…" : "Compute inaccessible pockets")
     }
   }
 
@@ -1406,7 +1406,7 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     }
     isComputing = true
     tableView.reloadData()
-    let payload = structures.map { frameworkSnapshot(for: $0) }
+    let payload = structures.map { frameworkSnapshot(for: $0, useBlockingPocketProbe: fillChannels) }
     DispatchQueue.global(qos: .userInitiated).async { [weak self] in
       let results = SKApolloniusPoreAnalysis.compute(structures: payload)
       DispatchQueue.main.async {
@@ -1507,12 +1507,15 @@ final class StructureInspectorViewController: CollapsibleTableViewController
     return all.filter { !$0.atomUnitCellPositions.isEmpty }
   }
 
-  private func frameworkSnapshot(for structure: Structure, applyingBlockingPockets: Bool = false) -> SKFrameworkSnapshot
+  private func frameworkSnapshot(for structure: Structure, applyingBlockingPockets: Bool = false, useBlockingPocketProbe: Bool = false) -> SKFrameworkSnapshot
   {
+    let probe = useBlockingPocketProbe
+      ? structure.blockingPocketProbeParameters
+      : SIMD2<Double>(structure.frameworkProbeEpsilon, structure.frameworkProbeSigma)
     return SKFrameworkSnapshot(cell: structure.cell,
                                positions: structure.atomUnitCellPositions,
                                potentialParameters: structure.potentialParameters,
-                               probeParameters: SIMD2<Double>(structure.frameworkProbeEpsilon, structure.frameworkProbeSigma),
+                               probeParameters: probe,
                                blockingPockets: applyingBlockingPockets ? structure.blockingPockets : structure.appliedBlockingPockets,
                                mass: structure.structureMass,
                                elementIdentifiers: structure.atomUnitCellElementIdentifiers)

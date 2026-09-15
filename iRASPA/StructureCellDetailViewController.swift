@@ -1459,66 +1459,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
-      if let textFieldRenderStructureNumberOfChannelSystems: NSTextField = view.viewWithTag(4) as? NSTextField
-      {
-        textFieldRenderStructureNumberOfChannelSystems.isEditable = false
-        textFieldRenderStructureNumberOfChannelSystems.stringValue = ""
-        textFieldRenderStructureNumberOfChannelSystems.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
-        {
-          textFieldRenderStructureNumberOfChannelSystems.isEnabled = enabled
-          textFieldRenderStructureNumberOfChannelSystems.isEditable = enabled
-          if let structureNumberOfChannelSystems: Int = self.renderStructureNumberOfChannelSystems
-          {
-            textFieldRenderStructureNumberOfChannelSystems.integerValue = structureNumberOfChannelSystems
-          }
-          else
-          {
-            textFieldRenderStructureNumberOfChannelSystems.stringValue = NSLocalizedString("Mult. Val.", comment: "")
-          }
-        }
-      }
-      if let textFieldRenderStructureDimensionalityOfPoreSystem: NSTextField = view.viewWithTag(6) as? NSTextField
-      {
-        textFieldRenderStructureDimensionalityOfPoreSystem.isEditable = false
-        textFieldRenderStructureDimensionalityOfPoreSystem.stringValue = ""
-        textFieldRenderStructureDimensionalityOfPoreSystem.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
-        {
-          textFieldRenderStructureDimensionalityOfPoreSystem.isEnabled = enabled
-          textFieldRenderStructureDimensionalityOfPoreSystem.isEditable = enabled
-          if let structureDimensionalityOfPoreSystem: Int = self.renderStructureDimensionalityOfPoreSystem
-          {
-            textFieldRenderStructureDimensionalityOfPoreSystem.integerValue = structureDimensionalityOfPoreSystem
-          }
-          else
-          {
-            textFieldRenderStructureDimensionalityOfPoreSystem.stringValue = NSLocalizedString("Mult. Val.", comment: "")
-          }
-        }
-      }
-      if let textFieldRenderStructureNumberOfInaccessiblePockets: NSTextField = view.viewWithTag(5) as? NSTextField
-      {
-        textFieldRenderStructureNumberOfInaccessiblePockets.isEditable = false
-        textFieldRenderStructureNumberOfInaccessiblePockets.stringValue = ""
-        textFieldRenderStructureNumberOfInaccessiblePockets.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
-        {
-          textFieldRenderStructureNumberOfInaccessiblePockets.isEnabled = enabled
-          textFieldRenderStructureNumberOfInaccessiblePockets.isEditable = enabled
-          if let structureNumberOfInaccessiblePockets: Int = self.renderStructureNumberOfInaccessiblePockets
-          {
-            textFieldRenderStructureNumberOfInaccessiblePockets.integerValue = structureNumberOfInaccessiblePockets
-          }
-          else
-          {
-            textFieldRenderStructureNumberOfInaccessiblePockets.stringValue = NSLocalizedString("Mult. Val.", comment: "")
-          }
-        }
-      }
-      
-      
-     
       if let buttonComputeVolumetricSurfaceArea: NSButton = view.viewWithTag(10) as? NSButton
       {
         buttonComputeVolumetricSurfaceArea.isEnabled = false
@@ -1552,31 +1492,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
         {
           buttonComputeVanDerWaalsGeometricSurfaceArea.isEnabled = enabled
-        }
-      }
-      
-      if let buttonComputeNumberOfChannelSystems: NSButton = view.viewWithTag(11) as? NSButton
-      {
-        buttonComputeNumberOfChannelSystems.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
-        {
-          buttonComputeNumberOfChannelSystems.isEnabled = enabled
-        }
-      }
-      if let buttonComputeDimensionalityOfPoreSystem: NSButton = view.viewWithTag(26) as? NSButton
-      {
-        buttonComputeDimensionalityOfPoreSystem.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
-        {
-          buttonComputeDimensionalityOfPoreSystem.isEnabled = enabled
-        }
-      }
-      if let buttonComputeNumberOfInaccessiblePockets: NSButton = view.viewWithTag(27) as? NSButton
-      {
-        buttonComputeNumberOfInaccessiblePockets.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
-        {
-          buttonComputeNumberOfInaccessiblePockets.isEnabled = enabled
         }
       }
   
@@ -2045,6 +1960,87 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         if !iRASPAObjects.filter({$0.object is Structure}).isEmpty
         {
           buttonComputeBlockingPockets.isEnabled = enabled
+        }
+      }
+      if let textFieldRenderStructureNumberOfChannelSystems: NSTextField = view.viewWithTag(14) as? NSTextField
+      {
+        textFieldRenderStructureNumberOfChannelSystems.isEditable = false
+        textFieldRenderStructureNumberOfChannelSystems.stringValue = ""
+        textFieldRenderStructureNumberOfChannelSystems.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldRenderStructureNumberOfChannelSystems.isEnabled = enabled
+          textFieldRenderStructureNumberOfChannelSystems.isEditable = enabled
+          if let structureNumberOfChannelSystems: Int = self.renderStructureNumberOfChannelSystems
+          {
+            textFieldRenderStructureNumberOfChannelSystems.integerValue = structureNumberOfChannelSystems
+          }
+          else
+          {
+            textFieldRenderStructureNumberOfChannelSystems.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let textFieldRenderStructureDimensionalityOfPoreSystem: NSTextField = view.viewWithTag(16) as? NSTextField
+      {
+        textFieldRenderStructureDimensionalityOfPoreSystem.isEditable = false
+        textFieldRenderStructureDimensionalityOfPoreSystem.stringValue = ""
+        textFieldRenderStructureDimensionalityOfPoreSystem.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldRenderStructureDimensionalityOfPoreSystem.isEnabled = enabled
+          textFieldRenderStructureDimensionalityOfPoreSystem.isEditable = enabled
+          if let structureDimensionalityOfPoreSystem: Int = self.renderStructureDimensionalityOfPoreSystem
+          {
+            textFieldRenderStructureDimensionalityOfPoreSystem.integerValue = structureDimensionalityOfPoreSystem
+          }
+          else
+          {
+            textFieldRenderStructureDimensionalityOfPoreSystem.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let textFieldRenderStructureNumberOfInaccessiblePockets: NSTextField = view.viewWithTag(15) as? NSTextField
+      {
+        textFieldRenderStructureNumberOfInaccessiblePockets.isEditable = false
+        textFieldRenderStructureNumberOfInaccessiblePockets.stringValue = ""
+        textFieldRenderStructureNumberOfInaccessiblePockets.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          textFieldRenderStructureNumberOfInaccessiblePockets.isEnabled = enabled
+          textFieldRenderStructureNumberOfInaccessiblePockets.isEditable = enabled
+          if let structureNumberOfInaccessiblePockets: Int = self.renderStructureNumberOfInaccessiblePockets
+          {
+            textFieldRenderStructureNumberOfInaccessiblePockets.integerValue = structureNumberOfInaccessiblePockets
+          }
+          else
+          {
+            textFieldRenderStructureNumberOfInaccessiblePockets.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let buttonComputeNumberOfChannelSystems: NSButton = view.viewWithTag(17) as? NSButton
+      {
+        buttonComputeNumberOfChannelSystems.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          buttonComputeNumberOfChannelSystems.isEnabled = enabled
+        }
+      }
+      if let buttonComputeDimensionalityOfPoreSystem: NSButton = view.viewWithTag(18) as? NSButton
+      {
+        buttonComputeDimensionalityOfPoreSystem.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          buttonComputeDimensionalityOfPoreSystem.isEnabled = enabled
+        }
+      }
+      if let buttonComputeNumberOfInaccessiblePockets: NSButton = view.viewWithTag(19) as? NSButton
+      {
+        buttonComputeNumberOfInaccessiblePockets.isEnabled = false
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyEditor & VolumetricDataViewer}).isEmpty
+        {
+          buttonComputeNumberOfInaccessiblePockets.isEnabled = enabled
         }
       }
     default:
@@ -3862,14 +3858,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     }
   }
   
-  private func frameworkSnapshots(applyingBlockingPockets: Bool = false) -> [(Structure, SKFrameworkSnapshot)]
+  private func frameworkSnapshots(applyingBlockingPockets: Bool = false, probeParameters: ((Structure) -> SIMD2<Double>)? = nil) -> [(Structure, SKFrameworkSnapshot)]
   {
     let structures: [Structure] = self.iRASPAObjects.compactMap({$0.object as? Structure})
     return structures.map { structure in
+      let probe = probeParameters?(structure) ?? SIMD2<Double>(structure.frameworkProbeEpsilon, structure.frameworkProbeSigma)
       let snapshot = SKFrameworkSnapshot(cell: structure.cell,
                                          positions: structure.atomUnitCellPositions,
                                          potentialParameters: structure.potentialParameters,
-                                         probeParameters: SIMD2<Double>(structure.frameworkProbeEpsilon, structure.frameworkProbeSigma),
+                                         probeParameters: probe,
                                          blockingPockets: applyingBlockingPockets ? structure.blockingPockets : structure.appliedBlockingPockets,
                                          mass: structure.structureMass,
                                          elementIdentifiers: structure.atomUnitCellElementIdentifiers)
@@ -4049,12 +4046,16 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   /// network; Di, Df and Dif come from another walk of that same network. Window sizes are
   /// measured in the bottleneck planes of the first percolating channels. The diagram itself
   /// is the expensive step, so any button still builds it once per structure.
+  /// Channel/pocket/dimensionality use the Blocking Pockets probe; diameters/windows use the
+  /// Structure Properties probe.
   private func recomputeApolloniusPoreProperties(fillChannels: Bool, fillDiameters: Bool, fillWindows: Bool = false)
   {
     self.view.window?.makeFirstResponder(self.cellOutlineView)
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      let pairs = self.frameworkSnapshots()
+      let pairs = fillChannels
+        ? self.frameworkSnapshots(probeParameters: { $0.blockingPocketProbeParameters })
+        : self.frameworkSnapshots()
       let results: [SKApolloniusPoreAnalysis] = SKApolloniusPoreAnalysis.compute(structures: pairs.map { $0.1 })
       for (i, result) in results.enumerated()
       {
@@ -4086,7 +4087,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      self.updateOutlineView(identifiers: [self.structuralProbeCell, self.structuralChannelCell])
+      if fillChannels
+      {
+        self.updateOutlineView(identifiers: [self.blockingPocketsCell])
+      }
+      if fillDiameters || fillWindows
+      {
+        self.updateOutlineView(identifiers: [self.structuralChannelCell])
+      }
     }
   }
   
@@ -4099,7 +4107,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      self.updateOutlineView(identifiers: [self.structuralProbeCell])
+      self.updateOutlineView(identifiers: [self.blockingPocketsCell])
     }
   }
   
@@ -4112,7 +4120,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      self.updateOutlineView(identifiers: [self.structuralProbeCell])
+      self.updateOutlineView(identifiers: [self.blockingPocketsCell])
     }
   }
   
@@ -4125,7 +4133,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      self.updateOutlineView(identifiers: [self.structuralProbeCell])
+      self.updateOutlineView(identifiers: [self.blockingPocketsCell])
     }
   }
   
