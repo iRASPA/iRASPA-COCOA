@@ -1812,6 +1812,14 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   
   public func setRepresentationForceField(forceField: String?, forceFieldSet: SKForceFieldSet, for asymmetricAtoms: [SKAsymmetricAtom])
   {
+    // Keep the inspector identifier in sync with the applied set. Scene(parser:)
+    // uses this overload; without this, open-as-document leaves "Default" in the UI
+    // even when TraPPE parameters were applied for zeolites.
+    if let forceField = forceField
+    {
+      self.atomForceFieldIdentifier = forceField
+    }
+    
     if SKForceFieldSet.isAluminosilicateFamily(forceFieldSet.displayName)
     {
       assignAluminosilicateOxygenTypes(to: asymmetricAtoms)
