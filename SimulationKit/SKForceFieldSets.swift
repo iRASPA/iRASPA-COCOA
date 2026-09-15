@@ -40,6 +40,10 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   
   private let numberOfPredefinedSets: Int = 4
   private var forceFieldSets: [SKForceFieldSet] = []
+  /// Shared document force-field tables are read/written from concurrent import operations.
+  private let lock: NSLock = NSLock()
+  /// After load/init, reconcile built-in tables at most once (avoids racing remove/replace).
+  private var didReconcilePredefinedSets: Bool = false
   
   public enum ForceFieldOrder: Int
   {
@@ -72,6 +76,7 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
       SKForceFieldSet.zeoliteAtlas(),
       SKForceFieldSet.aluminosilicateZeoPlusPlus()
     ]
+    didReconcilePredefinedSets = true
   }
   
   /// The set that should be applied for `displayName`. Built-in non-editable tables
@@ -80,7 +85,9 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   /// tables identical.
   public func resolvedSet(named displayName: String) -> SKForceFieldSet
   {
-    ensurePredefinedSets()
+    lock.lock()
+    defer { lock.unlock() }
+    ensurePredefinedSetsLocked()
     if SKForceFieldSet.isAluminosilicateFamily(displayName)
     {
       return SKForceFieldSet.predefined(named: displayName)
@@ -96,12 +103,16 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   {
     get
     {
-      ensurePredefinedSets()
+      lock.lock()
+      defer { lock.unlock() }
+      ensurePredefinedSetsLocked()
       return self.forceFieldSets[index % self.forceFieldSets.count]
     }
     
     set(newValue)
     {
+      lock.lock()
+      defer { lock.unlock() }
       self.forceFieldSets[index % self.forceFieldSets.count] = newValue
     }
   }
@@ -109,6 +120,8 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   
   public func contains(uniqueIdentifier: String) -> Bool
   {
+    lock.lock()
+    defer { lock.unlock() }
     for i in 0..<forceFieldSets.count
     {
       if forceFieldSets[i].atomTypeList.contains(where: {$0.forceFieldStringIdentifier == uniqueIdentifier})
@@ -123,12 +136,16 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   {
     get
     {
-      ensurePredefinedSets()
+      lock.lock()
+      defer { lock.unlock() }
+      ensurePredefinedSetsLocked()
       return firstIndex(named: displayName).map { forceFieldSets[$0] }
     }
     
     set(newValue)
     {
+      lock.lock()
+      defer { lock.unlock() }
       if let index: Int = firstIndex(named: displayName),
          let newValue = newValue
       {
@@ -139,6 +156,8 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   
   public func append(_ forceFieldSet: SKForceFieldSet)
   {
+    lock.lock()
+    defer { lock.unlock() }
     if firstIndex(named: forceFieldSet.displayName) != nil,
        SKForceFieldSet.isAluminosilicateFamily(forceFieldSet.displayName) ||
        forceFieldSet.displayName.caseInsensitiveCompare(SKForceFieldSets.defaultDisplayName) == .orderedSame
@@ -150,7 +169,9 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   
   public var count: Int
   {
-    ensurePredefinedSets()
+    lock.lock()
+    defer { lock.unlock() }
+    ensurePredefinedSetsLocked()
     return self.forceFieldSets.count
   }
   
@@ -159,7 +180,9 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
   
   public func binaryEncode(to encoder: BinaryEncoder)
   {
-    ensurePredefinedSets()
+    lock.lock()
+    defer { lock.unlock() }
+    ensurePredefinedSetsLocked()
     encoder.encode(SKForceFieldSets.classVersionNumber)
     encoder.encode(forceFieldSets)
   }
@@ -176,7 +199,7 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
     }
     
     self.forceFieldSets = try decoder.decode([SKForceFieldSet].self)
-    ensurePredefinedSets()
+    ensurePredefinedSetsLocked()
   }
   
   private func firstIndex(named name: String) -> Int?
@@ -184,8 +207,10 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
     return forceFieldSets.firstIndex { $0.displayName.caseInsensitiveCompare(name) == .orderedSame }
   }
   
-  private func ensurePredefinedSets()
+  /// Caller must hold `lock` (except during `init(fromBinary:)` before the object is shared).
+  private func ensurePredefinedSetsLocked()
   {
+    guard !didReconcilePredefinedSets else { return }
     let predefined: [(String, () -> SKForceFieldSet)] = [
       (SKForceFieldSet.aluminosilicateDisplayName, SKForceFieldSet.aluminosilicate),
       (SKForceFieldSet.zeoliteAtlasDisplayName, SKForceFieldSet.zeoliteAtlas),
@@ -218,6 +243,7 @@ public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
       }
     }
     restoreDefaultFrameworkTypesIfTraPPE()
+    didReconcilePredefinedSets = true
   }
   
   /// Default briefly used TraPPE-zeo Si/O while the Aluminosilicate set was added. Documents

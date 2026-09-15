@@ -41,6 +41,8 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
  
   public let numberOfPredefinedSets: Int = 9
   private var colorSets: [SKColorSet] = []
+  /// Shared document color tables are read/written from concurrent import operations.
+  private let lock: NSLock = NSLock()
   
   public enum ColorScheme: String, CaseIterable
   {
@@ -71,13 +73,17 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   {
     get
     {
-      ensurePredefinedSets()
+      lock.lock()
+      defer { lock.unlock() }
+      ensurePredefinedSetsLocked()
       return self.colorSets[index % self.colorSets.count]
     }
     
     set(newValue)
     {
-      ensurePredefinedSets()
+      lock.lock()
+      defer { lock.unlock() }
+      ensurePredefinedSetsLocked()
       self.colorSets[index % self.colorSets.count] = newValue
     }
   }
@@ -86,7 +92,9 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   {
     get
     {
-      ensurePredefinedSets()
+      lock.lock()
+      defer { lock.unlock() }
+      ensurePredefinedSetsLocked()
       if let index: Int = self.colorSets.firstIndex(where: {$0.displayName == displayName})
       {
         return self.colorSets[index]
@@ -96,7 +104,9 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
     
     set(newValue)
     {
-      ensurePredefinedSets()
+      lock.lock()
+      defer { lock.unlock() }
+      ensurePredefinedSetsLocked()
       if let index: Int = self.colorSets.firstIndex(where: {$0.displayName == displayName}),
          let newValue = newValue
       {
@@ -107,7 +117,9 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   
   public func insert(key: String, element: Int)
   {
-    ensurePredefinedSets()
+    lock.lock()
+    defer { lock.unlock() }
+    ensurePredefinedSetsLocked()
     for i in 0..<colorSets.count
     {
       let chemicalElement: String = PredefinedElements.sharedInstance.elementSet[element].chemicalSymbol.capitalizeFirst
@@ -117,7 +129,9 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   
   public func remove(key: String)
   {
-    ensurePredefinedSets()
+    lock.lock()
+    defer { lock.unlock() }
+    ensurePredefinedSetsLocked()
     for i in 0..<colorSets.count
     {
       self.colorSets[i][key.capitalizeFirst] = nil
@@ -126,12 +140,16 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   
   public func append(_ set: SKColorSet)
   {
+    lock.lock()
+    defer { lock.unlock() }
     self.colorSets.append(set)
   }
   
   public var count: Int
   {
-    ensurePredefinedSets()
+    lock.lock()
+    defer { lock.unlock() }
+    ensurePredefinedSetsLocked()
     return self.colorSets.count
   }
   
@@ -140,7 +158,9 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   
   public func binaryEncode(to encoder: BinaryEncoder)
   {
-    ensurePredefinedSets()
+    lock.lock()
+    defer { lock.unlock() }
+    ensurePredefinedSetsLocked()
     encoder.encode(SKColorSets.classVersionNumber)
     encoder.encode(self.colorSets)
   }
@@ -157,7 +177,7 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
     }
     
     self.colorSets = try decoder.decode([SKColorSet].self)
-    ensurePredefinedSets()
+    ensurePredefinedSetsLocked()
   }
   
   private func firstIndex(named name: String) -> Int?
@@ -168,7 +188,8 @@ public final class SKColorSets: BinaryDecodable, BinaryEncodable
   /// Documents saved before CrystalMaker / Mercury / PubChem / PyMOL / VMD CPK
   /// only store the original four palettes. Insert any missing built-in after
   /// the preceding predefined set so existing files pick up the new schemes.
-  private func ensurePredefinedSets()
+  /// Caller must hold `lock` (except during `init(fromBinary:)` before the object is shared).
+  private func ensurePredefinedSetsLocked()
   {
     for scheme in ColorScheme.allCases
     {
