@@ -330,6 +330,10 @@ typedef struct ShadowUniforms
   float4x4 shadowMatrix;
   float4x4 normalMatrix;
   float4x4 viewMatrixInverse;
+  // Pad 192 bytes so stride is 512 (multiple of 256) for constant-buffer offsets on iOS/macOS validation.
+  float4x4 pad0;
+  float4x4 pad1;
+  float4x4 pad2;
 } ShadowUniforms;
 
 typedef struct StructureUniforms

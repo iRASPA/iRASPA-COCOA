@@ -34,8 +34,8 @@
 import Foundation
 import simd
 
-// IMPORTANT: must be aligned on 256-bytes boundaries
-// current number of bytes: 256 bytes
+// IMPORTANT: must be aligned on 256-bytes boundaries (Metal constant buffers).
+// Payload is 320 bytes (5×float4x4); padded to 512 so array strides (index * stride) stay 256-aligned.
 public struct RKShadowUniforms
 {
   public var projectionMatrix: float4x4 = float4x4()
@@ -46,6 +46,11 @@ public struct RKShadowUniforms
   /// structure space in which their unit-cell clipping planes are written, so that they occlude with the
   /// shape they are drawn with rather than as whole cylinders.
   public var viewMatrixInverse: float4x4 = float4x4()
+  // Pad 192 bytes so stride is 512 (multiple of 256) for set*BufferOffset.
+  private var pad0: float4x4 = float4x4()
+  private var pad1: float4x4 = float4x4()
+  private var pad2: float4x4 = float4x4()
+  //----------------------------------------  512 bytes boundary
 
   public init()
   {
