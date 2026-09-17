@@ -69,6 +69,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   var iRASPAObjects: [iRASPAObject] = []
     
   var heights : [String : CGFloat] = [:]
+  private var rowHeightCacheWidth: CGFloat = 0
   
   let primitiveOrientationPropertiesCell: OutlineViewItem = OutlineViewItem("PrimitiveOrientationPropertiesCell")
   let primitiveTransformationPropertiesCell: OutlineViewItem = OutlineViewItem("PrimitiveTransformationPropertiesCell")
@@ -192,6 +193,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   override func viewWillAppear()
   {
     self.appearanceOutlineView?.needsLayout = true
+    self.refreshAppearanceRowHeightsIfNeeded()
     super.viewWillAppear()
   }
   
@@ -226,6 +228,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     
     storeExpandedItems()
     rebuildAppearanceOutlineItems()
+    refreshAppearanceRowHeightsIfNeeded()
     self.appearanceOutlineView?.reloadData()
     
     NSAnimationContext.runAnimationGroup({context in
@@ -249,8 +252,65 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }, completionHandler: {})
   }
   
+  private func appearanceRowHeightIdentifiers() -> [String]
+  {
+    let roots: [OutlineViewItem] = [
+      primitiveVisualAppearanceItem,
+      ribbonsVisualAppearanceItem,
+      ribbonsDNAVisualAppearanceItem,
+      atomsVisualAppearanceItem,
+      bondsVisualAppearanceItem,
+      unitCellVisualAppearanceItem,
+      localAxesAppearanceItem,
+      adsorptionVisualAppearanceItem,
+      blockingPocketsVisualAppearanceItem,
+      annotationVisualAppearanceItem
+    ]
+    return roots.flatMap { $0.allTitles }
+  }
+  
+  private func refreshAppearanceRowHeightsIfNeeded()
+  {
+    guard let outlineView = self.appearanceOutlineView else { return }
+    
+    let width = max(outlineView.bounds.width, outlineView.tableColumns.first?.width ?? 0.0)
+    if width < 1.0
+    {
+      return
+    }
+    
+    if abs(width - rowHeightCacheWidth) > 0.5
+    {
+      heights.removeAll(keepingCapacity: true)
+      rowHeightCacheWidth = width
+    }
+    
+    for identifier in appearanceRowHeightIdentifiers() where heights[identifier] == nil
+    {
+      heights[identifier] = outlineView.measuredPrototypeRowHeight(identifier: identifier, owner: self, width: width)
+    }
+  }
+  
   // MARK: NSTableView Delegate Methods
   // =====================================================================
+  
+  func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
+  {
+    guard let title = (item as? OutlineViewItem)?.title else
+    {
+      return outlineView.rowHeight
+    }
+    
+    if let height = heights[title]
+    {
+      return height
+    }
+    
+    let width = max(outlineView.bounds.width, outlineView.tableColumns.first?.width ?? 0.0, 1.0)
+    let height = outlineView.measuredPrototypeRowHeight(identifier: title, owner: self, width: width)
+    heights[title] = height
+    return height
+  }
   
   func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool
   {

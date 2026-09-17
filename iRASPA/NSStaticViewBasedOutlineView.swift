@@ -117,3 +117,32 @@ class NSStaticViewBasedOutlineView: NSOutlineView, NSOutlineViewDataSource
     return (item as! OutlineViewItem).children[index]
   }
 }
+
+extension NSTableView
+{
+  /// Measures a prototype cell's Auto Layout height at `width` for explicit row-height tables.
+  func measuredPrototypeRowHeight(identifier: String, owner: Any?, width: CGFloat) -> CGFloat
+  {
+    guard let view = makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: identifier), owner: owner) else
+    {
+      return rowHeight
+    }
+    
+    // Avoid mutating constraints on a cell that is already in the table hierarchy.
+    if view.superview != nil
+    {
+      let fitted = view.fittingSize.height
+      let height = fitted > 1.0 ? fitted : view.bounds.height
+      return max(ceil(height), rowHeight)
+    }
+    
+    let widthConstraint = view.widthAnchor.constraint(equalToConstant: width)
+    widthConstraint.priority = .required
+    widthConstraint.isActive = true
+    view.layoutSubtreeIfNeeded()
+    let height = ceil(view.fittingSize.height)
+    widthConstraint.isActive = false
+    
+    return max(height, rowHeight)
+  }
+}

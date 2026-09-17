@@ -50,6 +50,8 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   
   var selectedColorSetIndex: Int = 0
   var selectedForceFieldSetIndex: Int = 0
+  private var elementRowHeight: CGFloat?
+  private var elementRowHeightCacheWidth: CGFloat = 0
   
   
   // MARK: protocol ProjectConsumer
@@ -83,6 +85,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   override func viewWillAppear()
   {
     self.forceFieldTableView?.needsLayout = true
+    self.refreshElementRowHeightIfNeeded()
     super.viewWillAppear()
     
     self.reloadData()
@@ -97,6 +100,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   
   func reloadData()
   {
+    refreshElementRowHeightIfNeeded()
     self.forceFieldTableView?.reloadData()
     
     if let forceFieldSetComboBox: NSComboBox = forceFieldSetComboBox
@@ -129,6 +133,28 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
         }
         colorSetComboBox.selectItem(at: selectedColorSetIndex)
       }
+    }
+  }
+  
+  private func refreshElementRowHeightIfNeeded()
+  {
+    guard let tableView = self.forceFieldTableView else { return }
+    
+    let width = max(tableView.bounds.width, tableView.tableColumns.first?.width ?? 0.0)
+    if width < 1.0
+    {
+      return
+    }
+    
+    if abs(width - elementRowHeightCacheWidth) > 0.5
+    {
+      elementRowHeight = nil
+      elementRowHeightCacheWidth = width
+    }
+    
+    if elementRowHeight == nil
+    {
+      elementRowHeight = tableView.measuredPrototypeRowHeight(identifier: "elementView", owner: self, width: width)
     }
   }
   
@@ -270,7 +296,16 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   
   func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat
   {
-    return 230.0
+    if let height = elementRowHeight
+    {
+      return height
+    }
+    
+    let width = max(tableView.bounds.width, tableView.tableColumns.first?.width ?? 0.0, 1.0)
+    let height = tableView.measuredPrototypeRowHeight(identifier: "elementView", owner: self, width: width)
+    elementRowHeight = height
+    elementRowHeightCacheWidth = width
+    return height
   }
   
   func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView?

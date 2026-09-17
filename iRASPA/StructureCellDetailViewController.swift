@@ -49,6 +49,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   var iRASPAObjects: [iRASPAObject] = []
   
+  var heights: [String: CGFloat] = [:]
+  private var rowHeightCacheWidth: CGFloat = 0
+  
   var cellAngleFormatter: AngleNumberFormatter = AngleNumberFormatter()
   
   // MARK: protocol ProjectConsumer
@@ -109,6 +112,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   override func viewWillAppear()
   {
     self.cellOutlineView?.needsLayout = true
+    self.refreshCellRowHeightsIfNeeded()
     super.viewWillAppear()
   }
 
@@ -145,6 +149,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     assert(Thread.isMainThread)
     
+    refreshCellRowHeightsIfNeeded()
     self.cellOutlineView?.reloadData()
     
     NSAnimationContext.runAnimationGroup({context in
@@ -165,6 +170,28 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
     }, completionHandler: {})
+  }
+  
+  private func refreshCellRowHeightsIfNeeded()
+  {
+    guard let outlineView = self.cellOutlineView else { return }
+    
+    let width = max(outlineView.bounds.width, outlineView.tableColumns.first?.width ?? 0.0)
+    if width < 1.0
+    {
+      return
+    }
+    
+    if abs(width - rowHeightCacheWidth) > 0.5
+    {
+      heights.removeAll(keepingCapacity: true)
+      rowHeightCacheWidth = width
+    }
+    
+    for identifier in outlineView.items.flatMap({ $0.allTitles }) where heights[identifier] == nil
+    {
+      heights[identifier] = outlineView.measuredPrototypeRowHeight(identifier: identifier, owner: self, width: width)
+    }
   }
   
   // MARK: NSOutlineView notifications for expanding/collapsing items
@@ -196,6 +223,24 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   // MARK: NSTableView Delegate Methods
   // =====================================================================
+  
+  func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
+  {
+    guard let title = (item as? OutlineViewItem)?.title else
+    {
+      return outlineView.rowHeight
+    }
+    
+    if let height = heights[title]
+    {
+      return height
+    }
+    
+    let width = max(outlineView.bounds.width, outlineView.tableColumns.first?.width ?? 0.0, 1.0)
+    let height = outlineView.measuredPrototypeRowHeight(identifier: title, owner: self, width: width)
+    heights[title] = height
+    return height
+  }
   
   func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool
   {

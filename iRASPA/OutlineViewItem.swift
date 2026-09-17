@@ -37,6 +37,11 @@ class OutlineViewItem
   let title: String
   let children: [OutlineViewItem]
   
+  var allTitles: [String]
+  {
+    return [title] + children.flatMap { $0.allTitles }
+  }
+  
   init(_ title: String)
   {
     self.title = title
