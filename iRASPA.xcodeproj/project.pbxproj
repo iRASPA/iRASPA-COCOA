@@ -945,7 +945,6 @@
 		A10IPADS1800000000000008 /* ImportOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10IPADS1800000000000007 /* ImportOptionsViewController.swift */; };
 		A10IPADSAMP0000000000002 /* materials_sample.cif in Resources */ = {isa = PBXBuildFile; fileRef = A10IPADSAMP0000000000001 /* materials_sample.cif */; };
 		A10IPADSAMP0000000000004 /* 1D5H_sample.cif in Resources */ = {isa = PBXBuildFile; fileRef = A10IPADSAMP0000000000003 /* 1D5H_sample.cif */; };
-		A10MCUBE00000000000002 /* SKMarchingCubesTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10MCUBE00000000000001 /* SKMarchingCubesTables.swift */; };
 		A10METAL00000000000002 /* RKMetal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10METAL00000000000001 /* RKMetal.swift */; };
 		A10METAL00000000000004 /* RKMetal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10METAL00000000000003 /* RKMetal.swift */; };
 		A10PAD000000000000000002 /* PlatformColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10PAD000000000000000001 /* PlatformColor.swift */; };
@@ -2722,7 +2721,6 @@
 		A10IPADS1800000000000007 /* ImportOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportOptionsViewController.swift; sourceTree = "<group>"; };
 		A10IPADSAMP0000000000001 /* materials_sample.cif */ = {isa = PBXFileReference; lastKnownFileType = text; path = materials_sample.cif; sourceTree = "<group>"; };
 		A10IPADSAMP0000000000003 /* 1D5H_sample.cif */ = {isa = PBXFileReference; lastKnownFileType = text; path = 1D5H_sample.cif; sourceTree = "<group>"; };
-		A10MCUBE00000000000001 /* SKMarchingCubesTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMarchingCubesTables.swift; sourceTree = "<group>"; };
 		A10METAL00000000000001 /* RKMetal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKMetal.swift; sourceTree = "<group>"; };
 		A10METAL00000000000003 /* RKMetal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKMetal.swift; sourceTree = "<group>"; };
 		A10PAD000000000000000001 /* PlatformColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformColor.swift; sourceTree = "<group>"; };
@@ -2996,7 +2994,6 @@
 				930DD4AC1E26A89D00B8FE9B /* SKMetalFramework.swift */,
 				A10METAL00000000000001 /* RKMetal.swift */,
 				939E7F4C276F2FF100CC654D /* SKMetalMarchingCubes.swift */,
-				A10MCUBE00000000000001 /* SKMarchingCubesTables.swift */,
 				937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */,
 				93AA0002000000000000W001 /* SKMetalWellSurface.swift */,
 				937807DC21C598AA00EC4466 /* SKVoidFraction.swift */,
@@ -5533,7 +5530,6 @@
 				93426FD71F8CCC030034F0BF /* SKForceFieldSets.swift in Sources */,
 				930DD4AE1E26A89D00B8FE9B /* SKMetalFramework.swift in Sources */,
 				A10METAL00000000000002 /* RKMetal.swift in Sources */,
-				A10MCUBE00000000000002 /* SKMarchingCubesTables.swift in Sources */,
 				93426FD51F8CB9650034F0BF /* SKForceFieldSet.swift in Sources */,
 				939E7F4D276F2FF100CC654D /* SKMetalMarchingCubes.swift in Sources */,
 			);

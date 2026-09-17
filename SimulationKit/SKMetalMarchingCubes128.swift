@@ -79,7 +79,7 @@ public class SKMetalMarchingCubes128
       }
     }
     
-    classifyCubesKernel = defaultLibrary.makeFunction(name: "classifyCubes")
+    classifyCubesKernel = defaultLibrary.makeFunction(name: "classifyLewinerCubes")
     
     if let classifyCubesKernel = classifyCubesKernel
     {
@@ -94,7 +94,7 @@ public class SKMetalMarchingCubes128
     }
     
     
-    traverseHPKernel = defaultLibrary.makeFunction(name: "traverseHP")
+    traverseHPKernel = defaultLibrary.makeFunction(name: "traverseLewinerHP")
     if let traverseHPKernel = traverseHPKernel
     {
       do
@@ -170,7 +170,7 @@ public class SKMetalMarchingCubes128
         textureDescriptor.usage = [MTLTextureUsage.shaderRead, MTLTextureUsage.shaderWrite]
         
         // iOS only allows shader writes to a small set of 32-bit integer formats.
-        // The base level stores (triangleCount, cubeIndex); later levels store sums.
+        // The base level stores triangleCount (Lewiner); later levels store sums.
         textureDescriptor.pixelFormat = (i == 1) ? MTLPixelFormat.rg32Uint : MTLPixelFormat.r32Uint
       
         guard let image: MTLTexture = device.makeTexture(descriptor: textureDescriptor) else {
@@ -313,7 +313,8 @@ public class SKMetalMarchingCubes128
   {
       if numberOfTriangles > 0
       {
-        let isosurfaceVertexBuffer: MTLBuffer? = device.makeBuffer(length: Int(numberOfTriangles) * 3 * 3 * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeShared)
+        // IsoVertex = position + normal (2 × float4 = 32 bytes).
+        let isosurfaceVertexBuffer: MTLBuffer? = device.makeBuffer(length: Int(numberOfTriangles) * 3 * 2 * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeShared)
         if isosurfaceVertexBuffer == nil
         {
           throw SimulationKitError.couldNotCreateBuffer

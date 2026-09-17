@@ -114,6 +114,12 @@ class LocalAboutViewController: NSViewController
         mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "https://github.com/stegu", range: foundRangeStefanGustavson)
       }
       
+      let foundRangeThomasLewiner: NSRange = mutableAttributedString.mutableString.range(of: "Thomas Lewiner")
+      if foundRangeThomasLewiner.location != NSNotFound
+      {
+        mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "https://thomas.lewiner.org/pdfs/marching_cubes_jgt.pdf", range: foundRangeThomasLewiner)
+      }
+      
       let foundRangeErikSmistad: NSRange = mutableAttributedString.mutableString.range(of: "Erik Smistad")
       if foundRangeErikSmistad.location != NSNotFound
       {

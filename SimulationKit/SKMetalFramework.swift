@@ -476,7 +476,7 @@ public class SKMetalFramework
       return
     }
 
-    let numberOfVertices: Int = vertexBuffer.length / (3 * MemoryLayout<SIMD4<Float>>.stride)
+    let numberOfVertices: Int = vertexBuffer.length / (2 * MemoryLayout<SIMD4<Float>>.stride)
     guard totalNumberOfAtoms > 0, numberOfVertices > 0 else { return }
 
     let correction: SIMD3<Double> = SIMD3<Double>(1.0/Double(numberOfReplicas.x), 1.0/Double(numberOfReplicas.y), 1.0/Double(numberOfReplicas.z))
@@ -546,7 +546,7 @@ public class SKMetalFramework
       commandEncoder.setBytes(&replicaCorrection, length: MemoryLayout<SIMD3<Float>>.stride, index: 7)
       commandEncoder.setBytes(&isovalueValue, length: MemoryLayout<Float>.stride, index: 8)
       commandEncoder.setBytes(&verticesInBatch, length: MemoryLayout<UInt32>.stride, index: 9)
-      commandEncoder.setBuffer(vertexBuffer, offset: verticesDone * 3 * MemoryLayout<SIMD4<Float>>.stride, index: 10)
+      commandEncoder.setBuffer(vertexBuffer, offset: verticesDone * 2 * MemoryLayout<SIMD4<Float>>.stride, index: 10)
       commandEncoder.setBytes(&numberOfBlockingPocketsValue, length: MemoryLayout<Int32>.stride, index: 11)
       commandEncoder.setBuffer(bufferBlockingPockets, offset: 0, index: 12)
 

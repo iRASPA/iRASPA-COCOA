@@ -314,10 +314,10 @@ kernel void RefineWellSurfaceVertices(constant int& numberOfAtoms [[ buffer(0) ]
 {
   if (vertexId >= numberOfVertices) return;
 
-  // three float4 per vertex: position (unit-cell fractional), normal, pad. Twin copies of a shared vertex
+  // two float4 per vertex: position (unit-cell fractional), normal. Twin copies of a shared vertex
   // can differ by an ulp across cubes; quantizing the inputs welds them bitwise, so they refine identically
   // and the mesh stays watertight.
-  const float3 quantized = rint(VBOBuffer[3*vertexId].xyz * 1048576.0f) / 1048576.0f;
+  const float3 quantized = rint(VBOBuffer[2*vertexId].xyz * 1048576.0f) / 1048576.0f;
   const float3 point = quantized * replicaCorrection;
 
   // vertices on or near the trim cap lie on the U = iso isosurface, not the well sheet: skip them
@@ -409,5 +409,5 @@ kernel void RefineWellSurfaceVertices(constant int& numberOfAtoms [[ buffer(0) ]
   }
   const float s = 0.5f * (a + b);
 
-  VBOBuffer[3*vertexId] = float4((point + s * rayFractional) / replicaCorrection, 1.0f);
+  VBOBuffer[2*vertexId] = float4((point + s * rayFractional) / replicaCorrection, 1.0f);
 }

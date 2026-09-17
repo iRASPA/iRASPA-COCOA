@@ -62,8 +62,8 @@ class MetalEnergyIsosurfaceShader
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
-    // Marching Cubes vertices are always 48 bytes (3 × float4). Do not reuse the shared
-    // RKVertex descriptor (now 64 bytes with ribbon stripeST) — that skips 1/4 of the mesh.
+    // Lewiner Marching Cubes vertices are 32 bytes (2 × float4). Do not reuse the shared
+    // RKVertex descriptor (now 64 bytes with ribbon stripeST) — that skips part of the mesh.
     let _ = vertexDescriptor
     let isosurfaceVertexDescriptor = MTLVertexDescriptor()
     isosurfaceVertexDescriptor.attributes[0].offset = 0
@@ -72,11 +72,8 @@ class MetalEnergyIsosurfaceShader
     isosurfaceVertexDescriptor.attributes[1].offset = MemoryLayout<SIMD4<Float>>.stride
     isosurfaceVertexDescriptor.attributes[1].format = .float4
     isosurfaceVertexDescriptor.attributes[1].bufferIndex = 0
-    isosurfaceVertexDescriptor.attributes[2].offset = MemoryLayout<SIMD4<Float>>.stride * 2
-    isosurfaceVertexDescriptor.attributes[2].format = .float4
-    isosurfaceVertexDescriptor.attributes[2].bufferIndex = 0
     isosurfaceVertexDescriptor.layouts[0].stepFunction = .perVertex
-    isosurfaceVertexDescriptor.layouts[0].stride = MemoryLayout<SIMD4<Float>>.stride * 3
+    isosurfaceVertexDescriptor.layouts[0].stride = MemoryLayout<SIMD4<Float>>.stride * 2
     
     let depthStateDesc: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
     depthStateDesc.depthCompareFunction = MTLCompareFunction.lessEqual
@@ -406,7 +403,7 @@ class MetalEnergyIsosurfaceShader
                 if let buffer = buffer
                 {
                   vertexBuffer[i][j] = buffer
-                  structure.adsorptionSurfaceNumberOfTriangles = buffer.length / (3 * 3 * MemoryLayout<SIMD4<Float>>.stride)
+                  structure.adsorptionSurfaceNumberOfTriangles = buffer.length / (3 * 2 * MemoryLayout<SIMD4<Float>>.stride)
                   if isOverlay
                   {
                     LogQueue.shared.info(destination: windowController, message: "\(surfaceName) for \(structure.displayName): \(structure.adsorptionSurfaceNumberOfTriangles) triangles; where a tightly enclosed adsorbate sits on the channel axis (not monolayer area)")

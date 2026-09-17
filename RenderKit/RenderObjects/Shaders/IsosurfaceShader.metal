@@ -34,13 +34,11 @@
 #include "Common.h"
 using namespace metal;
 
-// Marching Cubes emits a fixed 48-byte vertex (3 × float4: position, normal, st/pad).
-// Do not use InPerVertex here — ribbons extended that struct and would break the stride.
+// Lewiner Marching Cubes emits a 32-byte vertex (2 × float4: position, normal).
 struct IsosurfaceInVertex
 {
   float4 position;
   float4 normal;
-  float4 stPad;
 };
 
 struct IsosurfaceVertexShaderOut

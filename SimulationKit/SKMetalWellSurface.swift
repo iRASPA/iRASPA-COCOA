@@ -319,9 +319,9 @@ public class SKMetalWellSurface
   // filamentMinimumArea are dropped. The filament buffer is small, a CPU pass.
   private static func removeFilamentSpecks(device: MTLDevice?, buffer: MTLBuffer, unitCell: double3x3) -> MTLBuffer?
   {
-    let triangles: Int = buffer.length / (9 * MemoryLayout<SIMD4<Float>>.stride)
+    let triangles: Int = buffer.length / (6 * MemoryLayout<SIMD4<Float>>.stride)
     guard triangles > 0 else { return nil }
-    let vertices = buffer.contents().bindMemory(to: SIMD4<Float>.self, capacity: 9 * triangles)
+    let vertices = buffer.contents().bindMemory(to: SIMD4<Float>.self, capacity: 6 * triangles)
 
     var parent: [Int] = Array(0..<triangles)
     func findRoot(_ i: Int) -> Int
@@ -339,7 +339,7 @@ public class SKMetalWellSurface
     {
       for v in 0..<3
       {
-        let p = vertices[9 * t + 3 * v]
+        let p = vertices[6 * t + 2 * v]
         let key = Key(x: quantize(p.x), y: quantize(p.y), z: quantize(p.z))
         if let other = seen[key]
         {
@@ -356,7 +356,7 @@ public class SKMetalWellSurface
       var corners: [SIMD3<Double>] = []
       for v in 0..<3
       {
-        let p = vertices[9 * t + 3 * v]
+        let p = vertices[6 * t + 2 * v]
         corners.append(unitCell * SIMD3<Double>(Double(p.x), Double(p.y), Double(p.z)))
       }
       area[findRoot(t), default: 0.0] += 0.5 * simd_length(simd_cross(corners[1] - corners[0], corners[2] - corners[0]))
@@ -371,7 +371,7 @@ public class SKMetalWellSurface
     guard !kept.isEmpty else { return nil }
     if kept.count == triangles { return buffer }
 
-    let triangleStride: Int = 9 * MemoryLayout<SIMD4<Float>>.stride
+    let triangleStride: Int = 6 * MemoryLayout<SIMD4<Float>>.stride
     guard let filtered: MTLBuffer = device?.makeBuffer(length: kept.count * triangleStride, options: .storageModeShared) else { return buffer }
     for (i, t) in kept.enumerated()
     {

@@ -114,13 +114,13 @@ public class SKNitrogenSurfaceArea
     return results
   }
 
-  // Three float4 per vertex --- position (unit-cell fractional), normal, pad --- and three vertices per
+  // Two float4 per vertex --- position (unit-cell fractional), normal --- and three vertices per
   // triangle. The surface is watertight and single-sheeted by construction, so every triangle counts.
   private static func area(of vertexBuffer: MTLBuffer, unitCell: double3x3) -> Double
   {
-    let numberOfTriangles: Int = vertexBuffer.length / (9 * MemoryLayout<SIMD4<Float>>.stride)
-    guard numberOfTriangles > 0 else {return 0.0}
-    let vertices = vertexBuffer.contents().bindMemory(to: SIMD4<Float>.self, capacity: 9 * numberOfTriangles)
+    let numberOfTriangles: Int = vertexBuffer.length / (6 * MemoryLayout<SIMD4<Float>>.stride)
+    guard numberOfTriangles > 0 else { return 0.0 }
+    let vertices = vertexBuffer.contents().bindMemory(to: SIMD4<Float>.self, capacity: 6 * numberOfTriangles)
 
     var totalArea: Double = 0.0
     for triangle in 0..<numberOfTriangles
@@ -128,7 +128,7 @@ public class SKNitrogenSurfaceArea
       var corners: [SIMD3<Double>] = []
       for vertex in 0..<3
       {
-        let position: SIMD4<Float> = vertices[9 * triangle + 3 * vertex]
+        let position: SIMD4<Float> = vertices[6 * triangle + 2 * vertex]
         corners.append(unitCell * SIMD3<Double>(Double(position.x), Double(position.y), Double(position.z)))
       }
       let area: Double = 0.5 * simd.length(simd.cross(corners[1] - corners[0], corners[2] - corners[0]))
