@@ -139,7 +139,7 @@ public extension Data
     if skipCheckSumValidation { return inflated }
     
     let cksum: UInt32 = withUnsafeBytes { (bytePtr: UnsafeRawBufferPointer) -> UInt32 in
-      return bytePtr.load(fromByteOffset: -4, as: UInt32.self)
+      return bytePtr.loadUnaligned(fromByteOffset: self.count - 4, as: UInt32.self).bigEndian
     }
     
     return cksum == inflated.adler32().checksum ? inflated : nil
@@ -199,8 +199,9 @@ public extension Data
       // +---+---+---+---+---+---+---+---+
       // |     CRC32     |     ISIZE     |
       // +---+---+---+---+---+---+---+---+
-      let ptr = bptr.baseAddress!.advanced(by: -8).assumingMemoryBound(to: UInt32.self)
-      return (ptr[0].littleEndian, ptr[1].littleEndian)
+      let crc32: UInt32 = bptr.loadUnaligned(fromByteOffset: self.count - 8, as: UInt32.self).littleEndian
+      let isize: UInt32 = bptr.loadUnaligned(fromByteOffset: self.count - 4, as: UInt32.self).littleEndian
+      return (crc32, isize)
     }
     
     // Wrong gzip magic or unsupported compression method

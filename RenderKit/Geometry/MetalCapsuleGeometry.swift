@@ -92,7 +92,7 @@ public class MetalCapsuleGeometry
   
     for j in 0...slices/2
     {
-      for i in 0...slices
+      for i in 0..<slices
       {
         let  i1 =  j    * (slices+1) + i
         let  i2 =  j    * (slices+1) + (i + 1)

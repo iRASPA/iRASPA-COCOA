@@ -1254,7 +1254,7 @@
                                                                                     </popUpButton>
                                                                                 </gridCell>
                                                                                 <gridCell row="jx2-ix-8Ti" column="h7z-S5-9bG" id="ZO0-iF-M6L">
-                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="Ppg-J6-M4P">
+                                                                                    <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ppg-J6-M4P">
                                                                                         <rect key="frame" x="258" y="68" width="35" height="16"/>
                                                                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Style" id="gru-eQ-QHe">
                                                                                             <font key="font" usesAppearanceFont="YES"/>
@@ -1264,7 +1264,7 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="jx2-ix-8Ti" column="Tez-zB-lab" id="oLr-FC-dyQ">
-                                                                                    <popUpButton key="contentView" tag="1" horizontalHuggingPriority="220" verticalHuggingPriority="730" horizontalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="vp8-Zy-12U">
+                                                                                    <popUpButton key="contentView" tag="2" horizontalHuggingPriority="220" verticalHuggingPriority="730" horizontalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="vp8-Zy-12U">
                                                                                         <rect key="frame" x="303" y="64" width="192" height="24"/>
                                                                                         <popUpButtonCell key="cell" type="push" title="Default" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Qty-yJ-uWI" id="dsY-ag-mc3">
                                                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>

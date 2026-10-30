@@ -1013,8 +1013,8 @@ private func localIZARings(at position: SIMD3<Double>,
       let distance = simd_length(cell * nearest)
       if distance < 1.30 || distance > 2.10 { continue }
       let lattice = SIMD3<Int32>(Int32(round(relative.x)), Int32(round(relative.y)), Int32(round(relative.z)))
-      bonds[a, default: []].append(SKLocalBond(other: b, delta: lattice))
-      bonds[b, default: []].append(SKLocalBond(other: a, delta: latticeNegate(lattice)))
+      bonds[a, default: []].append(SKLocalBond(other: b, delta: latticeNegate(lattice)))
+      bonds[b, default: []].append(SKLocalBond(other: a, delta: lattice))
     }
   }
   

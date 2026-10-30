@@ -387,10 +387,33 @@ class MetalPickingShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
+             let buffer: MTLBuffer = self.metalBuffer(internalBondShader.instanceBufferAllBonds, sceneIndex: i, movieIndex: j)
+          {
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (structure.isUnity && structure.drawBonds && structure.isVisible && (instanceCount > 0))
+            {
+              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 18, instanceCount: instanceCount)
+            }
+          }
+          index = index + 1
+        }
+      }
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderObject] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
              let buffer: MTLBuffer = self.metalBuffer(internalBondShader.instanceBufferSingleBonds, sceneIndex: i, movieIndex: j)
           {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-            if (structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (!structure.isUnity && structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
@@ -412,8 +435,8 @@ class MetalPickingShader
           if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
              let buffer: MTLBuffer = self.metalBuffer(internalBondShader.instanceBufferDoubleBonds, sceneIndex: i, movieIndex: j)
           {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-            if (structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (!structure.isUnity && structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
@@ -433,10 +456,33 @@ class MetalPickingShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
+             let buffer: MTLBuffer = self.metalBuffer(internalBondShader.instanceBufferPartialDoubleBonds, sceneIndex: i, movieIndex: j)
+          {
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (!structure.isUnity && structure.drawBonds && structure.isVisible && (instanceCount > 0))
+            {
+              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 18, instanceCount: instanceCount)
+            }
+          }
+          index = index + 1
+        }
+      }
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderObject] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
              let buffer: MTLBuffer = self.metalBuffer(internalBondShader.instanceBufferTripleBonds, sceneIndex: i, movieIndex: j)
           {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-            if (structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (!structure.isUnity && structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
@@ -457,10 +503,34 @@ class MetalPickingShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
+             let buffer: MTLBuffer = self.metalBuffer(externalBondShader.instanceBufferAllBonds, sceneIndex: i, movieIndex: j)
+          {
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (structure.isUnity && structure.drawBonds && structure.isVisible && (instanceCount > 0))
+            {
+              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 18, instanceCount: instanceCount)
+            }
+          }
+          
+          index = index + 1
+        }
+      }
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderObject] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
              let buffer: MTLBuffer = self.metalBuffer(externalBondShader.instanceBufferSingleBonds, sceneIndex: i, movieIndex: j)
           {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-            if (structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (!structure.isUnity && structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
             {
               
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
@@ -484,8 +554,8 @@ class MetalPickingShader
           if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
              let buffer: MTLBuffer = self.metalBuffer(externalBondShader.instanceBufferDoubleBonds, sceneIndex: i, movieIndex: j)
           {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-            if (structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (!structure.isUnity && structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
             {
               
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
@@ -507,10 +577,34 @@ class MetalPickingShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
+             let buffer: MTLBuffer = self.metalBuffer(externalBondShader.instanceBufferPartialDoubleBonds, sceneIndex: i, movieIndex: j)
+          {
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (!structure.isUnity && structure.drawBonds && structure.isVisible && (instanceCount > 0))
+            {
+              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 18, instanceCount: instanceCount)
+            }
+          }
+          
+          index = index + 1
+        }
+      }
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderObject] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
              let buffer: MTLBuffer = self.metalBuffer(externalBondShader.instanceBufferTripleBonds, sceneIndex: i, movieIndex: j)
           {
-            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-            if (structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (!structure.isUnity && structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
             {
               
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)

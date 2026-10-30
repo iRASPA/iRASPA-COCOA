@@ -50,7 +50,7 @@ public struct Fraction {
             return _denominator
         }
         set {
-            precondition(denominator != 0, "Cannot divide by 0")
+            precondition(newValue != 0, "Cannot divide by 0")
             _denominator = newValue
             _adjustFraction()
         }
@@ -145,8 +145,11 @@ public struct Fraction {
         self._simplifyFraction()
     }
     private mutating func _simplifyFraction()  {
-        
-        guard self._numerator != 0 && abs(self._numerator) != 1 && self._denominator != 1 else { return }
+        if self._numerator == 0 {
+            self._denominator = 1
+            return
+        }
+        guard abs(self._numerator) != 1 && self._denominator != 1 else { return }
         
         for n in (2...Swift.min(abs(self._numerator), abs(self._denominator))).reversed() {
             if self._numerator % n == 0 && self._denominator % n == 0 {
@@ -160,6 +163,7 @@ public struct Fraction {
     private mutating func _setSignum() {
         
         guard _numerator != 0 else {
+            _denominator = 1
             signum = 0
             return
         }

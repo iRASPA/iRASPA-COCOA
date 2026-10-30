@@ -228,12 +228,30 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
     case NSPasteboardTypeAtomTreeNode:
       guard let data: Data = propertyList as? Data,
             let atom: SKAtomTreeNode = try? BinaryDecoder(data: [UInt8](data)).decode(SKAtomTreeNode.self) else {return nil}
-      self.init(name: atom.displayName, representedObject: atom.representedObject)
+      self.init(name: atom.displayName, representedObject: atom.representedObject, isGroup: atom.isGroup)
+      self.isEditable = atom.isEditable
+      self.groupKind = atom.groupKind
+      self.childNodes = atom.childNodes
+      self.filteredAndSortedNodes = atom.filteredAndSortedNodes
+      self.matchesFilter = atom.matchesFilter
+      for child in self.childNodes
+      {
+        child.parentNode = self
+      }
     case NSPasteboard.PasteboardType.fileURL:
       guard let url: URL = propertyList as? URL,
            let data: Data = try? Data(contentsOf: url),
            let atom: SKAtomTreeNode = try? BinaryDecoder(data: [UInt8](data)).decode(SKAtomTreeNode.self) else {return nil}
-      self.init(name: atom.displayName, representedObject: atom.representedObject)
+      self.init(name: atom.displayName, representedObject: atom.representedObject, isGroup: atom.isGroup)
+      self.isEditable = atom.isEditable
+      self.groupKind = atom.groupKind
+      self.childNodes = atom.childNodes
+      self.filteredAndSortedNodes = atom.filteredAndSortedNodes
+      self.matchesFilter = atom.matchesFilter
+      for child in self.childNodes
+      {
+        child.parentNode = self
+      }
     default:
       return nil
     }
@@ -573,7 +591,7 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
     for node in self.childNodes
     {
       node.matchesFilter = true
-      node.matchesFilter = predicate(self)
+      node.matchesFilter = predicate(node)
     }
     
     self.filteredAndSortedNodes = self.childNodes.filter{$0.matchesFilter}

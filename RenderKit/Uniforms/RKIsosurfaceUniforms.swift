@@ -95,15 +95,21 @@ public struct RKIsosurfaceUniforms
       self.frontHDR = structure.adsorptionSurfaceFrontSideHDR ? 1 : 0
       self.frontHDRExposure = Float(structure.adsorptionSurfaceFrontSideHDRExposure)
       self.ambientBackSide = Float(structure.adsorptionSurfaceBackSideAmbientIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceBackSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.ambientBackSide.w = Float(structure.adsorptionSurfaceOpacity)
       self.diffuseBackSide = Float(structure.adsorptionSurfaceBackSideDiffuseIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceBackSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.diffuseBackSide.w = Float(structure.adsorptionSurfaceOpacity)
       self.specularBackSide = Float(structure.adsorptionSurfaceBackSideSpecularIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceBackSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.specularBackSide.w = Float(structure.adsorptionSurfaceOpacity)
       self.shininessBackSide = Float(structure.adsorptionSurfaceBackSideShininess)
     
       self.backHDR = structure.adsorptionSurfaceBackSideHDR ? 1 : 0
       self.backHDRExposure = Float(structure.adsorptionSurfaceBackSideHDRExposure)
       self.ambientFrontSide = Float(structure.adsorptionSurfaceFrontSideAmbientIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceFrontSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.ambientFrontSide.w = Float(structure.adsorptionSurfaceOpacity)
       self.diffuseFrontSide = Float(structure.adsorptionSurfaceFrontSideDiffuseIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceFrontSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.diffuseFrontSide.w = Float(structure.adsorptionSurfaceOpacity)
       self.specularFrontSide = Float(structure.adsorptionSurfaceFrontSideSpecularIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceFrontSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.specularFrontSide.w = Float(structure.adsorptionSurfaceOpacity)
       self.shininessFrontSide = Float(structure.adsorptionSurfaceFrontSideShininess)
       
       let encompassingPowerOfTwoCubicGridSize: Float = Float(pow(2.0,Double(structure.encompassingPowerOfTwoCubicGridSize)))

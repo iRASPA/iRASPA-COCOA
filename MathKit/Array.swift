@@ -126,17 +126,13 @@ extension Array
 {
   public mutating func moveObjects(at indexes: IndexSet, to idx: Int)
   {
-    var removedObjects = [Element]()
+    let movingData = indexes.map { self[$0] }
+    let targetIndex = Swift.max(0, Swift.min(idx - indexes.filter { $0 < idx }.count, count - indexes.count))
     for index in indexes.lazy.reversed()
     {
-      let obj = self[index]
-      removedObjects.append(obj)
       self.remove(at: index)
     }
-    for removedObject in removedObjects
-    {
-      insert(removedObject, at: idx)
-    }
+    insert(contentsOf: movingData, at: targetIndex)
   }
 }
 extension Array {

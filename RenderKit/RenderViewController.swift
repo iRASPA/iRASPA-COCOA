@@ -63,6 +63,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
   let _inflightSemaphore: DispatchSemaphore = DispatchSemaphore(value: 3)
   var constantDataBufferIndex: Int = 0
   var frameUniformBuffers: [MTLBuffer]! = nil
+  private var renderModeObserver: NSObjectProtocol? = nil
 
   
   public weak var renderDataSource: RKRenderDataSource? = nil
@@ -116,10 +117,9 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
   
   deinit
   {
-    // clean up and avoid crashing the app due to waiting semaphores
-    for _ in 0...3
+    if let observer = renderModeObserver
     {
-      self._inflightSemaphore.signal()
+      NotificationCenter.default.removeObserver(observer)
     }
   }
   
@@ -138,7 +138,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
     }
 
     // switching the Rendering menu between rasterization and ray tracing has to repaint
-    NotificationCenter.default.addObserver(forName: Notification.Name(RKRenderSettings.RenderModeDidChange), object: nil, queue: OperationQueue.main)
+    renderModeObserver = NotificationCenter.default.addObserver(forName: Notification.Name(RKRenderSettings.RenderModeDidChange), object: nil, queue: OperationQueue.main)
     {[weak self] _ in
       self?.redraw()
     }
@@ -592,6 +592,7 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
     {
       self.renderer.ambientOcclusionShader.cachedAmbientOcclusionTextures.removeObject(forKey: structure)
       self.renderer.ambientOcclusionShader.cachedAmbientOcclusionTextures.removeObject(forKey: structure.ribbonAmbientOcclusionCacheKey)
+      self.renderer.ambientOcclusionShader.cachedAmbientOcclusionTextures.removeObject(forKey: structure.bondAmbientOcclusionCacheKey)
     }
   }
   
@@ -713,10 +714,22 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
       let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera!)
       if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera!, imageQuality: .rgb_8_bits, renderQuality: .picture)
       {
+        let destBytesPerRow: Int = CVPixelBufferGetBytesPerRow(pixelBuffer)
+        let srcBytesPerRow: Int = 4 * width
         CVPixelBufferLockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
         if let destPixels: UnsafeMutablePointer<UInt8> = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: UInt8.self)
         {
-          data.copyBytes(to: destPixels, count: data.count)
+          if destBytesPerRow == srcBytesPerRow
+          {
+            data.copyBytes(to: destPixels, count: data.count)
+          }
+          else
+          {
+            for row in 0..<height
+            {
+              data.copyBytes(to: destPixels.advanced(by: row * destBytesPerRow), from: (row * srcBytesPerRow)..<((row + 1) * srcBytesPerRow))
+            }
+          }
         }
         CVPixelBufferUnlockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
       }
@@ -852,6 +865,10 @@ public class RenderViewController: RenderViewControllerBase, MTKViewDelegate
         commandBuffer.commit()
          
         constantDataBufferIndex = (constantDataBufferIndex + 1) % frameUniformBuffers.count
+      }
+      else
+      {
+        _inflightSemaphore.signal()
       }
     }
   }

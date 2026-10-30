@@ -66,7 +66,8 @@ public class PythonScriptTextView: LineNumberView
   
   public var lastCommandLine: String
   {
-    let index = self.string.index(string.startIndex, offsetBy: previousTextCount)
+    let clampedOffset = min(max(0, previousTextCount), self.string.count)
+    let index = self.string.index(string.startIndex, offsetBy: clampedOffset)
     return String(self.string[index...])
   }
   
@@ -78,7 +79,7 @@ public class PythonScriptTextView: LineNumberView
     
     self.scrollRangeToVisible(NSMakeRange((self.string as NSString).length, 0))
       
-    self.previousTextCount = (self.string as NSString).length
+    self.previousTextCount = self.string.count
     
     self.lineNumberRulerView?.needsDisplay = true
   }

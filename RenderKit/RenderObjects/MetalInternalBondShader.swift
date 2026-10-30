@@ -143,6 +143,7 @@ class MetalInternalBondShader
         
         if structures.isEmpty
         {
+          sceneInstanceAllBonds.append(nil)
           sceneInstanceSingleBonds.append(nil)
           sceneInstanceDoubleBonds.append(nil)
           sceneInstancePartialDoubleBonds.append(nil)

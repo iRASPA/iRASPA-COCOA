@@ -1130,13 +1130,17 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       {
         if recursive && selection.contains(self)
         {
-          copy.childNodes.append(child.copyOfSubTree())
+          let childCopy: ProjectTreeNode = child.copyOfSubTree()
+          childCopy.parentNode = copy
+          copy.childNodes.append(childCopy)
         }
         else
         {
           if selection.contains(child)
           {
-            copy.childNodes.append(child.copyOfSelectionOfSubTree(selection: selection, recursive: recursive))
+            let childCopy: ProjectTreeNode = child.copyOfSelectionOfSubTree(selection: selection, recursive: recursive)
+            childCopy.parentNode = copy
+            copy.childNodes.append(childCopy)
           }
         }
       }
@@ -1152,7 +1156,9 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     
     for child in childNodes
     {
-      copy.childNodes.append(child.copyOfSubTree())
+      let childCopy: ProjectTreeNode = child.copyOfSubTree()
+      childCopy.parentNode = copy
+      copy.childNodes.append(childCopy)
     }
     
     return copy
@@ -1178,7 +1184,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     for node in self.childNodes
     {
       node.matchesFilter = true
-      node.matchesFilter = predicate(self)
+      node.matchesFilter = predicate(node)
     }
     
     self.filteredAndSortedNodes = self.childNodes.filter{$0.matchesFilter}

@@ -53,7 +53,7 @@ class MetalEllipsoidPrimitiveSelectionStripedShader
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PrimitivePolygonalPrismSelectionStripedVertexShader")!
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PrimitiveEllipsoidSelectionStripedVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
@@ -64,7 +64,7 @@ class MetalEllipsoidPrimitiveSelectionStripedShader
     pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
     pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
     pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PrimitivePolygonalPrismSelectionStripedFragmentShader")!
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PrimitiveEllipsoidSelectionStripedFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     do
     {
@@ -129,7 +129,7 @@ class MetalEllipsoidPrimitiveSelectionStripedShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderEllipsoidObjectsSource = structure as? RKRenderEllipsoidObjectsSource,
-             (structure.atomSelectionStyle == .striped)
+             (structure.primitiveSelectionStyle == .striped)
           {
             commandEncoder.setRenderPipelineState(pipeLine)
             

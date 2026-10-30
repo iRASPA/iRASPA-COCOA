@@ -75,7 +75,7 @@ extension SKSpacegroup
     }
     
     // Find least occurent element
-    let minType: Int = histogram.min{a, b in a.value < b.value}!.key
+    guard let minType: Int = histogram.min(by: {a, b in a.value < b.value})?.key else {return nil}
     
     let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = allowPartialOccupancies ? atoms : atoms.filter{$0.type == minType}
     
@@ -258,7 +258,7 @@ extension SKSpacegroup
     }
     
     // Find least occurent element
-    let minType: Int = histogram.min{a, b in a.value < b.value}!.key
+    guard let minType: Int = histogram.min(by: {a, b in a.value < b.value})?.key else {return nil}
     
     let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = allowPartialOccupancies ? atoms : atoms.filter{$0.type == minType}
     

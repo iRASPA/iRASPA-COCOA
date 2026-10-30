@@ -1155,10 +1155,10 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
             moves.append((node: node, toItem: toItem, childIndex: childIndex))
             childIndex += 1
           }
-        
-          // move the selected nodes to the destination
-          self.moveNodes(moves, inStructure: structure)
         }
+        
+        // move the selected nodes to the destination
+        self.moveNodes(moves, inStructure: structure)
         self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       }
@@ -2810,8 +2810,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
         stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell , atoms: atoms, atomsAreFractional: true, origin: SIMD3<Double>(0,0,0))
       case let proteinCrystal as ProteinCrystal:
-        let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
-        stringData = SKVASPWriter.shared.string(displayName: proteinCrystal.displayName, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))
+        let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract(proteinCrystal.cell.convertToFractional($0.position)), $0.asymmetricParentAtom.isFixed)}
+        stringData = SKVASPWriter.shared.string(displayName: proteinCrystal.displayName, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: true, origin: SIMD3<Double>(0,0,0))
       case let molecularCrystal as MolecularCrystal:
         let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
         stringData = SKVASPWriter.shared.string(displayName: molecularCrystal.displayName, cell: molecularCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))

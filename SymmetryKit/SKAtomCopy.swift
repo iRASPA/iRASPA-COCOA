@@ -74,12 +74,14 @@ public final class SKAtomCopy: BinaryDecodable, BinaryEncodable, Copying, Hashab
     self.position = copy.position
     self.tag = copy.tag
     self.type = copy.type
+    self.asymmetricParentAtom = copy.asymmetricParentAtom
     self.asymmetricIndex = copy.asymmetricIndex
+    self.valence = copy.valence
   }
   
   public static func == (lhs: SKAtomCopy, rhs: SKAtomCopy) -> Bool
   {
-    return fabs(lhs.position.x - rhs.position.x)<0.01 && fabs(lhs.position.y - rhs.position.y)<0.01 && fabs(lhs.position.z - rhs.position.z)<0.01
+    return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
   }
   
   // MARK: -

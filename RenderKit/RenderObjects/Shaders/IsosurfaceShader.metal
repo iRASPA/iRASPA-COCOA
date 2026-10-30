@@ -130,7 +130,8 @@ fragment float4 IsosurfaceFragmentShader(IsosurfaceVertexShaderOut vert [[stage_
   hsv.x = hsv.x * isosurfaceUniforms.hue;
   hsv.y = hsv.y * isosurfaceUniforms.saturation;
   hsv.z = hsv.z * isosurfaceUniforms.value;
-  return float4(hsv2rgb(hsv) * isosurfaceUniforms.diffuseFrontSide.w,isosurfaceUniforms.diffuseFrontSide.w);
+  float opacity = frontfacing ? isosurfaceUniforms.diffuseFrontSide.w : isosurfaceUniforms.ambientBackSide.w;
+  return float4(hsv2rgb(hsv) * opacity, opacity);
 
   
   return color;

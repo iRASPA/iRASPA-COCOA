@@ -52,10 +52,17 @@ public class ImportNodesFromCloud: FKGroupOperation, @unchecked Sendable
     query.sortDescriptors = [sortDescriptor]
     let queryOperation: CKQueryOperation = CKQueryOperation(query: query)
     //queryOperation.resultsLimit = 1
+    self.configureQueryOperation(queryOperation)
+    
+    self.addOperation(queryOperation)
+  }
+  
+  private func configureQueryOperation(_ queryOperation: CKQueryOperation)
+  {
     queryOperation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
     queryOperation.desiredKeys = ["displayName", "type"]
-    queryOperation.recordFetchedBlock = { record  in
-      self.results.append(record)
+    queryOperation.recordFetchedBlock = { [weak self] record  in
+      self?.results.append(record)
     }
     
     queryOperation.queryCompletionBlock = { [weak self] (cursor: CKQueryOperation.Cursor?, error: Error?) in
@@ -65,7 +72,7 @@ public class ImportNodesFromCloud: FKGroupOperation, @unchecked Sendable
         if let cursor = cursor
         {
           let retryOperation = CKQueryOperation(cursor: cursor)
-          retryOperation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
+          self?.configureQueryOperation(retryOperation)
           self?.handleCloudKitFetchError(error: error, retryOperation: retryOperation)
         }
         else
@@ -77,12 +84,10 @@ public class ImportNodesFromCloud: FKGroupOperation, @unchecked Sendable
       {
         // if there are more nodes, then download them further
         let fetchMoreRecords = CKQueryOperation(cursor: cursor)
-        fetchMoreRecords.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
+        self?.configureQueryOperation(fetchMoreRecords)
         self?.addOperation(fetchMoreRecords)
       }
     }
-    
-    self.addOperation(queryOperation)
   }
   
   

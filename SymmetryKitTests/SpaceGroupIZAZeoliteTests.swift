@@ -565,8 +565,8 @@ class SpaceGroupIZAZeolitesTests: XCTestCase
       
       if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
       {
-        let contentString = try! String(contentsOf: url, encoding: String.Encoding.utf8)
-        let parser: SKCIFParser = SKCIFParser(displayName: String(describing: url), string: contentString, windowController: nil)
+        let contentData = try! Data(contentsOf: url)
+        let parser: SKCIFParser = try! SKCIFParser(displayName: String(describing: url), data: contentData)
         try! parser.startParsing()
         
         if let frame: SKStructure = parser.scene.first?.first,
@@ -608,8 +608,8 @@ class SpaceGroupIZAZeolitesTests: XCTestCase
       
       if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
       {
-        let contentString = try! String(contentsOf: url, encoding: String.Encoding.utf8)
-        let parser: SKCIFParser = SKCIFParser(displayName: String(describing: url), string: contentString, windowController: nil)
+        let contentData = try! Data(contentsOf: url)
+        let parser: SKCIFParser = try! SKCIFParser(displayName: String(describing: url), data: contentData)
         try! parser.startParsing()
         
         if let frame: SKStructure = parser.scene.first?.first,

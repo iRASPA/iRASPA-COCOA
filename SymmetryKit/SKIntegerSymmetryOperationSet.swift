@@ -62,6 +62,10 @@ public struct SKIntegerSymmetryOperationSet
       {
         self.centring = .c_face
       }
+      else if latticeTranslation[1] == SIMD3<Int32>(12, 12, 12)
+      {
+        self.centring = .body
+      }
     case 3:
       self.centring = .r
       if (latticeTranslation[1].x == 0 || latticeTranslation[1].y == 0 || latticeTranslation[1].z == 0)

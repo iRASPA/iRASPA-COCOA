@@ -46,7 +46,7 @@ vertex AtomSphereImposterVertexShaderOut AtomMeasurementSphereImposterOrthograph
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = 1.01*structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = 1.01 * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = structureUniforms.atomSpecularColor * positions[iid].specular;
@@ -68,7 +68,7 @@ vertex AtomSphereImposterVertexShaderOut AtomMeasurementSphereImposterOrthograph
   
   
   vert.texcoords = vertices[vid].position.xy;
-  vert.sphere_radius = structureUniforms.atomScaleFactor * positions[iid].scale;
+  vert.sphere_radius = scale;
   float4 pos2 = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
   pos2.xy += scale.xy * float2(vertices[vid].position.x,vertices[vid].position.y);
   
@@ -137,7 +137,7 @@ vertex AtomSphereImposterVertexShaderOut AtomMeasurementSphereImposterPerspectiv
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = 1.01 * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = 1.01 * (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = structureUniforms.atomSpecularColor * positions[iid].specular;

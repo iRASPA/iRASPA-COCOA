@@ -198,7 +198,7 @@ class MetalGlobalAxesSystemShader
                                                height: minSize * renderDataSource.renderAxes.sizeScreenFraction, znear: 0, zfar: 1))
       case .midLeft:
         commandEncoder.setViewport(MTLViewport(originX: minSize * renderDataSource.renderAxes.borderOffsetScreenFraction,
-                                               originY: 0.5*minSize - 0.5*minSize * renderDataSource.renderAxes.sizeScreenFraction,
+                                               originY: 0.5*Double(size.height) - 0.5*minSize * renderDataSource.renderAxes.sizeScreenFraction,
                                                width: minSize * renderDataSource.renderAxes.sizeScreenFraction,
                                                height: minSize * renderDataSource.renderAxes.sizeScreenFraction, znear: 0, zfar: 1))
       case .topLeft:
@@ -218,7 +218,7 @@ class MetalGlobalAxesSystemShader
                                                height: minSize * renderDataSource.renderAxes.sizeScreenFraction, znear: 0, zfar: 1))
       case .midRight:
         commandEncoder.setViewport(MTLViewport(originX: Double(size.width) - (minSize * renderDataSource.renderAxes.borderOffsetScreenFraction + minSize * renderDataSource.renderAxes.sizeScreenFraction),
-                                               originY: 0.5*minSize - 0.5*minSize * renderDataSource.renderAxes.sizeScreenFraction,
+                                               originY: 0.5*Double(size.height) - 0.5*minSize * renderDataSource.renderAxes.sizeScreenFraction,
                                                width: minSize * renderDataSource.renderAxes.sizeScreenFraction,
                                                height: minSize * renderDataSource.renderAxes.sizeScreenFraction, znear: 0, zfar: 1))
       case .bottomRight:
@@ -233,7 +233,7 @@ class MetalGlobalAxesSystemShader
                                                height: minSize * renderDataSource.renderAxes.sizeScreenFraction, znear: 0, zfar: 1))
       case .center:
         commandEncoder.setViewport(MTLViewport(originX: 0.5*Double(size.width) - 0.5*minSize * renderDataSource.renderAxes.sizeScreenFraction,
-                                               originY: 0.5*minSize - 0.5*minSize * renderDataSource.renderAxes.sizeScreenFraction,
+                                               originY: 0.5*Double(size.height) - 0.5*minSize * renderDataSource.renderAxes.sizeScreenFraction,
                                                width: minSize * renderDataSource.renderAxes.sizeScreenFraction,
                                                height: minSize * renderDataSource.renderAxes.sizeScreenFraction, znear: 0, zfar: 1))
       }
@@ -280,6 +280,9 @@ class MetalGlobalAxesSystemShader
       
       commandEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4, instanceCount: 3)
       
+      #if os(macOS)
+      commandEncoder.setDepthClipMode(.clip)
+      #endif
       commandEncoder.setViewport(MTLViewport(originX: 0, originY: 0, width: Double(size.width), height: Double(size.height), znear: 0, zfar: 1))
       
     }

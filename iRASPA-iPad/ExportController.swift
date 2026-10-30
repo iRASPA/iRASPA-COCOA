@@ -1,4 +1,5 @@
 import UIKit
+import simd
 import iRASPAKit
 import RenderKit
 import SymmetryKit
@@ -85,25 +86,39 @@ enum ExportController
     guard let project = node.representedObject.project as? ProjectStructureNode,
           let structure = project.allObjects.compactMap({ $0 as? Structure }).first else { return [] }
     let atoms = structure.atomTreeController.flattenedLeafNodes().compactMap { $0.representedObject }
+    let fractionalAtoms: [SKAsymmetricAtom] = atoms.map {
+      let copy = SKAsymmetricAtom(atom: $0)
+      if structure is Molecule || structure is MolecularCrystal || structure is Protein || structure is ProteinCrystal || structure is DNA || structure is DNACrystal
+      {
+        copy.position = fract(structure.cell.convertToFractional($0.position))
+      }
+      return copy
+    }
     var items: [Any] = []
     if includeCIF
     {
-      let cif = SKCIFWriter.shared.string(displayName: node.displayName, spaceGroupHallNumber: structure.spaceGroupHallNumber, cell: structure.cell, atoms: atoms, exportFractional: true, origin: SIMD3<Double>(0, 0, 0))
+      let cif = SKCIFWriter.shared.string(displayName: node.displayName, spaceGroupHallNumber: structure.spaceGroupHallNumber, cell: structure.cell, atoms: fractionalAtoms, exportFractional: true, origin: SIMD3<Double>(0, 0, 0))
       let cifURL = FileManager.default.temporaryDirectory.appendingPathComponent(node.displayName + ".cif")
       try? cif.write(to: cifURL, atomically: true, encoding: .utf8)
       items.append(cifURL)
     }
     if includePDB
     {
-      let pdb = SKPDBWriter.shared.string(displayName: node.displayName, spaceGroupHallNumber: structure.spaceGroupHallNumber, cell: structure.cell, atoms: atoms, origin: SIMD3<Double>(0, 0, 0))
+      let pdbAtoms: [SKAsymmetricAtom] = atoms.map {
+        let copy = SKAsymmetricAtom(atom: $0)
+        copy.position = structure.absoluteCartesianModelPosition(for: $0.position, replicaPosition: SIMD3<Int32>())
+        return copy
+      }
+      let pdb = SKPDBWriter.shared.string(displayName: node.displayName, spaceGroupHallNumber: structure.spaceGroupHallNumber, cell: structure.cell, atoms: pdbAtoms, origin: SIMD3<Double>(0, 0, 0))
       let pdbURL = FileManager.default.temporaryDirectory.appendingPathComponent(node.displayName + ".pdb")
       try? pdb.write(to: pdbURL, atomically: true, encoding: .utf8)
       items.append(pdbURL)
     }
     if includeMMCIF
     {
-      let fractional = !(structure is Protein || structure is Molecule)
-      let mmcif = SKmmCIFWriter.shared.string(displayName: node.displayName, spaceGroupHallNumber: structure.spaceGroupHallNumber, cell: structure.cell, atoms: atoms, atomsAreFractional: fractional, exportFractional: fractional, withProteinInfo: structure is Protein || structure is ProteinCrystal, origin: SIMD3<Double>(0, 0, 0))
+      let fractional = !(structure is Protein || structure is Molecule || structure is DNA)
+      let mmcifAtoms = fractional ? fractionalAtoms : atoms
+      let mmcif = SKmmCIFWriter.shared.string(displayName: node.displayName, spaceGroupHallNumber: structure.spaceGroupHallNumber, cell: structure.cell, atoms: mmcifAtoms, atomsAreFractional: fractional, exportFractional: fractional, withProteinInfo: structure is Protein || structure is ProteinCrystal || structure is DNA || structure is DNACrystal, origin: SIMD3<Double>(0, 0, 0))
       let mmcifURL = FileManager.default.temporaryDirectory.appendingPathComponent(node.displayName + ".mmcif")
       try? mmcif.write(to: mmcifURL, atomically: true, encoding: .utf8)
       items.append(mmcifURL)

@@ -114,7 +114,9 @@ open class FKGroupOperation: FKOperation, @unchecked Sendable
    */
   final func aggregateError(_ error: NSError)
   {
-    aggregatedErrors.append(error)
+    aggregatedErrorsLock.withCriticalScope {
+      aggregatedErrors.append(error)
+    }
   }
   
   open func operationDidFinish(_ operation: Operation, withErrors errors: [NSError])

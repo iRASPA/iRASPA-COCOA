@@ -46,7 +46,10 @@ class PreviewViewController: NSViewController, QLPreviewingController
     var image: NSImage? = NSImage(named: "MOF")
     let size: CGSize = CGSize(width: 512, height: 512)
     
-    guard let projectTreeNode = ProjectTreeNode(url: url, preview: true) else {return}
+    guard let projectTreeNode = ProjectTreeNode(url: url, preview: true) else {
+      handler(BinaryCodableError.invalidArchiveData)
+      return
+    }
     projectTreeNode.unwrapLazyLocalPresentedObjectIfNeeded()
           
     if let project: ProjectStructureNode  = projectTreeNode.representedObject.loadedProjectStructureNode,

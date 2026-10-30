@@ -111,6 +111,7 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
       var atoms: [SKAsymmetricAtom] = []
       for (index,chemicalElement) in cellInformation.elements.enumerated()
       {
+        guard index < cellInformation.numberOfAtomsForElement.count else { break }
         for _ in 0..<cellInformation.numberOfAtomsForElement[index]
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
@@ -127,7 +128,7 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
             atom.displayName = chemicalElement
             atom.uniqueForceFieldName = chemicalElement
             atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
-            atom.fractional = true
+            atom.fractional = fractional
               
             if words.count >= 6,
                let firstChacterX: Character = words[3].lowercased().first,
@@ -144,17 +145,33 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
       addFrameToStructure(cell: cellInformation.cell, atoms: atoms, periodic: true)
       currentFrame += 1
     }
+    
+    if scene.isEmpty
+    {
+      throw SKParserError.containsNoData
+    }
   }
   
   func readHeader() throws -> (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int])?
   {
     var scannedLine: String?
     
-    // skip commentline
+    // skip commentline (or read "Direct configuration=" / "Cartesian configuration=" for NVT frames >= 1)
     scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    if(scannedLine == nil)
+    guard let firstHeaderLine = scannedLine else
     {
-      throw SKParserError.containsNoData
+      return nil
+    }
+    
+    if currentFrame > 0
+    {
+      let trimmedWords: [String] = firstHeaderLine.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
+      if let firstWord = trimmedWords.first?.lowercased(),
+         (firstWord.hasPrefix("direct") || firstWord.hasPrefix("cartesian") || firstWord.hasPrefix("kartesian"))
+      {
+        fractional = !(firstWord.hasPrefix("c") || firstWord.hasPrefix("k"))
+        return (currentCell, currentElements, currentNumberOfAtomsForElement)
+      }
     }
     
     // scan scaleFactor
@@ -209,7 +226,13 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
     {
       scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
       if let numberOfAtoms: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
-      {        
+      {
+        let counts: [Int] = numberOfAtoms.compactMap{Int($0)}
+        guard counts.count >= elements.count else
+        {
+          throw SKParserError.containsNoData
+        }
+        
         // check for "Selective dynamics"
         //var selectiveDynamics: Bool = false
         let previousScanLocation = self.scanner.currentIndex
@@ -229,17 +252,22 @@ public final class SKVASPXDATCARParser: SKParser, ProgressReporting
           }
         }
         
+        fractional = true
         scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
         if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
            words.count >= 1
         {
           if let firstCharacter = words[0].lowercased().first,
-             firstCharacter == "c"  // "Cartesian"
+             firstCharacter == "c" || firstCharacter == "k"  // "Cartesian"
           {
             fractional = false
           }
         }
-        return (cell, elements, numberOfAtoms.compactMap{Int($0)})
+        
+        self.currentCell = cell
+        self.currentElements = elements
+        self.currentNumberOfAtomsForElement = counts
+        return (cell, elements, counts)
       }
     }
     

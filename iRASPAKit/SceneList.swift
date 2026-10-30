@@ -281,9 +281,12 @@ public final class SceneList:  ObjectViewer, BinaryDecodable, BinaryEncodable
     {
       for movie in scene.movies
       {
-        let frame = movie.frames[min(selectedFrameIndex, movie.frames.count-1)]
-        movie.selectedFrame = frame
-        movie.selectedFrames = [frame]
+        if !movie.frames.isEmpty
+        {
+          let frame = movie.frames[min(max(0, selectedFrameIndex), movie.frames.count-1)]
+          movie.selectedFrame = frame
+          movie.selectedFrames = [frame]
+        }
       }
     }
   }

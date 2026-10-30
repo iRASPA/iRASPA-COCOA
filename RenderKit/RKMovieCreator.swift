@@ -173,7 +173,7 @@ public class RKMovieCreator: NSObject
         return
       }
   
-      //renderer?.makeCVPicture(pixelBuffer!)
+      renderer?.makeCVPicture(pixelBuffer!)
       
       // Wait until write is ready
       if (!assetInput.isReadyForMoreMediaData)
@@ -197,7 +197,11 @@ public class RKMovieCreator: NSObject
     
     assetInput.markAsFinished()
     
-    assetWriter?.finishWriting(completionHandler: {})
+    let finishSemaphore: DispatchSemaphore = DispatchSemaphore(value: 0)
+    assetWriter?.finishWriting(completionHandler: {
+      finishSemaphore.signal()
+    })
+    _ = finishSemaphore.wait(timeout: DispatchTime.distantFuture)
   }
   
 

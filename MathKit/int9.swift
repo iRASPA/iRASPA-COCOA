@@ -64,11 +64,15 @@ public struct int9
 
 public struct int11
 {
-  public var elements: UnsafeMutablePointer<Int32>
+  public var elements: [Int32]
   public init()
   {
-    self.elements = UnsafeMutablePointer<Int32>.allocate(capacity: 11)
-    self.elements.initialize(repeating: 0, count: 11)
+    self.elements = [0,0,0,0,0,0,0,0,0,0,0]
+  }
+  
+  public init(_ elements: [Int32])
+  {
+    self.elements = elements
   }
   
   public subscript(column: Int) -> Int32
@@ -76,13 +80,13 @@ public struct int11
     get
     {
       assert(column >= 0 && column < 11, "Index out of range")
-      return (self.elements + column).pointee
+      return self.elements[column]
     }
     
     set(newValue)
     {
       assert(column >= 0 && column < 11, "Index out of range")
-      (self.elements + column).pointee = newValue
+      self.elements[column] = newValue
     }
   }
 }

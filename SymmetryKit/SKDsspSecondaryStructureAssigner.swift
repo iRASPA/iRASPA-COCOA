@@ -93,7 +93,10 @@ public enum SKDsspSecondaryStructureAssigner
       
       let carbonToNitrogen: SIMD3<Double> = normalize(nitrogen - previousCarbon)
       let alphaCarbonToNitrogen: SIMD3<Double> = normalize(nitrogen - alphaCarbon)
-      let hydrogenDirection: SIMD3<Double> = normalize(carbonToNitrogen + alphaCarbonToNitrogen)
+      let rawDirection: SIMD3<Double> = carbonToNitrogen + alphaCarbonToNitrogen
+      let directionLength: Double = length(rawDirection)
+      guard directionLength > 1.0e-12 else {continue}
+      let hydrogenDirection: SIMD3<Double> = rawDirection / directionLength
       states[index].implicitHydrogen = nitrogen + nitrogenHydrogenBondLength * hydrogenDirection
     }
     return states

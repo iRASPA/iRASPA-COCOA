@@ -205,6 +205,30 @@ class MetalInternalBondSelectionGlowShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
+             let buffer: MTLBuffer = self.metalBuffer(instanceRenderer.instanceBufferPartialDoubleBonds, sceneIndex: i, movieIndex: j)
+          {
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (structure.bondSelectionStyle == .glow && !structure.isUnity && structure.drawBonds && structure.isVisible && instanceCount > 0)
+            {
+              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
+              
+              MetalInternalBondShader.drawBonds(commandEncoder, imposterVertexCount: 18, instanceCount: instanceCount)
+            }
+          }
+          index = index + 1
+        }
+      }
+        
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderObject] = self.renderStructures[i]
+          
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
              let buffer: MTLBuffer = self.metalBuffer(instanceRenderer.instanceBufferTripleBonds, sceneIndex: i, movieIndex: j)
           {
             let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride

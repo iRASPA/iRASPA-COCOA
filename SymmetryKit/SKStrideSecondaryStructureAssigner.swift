@@ -95,7 +95,7 @@ public enum SKStrideSecondaryStructureAssigner
   public static func assign(for chain: SKStrideBackboneChain) -> [SKSecondaryStructureType]
   {
     let residues: [SKStrideBackboneResidue] = chain.residues.filter{$0.alphaCarbon != nil}
-    guard residues.count >= 2 else {return []}
+    guard residues.count >= 2 else {return Array(repeating: .coil, count: residues.count)}
     
     var states: [BackboneResidueState] = buildStates(for: residues)
     computeBackboneAngles(states: &states)

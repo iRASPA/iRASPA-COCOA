@@ -1898,7 +1898,10 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       movieOutlineView?.endUpdates()
       project.undoManager.endUndoGrouping()
         
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: toItem!.allRenderFrames)
+      if let toItem = toItem
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: toItem.allRenderFrames)
+      }
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: scene.allRenderFrames)
         
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()

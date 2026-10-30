@@ -154,7 +154,9 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     
     NotificationCenter.default.removeObserver(self, name: NSView.boundsDidChangeNotification, object: self.windowController?.detailTabViewController?.renderViewController)
 
-    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: CameraNotificationStrings.didChangeNotification), object: windowController)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: CameraNotificationStrings.didChangeNotification), object: nil)
+    
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: CameraNotificationStrings.projectionDidChangeNotification), object: windowController)
   }
   
   func reloadData()
@@ -571,7 +573,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
           }
         }
         
-        if let popUpbuttonStyleType: NSPopUpButton = view.viewWithTag(3) as? NSPopUpButton
+        if let popUpbuttonStyleType: NSPopUpButton = view.viewWithTag(2) as? NSPopUpButton
         {
           popUpbuttonStyleType.isEnabled = false
           if let project = representedObject as? ProjectStructureNode
@@ -3008,13 +3010,14 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         {
           self.movieTimer?.cancel()
           self.movieTimer = DispatchSource.makeTimerSource()
-          let timeInterval: Double = 1.0 / Double(project.numberOfFramesPerSecond)
+          let timeInterval: Double = 1.0 / Double(max(1, project.numberOfFramesPerSecond))
           self.movieTimer?.schedule(wallDeadline: DispatchWallTime.now(), repeating: timeInterval, leeway: .seconds(1))
             
           self.movieTimer?.setEventHandler(handler: {
             self.increaseCurrentFrame()
-            self.movieTimer?.resume()
+            self.updateCameraMovieCell()
           })
+          self.movieTimer?.resume()
         }
       }
       else
@@ -3096,15 +3099,15 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   @IBAction func startMovieMove(_ sender: NSButtonCell)
   {
-    if let _: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    if let project: ProjectStructureNode = self.representedObject as? ProjectStructureNode
     {
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       
       if (sender.state == NSControl.StateValue.on)
       {
+        self.movieTimer?.cancel()
         movieTimer = DispatchSource.makeTimerSource()
-        //let timeInterval: Double = 1.0 / Double(project.sceneList.numberOfFramesPerSecond)
-        let timeInterval: Double = 1.0
+        let timeInterval: Double = 1.0 / Double(max(1, project.numberOfFramesPerSecond))
         movieTimer?.schedule(wallDeadline: DispatchWallTime.now() + timeInterval, repeating: timeInterval)
         
         movieTimer?.setEventHandler(handler: {
@@ -3150,7 +3153,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   {
     if let project: ProjectStructureNode = self.representedObject as? ProjectStructureNode
     {
-      project.sceneList.setAllMovieFramesToBeginning()
+      project.sceneList.setAllMovieFramesToEnd()
       
       //windowController?.frameListViewController?.reloadData()
       updateCameraMovieCell()

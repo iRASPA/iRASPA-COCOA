@@ -815,11 +815,10 @@ public final class Molecule: Structure, AtomEditor, BondEditor, RKRenderAtomSour
         let posB: SIMD3<Double> = atoms[j].position
         
         let separationVector: SIMD3<Double> = posA - posB
-        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(posA - posB)
         
         let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
         
-        let bondLength: Double = length(periodicSeparationVector)
+        let bondLength: Double = length(separationVector)
         if (bondLength < bondCriteria)
         {
           // Type atom as 'Double'
@@ -830,11 +829,6 @@ public final class Molecule: Structure, AtomEditor, BondEditor, RKRenderAtomSour
           else if (bondLength < 0.8)
           {
             // discard as being a bond
-          }
-          else if (length(separationVector) > bondCriteria)
-          {
-            let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .external)
-            computedBonds.append(bond)
           }
           else
           {
@@ -849,11 +843,10 @@ public final class Molecule: Structure, AtomEditor, BondEditor, RKRenderAtomSour
         let posB: SIMD3<Double> = atomList[j].position
         
         let separationVector: SIMD3<Double> = posA - posB
-        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(posA - posB)
         
         let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atomList[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
         
-        let bondLength: Double = length(periodicSeparationVector)
+        let bondLength: Double = length(separationVector)
         if (bondLength < bondCriteria)
         {
           // Type atom as 'Double'
@@ -865,11 +858,6 @@ public final class Molecule: Structure, AtomEditor, BondEditor, RKRenderAtomSour
           {
             // discard as being a bond
           }
-          else if (length(separationVector) > bondCriteria)
-          {
-            let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atomList[j], boundaryType: .external)
-            computedBonds.append(bond)
-          }
           else
           {
             let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atomList[j], boundaryType: .internal)
@@ -878,7 +866,7 @@ public final class Molecule: Structure, AtomEditor, BondEditor, RKRenderAtomSour
         }
       }
     }
-    return computedBonds
+    return computedBonds.filter{$0.atom1.type == .copy && $0.atom2.type == .copy}
   }
   
   // MARK: -
@@ -913,6 +901,7 @@ public final class Molecule: Structure, AtomEditor, BondEditor, RKRenderAtomSour
     //atoms.forEach{ $0.bonds.removeAll()}
     
     let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
+    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.y > 0.0001 && perpendicularWidths.z > 0.0001 else {return []}
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]
     let cutoffVector: SIMD3<Double> = SIMD3<Double>(x: perpendicularWidths.x/Double(numberOfCells[0]), y: perpendicularWidths.y/Double(numberOfCells[1]), z: perpendicularWidths.z/Double(numberOfCells[2]))
@@ -929,9 +918,10 @@ public final class Molecule: Structure, AtomEditor, BondEditor, RKRenderAtomSour
         atoms[i].type = .copy
         let position: SIMD3<Double> = atoms[i].position - structureCell.boundingBox.minimum
         
-        let icell: Int = Int((position.x) / cutoffVector.x) +
-          Int((position.y) / cutoffVector.y) * numberOfCells[0] +
-          Int((position.z) / cutoffVector.z) * numberOfCells[1] * numberOfCells[0]
+        let ix: Int = max(0, min(numberOfCells[0] - 1, Int((position.x) / cutoffVector.x)))
+        let iy: Int = max(0, min(numberOfCells[1] - 1, Int((position.y) / cutoffVector.y)))
+        let iz: Int = max(0, min(numberOfCells[2] - 1, Int((position.z) / cutoffVector.z)))
+        let icell: Int = ix + iy * numberOfCells[0] + iz * numberOfCells[1] * numberOfCells[0]
         
         list[i] = head[icell]
         head[icell] = i

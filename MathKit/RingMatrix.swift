@@ -92,18 +92,18 @@ extension RingMatrix
   {
     if isColumnVector
     {
-      self.init(rows: 1, columns: range.upperBound - range.lowerBound, repeatedValue: 0)
-      for c in range
-      {
-        self[0, c - range.lowerBound] = Int(c)
-      }
-    }
-    else
-    {
       self.init(rows: range.upperBound - range.lowerBound, columns: 1, repeatedValue: 0)
       for r in range
       {
         self[r - range.lowerBound, 0] = Int(r)
+      }
+    }
+    else
+    {
+      self.init(rows: 1, columns: range.upperBound - range.lowerBound, repeatedValue: 0)
+      for c in range
+      {
+        self[0, c - range.lowerBound] = Int(c)
       }
     }
   }
@@ -1112,7 +1112,7 @@ extension RingMatrix
       
       // Insert AA
       AA = AA.transposed()
-      A.assignSubmatrix(startRow: beg, startColumn: beg, integerMatrix: AA.transposed())
+      A.assignSubmatrix(startRow: beg, startColumn: beg, integerMatrix: AA)
       
      // Insert transformations
       let temp: RingMatrix = UU

@@ -251,7 +251,7 @@ static float4 shadeGeometricSurface(float3 N,
   hsv.x = hsv.x * isosurfaceUniforms.hue;
   hsv.y = hsv.y * isosurfaceUniforms.saturation;
   hsv.z = hsv.z * isosurfaceUniforms.value;
-  float opacity = isosurfaceUniforms.diffuseFrontSide.w;
+  float opacity = frontfacing ? isosurfaceUniforms.diffuseFrontSide.w : isosurfaceUniforms.ambientBackSide.w;
   return float4(hsv2rgb(hsv) * opacity, opacity);
 }
 

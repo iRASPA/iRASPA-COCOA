@@ -194,6 +194,7 @@ public class RKCamera: NSObject, BinaryDecodable, BinaryEncodable, NSSecureCodin
     self.resetDirectionType = camera.resetDirectionType
     
     self.bloomLevel = camera.bloomLevel
+    self.bloomPulse = camera.bloomPulse
     
     self.resetPercentage = camera.resetPercentage
     self.initialized = camera.initialized
@@ -587,10 +588,6 @@ public class RKCamera: NSObject, BinaryDecodable, BinaryEncodable, NSSecureCodin
     viewMatrix[3][0] = -(viewMatrix[0][0]*eye.x+viewMatrix[1][0]*eye.y+viewMatrix[2][0]*eye.z);
     viewMatrix[3][1] = -(viewMatrix[0][1]*eye.x+viewMatrix[1][1]*eye.y+viewMatrix[2][1]*eye.z);
     viewMatrix[3][2] = -(viewMatrix[0][2]*eye.x+viewMatrix[1][2]*eye.y+viewMatrix[2][2]*eye.z);
-    
-    viewMatrix[3][0] = -eye.x
-    viewMatrix[3][1] = -eye.y
-    viewMatrix[3][2] = -eye.z
     
     return viewMatrix;
   }

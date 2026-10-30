@@ -110,11 +110,101 @@ public class VolumetricData: Object, VolumetricDataViewer, RKRenderUnitCellSourc
   public init(copy gridVolume: VolumetricData)
   {
     super.init(copy: gridVolume)
+    
+    self.drawAdsorptionSurface = gridVolume.drawAdsorptionSurface
+    self.encompassingPowerOfTwoCubicGridSize = gridVolume.encompassingPowerOfTwoCubicGridSize
+    self.dimensions = gridVolume.dimensions
+    self.spacing = gridVolume.spacing
+    self.range = gridVolume.range
+    self.data = gridVolume.data
+    self.average = gridVolume.average
+    self.variance = gridVolume.variance
+    
+    self.adsorptionSurfaceOpacity = gridVolume.adsorptionSurfaceOpacity
+    self.adsorptionTransparencyThreshold = gridVolume.adsorptionTransparencyThreshold
+    self.adsorptionSurfaceIsoValue = gridVolume.adsorptionSurfaceIsoValue
+    self.adsorptionSurfaceProbeMolecule = gridVolume.adsorptionSurfaceProbeMolecule
+    self.adsorptionSurfaceProbeEpsilon = gridVolume.adsorptionSurfaceProbeEpsilon
+    self.adsorptionSurfaceProbeSigma = gridVolume.adsorptionSurfaceProbeSigma
+    self.adsorptionSurfaceNumberOfTriangles = gridVolume.adsorptionSurfaceNumberOfTriangles
+    
+    self.adsorptionSurfaceRenderingMethod = gridVolume.adsorptionSurfaceRenderingMethod
+    self.adsorptionVolumeTransferFunction = gridVolume.adsorptionVolumeTransferFunction
+    self.adsorptionVolumeStepLength = gridVolume.adsorptionVolumeStepLength
+    
+    self.adsorptionSurfaceHue = gridVolume.adsorptionSurfaceHue
+    self.adsorptionSurfaceSaturation = gridVolume.adsorptionSurfaceSaturation
+    self.adsorptionSurfaceValue = gridVolume.adsorptionSurfaceValue
+    
+    self.adsorptionSurfaceFrontSideHDR = gridVolume.adsorptionSurfaceFrontSideHDR
+    self.adsorptionSurfaceFrontSideHDRExposure = gridVolume.adsorptionSurfaceFrontSideHDRExposure
+    self.adsorptionSurfaceFrontSideAmbientIntensity = gridVolume.adsorptionSurfaceFrontSideAmbientIntensity
+    self.adsorptionSurfaceFrontSideDiffuseIntensity = gridVolume.adsorptionSurfaceFrontSideDiffuseIntensity
+    self.adsorptionSurfaceFrontSideSpecularIntensity = gridVolume.adsorptionSurfaceFrontSideSpecularIntensity
+    self.adsorptionSurfaceFrontSideShininess = gridVolume.adsorptionSurfaceFrontSideShininess
+    self.adsorptionSurfaceFrontSideAmbientColor = gridVolume.adsorptionSurfaceFrontSideAmbientColor
+    self.adsorptionSurfaceFrontSideDiffuseColor = gridVolume.adsorptionSurfaceFrontSideDiffuseColor
+    self.adsorptionSurfaceFrontSideSpecularColor = gridVolume.adsorptionSurfaceFrontSideSpecularColor
+    
+    self.adsorptionSurfaceBackSideHDR = gridVolume.adsorptionSurfaceBackSideHDR
+    self.adsorptionSurfaceBackSideHDRExposure = gridVolume.adsorptionSurfaceBackSideHDRExposure
+    self.adsorptionSurfaceBackSideAmbientIntensity = gridVolume.adsorptionSurfaceBackSideAmbientIntensity
+    self.adsorptionSurfaceBackSideDiffuseIntensity = gridVolume.adsorptionSurfaceBackSideDiffuseIntensity
+    self.adsorptionSurfaceBackSideSpecularIntensity = gridVolume.adsorptionSurfaceBackSideSpecularIntensity
+    self.adsorptionSurfaceBackSideShininess = gridVolume.adsorptionSurfaceBackSideShininess
+    self.adsorptionSurfaceBackSideAmbientColor = gridVolume.adsorptionSurfaceBackSideAmbientColor
+    self.adsorptionSurfaceBackSideDiffuseColor = gridVolume.adsorptionSurfaceBackSideDiffuseColor
+    self.adsorptionSurfaceBackSideSpecularColor = gridVolume.adsorptionSurfaceBackSideSpecularColor
   }
   
   public init(clone gridVolume: VolumetricData)
   {
     super.init(clone: gridVolume)
+    
+    self.drawAdsorptionSurface = gridVolume.drawAdsorptionSurface
+    self.encompassingPowerOfTwoCubicGridSize = gridVolume.encompassingPowerOfTwoCubicGridSize
+    self.dimensions = gridVolume.dimensions
+    self.spacing = gridVolume.spacing
+    self.range = gridVolume.range
+    self.data = gridVolume.data
+    self.average = gridVolume.average
+    self.variance = gridVolume.variance
+    
+    self.adsorptionSurfaceOpacity = gridVolume.adsorptionSurfaceOpacity
+    self.adsorptionTransparencyThreshold = gridVolume.adsorptionTransparencyThreshold
+    self.adsorptionSurfaceIsoValue = gridVolume.adsorptionSurfaceIsoValue
+    self.adsorptionSurfaceProbeMolecule = gridVolume.adsorptionSurfaceProbeMolecule
+    self.adsorptionSurfaceProbeEpsilon = gridVolume.adsorptionSurfaceProbeEpsilon
+    self.adsorptionSurfaceProbeSigma = gridVolume.adsorptionSurfaceProbeSigma
+    self.adsorptionSurfaceNumberOfTriangles = gridVolume.adsorptionSurfaceNumberOfTriangles
+    
+    self.adsorptionSurfaceRenderingMethod = gridVolume.adsorptionSurfaceRenderingMethod
+    self.adsorptionVolumeTransferFunction = gridVolume.adsorptionVolumeTransferFunction
+    self.adsorptionVolumeStepLength = gridVolume.adsorptionVolumeStepLength
+    
+    self.adsorptionSurfaceHue = gridVolume.adsorptionSurfaceHue
+    self.adsorptionSurfaceSaturation = gridVolume.adsorptionSurfaceSaturation
+    self.adsorptionSurfaceValue = gridVolume.adsorptionSurfaceValue
+    
+    self.adsorptionSurfaceFrontSideHDR = gridVolume.adsorptionSurfaceFrontSideHDR
+    self.adsorptionSurfaceFrontSideHDRExposure = gridVolume.adsorptionSurfaceFrontSideHDRExposure
+    self.adsorptionSurfaceFrontSideAmbientIntensity = gridVolume.adsorptionSurfaceFrontSideAmbientIntensity
+    self.adsorptionSurfaceFrontSideDiffuseIntensity = gridVolume.adsorptionSurfaceFrontSideDiffuseIntensity
+    self.adsorptionSurfaceFrontSideSpecularIntensity = gridVolume.adsorptionSurfaceFrontSideSpecularIntensity
+    self.adsorptionSurfaceFrontSideShininess = gridVolume.adsorptionSurfaceFrontSideShininess
+    self.adsorptionSurfaceFrontSideAmbientColor = gridVolume.adsorptionSurfaceFrontSideAmbientColor
+    self.adsorptionSurfaceFrontSideDiffuseColor = gridVolume.adsorptionSurfaceFrontSideDiffuseColor
+    self.adsorptionSurfaceFrontSideSpecularColor = gridVolume.adsorptionSurfaceFrontSideSpecularColor
+    
+    self.adsorptionSurfaceBackSideHDR = gridVolume.adsorptionSurfaceBackSideHDR
+    self.adsorptionSurfaceBackSideHDRExposure = gridVolume.adsorptionSurfaceBackSideHDRExposure
+    self.adsorptionSurfaceBackSideAmbientIntensity = gridVolume.adsorptionSurfaceBackSideAmbientIntensity
+    self.adsorptionSurfaceBackSideDiffuseIntensity = gridVolume.adsorptionSurfaceBackSideDiffuseIntensity
+    self.adsorptionSurfaceBackSideSpecularIntensity = gridVolume.adsorptionSurfaceBackSideSpecularIntensity
+    self.adsorptionSurfaceBackSideShininess = gridVolume.adsorptionSurfaceBackSideShininess
+    self.adsorptionSurfaceBackSideAmbientColor = gridVolume.adsorptionSurfaceBackSideAmbientColor
+    self.adsorptionSurfaceBackSideDiffuseColor = gridVolume.adsorptionSurfaceBackSideDiffuseColor
+    self.adsorptionSurfaceBackSideSpecularColor = gridVolume.adsorptionSurfaceBackSideSpecularColor
   }
   
   public required init(from object: Object)

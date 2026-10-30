@@ -117,10 +117,15 @@ class MetalLocalAxesShader
               vertexBufferArray.append(device.makeBuffer(bytes: axesGeometry.vertices, length:MemoryLayout<RKPrimitiveVertex>.stride * axesGeometry.vertices.count, options:RKMetal.hostStorage))
               indexBufferArray.append(device.makeBuffer(bytes: axesGeometry.indices, length:MemoryLayout<UInt16>.stride * axesGeometry.indices.count, options:RKMetal.hostStorage))
             }
+            else
+            {
+              vertexBufferArray.append(nil)
+              indexBufferArray.append(nil)
+            }
           }
-          vertexBuffer.append(vertexBufferArray)
-          indexBuffer.append(indexBufferArray)
         }
+        vertexBuffer.append(vertexBufferArray)
+        indexBuffer.append(indexBufferArray)
       }
     }
   }

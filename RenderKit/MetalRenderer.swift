@@ -487,17 +487,36 @@ public class MetalRenderer
   
   public func reloadRenderDataSelectedInternalBonds(device: MTLDevice)
   {
-    
+    internalBondSelectionShader.buildInstanceBuffers(device: device)
   }
   
   public func reloadRenderDataSelectedExternalBonds(device: MTLDevice)
   {
-    
+    externalBondSelectionShader.buildInstanceBuffers(device: device)
   }
   
   public func reloadRenderDataSelectedPrimitives(device: MTLDevice)
   {
+    ellipsoidPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    crystalEllipsoidPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    cylinderPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    crystalCylinderPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    polygonalPrismPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    crystalPolygonalPrismPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
     
+    ellipsoidPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    crystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    cylinderPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    crystalCylinderPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    polygonalPrismPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    crystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    
+    ellipsoidPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
+    crystalEllipsoidPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
+    cylinderPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
+    crystalCylinderPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
+    polygonalPrismPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
+    crystalPolygonalPrismPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
   }
   
   public func reloadRenderMeasurePointsData(device: MTLDevice)
@@ -799,13 +818,18 @@ public class MetalRenderer
       
       structureUniformBuffers = device.makeBuffer(bytes: structureUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structureUniforms.count,1), options:RKMetal.hostStorage)
     }
+    else
+    {
+      let structureUniforms: [RKStructureUniforms] = [RKStructureUniforms()]
+      structureUniformBuffers = device.makeBuffer(bytes: structureUniforms, length: MemoryLayout<RKStructureUniforms>.stride, options:RKMetal.hostStorage)
+    }
   }
   
   public func buildIsosurfaceUniforms(device: MTLDevice)
   {
     if let project: RKRenderDataSource = renderDataSource
     {
-      var isosurfaceUniforms: [RKIsosurfaceUniforms] = [RKIsosurfaceUniforms](repeating: RKIsosurfaceUniforms(), count: project.renderStructures.count)
+      var isosurfaceUniforms: [RKIsosurfaceUniforms] = [RKIsosurfaceUniforms](repeating: RKIsosurfaceUniforms(), count: max(project.renderStructures.count, 1))
       
       var index: Int  = 0
       for i in 0..<project.numberOfScenes
@@ -818,10 +842,12 @@ public class MetalRenderer
         }
       }
       
-      if(!isosurfaceUniforms.isEmpty)
-      {
-        isosurfaceUniformBuffers = device.makeBuffer(bytes: isosurfaceUniforms, length: MemoryLayout<RKIsosurfaceUniforms>.stride * isosurfaceUniforms.count, options:RKMetal.hostStorage)
-      }
+      isosurfaceUniformBuffers = device.makeBuffer(bytes: isosurfaceUniforms, length: MemoryLayout<RKIsosurfaceUniforms>.stride * max(isosurfaceUniforms.count, 1), options:RKMetal.hostStorage)
+    }
+    else
+    {
+      let isosurfaceUniforms: [RKIsosurfaceUniforms] = [RKIsosurfaceUniforms()]
+      isosurfaceUniformBuffers = device.makeBuffer(bytes: isosurfaceUniforms, length: MemoryLayout<RKIsosurfaceUniforms>.stride, options:RKMetal.hostStorage)
     }
   }
   
@@ -829,7 +855,7 @@ public class MetalRenderer
   {
     if let project: RKRenderDataSource = renderDataSource
     {
-      var blockingPocketUniforms: [RKBlockingPocketUniforms] = [RKBlockingPocketUniforms](repeating: RKBlockingPocketUniforms(), count: project.renderStructures.count)
+      var blockingPocketUniforms: [RKBlockingPocketUniforms] = [RKBlockingPocketUniforms](repeating: RKBlockingPocketUniforms(), count: max(project.renderStructures.count, 1))
       
       var index: Int  = 0
       for i in 0..<project.numberOfScenes
@@ -842,10 +868,12 @@ public class MetalRenderer
         }
       }
       
-      if(!blockingPocketUniforms.isEmpty)
-      {
-        blockingPocketUniformBuffers = device.makeBuffer(bytes: blockingPocketUniforms, length: MemoryLayout<RKBlockingPocketUniforms>.stride * blockingPocketUniforms.count, options:RKMetal.hostStorage)
-      }
+      blockingPocketUniformBuffers = device.makeBuffer(bytes: blockingPocketUniforms, length: MemoryLayout<RKBlockingPocketUniforms>.stride * max(blockingPocketUniforms.count, 1), options:RKMetal.hostStorage)
+    }
+    else
+    {
+      let blockingPocketUniforms: [RKBlockingPocketUniforms] = [RKBlockingPocketUniforms()]
+      blockingPocketUniformBuffers = device.makeBuffer(bytes: blockingPocketUniforms, length: MemoryLayout<RKBlockingPocketUniforms>.stride, options:RKMetal.hostStorage)
     }
   }
 
@@ -855,6 +883,12 @@ public class MetalRenderer
     if let project: RKRenderDataSource = renderDataSource
     {
       let lightUniforms: RKLightUniforms = RKLightUniforms(project: project)
+      let bytes: [UInt8] = lightUniforms.packed()
+      lightUniformBuffers = device.makeBuffer(bytes: bytes, length: bytes.count, options:RKMetal.hostStorage)
+    }
+    else
+    {
+      let lightUniforms: RKLightUniforms = RKLightUniforms()
       let bytes: [UInt8] = lightUniforms.packed()
       lightUniformBuffers = device.makeBuffer(bytes: bytes, length: bytes.count, options:RKMetal.hostStorage)
     }
@@ -1584,7 +1618,7 @@ public class MetalRenderer
         return imageRep.tiffRepresentation(using: NSBitmapImageRep.TIFFCompression.lzw, factor: 1.0)!
       case .cmyk_8_bits, .cmyk_16_bits:
         let imageRepCMYK: NSBitmapImageRep = imageRep.converting(to: NSColorSpace.genericCMYK, renderingIntent: NSColorRenderingIntent.perceptual)!
-        imageRepCMYK.size = NSMakeSize(CGFloat(imagePhysicalSizeInInches * 72), CGFloat(imagePhysicalSizeInInches * 72))
+        imageRepCMYK.size = NSMakeSize(CGFloat(imagePhysicalSizeInInches * 72), CGFloat(imagePhysicalSizeInInches * 72.0 * Double(size.height) / Double(size.width)))
         return imageRepCMYK.tiffRepresentation(using: NSBitmapImageRep.TIFFCompression.lzw, factor: 1.0)!
       }
       #else

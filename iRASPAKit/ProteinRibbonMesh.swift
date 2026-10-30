@@ -1063,7 +1063,7 @@ public struct ProteinRibbonMeshBuilder
     let count: Int = orientations.count
     guard count >= 2, tangents.count == count, secondaryStructure.count == count else {return}
     
-    for index in 1..<(count - 1)
+    for index in 1..<count
     {
       orientations[index] = orientationOrthogonalToTangent(orientations[index], tangent: tangents[index])
     }
@@ -1079,7 +1079,7 @@ public struct ProteinRibbonMeshBuilder
       }
     }
     
-    for index in 1..<(count - 1)
+    for index in 1..<count
     {
       let previousOrientation: SIMD3<Double> = orientationOrthogonalToTangent(orientations[index - 1], tangent: tangents[index])
       let candidateA: SIMD3<Double> = orientationOrthogonalToTangent(alternatives[index * 2], tangent: tangents[index])
@@ -1097,10 +1097,12 @@ public struct ProteinRibbonMeshBuilder
     var softenedAlternatives: [SIMD3<Double>] = Array(repeating: SIMD3<Double>(0.0, 0.0, 0.0), count: count * 2)
     for index in 1..<(count - 1)
     {
-      let kinkMetric: Double = dot(orientations[index], orientations[index + 1]) * dot(orientations[index], orientations[index - 1])
+      let previousIndex: Int = max(0, index - 1)
+      let nextIndex: Int = min(count - 1, index + 1)
+      let kinkMetric: Double = dot(orientations[index], orientations[nextIndex]) * dot(orientations[index], orientations[previousIndex])
       if kinkMetric < -0.10
       {
-        var blended: SIMD3<Double> = orientations[index + 1] + orientations[index - 1]
+        var blended: SIMD3<Double> = orientations[nextIndex] + orientations[previousIndex]
         blended += orientations[index] * 0.001
         blended = orientationOrthogonalToTangent(blended, tangent: tangents[index])
         let adjusted: SIMD3<Double> = normalize(dot(orientations[index], blended) < 0.0
@@ -1109,7 +1111,7 @@ public struct ProteinRibbonMeshBuilder
         var mixAmount: Double = 2.0 * (-0.10 - kinkMetric)
         mixAmount = min(mixAmount, 1.0)
         softenedAlternatives[index * 2] = normalize(orientations[index] * (1.0 - mixAmount) + adjusted * mixAmount)
-        softenedAlternatives[index * 2 + 1] = -softenedAlternatives[index * 2 + 1]
+        softenedAlternatives[index * 2 + 1] = -softenedAlternatives[index * 2]
       }
       else
       {
@@ -1207,7 +1209,7 @@ public struct ProteinRibbonMeshBuilder
   
   static func safeNormalize(_ vector: SIMD3<Double>, fallback: SIMD3<Double>) -> SIMD3<Double>
   {
-    if length_squared(vector) < 1.0e-12
+    guard !(length_squared(vector) < 1.0e-12) && !vector.x.isNaN && !vector.y.isNaN && !vector.z.isNaN else
     {
       return fallback
     }

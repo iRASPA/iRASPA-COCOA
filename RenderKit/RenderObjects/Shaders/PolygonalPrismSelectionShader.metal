@@ -437,7 +437,8 @@ vertex PrimitiveVertexShaderOut PrimitiveEllipsoidSelectionGlowVertexShader(cons
 {
   PrimitiveVertexShaderOut vert;
   
-  float4 pos = structureUniforms.transformationMatrix * vertices[vid].position + positions[iid].position;
+  float4 scale = structureUniforms.primitiveSelectionScaling * positions[iid].scale;
+  float4 pos = structureUniforms.transformationMatrix * (scale * vertices[vid].position) + positions[iid].position;
   vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * structureUniforms.transformationNormalMatrix *   vertices[vid].normal).xyz;
   
   float4 P =  frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
@@ -520,7 +521,8 @@ vertex PrimitiveVertexShaderOut PrimitiveCylinderSelectionGlowVertexShader(const
 {
   PrimitiveVertexShaderOut vert;
   
-  float4 pos = structureUniforms.transformationMatrix * vertices[vid].position + positions[iid].position;
+  float4 scale = structureUniforms.primitiveSelectionScaling * positions[iid].scale;
+  float4 pos = structureUniforms.transformationMatrix * (scale * vertices[vid].position) + positions[iid].position;
   vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * structureUniforms.transformationNormalMatrix *   vertices[vid].normal).xyz;
   
   float4 P =  frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
@@ -603,7 +605,8 @@ vertex PrimitiveVertexShaderOut PrimitivePolygonalPrismSelectionGlowVertexShader
 {
   PrimitiveVertexShaderOut vert;
   
-  float4 pos = structureUniforms.transformationMatrix * vertices[vid].position + positions[iid].position;
+  float4 scale = structureUniforms.primitiveSelectionScaling * positions[iid].scale;
+  float4 pos = structureUniforms.transformationMatrix * (scale * vertices[vid].position) + positions[iid].position;
   vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * structureUniforms.transformationNormalMatrix *   vertices[vid].normal).xyz;
   
   float4 P =  frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;

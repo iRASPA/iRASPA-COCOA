@@ -63,7 +63,7 @@ public struct BinaryDecodableError
   
   public static let invalidArchiveVersion: NSError = NSError.init(domain: BinaryDecodableError.domain, code: BinaryDecodableError.code.invalidArchiveVersion.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Invalid Archive Version (Upgrade to latest iRASPA version)", bundle: Bundle(for: BinaryEncoder.self), comment: "")])
   
-  public static let invalidMagicNumber: NSError = NSError.init(domain: BinaryDecodableError.domain, code: BinaryDecodableError.code.invalidArchiveVersion.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Invalid Magic Number (Internal bug)", bundle: Bundle(for: BinaryEncoder.self), comment: "")])
+  public static let invalidMagicNumber: NSError = NSError.init(domain: BinaryDecodableError.domain, code: BinaryDecodableError.code.invalidMagicNumber.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Invalid Magic Number (Internal bug)", bundle: Bundle(for: BinaryEncoder.self), comment: "")])
 }
 
 /// The actual binary decoder class.

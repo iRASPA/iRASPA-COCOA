@@ -90,7 +90,8 @@ fragment FragOutput VolumeRenderedVolumetricDataFragmentShader(VolumeRenderedVer
   const float step_length = isosurfaceUniforms.stepLength/numberOfReplicas.z;
     
   // Normalize the incoming N, L and V vectors
-  float3 direction = normalize(vert.pos.xyz - frameUniforms.cameraPosition.xyz);
+  bool orthographic = (frameUniforms.projectionMatrix[3][3] > 0.5f);
+  float3 direction = orthographic ? normalize((frameUniforms.viewMatrixInverse * float4(0.0f, 0.0f, -1.0f, 0.0f)).xyz) : normalize(vert.pos.xyz - frameUniforms.cameraPosition.xyz);
   float4 dir = float4(direction.x,direction.y,direction.z,0.0f);
   float3 ray_direction = (structureUniforms.inverseBoxMatrix * structureUniforms.inverseModelMatrix * dir).xyz;
   
@@ -105,6 +106,10 @@ fragment FragOutput VolumeRenderedVolumetricDataFragmentShader(VolumeRenderedVer
 
   float3 ray = ray_stop - ray_start;
   float ray_length = length(ray);
+  if (ray_length <= 1e-6f)
+  {
+    discard_fragment();
+  }
   float3 step_vector = step_length * ray / ray_length;
 
   float4 colour = float4(0.0f,0.0f,0.0f,0.0f);
@@ -174,6 +179,11 @@ fragment FragOutput VolumeRenderedVolumetricDataFragmentShader(VolumeRenderedVer
     {
       break;
     }
+  }
+  
+  if(colour.a<0.5)
+  {
+    newDepth = depth;
   }
   
   float3 hsv = rgb2hsv(colour.xyz);

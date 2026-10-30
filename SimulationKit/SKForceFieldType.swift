@@ -38,7 +38,7 @@ import simd
 // Note that this is 'value'-type
 public struct SKForceFieldType: BinaryDecodable, BinaryEncodable
 {
-  private static var classVersionNumber: Int = 3
+  private static var classVersionNumber: Int = 4
 
   public var forceFieldStringIdentifier: String = ""
   public var editable: Bool = true
@@ -76,6 +76,7 @@ public struct SKForceFieldType: BinaryDecodable, BinaryEncodable
     encoder.encode(self.userDefinedRadius)
     encoder.encode(self.isVisible)
     encoder.encode(self.charge)
+    encoder.encode(self.sortIndex)
   }
   
   // MARK: -
@@ -109,6 +110,11 @@ public struct SKForceFieldType: BinaryDecodable, BinaryEncodable
     if readVersionNumber >= 3
     {
       self.charge = try decoder.decode(Double.self)
+    }
+    
+    if readVersionNumber >= 4
+    {
+      self.sortIndex = try decoder.decode(Int.self)
     }
   }
   

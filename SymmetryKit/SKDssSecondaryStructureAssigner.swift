@@ -349,37 +349,67 @@ public enum SKDssSecondaryStructureAssigner
       
       residues[index].phiDegrees = torsionAngle(carbonylCarbon, alphaCarbon, nitrogen, previousCarbon)
       
+      let hasPsi: Bool
       if index + 1 < count,
          residues[index + 1].isReal,
          let nextNitrogen: SIMD3<Double> = residues[index + 1].nitrogen
       {
         // PyMOL ObjectMoleculeGetPhiPsi order: phi = dihedral(C, CA, N, C-1), psi = dihedral(N+1, C, CA, N)
         residues[index].psiDegrees = torsionAngle(nextNitrogen, carbonylCarbon, alphaCarbon, nitrogen)
+        hasPsi = true
+      }
+      else
+      {
+        hasPsi = false
       }
       
-      residues[index].flags.insert(.gotPhiPsi)
-      
-      let helixPsiDelta: Double = wrappedDelta(residues[index].psiDegrees, helixPsiTarget)
       let helixPhiDelta: Double = wrappedDelta(residues[index].phiDegrees, helixPhiTarget)
-      let strandPsiDelta: Double = wrappedDelta(residues[index].psiDegrees, strandPsiTarget)
       let strandPhiDelta: Double = wrappedDelta(residues[index].phiDegrees, strandPhiTarget)
       
-      if helixPsiDelta > helixPsiExclude || helixPhiDelta > helixPhiExclude
+      if hasPsi
       {
-        residues[index].flags.insert(.phiPsiNotHelix)
+        residues[index].flags.insert(.gotPhiPsi)
+        
+        let helixPsiDelta: Double = wrappedDelta(residues[index].psiDegrees, helixPsiTarget)
+        let strandPsiDelta: Double = wrappedDelta(residues[index].psiDegrees, strandPsiTarget)
+        
+        if helixPsiDelta > helixPsiExclude || helixPhiDelta > helixPhiExclude
+        {
+          residues[index].flags.insert(.phiPsiNotHelix)
+        }
+        else if helixPsiDelta < helixPsiInclude && helixPhiDelta < helixPhiInclude
+        {
+          residues[index].flags.insert(.phiPsiHelix)
+        }
+        
+        if strandPsiDelta > strandPsiExclude || strandPhiDelta > strandPhiExclude
+        {
+          residues[index].flags.insert(.phiPsiNotStrand)
+        }
+        else if strandPsiDelta < strandPsiInclude && strandPhiDelta < strandPhiInclude
+        {
+          residues[index].flags.insert(.phiPsiStrand)
+        }
       }
-      else if helixPsiDelta < helixPsiInclude && helixPhiDelta < helixPhiInclude
+      else
       {
-        residues[index].flags.insert(.phiPsiHelix)
-      }
-      
-      if strandPsiDelta > strandPsiExclude || strandPhiDelta > strandPhiExclude
-      {
-        residues[index].flags.insert(.phiPsiNotStrand)
-      }
-      else if strandPsiDelta < strandPsiInclude && strandPhiDelta < strandPhiInclude
-      {
-        residues[index].flags.insert(.phiPsiStrand)
+        if helixPhiDelta > helixPhiExclude
+        {
+          residues[index].flags.insert(.phiPsiNotHelix)
+        }
+        else if helixPhiDelta < helixPhiInclude
+        {
+          residues[index].flags.insert(.phiPsiHelix)
+        }
+        
+        if strandPhiDelta > strandPhiExclude
+        {
+          residues[index].flags.insert(.phiPsiNotStrand)
+        }
+        else if strandPhiDelta < strandPhiInclude
+        {
+          residues[index].flags.insert(.phiPsiStrand)
+        }
       }
     }
   }

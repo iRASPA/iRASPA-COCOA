@@ -60,6 +60,10 @@ class MetalMeasurementShader
       {
         self.instanceBuffer = device.makeBuffer(bytes: atomData, length: atomData.count * MemoryLayout<RKInPerInstanceAttributesAtoms>.stride, options: RKMetal.hostStorage)
       }
+      else
+      {
+        self.instanceBuffer = nil
+      }
     }
   }
 }

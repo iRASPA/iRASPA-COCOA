@@ -588,9 +588,10 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
         return !SKForceFieldSet.isDefaultForceFieldType(uniqueForceFieldName: uniqueForceFieldName)
       }
       
+      let keys: [String] = forceFieldSet.atomTypeList[removedIndexes].map{$0.forceFieldStringIdentifier}
+      
       forceFieldSet.remove(sortIndices: removedIndexes)
       
-      let keys: [String] = forceFieldSet.atomTypeList[selectedRows].map{$0.forceFieldStringIdentifier}
       for oldUniqueName in keys
       {
         // if none of the forcefields refer to this name, then delete it from colors

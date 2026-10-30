@@ -89,7 +89,7 @@ public class VTKVolumetricData: VolumetricData, RKRenderVolumetricDataSource, Un
     case .Int8:
       var convertedData: [Int8] = Array<Int8>(repeating: 0, count: data.count/MemoryLayout<Int8>.stride)
       _ = convertedData.withUnsafeMutableBytes { data.copyBytes(to: $0) }
-      arr2 = convertedData.map{Float($0 + Int8.min)/Float(UInt8.max)}
+      arr2 = convertedData.map{(Float($0) - Float(Int8.min))/Float(UInt8.max)}
     case .Uint16:
       var convertedData: [UInt16] = Array<UInt16>(repeating: 0, count: data.count/MemoryLayout<UInt16>.stride)
       _ = convertedData.withUnsafeMutableBytes { data.copyBytes(to: $0) }
@@ -97,7 +97,7 @@ public class VTKVolumetricData: VolumetricData, RKRenderVolumetricDataSource, Un
     case .Int16:
       var convertedData: [Int16] = Array<Int16>(repeating: 0, count: data.count/MemoryLayout<Int16>.stride)
       _ = convertedData.withUnsafeMutableBytes { data.copyBytes(to: $0) }
-      arr2 = convertedData.map{Float($0 + Int16.min)/Float(UInt16.max)}
+      arr2 = convertedData.map{(Float($0) - Float(Int16.min))/Float(UInt16.max)}
     case .Uint32:
       var convertedData: [UInt32] = Array<UInt32>(repeating: 0, count: data.count/MemoryLayout<UInt32>.stride)
       _ = convertedData.withUnsafeMutableBytes { data.copyBytes(to: $0) }
@@ -105,7 +105,7 @@ public class VTKVolumetricData: VolumetricData, RKRenderVolumetricDataSource, Un
     case .Int32:
       var convertedData: [Int32] = Array<Int32>(repeating: 0, count: data.count/MemoryLayout<Int32>.stride)
       _ = convertedData.withUnsafeMutableBytes { data.copyBytes(to: $0) }
-      arr2 = convertedData.map{Float($0 + Int32.min)/Float(UInt32.max)}
+      arr2 = convertedData.map{(Float($0) - Float(Int32.min))/Float(UInt32.max)}
     case .Uint64:
       var convertedData: [UInt64] = Array<UInt64>(repeating: 0, count: data.count/MemoryLayout<UInt64>.stride)
       _ = convertedData.withUnsafeMutableBytes { data.copyBytes(to: $0) }
@@ -113,7 +113,7 @@ public class VTKVolumetricData: VolumetricData, RKRenderVolumetricDataSource, Un
     case .Int64:
       var convertedData: [Int64] = Array<Int64>(repeating: 0, count: data.count/MemoryLayout<Int64>.stride)
       _ = convertedData.withUnsafeMutableBytes { data.copyBytes(to: $0) }
-      arr2 = convertedData.map{Float($0 + Int64.min)/Float(UInt64.max)}
+      arr2 = convertedData.map{(Float($0) - Float(Int64.min))/Float(UInt64.max)}
     case .Float:
       var convertedData: [Float] = Array<Float>(repeating: 0, count: data.count/MemoryLayout<Float>.stride)
       _ = convertedData.withUnsafeMutableBytes { data.copyBytes(to: $0) }
@@ -128,11 +128,11 @@ public class VTKVolumetricData: VolumetricData, RKRenderVolumetricDataSource, Un
     var minimum: Float = Float.greatestFiniteMagnitude
     var sum: Float = 0.0
     var sumSquared: Float = 0.0
-    for x in 0..<Int(dimensions.z)
+    for x in 0..<Int(dimensions.x)
     {
       for y in 0..<Int(dimensions.y)
       {
-        for z in 0..<Int(dimensions.x)
+        for z in 0..<Int(dimensions.z)
         {
           let value: Float = arr2[x+Int(dimensions.x)*y+z*Int(dimensions.x)*Int(dimensions.y)];
           
@@ -154,6 +154,7 @@ public class VTKVolumetricData: VolumetricData, RKRenderVolumetricDataSource, Un
     }
     self.range = (Double(minimum), Double(maximum))
     self.average = Double(sum) / Double(dimensions.x * dimensions.y * dimensions.z)
+    self.variance = Double(sumSquared) / Double(dimensions.x * dimensions.y * dimensions.z - 1)
     self.data = densityData.withUnsafeBufferPointer {Data(buffer: $0)}
     
     let largestSize: Int = Int(max(dimensions.x,dimensions.y,dimensions.z))

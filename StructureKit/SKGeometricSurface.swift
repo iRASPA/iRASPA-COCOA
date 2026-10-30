@@ -204,7 +204,7 @@ public struct SKGeometricSurface
               let distance = simd_length(delta)
               if distance < 1.0e-12
               {
-                if neighbourRadius > radius
+                if neighbourRadius > radius || (neighbourRadius == radius && (j < atomIndex || j >= count))
                 {
                   buried = true
                   break outer

@@ -103,7 +103,16 @@ public class LogQueue
     {
       self.destinations.setObject(windowController, forKey: subscriber)
       #if os(macOS)
-      subscriber.logScriptView?.layoutManager?.textStorage?.append(textStorageView)
+      if Thread.isMainThread
+      {
+        subscriber.logScriptView?.layoutManager?.textStorage?.append(textStorageView)
+      }
+      else
+      {
+        DispatchQueue.main.async {
+          subscriber.logScriptView?.layoutManager?.textStorage?.append(self.textStorageView)
+        }
+      }
       #endif
     }
     
@@ -205,7 +214,10 @@ public class LogQueue
       // Processes without a log window (the XPC services and the command line tool) would
       // otherwise drop every message, so send it to the system log instead. Visible with
       // Console.app or `log stream`.
-      if self.destinations.count == 0
+      self.stateLock.lock()
+      let destinationCount = self.destinations.count
+      self.stateLock.unlock()
+      if destinationCount == 0
       {
         os_log("%{public}@ %{public}@", log: LogQueue.systemLog, type: level.systemLogType, colorString, message)
       }
@@ -214,13 +226,22 @@ public class LogQueue
         
         self.textStorageView.append(attributedString)
         
+        self.stateLock.lock()
+        var matchingDestinations: [LogReporting] = []
         let enumerator: NSEnumerator = self.destinations.keyEnumerator()
         for destination in enumerator
         {
-          if windowController == nil || self.destinations.object(forKey: destination as? LogReporting) === windowController
+          if let reporting = destination as? LogReporting,
+             windowController == nil || self.destinations.object(forKey: reporting) === windowController
           {
-            (destination as? LogReporting)?.update(attributedString: attributedString)
+            matchingDestinations.append(reporting)
           }
+        }
+        self.stateLock.unlock()
+        
+        for reporting in matchingDestinations
+        {
+          reporting.update(attributedString: attributedString)
         }
         DispatchQueue.main.async(execute: {
           completionHandler()

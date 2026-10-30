@@ -126,6 +126,7 @@ class MetalExternalBondShader
         
         if structures.isEmpty
         {
+          sceneInstanceAllBonds.append(nil)
           sceneInstanceSingleBonds.append(nil)
           sceneInstanceDoubleBonds.append(nil)
           sceneInstancePartialDoubleBonds.append(nil)
@@ -170,6 +171,7 @@ class MetalExternalBondShader
     // draw "external" bonds (bonds extending out of the box, and must be clipped)
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderBondSource}.reduce(false, {$0 || ($1.drawBonds && $1.hasExternalBonds)}))
     {
+      commandEncoder.setDepthStencilState(self.depthState)
       commandEncoder.setFragmentTexture(shadowMask, index: 1)
       commandEncoder.setRenderPipelineState(RKMetal.perSampleImposterShading ? imposterPipeLine : perPixelImposterPipeLine)
       // the imposter hull is generated in the vertex shader with view-dependent winding
@@ -334,10 +336,6 @@ class MetalExternalBondShader
       
       commandEncoder.setCullMode(MTLCullMode.back)
     }
-    
-    commandEncoder.setDepthStencilState(self.depthState)
-    commandEncoder.setStencilReferenceValue(UInt32(1))
-    commandEncoder.setCullMode(MTLCullMode.back)
   }
   
   func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?

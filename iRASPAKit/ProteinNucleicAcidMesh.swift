@@ -94,9 +94,8 @@ public struct ProteinNucleicAcidMeshBuilder
                          residuePickIndex: pickIndex,
                          structureType: baseColor)
         }
-        
-        if let phosphate: SIMD3<Double> = residue.phosphatePosition(contentShift: contentShift),
-           let baseAnchor: SIMD3<Double> = base
+        else if let phosphate: SIMD3<Double> = residue.phosphatePosition(contentShift: contentShift),
+                let baseAnchor: SIMD3<Double> = base
         {
           let outer: SIMD3<Double> = phosphate * 0.333333 + baseAnchor * 0.666667
           appendCylinder(vertices: &auxiliaryVertices,

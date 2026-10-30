@@ -39,10 +39,15 @@ struct PickingVertexShaderOut
 {
   float4 position [[position]];
   float4 eye_position;
+  float4 instancePosition [[ flat ]];
   float2 texcoords;
   float3 frag_pos ;
   float3 frag_center [[ flat]];
   float4 sphere_radius [[ flat ]];
+  float4 ambientOcclusionTransformMatrix1 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix2 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix3 [[ flat ]];
+  float4 ambientOcclusionTransformMatrix4 [[ flat ]];
   int instanceId [[ flat ]];
 };
 
@@ -64,6 +69,13 @@ vertex PickingVertexShaderOut AtomSpherePickingVertexShader(const device InPerVe
   
   vert.instanceId = positions[iid].tag;
   float4 scale = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
+  
+  vert.instancePosition = positions[iid].position;
+  float4x4 ambientOcclusionTransformMatrix = transpose(frameUniforms.normalMatrix * structureUniforms.modelMatrix);
+  vert.ambientOcclusionTransformMatrix1 = ambientOcclusionTransformMatrix[0];
+  vert.ambientOcclusionTransformMatrix2 = ambientOcclusionTransformMatrix[1];
+  vert.ambientOcclusionTransformMatrix3 = ambientOcclusionTransformMatrix[2];
+  vert.ambientOcclusionTransformMatrix4 = ambientOcclusionTransformMatrix[3];
   
   vert.eye_position = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
   
@@ -97,6 +109,23 @@ fragment PickingFragOutput AtomSpherePickingFragmentShader(PickingVertexShaderOu
   float z = sqrt(zz);
   float4 pos = vert.eye_position;
   pos.z += vert.sphere_radius.z*z;
+  
+  if(structureUniforms.clipAtomsAtUnitCell)
+  {
+    float4x4 ambientOcclusionTransformMatrix = float4x4(vert.ambientOcclusionTransformMatrix1,
+                                                        vert.ambientOcclusionTransformMatrix2,
+                                                        vert.ambientOcclusionTransformMatrix3,
+                                                        vert.ambientOcclusionTransformMatrix4);
+    float3 vertexPosition = (ambientOcclusionTransformMatrix * (vert.sphere_radius * float4(x,y,z,1.0))).xyz;
+    float4 position = float4(vert.instancePosition.xyz + vertexPosition.xyz,1.0);
+    if (dot(structureUniforms.clipPlaneLeft,position)< 0.0) discard_fragment();
+    if (dot(structureUniforms.clipPlaneRight,position)< 0.0) discard_fragment();
+    if (dot(structureUniforms.clipPlaneTop,position)< 0.0) discard_fragment();
+    if (dot(structureUniforms.clipPlaneBottom,position)< 0.0) discard_fragment();
+    if (dot(structureUniforms.clipPlaneFront,position)< 0.0) discard_fragment();
+    if (dot(structureUniforms.clipPlaneBack,position)< 0.0) discard_fragment();
+  }
+  
   pos = frameUniforms.projectionMatrix * pos;
   output.depth = (pos.z / pos.w);
 
@@ -117,6 +146,13 @@ vertex PickingVertexShaderOut AtomSpherePickingPerspectiveVertexShader(const dev
   
   vert.instanceId = positions[iid].tag;
   float4 scale = (structureUniforms.isUnity ? structureUniforms.bondScaling : 1.0) * structureUniforms.atomScaleFactor * positions[iid].scale;
+  
+  vert.instancePosition = positions[iid].position;
+  float4x4 ambientOcclusionTransformMatrix = transpose(frameUniforms.normalMatrix * structureUniforms.modelMatrix);
+  vert.ambientOcclusionTransformMatrix1 = ambientOcclusionTransformMatrix[0];
+  vert.ambientOcclusionTransformMatrix2 = ambientOcclusionTransformMatrix[1];
+  vert.ambientOcclusionTransformMatrix3 = ambientOcclusionTransformMatrix[2];
+  vert.ambientOcclusionTransformMatrix4 = ambientOcclusionTransformMatrix[3];
   
   vert.frag_center = (frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position).xyz;
   vert.texcoords = vertices[vid].position.xy;
@@ -148,6 +184,24 @@ fragment PickingFragOutput AtomSpherePickingPerspectiveFragmentShader(PickingVer
   float t = 0.5 * (-B - sqrt(argument)) / A;
   
   float3 hit = t * vij;
+  float3 N = normalize(hit - vert.frag_center);
+  
+  if(structureUniforms.clipAtomsAtUnitCell)
+  {
+    float4x4 ambientOcclusionTransformMatrix = float4x4(vert.ambientOcclusionTransformMatrix1,
+                                                        vert.ambientOcclusionTransformMatrix2,
+                                                        vert.ambientOcclusionTransformMatrix3,
+                                                        vert.ambientOcclusionTransformMatrix4);
+    float3 vertexPosition = (ambientOcclusionTransformMatrix * (vert.sphere_radius * float4(N,1.0))).xyz;
+    float4 position = float4(vert.instancePosition.xyz + vertexPosition.xyz,1.0);
+    if (dot(structureUniforms.clipPlaneLeft,position)< 0.0) discard_fragment();
+    if (dot(structureUniforms.clipPlaneRight,position)< 0.0) discard_fragment();
+    if (dot(structureUniforms.clipPlaneTop,position)< 0.0) discard_fragment();
+    if (dot(structureUniforms.clipPlaneBottom,position)< 0.0) discard_fragment();
+    if (dot(structureUniforms.clipPlaneFront,position)< 0.0) discard_fragment();
+    if (dot(structureUniforms.clipPlaneBack,position)< 0.0) discard_fragment();
+  }
+  
   float4 screen_pos = frameUniforms.projectionMatrix * float4(hit, 1.0);
   output.depth = screen_pos.z / screen_pos.w;
   output.albedo = uint4(1,0,structureUniforms.structureIdentifier, vert.instanceId);

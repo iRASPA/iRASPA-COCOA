@@ -62,6 +62,8 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
   public required init(copy molecularCrystal: MolecularCrystal)
   {
     super.init(copy: molecularCrystal)
+    
+    self.spaceGroup = molecularCrystal.spaceGroup
   }
   
   public required init(clone molecularCrystal: MolecularCrystal)
@@ -896,7 +898,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
     atomsWithRemovedSymmetry.selectedTreeNodes = []
     
     // remove all bonds that are between 'doubles'
-    let bonds: [SKBondNode] = self.bondSetController.bonds
+    let bonds: [SKBondNode] = crystal.bondSetController.bonds
     let atomBonds: SKBondSetController = SKBondSetController(arrangedObjects: bonds)
     
     let atomNodes: [SKAtomTreeNode] = atomsWithRemovedSymmetry.flattenedLeafNodes()
@@ -982,7 +984,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
     
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
-    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
+    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: newCell, atomList: atomList))
     
     superCellAtoms.tag()
     bonds.tag()
@@ -1044,7 +1046,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
     
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
-    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
+    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: newCell, atomList: atomList))
     
     superCellAtoms.tag()
     bonds.tag()
@@ -1137,7 +1139,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
       let sinTheta: SIMD3<Double> = SIMD3<Double>(sin(pos.x), sin(pos.y), sin(pos.z))
       centerOfMassCosTheta += mass * cosTheta
       centerOfMassSinTheta += mass * sinTheta
-      centerOfMass += atom.position
+      centerOfMass += mass * atom.position
       M += mass
     }
     centerOfMassCosTheta /= M
@@ -1149,9 +1151,9 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
                       (atan2(-centerOfMassSinTheta.z, -centerOfMassCosTheta.z) + Double.pi)/(2.0 * Double.pi))
     let periodicCOM: SIMD3<Double> = self.cell.convertToCartesian(com)
     
-    if length_squared(cell.applyFullCellBoundaryCondition(periodicCOM-com)) < 1e-6
+    if length_squared(cell.applyFullCellBoundaryCondition(periodicCOM-centerOfMass)) < 1e-6
     {
-      return com
+      return centerOfMass
     }
     
     return periodicCOM
@@ -1783,7 +1785,7 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
     var computedBonds: [SKBondNode] = []
     
     let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
-    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
+    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.y > 0.0001 && perpendicularWidths.z > 0.0001 else {return []}
     
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]
@@ -1801,9 +1803,10 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
         //get the position in the unit cell
         let position: SIMD3<Double> = structureCell.unitCell * fract(structureCell.inverseUnitCell * atoms[i].position)
         
-        let icell: Int = Int((position.x) / cutoffVector.x) +
-                         Int((position.y) / cutoffVector.y) * numberOfCells[0] +
-                         Int((position.z) / cutoffVector.z) * numberOfCells[1] * numberOfCells[0]
+        let ix: Int = max(0, min(numberOfCells[0] - 1, Int((position.x) / cutoffVector.x)))
+        let iy: Int = max(0, min(numberOfCells[1] - 1, Int((position.y) / cutoffVector.y)))
+        let iz: Int = max(0, min(numberOfCells[2] - 1, Int((position.z) / cutoffVector.z)))
+        let icell: Int = ix + iy * numberOfCells[0] + iz * numberOfCells[1] * numberOfCells[0]
                 
         list[i] = head[icell]
         head[icell] = i
@@ -2062,7 +2065,11 @@ public final class MolecularCrystal: Structure, AtomEditor, BondEditor, UnitCell
       
       let data: [Float] = framework.ComputeEnergyGrid(size, sizeY: size, sizeZ: size, probeParameter: probeParameters)
                   
-      self.minimumGridEnergyValue = data.min()
+      if let minValue = data.min(), let maxValue = data.max()
+      {
+        self.minimumGridEnergyValue = minValue
+        self.range = (Double(minValue), Double(maxValue))
+      }
       
       self.adsorptionVolumeStepLength = 0.25 / Double(size)
    

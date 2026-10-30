@@ -71,8 +71,12 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
   static let rotationStringX: [Int: String] = [-1:"-x", 0:"", 1: "x"]
   static let rotationStringY: [Int: String] = [-1:"-y", 0:"", 1: "y"]
   static let rotationStringZ: [Int: String] = [-1:"-z", 0:"", 1: "z"]
-  static let translationString: [Int: String] = [0:"", 1:"+1/12", 2:"+1/6", 3:"+1/4", 4:"+1/3", 5:"+5/12", 6:"+1/2",
-                                          7:"+7/12", 8:"+2/3", 9:"+1/3", 10:"+5/6", 11:"+11/12", 12:""]
+  static let translationString: [Int: String] = [
+    0: "", 1: "+1/24", 2: "+1/12", 3: "+1/8", 4: "+1/6", 5: "+5/24", 6: "+1/4",
+    7: "+7/24", 8: "+1/3", 9: "+3/8", 10: "+5/12", 11: "+11/24", 12: "+1/2",
+    13: "+13/24", 14: "+7/12", 15: "+5/8", 16: "+2/3", 17: "+17/24", 18: "+3/4",
+    19: "+19/24", 20: "+5/6", 21: "+7/8", 22: "+11/12", 23: "+23/24", 24: ""
+  ]
   
   public enum SymmetryType: Int
   {
@@ -280,7 +284,7 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
   /// Inverse of the matrix if it exists, otherwise the contents of the resulting matrix are undefined.
   public var inverse: SKSeitzIntegerMatrix
   {
-    let inverseRotation: SKRotationMatrix = self.rotation.transpose
+    let inverseRotation: SKRotationMatrix = self.rotation.inverse
     let inverseTranslation: SIMD3<Int32> = 0 &- (inverseRotation * translation)
     return SKSeitzIntegerMatrix(rotation: inverseRotation, translation: inverseTranslation)
   }
@@ -387,7 +391,8 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
       let s3: String = SKSeitzIntegerMatrix.rotationStringZ[Int(self.rotation[2][0])] ?? ""
       if !sum1.isEmpty && !s3.hasPrefix("-") && !s3.isEmpty {sum1 += "+"}
       sum1 += s3
-      let s4: String = SKSeitzIntegerMatrix.translationString[Int(self.translation.x)] ?? ""
+      let tx: Int = ((Int(self.translation.x) % 24) + 24) % 24
+      let s4: String = SKSeitzIntegerMatrix.translationString[tx] ?? ""
       sum1 += s4
       
       var sum2: String = ""
@@ -399,7 +404,8 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
       let s7: String = SKSeitzIntegerMatrix.rotationStringZ[Int(self.rotation[2][1])] ?? ""
       if !sum2.isEmpty && !s7.hasPrefix("-") && !s7.isEmpty {sum2 += "+"}
       sum2 += s7
-      let s8: String = SKSeitzIntegerMatrix.translationString[Int(self.translation.y)] ?? ""
+      let ty: Int = ((Int(self.translation.y) % 24) + 24) % 24
+      let s8: String = SKSeitzIntegerMatrix.translationString[ty] ?? ""
       sum2 += s8
       
       var sum3: String = ""
@@ -407,11 +413,12 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
       sum3 += s9
       let s10: String = SKSeitzIntegerMatrix.rotationStringY[Int(self.rotation[1][2])] ?? ""
       if !sum3.isEmpty && !s10.hasPrefix("-") && !s10.isEmpty {sum3 += "+"}
-      sum2 += s10
+      sum3 += s10
       let s11: String = SKSeitzIntegerMatrix.rotationStringZ[Int(self.rotation[2][2])] ?? ""
       if !sum3.isEmpty && !s11.hasPrefix("-") && !s11.isEmpty {sum3 += "+"}
       sum3 += s11
-      let s12: String = SKSeitzIntegerMatrix.translationString[Int(self.translation.z)] ?? ""
+      let tz: Int = ((Int(self.translation.z) % 24) + 24) % 24
+      let s12: String = SKSeitzIntegerMatrix.translationString[tz] ?? ""
       sum3 += s12
 
       return (sum1, sum2, sum3)

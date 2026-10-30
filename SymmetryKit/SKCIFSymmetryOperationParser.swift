@@ -56,8 +56,13 @@ public enum SKCIFSymmetryOperationParser
     return operations
   }
   
-  private static func parseComponent(_ input: String) throws -> (SIMD3<Int32>, Double)
+  private static func parseComponent(_ rawInput: String) throws -> (SIMD3<Int32>, Double)
   {
+    let input: String = rawInput.components(separatedBy: .whitespaces).joined()
+    guard !input.isEmpty else
+    {
+      throw SKCIFSymmetryOperationParserError.invalidFormat(rawInput)
+    }
     var coefficients: SIMD3<Int32> = SIMD3<Int32>(0, 0, 0)
     var translation: Double = 0.0
     
@@ -89,7 +94,25 @@ public enum SKCIFSymmetryOperationParser
         index = input.index(after: index)
       }
       
-      if index < end && input[index] == "/"
+      if index < end && input[index] == "."
+      {
+        index = input.index(after: index)
+        var fractionFactor: Double = 0.1
+        var hasFractionDigits: Bool = false
+        while index < end && input[index].isNumber
+        {
+          hasNumber = true
+          hasFractionDigits = true
+          numerator += Double(input[index].wholeNumberValue ?? 0) * fractionFactor
+          fractionFactor *= 0.1
+          index = input.index(after: index)
+        }
+        guard hasFractionDigits else
+        {
+          throw SKCIFSymmetryOperationParserError.invalidFormat(rawInput)
+        }
+      }
+      else if index < end && input[index] == "/"
       {
         index = input.index(after: index)
         denominator = 0.0
@@ -100,7 +123,7 @@ public enum SKCIFSymmetryOperationParser
         }
         guard denominator != 0.0 else
         {
-          throw SKCIFSymmetryOperationParserError.invalidFormat(input)
+          throw SKCIFSymmetryOperationParserError.invalidFormat(rawInput)
         }
       }
       
@@ -113,7 +136,7 @@ public enum SKCIFSymmetryOperationParser
         {
           guard abs(value) == 1.0 else
           {
-            throw SKCIFSymmetryOperationParserError.invalidCoefficient(input)
+            throw SKCIFSymmetryOperationParserError.invalidCoefficient(rawInput)
           }
           
           switch axis
@@ -135,7 +158,7 @@ public enum SKCIFSymmetryOperationParser
         }
         else
         {
-          throw SKCIFSymmetryOperationParserError.invalidFormat(input)
+          throw SKCIFSymmetryOperationParserError.invalidFormat(rawInput)
         }
       }
       else if hasNumber
@@ -144,7 +167,7 @@ public enum SKCIFSymmetryOperationParser
       }
       else
       {
-        throw SKCIFSymmetryOperationParserError.invalidFormat(input)
+        throw SKCIFSymmetryOperationParserError.invalidFormat(rawInput)
       }
     }
     

@@ -64,11 +64,25 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, VolumetricDa
   public required init(copy GaussianCubeVolume: GaussianCubeVolumetricData)
   {
     super.init(copy: GaussianCubeVolume)
+    
+    self.dimensions = GaussianCubeVolume.dimensions
+    self.spacing = GaussianCubeVolume.spacing
+    self.range = GaussianCubeVolume.range
+    self.data = GaussianCubeVolume.data
+    self.average = GaussianCubeVolume.average
+    self.variance = GaussianCubeVolume.variance
   }
   
   public required init(clone GaussianCubeVolume: GaussianCubeVolumetricData)
   {
     super.init(clone: GaussianCubeVolume)
+    
+    self.dimensions = GaussianCubeVolume.dimensions
+    self.spacing = GaussianCubeVolume.spacing
+    self.range = GaussianCubeVolume.range
+    self.data = GaussianCubeVolume.data
+    self.average = GaussianCubeVolume.average
+    self.variance = GaussianCubeVolume.variance
   }
   
   public required init(from object: Object)
@@ -1130,7 +1144,7 @@ public class GaussianCubeVolumetricData: Structure, UnitCellViewer, VolumetricDa
     var totalCount: Int
     
     let perpendicularWidths: SIMD3<Double> = structureCell.perpendicularWidths
-    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
+    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.y > 0.0001 && perpendicularWidths.z > 0.0001 else {return []}
         
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]

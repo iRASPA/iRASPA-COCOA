@@ -232,6 +232,16 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
       self.object = structure.copy()
     case let structure as PolygonalPrismPrimitive:
       self.object = structure.copy()
+    case let structure as RASPAVolumetricData:
+      self.object = RASPAVolumetricData(copy: structure)
+    case let structure as VTKVolumetricData:
+      self.object = VTKVolumetricData(copy: structure)
+    case let structure as VASPVolumetricData:
+      self.object = VASPVolumetricData(copy: structure)
+    case let structure as GaussianCubeVolumetricData:
+      self.object = GaussianCubeVolumetricData(copy: structure)
+    case let structure as Structure:
+      self.object = Structure(copy: structure)
     default:
       self.object = Object()
     }
@@ -425,7 +435,7 @@ public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, Binary
     case .cylinderPrimitive:
       self.object = try decoder.decode(CylinderPrimitive.self)
     case .polygonalPrismPrimitive:
-      self.object = try decoder.decode(CylinderPrimitive.self)
+      self.object = try decoder.decode(PolygonalPrismPrimitive.self)
     case .RASPADensityVolume:
       self.object = try decoder.decode(RASPAVolumetricData.self)
     case .VTKDensityVolume:

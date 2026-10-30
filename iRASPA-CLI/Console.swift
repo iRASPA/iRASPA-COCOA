@@ -133,6 +133,7 @@ class Console
       
       // Remove attached argument from flag
       let splitFlag = flagWithArg.split(separator: argumentAttacher)
+      guard !splitFlag.isEmpty else { continue }
       let flag = String(splitFlag[0])
       let attachedArg: String? = splitFlag.count == 2 ? String(splitFlag[1]) : nil
       
@@ -148,13 +149,16 @@ class Console
         
         
         var claimedIdx = index + options[k].claimedValues
-        if attachedArg != nil
+        if attachedArg != nil && options[k].claimedValues > 0
         {
           claimedIdx -= 1
         }
-        for i in index...claimedIdx
+        if claimedIdx >= index
         {
-          strays[i] = ""
+          for i in index...min(claimedIdx, strays.count - 1)
+          {
+            strays[i] = ""
+          }
         }
         
         flagMatched = true
@@ -182,10 +186,13 @@ class Console
           }
           
           var claimedIdx = index + options[k].claimedValues
-          if attachedArg != nil { claimedIdx -= 1 }
-          for i in index...claimedIdx
+          if attachedArg != nil && options[k].claimedValues > 0 { claimedIdx -= 1 }
+          if claimedIdx >= index
           {
-            strays[i] = ""
+            for i in index...min(claimedIdx, strays.count - 1)
+            {
+              strays[i] = ""
+            }
           }
           
           flagMatched = true

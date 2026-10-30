@@ -420,7 +420,8 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
       
       
-        if let view: NSTableCellView = self.bondTableView?.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView,
+        if let column: Int = self.bondTableView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondLengthSliderColumn")),
+           let view: NSTableCellView = self.bondTableView?.view(atColumn: column, row: row, makeIfNecessary: false) as? NSTableCellView,
            let sliderValue: NSSlider = view.viewWithTag(11) as? NSSlider
         {
           sliderValue.doubleValue = sender.doubleValue
@@ -665,7 +666,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       bondViewer.bondSetController.arrangedObjects.insertItems(bonds, atIndexes: indexSet)
       bondViewer.bondSetController.selectedObjects.formUnion(indexSet)
       
-      if let bondTableView = bondTableView, bondTableView.numberOfRows>0
+      if let bondTableView = bondTableView
       {
         bondTableView.insertRows(at: indexSet, withAnimation: .slideLeft)
         bondTableView.selectRowIndexes(indexSet, byExtendingSelection: true)

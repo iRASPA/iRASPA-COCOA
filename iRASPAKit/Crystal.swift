@@ -62,6 +62,8 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   public required init(copy crystal: Crystal)
   {
     super.init(copy: crystal)
+    
+    self.spaceGroup = crystal.spaceGroup
   }
   
   public required init(clone crystal: Crystal)
@@ -506,7 +508,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
       
       for copy in copies
       {
-        let pos: SIMD3<Double> = copy.position
+        let pos: SIMD3<Double> = SIMD3<Double>.flip(v: copy.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
         
         for k1 in minimumReplicaX...maximumReplicaX
         {
@@ -559,8 +561,6 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
   
   public override var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms]
   {
-    var index: Int
-    
     let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
@@ -577,10 +577,8 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.allSelectedNodes.compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
     
-    
-    var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count: numberOfReplicas * atoms.count)
-    
-    index = 0
+    var data: [RKInPerInstanceAttributesAtoms] = []
+    data.reserveCapacity(numberOfReplicas * atoms.count)
     
     for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
     {
@@ -612,8 +610,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
               let diffuse: NSColor = asymetricAtom.color 
               let specular: NSColor = self.atomSpecularColor
               
-              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
-              index = index + 1
+              data.append(RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex)))
             }
           }
         }
@@ -1399,7 +1396,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
     newCell.contentShift = SIMD3<Double>(0,0,0)
     newCell.contentFlip = Bool3(false,false,false)
     
-    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
+    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: newCell, atomList: atomList))
     bonds.tag()
     
     return (cell: newCell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
@@ -1993,7 +1990,7 @@ public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, V
     var totalCount: Int
     
     let perpendicularWidths: SIMD3<Double> = structureCell.perpendicularWidths
-    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
+    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.y > 0.0001 && perpendicularWidths.z > 0.0001 else {return []}
         
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]

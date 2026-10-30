@@ -109,17 +109,17 @@ public class MetalDoubleCylinderGeometry
     }
     for i in 0..<slices
     {
-      indices[index]=UInt16((2 * i) % (2 * slices))
+      indices[index]=UInt16(2 * slices + ((2 * i) % (2 * slices)))
       index = index + 1
-      indices[index]=UInt16((2 * i + 1) % (2 * slices))
+      indices[index]=UInt16(2 * slices + ((2 * i + 1) % (2 * slices)))
       index = index + 1
-      indices[index]=UInt16((2 * i + 2) % (2 * slices))
+      indices[index]=UInt16(2 * slices + ((2 * i + 2) % (2 * slices)))
       index = index + 1
-      indices[index]=UInt16((2 * i + 2) % (2 * slices))
+      indices[index]=UInt16(2 * slices + ((2 * i + 2) % (2 * slices)))
       index = index + 1
-      indices[index]=UInt16((2 * i + 1) % (2 * slices))
+      indices[index]=UInt16(2 * slices + ((2 * i + 1) % (2 * slices)))
       index = index + 1
-      indices[index]=UInt16((2 * i + 3) % (2 * slices))
+      indices[index]=UInt16(2 * slices + ((2 * i + 3) % (2 * slices)))
       index = index + 1
     }
   }

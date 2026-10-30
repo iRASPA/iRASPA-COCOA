@@ -28,9 +28,13 @@ final class iRASPAUIDocument: UIDocument, ForceFieldViewer
       throw CocoaError(.fileReadCorruptFile)
     }
     let ext = fileURL.pathExtension.lowercased()
-    if ext == "irspdoc" || ext == "iraspa"
+    if ext == "irspdoc" || ext == "iraspadoc"
     {
       try readArchive(data: data)
+    }
+    else if ext == "iraspa"
+    {
+      try readSingleProject(data: data)
     }
     else
     {
@@ -108,6 +112,26 @@ final class iRASPAUIDocument: UIDocument, ForceFieldViewer
       }
     }
     LogQueue.shared.info(destination: nil, message: "Opened document with \(documentData.projectLocalRootNode.descendantLeafNodes().count) local projects")
+  }
+
+  private func readSingleProject(data: Data) throws
+  {
+    if let decompressedData = data.decompress(withAlgorithm: .lzma)
+    {
+      documentData = DocumentData()
+      let binaryDecoder = BinaryDecoder(data: [UInt8](decompressedData))
+      let projectTreeNode = try binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: true)
+      projectTreeNode.isEditable = true
+      projectTreeNode.representedObject.loadedProjectStructureNode?.allObjects.compactMap({ $0 as? Structure }).forEach {
+        $0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)
+      }
+      projectTreeNode.representedObject.loadedProjectStructureNode?.setInitialSelectionIfNeeded()
+      documentData.projectData.insertNode(projectTreeNode, inItem: documentData.projectLocalRootNode, atIndex: 0)
+    }
+    else
+    {
+      try readArchive(data: data)
+    }
   }
 
   private func importStructure(data: Data, url: URL) throws

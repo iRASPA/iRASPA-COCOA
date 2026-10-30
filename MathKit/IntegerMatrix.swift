@@ -395,6 +395,7 @@ public struct IntegerMatrix
   
   public static func ==(left: IntegerMatrix, right: IntegerMatrix) -> Bool
   {
+    guard left.numberOfRows == right.numberOfRows, left.numberOfColumns == right.numberOfColumns else { return false }
     for i in 0..<left.numberOfRows
     {
       for j in 0..<right.numberOfColumns

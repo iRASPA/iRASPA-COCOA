@@ -96,30 +96,34 @@ class RingMatrixTests: XCTestCase
   func testCreateRowVectorFromRange()
   {
     let m1 = RingMatrix(10..<20)
-    XCTAssertEqual(m1.rows, 10)
-    for r in 0..<m1.rows {
-      XCTAssertEqual(m1[r, 0], Int(r + 10))
+    XCTAssertEqual(m1.rows, 1)
+    XCTAssertEqual(m1.columns, 10)
+    for c in 0..<m1.columns {
+      XCTAssertEqual(m1[0, c], Int(c + 10))
     }
     
     let m2 = RingMatrix(-10...10)
-    XCTAssertEqual(m2.rows, 21)
-    for r in 0..<m2.rows {
-      XCTAssertEqual(m2[r, 0], Int(-10 + r))
+    XCTAssertEqual(m2.rows, 1)
+    XCTAssertEqual(m2.columns, 21)
+    for c in 0..<m2.columns {
+      XCTAssertEqual(m2[0, c], Int(-10 + c))
     }
   }
   
   func testCreateColumnVectorFromRange()
   {
     let m1 = RingMatrix(10..<20, isColumnVector: true)
-    XCTAssertEqual(m1.columns, 10)
-    for c in 0..<m1.columns {
-      XCTAssertEqual(m1[0, c], Int(c + 10))
+    XCTAssertEqual(m1.rows, 10)
+    XCTAssertEqual(m1.columns, 1)
+    for r in 0..<m1.rows {
+      XCTAssertEqual(m1[r, 0], Int(r + 10))
     }
     
     let m2 = RingMatrix(-10...10, isColumnVector: true)
-    XCTAssertEqual(m2.columns, 21)
-    for c in 0..<m2.columns {
-      XCTAssertEqual(m2[0, c], Int(-10 + c))
+    XCTAssertEqual(m2.rows, 21)
+    XCTAssertEqual(m2.columns, 1)
+    for r in 0..<m2.rows {
+      XCTAssertEqual(m2[r, 0], Int(-10 + r))
     }
   }
 

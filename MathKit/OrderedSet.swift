@@ -9,6 +9,13 @@ public struct OrderedSet<T: Hashable> {
     fileprivate class SequencedContents {
         fileprivate var pointers = [UnsafeMutablePointer<T>]()
 
+        deinit {
+            for p in pointers {
+                p.deinitialize(count: 1)
+                p.deallocate()
+            }
+        }
+
         func append(_ element: UnsafeMutablePointer<T>) {
             pointers.append(element)
         }
@@ -206,14 +213,15 @@ public struct OrderedSet<T: Hashable> {
     */
     @discardableResult
     public mutating func removeAllObjects(where shouldBeRemoved: (T) -> Bool) -> OrderedSet<T> {
-        
         var removedObjects = OrderedSet<T>()
-        var pointers = sequencedContents.pointers.makeIterator()
-        while let object = pointers.next()?.pointee {
+        for pointer in sequencedContents.pointers {
+            let object = pointer.pointee
             if shouldBeRemoved(object) {
-                remove(object)
                 removedObjects.append(object)
             }
+        }
+        for object in removedObjects {
+            remove(object)
         }
         return removedObjects
     }
@@ -454,17 +462,23 @@ extension OrderedSet {
                 sequencedContents = sequencedContents.copy()
             }
 
-            let previousCount = contents.count
-            contents[sequencedContents[index].pointee] = nil
-            contents[newValue] = index
-            
-            // If the count is reduced we used an existing value, and need to sync up sequencedContents
-            if contents.count == previousCount {
+            if let existingIndex = contents[newValue] {
+                if existingIndex == index {
+                    sequencedContents[index].pointee = newValue
+                    return
+                }
+                contents[sequencedContents[index].pointee] = nil
                 sequencedContents[index].pointee = newValue
+                sequencedContents[existingIndex].deinitialize(count: 1)
+                sequencedContents[existingIndex].deallocate()
+                sequencedContents.remove(at: existingIndex)
+                for i in 0..<sequencedContents.pointers.count {
+                    contents[sequencedContents[i].pointee] = i
+                }
             } else {
-                sequencedContents[index].deinitialize(count: 1)
-                sequencedContents[index].deallocate()
-                sequencedContents.remove(at: index)
+                contents[sequencedContents[index].pointee] = nil
+                contents[newValue] = index
+                sequencedContents[index].pointee = newValue
             }
         }
     }

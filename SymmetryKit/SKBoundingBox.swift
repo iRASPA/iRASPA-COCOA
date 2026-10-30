@@ -109,14 +109,14 @@ public struct SKBoundingBox: BinaryDecodable, BinaryEncodable
   {
     let coords: [SIMD3<Double>] =
       [
-        SIMD3<Double>(x: minimum.x, y: minimum.z, z: minimum.z),
-        SIMD3<Double>(x: maximum.x, y: minimum.z, z: minimum.z),
-        SIMD3<Double>(x: minimum.x, y: maximum.z, z: minimum.z),
-        SIMD3<Double>(x: maximum.x, y: maximum.z, z: minimum.z),
-        SIMD3<Double>(x: minimum.x, y: minimum.z, z: maximum.z),
-        SIMD3<Double>(x: maximum.x, y: minimum.z, z: maximum.z),
-        SIMD3<Double>(x: minimum.x, y: maximum.z, z: maximum.z),
-        SIMD3<Double>(x: maximum.x, y: maximum.z, z: maximum.z),
+        SIMD3<Double>(x: minimum.x, y: minimum.y, z: minimum.z),
+        SIMD3<Double>(x: maximum.x, y: minimum.y, z: minimum.z),
+        SIMD3<Double>(x: minimum.x, y: maximum.y, z: minimum.z),
+        SIMD3<Double>(x: maximum.x, y: maximum.y, z: minimum.z),
+        SIMD3<Double>(x: minimum.x, y: minimum.y, z: maximum.z),
+        SIMD3<Double>(x: maximum.x, y: minimum.y, z: maximum.z),
+        SIMD3<Double>(x: minimum.x, y: maximum.y, z: maximum.z),
+        SIMD3<Double>(x: maximum.x, y: maximum.y, z: maximum.z),
         ]
     
     let centerOfScene: SIMD3<Double> = minimum + (maximum - minimum) * 0.5

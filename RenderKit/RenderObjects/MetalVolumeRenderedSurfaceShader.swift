@@ -352,14 +352,14 @@ class MetalEnergyVolumeRenderedSurfaceShader
             
             if let cachedVersion: Data = cachedPermanentEnergyGrids[size]?.object(forKey: structure) as? Data
             {
-              data = [SIMD4<Float>](repeating: SIMD4<Float>(0.0,0.0,0.0,0.0), count: cachedVersion.count / MemoryLayout<Float>.stride)
+              data = [SIMD4<Float>](repeating: SIMD4<Float>(0.0,0.0,0.0,0.0), count: cachedVersion.count / MemoryLayout<SIMD4<Float>>.stride)
               let _ = data.withUnsafeMutableBytes { cachedVersion.copyBytes(to: $0, from: 0..<cachedVersion.count)}
               
               LogQueue.shared.verbose(destination: windowController, message: "Loading the \(structure.displayName)-Metal energy/gradient grid from cache")
             }
             else if let cachedVersion: Data = cachedEnergyGrids[size]?.object(forKey: structure) as? Data
             {
-              data = [SIMD4<Float>](repeating: SIMD4<Float>(0.0,0.0,0.0,0.0), count: cachedVersion.count / MemoryLayout<Float>.stride)
+              data = [SIMD4<Float>](repeating: SIMD4<Float>(0.0,0.0,0.0,0.0), count: cachedVersion.count / MemoryLayout<SIMD4<Float>>.stride)
               let _ = data.withUnsafeMutableBytes { cachedVersion.copyBytes(to: $0, from: 0..<cachedVersion.count)}
               
               LogQueue.shared.verbose(destination: windowController, message: "Loading the \(structure.displayName)-Metal energy/gradient grid from cache")

@@ -92,6 +92,7 @@ public class SKVASPWriter
     
     dataString += orderedElementHistogram.keys.map{self.formatString(str: PredefinedElements.sharedInstance.elementSet[$0].chemicalSymbol, length: 6)}.joined(separator: " ") + "\n"
     dataString += orderedElementHistogram.keys.map{self.formatString(str: String(orderedElementHistogram[key: $0] ?? 0), length: 6)}.joined(separator: " ") + "\n"
+    dataString += "Selective dynamics\n"
     dataString += atomsAreFractional ? "Direct\n" : "Cartesian\n"
     
     for element in orderedElementHistogram.keys

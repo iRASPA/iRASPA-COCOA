@@ -98,6 +98,10 @@ class MetalMeasurementPerspectiveImposterShader
       {
         self.instanceBuffer = device.makeBuffer(bytes: atomData, length: atomData.count * MemoryLayout<RKInPerInstanceAttributesAtoms>.stride, options: RKMetal.hostStorage)
       }
+      else
+      {
+        self.instanceBuffer = nil
+      }
     }
   }
   
@@ -136,7 +140,7 @@ class MetalMeasurementPerspectiveImposterShader
                   commandEncoder.setVertexBuffer(buffer, offset: k * MemoryLayout<RKInPerInstanceAttributesAtoms>.stride, index: 1)
                   commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
                   
-                  commandEncoder.setFragmentBufferOffset(0, index: 0)
+                  commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
                   
                   commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: 1)
                 }

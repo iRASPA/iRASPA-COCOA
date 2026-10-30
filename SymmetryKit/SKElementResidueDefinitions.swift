@@ -451,7 +451,7 @@ extension SKElement
   {
     switch type.trimmingCharacters(in: .whitespaces)
     {
-    case "NH1":
+    case "NH1", "NH", "N":
       return .nitrogen
     case "CH1E", "CH2G":
       return .alphaCarbon

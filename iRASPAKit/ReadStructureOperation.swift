@@ -95,6 +95,10 @@ class ReadStructureOperation: FKOperation, @unchecked Sendable
       {
         parser = try SKVASPXDATCARParser(displayName: displayName, data: data)
       }
+      else
+      {
+        throw BinaryCodableError.unsupportedFileType
+      }
     default:
       throw BinaryCodableError.unsupportedFileType
     }
@@ -104,6 +108,7 @@ class ReadStructureOperation: FKOperation, @unchecked Sendable
   {
     if self.isCancelled
     {
+      self.finishWithError(nil)
       return
     }
     
@@ -111,9 +116,10 @@ class ReadStructureOperation: FKOperation, @unchecked Sendable
     {
       try parser?.startParsing()
     }
-    catch
+    catch let error as NSError
     {
       parser = nil
+      self.finishWithError(error)
       return
     }
     

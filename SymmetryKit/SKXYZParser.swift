@@ -119,14 +119,26 @@ public final class SKXYZParser: SKParser, ProgressReporting
           progress.completedUnitCount += 1
         }
         
-        let words: [String] = line.components(separatedBy: CharacterSet.whitespaces)
+        let words: [String] = line.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
         if let firstWord: String = words.first,
            let numberOfAtoms: Int = Int(firstWord)
         {
           var periodic = false
           let prefix: String = "Lattice=\""
           // commentline containing the box-sizes
-          if let scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+          scanner.charactersToBeSkipped = nil
+          if !scanner.isAtEnd && scanner.string[scanner.currentIndex].isNewline
+          {
+            scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+          }
+          let scannedCommentLine: String? = scanner.scanUpToCharacters(from: newLineChararterSet)
+          if !scanner.isAtEnd && scanner.string[scanner.currentIndex].isNewline
+          {
+            scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+          }
+          scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
+          
+          if let scannedLine = scannedCommentLine
           {
             let commentString = scannedLine.trimmingCharacters(in: CharacterSet.whitespaces)
             if commentString.hasPrefix(prefix)
@@ -155,7 +167,7 @@ public final class SKXYZParser: SKParser, ProgressReporting
           
           var atoms: [SKAsymmetricAtom] = []
 
-          for  _ in 0..<numberOfAtoms
+          for _ in 0..<max(0, numberOfAtoms)
           {
             if let scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet),
               let words: [String] = (scannedLine as String?)?.condensingWhitespace().components(separatedBy: CharacterSet.whitespaces),
@@ -186,8 +198,11 @@ public final class SKXYZParser: SKParser, ProgressReporting
             }
           }
           
-          addFrameToStructure(atoms: atoms, periodic: periodic)
-          currentMovie += 1
+          if !atoms.isEmpty
+          {
+            addFrameToStructure(atoms: atoms, periodic: periodic)
+            currentMovie += 1
+          }
         }
       }
     }

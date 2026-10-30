@@ -65,11 +65,27 @@ public class VASPVolumetricData: Structure, VolumetricDataViewer, RKRenderAtomSo
   public required init(copy VASPDensityVolume: VASPVolumetricData)
   {
     super.init(copy: VASPDensityVolume)
+    
+    self.dimensions = VASPDensityVolume.dimensions
+    self.spacing = VASPDensityVolume.spacing
+    self.range = VASPDensityVolume.range
+    self.data = VASPDensityVolume.data
+    self.average = VASPDensityVolume.average
+    self.variance = VASPDensityVolume.variance
+    self.VASPType = VASPDensityVolume.VASPType
   }
   
   public required init(clone VASPDensityVolume: VASPVolumetricData)
   {
     super.init(clone: VASPDensityVolume)
+    
+    self.dimensions = VASPDensityVolume.dimensions
+    self.spacing = VASPDensityVolume.spacing
+    self.range = VASPDensityVolume.range
+    self.data = VASPDensityVolume.data
+    self.average = VASPDensityVolume.average
+    self.variance = VASPDensityVolume.variance
+    self.VASPType = VASPDensityVolume.VASPType
   }
   
   public required init(from object: Object)
@@ -1089,7 +1105,7 @@ public class VASPVolumetricData: Structure, VolumetricDataViewer, RKRenderAtomSo
     var totalCount: Int
     
     let perpendicularWidths: SIMD3<Double> = structureCell.perpendicularWidths
-    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
+    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.y > 0.0001 && perpendicularWidths.z > 0.0001 else {return []}
         
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]

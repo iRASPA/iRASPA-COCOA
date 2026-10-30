@@ -318,45 +318,45 @@ public final class SKPDBParser: SKParser, ProgressReporting
   {
     if (atoms.count >= 0)
     {
-      if (currentMovie >= scene.count)
+      while (currentMovie >= scene.count)
       {
         scene.append([SKStructure]())
       }
       
-      if (currentFrame >= scene[currentMovie].count)
+      while (currentFrame >= scene[currentMovie].count)
       {
         let structure: SKStructure = SKStructure()
         scene[currentMovie].append(structure)
-        
-        let kind = kindOfCurrentPart()
-        scene[currentMovie][currentFrame].kind = kind
-        
-        switch kind
-        {
-        case .proteinCrystal, .proteinCrystalSolvent, .dnaCrystal:
-          scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitMolecule
-          scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitMolecule ? 1 : self.spaceGroup.spaceGroupSetting.number
-        case .molecularCrystal:
-          scene[currentMovie][currentFrame].drawUnitCell = true
-          scene[currentMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
-        default:
-          scene[currentMovie][currentFrame].drawUnitCell = false
-          scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
-        }
-        
-        scene[currentMovie][currentFrame].cell = cell
-        scene[currentMovie][currentFrame].displayName = self.displayName
-        scene[currentMovie][currentFrame].atoms = atoms
-        scene[currentMovie][currentFrame].unknownAtoms = unknownAtoms
-        scene[currentMovie][currentFrame].applyInferredMaterialType()
-        
-        atoms = []
-        numberOfAminoAcidAtoms = 0
-        numberOfNucleicAcidAtoms = 0
-        numberOfSolventAtoms = 0
-        numberOfAtoms = 0
-        residues.removeAll(keepingCapacity: true)
       }
+      
+      let kind = kindOfCurrentPart()
+      scene[currentMovie][currentFrame].kind = kind
+      
+      switch kind
+      {
+      case .proteinCrystal, .proteinCrystalSolvent, .dnaCrystal:
+        scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitMolecule
+        scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitMolecule ? 1 : self.spaceGroup.spaceGroupSetting.number
+      case .molecularCrystal:
+        scene[currentMovie][currentFrame].drawUnitCell = true
+        scene[currentMovie][currentFrame].spaceGroupHallNumber = self.spaceGroup.spaceGroupSetting.number
+      default:
+        scene[currentMovie][currentFrame].drawUnitCell = false
+        scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
+      }
+      
+      scene[currentMovie][currentFrame].cell = cell
+      scene[currentMovie][currentFrame].displayName = self.displayName
+      scene[currentMovie][currentFrame].atoms = atoms
+      scene[currentMovie][currentFrame].unknownAtoms = unknownAtoms
+      scene[currentMovie][currentFrame].applyInferredMaterialType()
+      
+      atoms = []
+      numberOfAminoAcidAtoms = 0
+      numberOfNucleicAcidAtoms = 0
+      numberOfSolventAtoms = 0
+      numberOfAtoms = 0
+      residues.removeAll(keepingCapacity: true)
     }
     
   }
@@ -521,10 +521,23 @@ public final class SKPDBParser: SKParser, ProgressReporting
       }
     }
     
-    if line.count >= 80,
-       let chargeValue: Double = Double(pdbField(line, 78, 2).trimmingCharacters(in: CharacterSet.whitespaces))
+    if line.count >= 79
     {
-      atom.charge = chargeValue
+      let chargeToken: String = pdbField(line, 78, 2).trimmingCharacters(in: CharacterSet.whitespaces)
+      if let chargeValue: Double = Double(chargeToken)
+      {
+        atom.charge = chargeValue
+      }
+      else if chargeToken.hasSuffix("+")
+      {
+        let magnitude: Double = Double(chargeToken.dropLast()) ?? 1.0
+        atom.charge = magnitude
+      }
+      else if chargeToken.hasSuffix("-")
+      {
+        let magnitude: Double = Double(chargeToken.dropLast()) ?? 1.0
+        atom.charge = -magnitude
+      }
     }
     
     if atom.elementIdentifier == 0
@@ -613,13 +626,13 @@ public final class SKPDBParser: SKParser, ProgressReporting
         parseModres(line)
       case "MODEL ":
         currentMovie = 0
+        atoms = []
         
         if length <= 10
         {
-          let modelString: String = scannedLine.substring(from: 6)
+          let modelString: String = scannedLine.substring(from: 6).trimmingCharacters(in: .whitespaces)
           if let integerValue: Int = Int(modelString)
           {
-            atoms = []
             currentFrame = max(0, integerValue - 1)
             currentFrame = modelNumber
             modelNumber += 1
@@ -628,14 +641,14 @@ public final class SKPDBParser: SKParser, ProgressReporting
         }
         if length <= 14
         {
-          let modelString: String = scannedLine.substring(from: 10)
+          let modelString: String = scannedLine.substring(from: 10).trimmingCharacters(in: .whitespaces)
           if let integerValue: Int = Int(modelString)
           {
             currentFrame = max(0, integerValue - 1)
           }
           break
         }
-        let modelString: String = scannedLine.substring(with: NSRange(location: 10, length: 4))
+        let modelString: String = scannedLine.substring(with: NSRange(location: 10, length: 4)).trimmingCharacters(in: .whitespaces)
         if let integerValue: Int = Int(modelString)
         {
           currentFrame = max(0, integerValue - 1)

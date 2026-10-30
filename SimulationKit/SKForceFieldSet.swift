@@ -136,6 +136,13 @@ public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
     self.referenceCount = 1
     self.editable  = try decoder.decode(Bool.self)
     self.atomTypeList = try decoder.decode([SKForceFieldType].self)
+    if self.atomTypeList.allSatisfy({ $0.sortIndex == $0.atomicNumber })
+    {
+      for i in 0..<self.atomTypeList.count
+      {
+        self.atomTypeList[i].sortIndex = i
+      }
+    }
   }
   
   

@@ -52,7 +52,7 @@ class Project
     
     do
     {      
-      switch(url.pathExtension)
+      switch(url.pathExtension.lowercased())
       {
       case "cif", "mmcif":
         guard let parser = try? SKCIFParser(displayName: displayName, data: data, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: !asMolecule) else {return nil}
@@ -64,7 +64,7 @@ class Project
         guard let parser = try? SKXYZParser(displayName: displayName, data: data) else {return nil}
         self.parser = parser
       default:
-        fatalError("Unknown structure")
+        return nil
       }
       
       try parser.startParsing()

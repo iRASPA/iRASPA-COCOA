@@ -71,7 +71,7 @@ public class SKCIFWriter
     let spaceGroup = SKSpacegroup(HallNumber: spaceGroupHallNumber ?? 1)
     dataString += String("_symmetry_space_group_name_Hall '\(spaceGroup.spaceGroupSetting.Hall)'\n")
     dataString += String("_symmetry_space_group_name_H-M  '\(spaceGroup.spaceGroupSetting.HM)'\n")
-    dataString += String("_symmetry_Int_Tables_number     \(spaceGroup.spaceGroupSetting.number)") + "\n\n"
+    dataString += String("_symmetry_Int_Tables_number     \(spaceGroup.spaceGroupSetting.spaceGroupNumber)") + "\n\n"
     
     // write structure atom data
     dataString += String("loop_\n")

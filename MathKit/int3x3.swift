@@ -132,6 +132,7 @@ public struct int3x3: Equatable
     let gcd: Int32 = [self[0,0],self[1,0],self[2,0],
                       self[0,1],self[1,1],self[2,1],
                       self[0,2],self[1,2],self[2,2]].reduce(self[0,0]){Int32.greatestCommonDivisor(a: $0, b: $1)}
+    guard gcd != 0 else { return }
    
     self.denominator = self.denominator / Int(gcd)
     self[0,0] /= gcd
@@ -242,7 +243,7 @@ public struct int3x3: Equatable
       //var s: Double = 0.0
       for c: Int in piv_c+1..<3
       {
-        s += Double(self[r][c]) * sol[c]
+        s += Double(self[c][r]) * sol[c]
       }
       sol[piv_c] = -Double(s) / Double(self[piv_c][r])
     }
@@ -347,7 +348,7 @@ public struct int3x3: Equatable
     
     for r in rank..<3
     {
-      if (abs(t[r]) <  Double.ulpOfOne)
+      if (abs(t[r]) >= Double.ulpOfOne)
       {
         return t
       }
@@ -398,8 +399,8 @@ public struct int3x3: Equatable
       
     case 2:
       let z: Double = 1.0
-      let y: Double = z * Double(self[2][1]) / Double(self[1][1])
-      let x: Double = (y + Double(self[2][0])) / Double(self[0][0])
+      let y: Double = -z * Double(self[2][1]) / Double(self[1][1])
+      let x: Double = -(Double(self[1][0]) * y + Double(self[2][0]) * z) / Double(self[0][0])
       return SIMD3<Double>(x,y,z)
       
     default:
@@ -555,14 +556,13 @@ public struct int3x3: Equatable
   {
     var a: Int = a1
     var b: Int = b1
-    do
+    while b != 0
     {
-      if (b == 0) {return a < 0 ? -a : a}
       let next_b: Int = a % b
       a = b
       b = next_b
     }
-    return 0
+    return a < 0 ? -a : a
   }
   
   

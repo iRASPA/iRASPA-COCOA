@@ -110,11 +110,17 @@ public final class SKVASPLOCPOTParser: SKParser, ProgressReporting
     }
   
     // skip commentline
-    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    if (scannedLine == nil)
+    guard !scanner.isAtEnd else
     {
       throw SKParserError.containsNoData
     }
+    scanner.charactersToBeSkipped = nil
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if !scanner.isAtEnd && scanner.string[scanner.currentIndex].isNewline
+    {
+      scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+    }
+    scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
   
     // scan scaleFactor
     var scaleFactor: Double = 1.0
@@ -197,7 +203,7 @@ public final class SKVASPLOCPOTParser: SKParser, ProgressReporting
            words.count >= 1
         {
           if let firstCharacter = words[0].lowercased().first,
-             firstCharacter == "c"  // "Cartesian"
+             firstCharacter == "c" || firstCharacter == "k"  // "Cartesian"
           {
             fractional = false
           }
@@ -205,9 +211,9 @@ public final class SKVASPLOCPOTParser: SKParser, ProgressReporting
         
         for element in 0..<count
         {
-          if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: elements[element]),
-             let numberOfAtomsForElement: Int =  Int(numberOfAtoms[element])
+          if let numberOfAtomsForElement: Int = Int(numberOfAtoms[element])
           {
+            let atomicNumber: Int = SKElement.atomicNumber(forSymbol: elements[element]) ?? 0
             for _ in 0..<numberOfAtomsForElement
             {
               scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
@@ -223,7 +229,8 @@ public final class SKVASPLOCPOTParser: SKParser, ProgressReporting
                 atom.elementIdentifier = atomicNumber
                 atom.displayName = chemicalElement
                 atom.uniqueForceFieldName = chemicalElement
-                atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+                let rawPosition: SIMD3<Double> = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+                atom.position = fractional ? rawPosition : scaleFactor * rawPosition
                 atom.fractional = fractional
                 
                 if words.count >= 6,

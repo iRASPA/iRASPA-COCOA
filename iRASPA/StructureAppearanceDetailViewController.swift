@@ -436,8 +436,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             sliderEulerAngleZ.doubleValue = renderEulerAngleZ * 180.0/Double.pi
             sliderEulerAngleY.doubleValue = renderEulerAngleY * 180.0/Double.pi
             textFieldEulerAngleX.doubleValue = renderEulerAngleX * 180.0/Double.pi
-            textFieldEulerAngleY.doubleValue = renderEulerAngleZ * 180.0/Double.pi
-            textFieldEulerAngleZ.doubleValue = renderEulerAngleY * 180.0/Double.pi
+            textFieldEulerAngleY.doubleValue = renderEulerAngleY * 180.0/Double.pi
+            textFieldEulerAngleZ.doubleValue = renderEulerAngleZ * 180.0/Double.pi
           }
           else
           {
@@ -9841,7 +9841,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
@@ -10074,7 +10074,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
@@ -10312,7 +10312,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      self.renderTextFont = sender.titleOfSelectedItem
+      if let family = sender.titleOfSelectedItem
+      {
+        self.renderTextFont = NSFontManager.shared.font(withFamily: family, traits: .unitalicFontMask, weight: 5, size: 12.0)?.fontName ?? family
+      }
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       
@@ -10579,8 +10582,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveEditor)?.primitiveOrientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.y,($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.z)
-        $0.object.reComputeBoundingBox()
+        if let primitive = $0.object as? PrimitiveEditor
+        {
+          primitive.primitiveOrientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0, primitive.primitiveOrientation.EulerAngles.y, primitive.primitiveOrientation.EulerAngles.z)
+          $0.object.reComputeBoundingBox()
+        }
       }
     }
   }
@@ -10595,8 +10601,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveEditor)?.primitiveOrientation.EulerAngles = SIMD3<Double>(($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.x, newValue ?? 0.0,($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.z)
-        $0.object.reComputeBoundingBox()
+        if let primitive = $0.object as? PrimitiveEditor
+        {
+          primitive.primitiveOrientation.EulerAngles = SIMD3<Double>(primitive.primitiveOrientation.EulerAngles.x, newValue ?? 0.0, primitive.primitiveOrientation.EulerAngles.z)
+          $0.object.reComputeBoundingBox()
+        }
       }
     }
   }
@@ -10611,8 +10620,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveEditor)?.primitiveOrientation.EulerAngles = SIMD3<Double>(($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.x, ($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.y, newValue ?? 0.0)
-        $0.object.reComputeBoundingBox()
+        if let primitive = $0.object as? PrimitiveEditor
+        {
+          primitive.primitiveOrientation.EulerAngles = SIMD3<Double>(primitive.primitiveOrientation.EulerAngles.x, primitive.primitiveOrientation.EulerAngles.y, newValue ?? 0.0)
+          $0.object.reComputeBoundingBox()
+        }
       }
     }
   }
@@ -12785,12 +12797,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideAmbientIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+      self.iRASPAObjects.forEach{($0.object as? VolumetricDataViewer)?.adsorptionSurfaceFrontSideAmbientIntensity = newValue ?? 0.2}
     }
   }
   

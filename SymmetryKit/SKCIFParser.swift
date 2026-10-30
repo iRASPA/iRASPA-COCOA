@@ -557,12 +557,12 @@ public final class SKCIFParser: SKParser, ProgressReporting
     {
       var index: String.Index = source.index(after: self.scanner.currentIndex)
       var content: String = ""
-      while index < source.endIndex && source[index] != "\n" && source[index] != "\r"
+      while index < source.endIndex && source[index] != "\n" && source[index] != "\r" && source[index] != "\r\n"
       {
         content.append(source[index])
         index = source.index(after: index)
       }
-      while index < source.endIndex && (source[index] == "\n" || source[index] == "\r")
+      while index < source.endIndex && (source[index] == "\n" || source[index] == "\r" || source[index] == "\r\n")
       {
         index = source.index(after: index)
       }
@@ -576,12 +576,12 @@ public final class SKCIFParser: SKParser, ProgressReporting
           return content
         }
         if !content.isEmpty {content += "\n"}
-        while index < source.endIndex && source[index] != "\n" && source[index] != "\r"
+        while index < source.endIndex && source[index] != "\n" && source[index] != "\r" && source[index] != "\r\n"
         {
           content.append(source[index])
           index = source.index(after: index)
         }
-        while index < source.endIndex && (source[index] == "\n" || source[index] == "\r")
+        while index < source.endIndex && (source[index] == "\n" || source[index] == "\r" || source[index] == "\r\n")
         {
           index = source.index(after: index)
         }

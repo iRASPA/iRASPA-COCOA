@@ -64,7 +64,7 @@ vertex UnitCellVertexShaderOut UnitCellSphereVertexShader(const device InPerVert
   vert.diffuse = positions[iid].diffuse;
   vert.specular = positions[iid].specular;
   
-  vert.N = (frameUniforms.normalMatrix * vertices[vid].normal).xyz;
+  vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * vertices[vid].normal).xyz;
   
   float4 P =  frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
   
@@ -159,7 +159,8 @@ vertex UnitCellVertexShaderOut UnitCellCylinderVertexShader(const device InPerVe
   
   vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * float4((orientationMatrix * (scale * pos) + pos1).xyz,1.0);
   
-  
+  // Calculate view vector
+  vert.V = -P.xyz;
   
   return vert;
 }

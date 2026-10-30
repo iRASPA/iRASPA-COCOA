@@ -96,8 +96,11 @@ public struct DocumentData: BinaryDecodable, BinaryEncodable
   {
     projectData = ProjectTreeController()
     
-    projectLocalRootNode.isExpanded = true
-    projectLocalRootNode.isEditable = false
+    if projectData.rootNodes.count > 1 && !projectData.rootNodes[1].childNodes.isEmpty
+    {
+      projectLocalRootNode.isExpanded = true
+      projectLocalRootNode.isEditable = false
+    }
     /*
     let galleryRootNode = ProjectTreeNode(displayName: "GALLERY", representedObject: iRASPAProject.projectGroup(ProjectGroup(name: "GALLERY")))
     let projectRootNode = ProjectTreeNode(displayName: "LOCAL PROJECTS", representedObject: iRASPAProject.projectGroup(ProjectGroup(name: "LOCAL PROJECTS")))

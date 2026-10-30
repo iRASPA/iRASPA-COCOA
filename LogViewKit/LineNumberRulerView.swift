@@ -64,7 +64,8 @@ public class LineNumberRulerView: NSRulerView
       if let layoutManager = textView.layoutManager
       {
         let relativePoint = self.convert(NSZeroPoint, from: textView)
-        let lineNumberAttributes = [NSAttributedString.Key.font: textView.font!, NSAttributedString.Key.foregroundColor: NSColor.gray] as [NSAttributedString.Key : Any]
+        let font: NSFont = textView.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize)
+        let lineNumberAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: NSColor.gray] as [NSAttributedString.Key : Any]
         
         let drawLineNumber = { (lineNumberString:String, y:CGFloat) -> Void in
           let attString = NSAttributedString(string: lineNumberString, attributes: lineNumberAttributes)

@@ -149,10 +149,24 @@ public class SKMetalMarchingCubes128
 
       let voxelCount = bufferSize * bufferSize * bufferSize
       var cube = [Float](repeating: 0, count: voxelCount)
-      let copyCount = min(voxels.count, voxelCount)
-      if copyCount > 0
+      let dimX = min(Int(dimensions.x), size)
+      let dimY = min(Int(dimensions.y), size)
+      let dimZ = min(Int(dimensions.z), size)
+      let strideY = Int(dimensions.x)
+      let strideZ = Int(dimensions.x) * Int(dimensions.y)
+      for iz in 0..<dimZ
       {
-        cube.replaceSubrange(0..<copyCount, with: voxels[0..<copyCount])
+        for iy in 0..<dimY
+        {
+          for ix in 0..<dimX
+          {
+            let srcIndex = ix + strideY * iy + strideZ * iz
+            if srcIndex < voxels.count
+            {
+              cube[ix + size * iy + size * size * iz] = voxels[srcIndex]
+            }
+          }
+        }
       }
       guard let voxelBuffer = device.makeBuffer(bytes: cube, length: voxelCount * MemoryLayout<Float>.stride, options: .storageModeShared) else {
         throw SimulationKitError.couldNotCreateBuffer

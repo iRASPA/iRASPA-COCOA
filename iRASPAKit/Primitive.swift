@@ -68,16 +68,204 @@ public class Primitive: Object, AtomEditor, PrimitiveEditor
   public required init(from object: Object)
   {
     super.init(from: object)
+    
+    if let atomViewer: AtomViewer = object as? AtomViewer
+    {
+      atomViewer.atomTreeController.tag()
+      let binaryAtomEncoder: BinaryEncoder = BinaryEncoder()
+      binaryAtomEncoder.encode(atomViewer.atomTreeController)
+      let atomData: Data = Data(binaryAtomEncoder.data)
+      
+      do
+      {
+        self.atomTreeController = try BinaryDecoder(data: [UInt8](atomData)).decode(SKAtomTreeController.self)
+        self.atomTreeController.tag()
+      }
+      catch
+      {
+        debugPrint("Error")
+      }
+    }
+    
+    if let atomAppearanceViewer: AtomStructureEditor = object as? AtomStructureEditor
+    {
+      self.drawAtoms = atomAppearanceViewer.drawAtoms
+      self.atomSelectionStyle = atomAppearanceViewer.atomSelectionStyle
+      self.atomSelectionIntensity = atomAppearanceViewer.atomSelectionIntensity
+      self.atomSelectionScaling = atomAppearanceViewer.atomSelectionScaling
+    }
+    
+    if let primitiveViewer: PrimitiveEditor = object as? PrimitiveEditor
+    {
+      self.primitiveTransformationMatrix = primitiveViewer.primitiveTransformationMatrix
+      self.primitiveOrientation = primitiveViewer.primitiveOrientation
+      self.primitiveRotationDelta = primitiveViewer.primitiveRotationDelta
+      
+      self.primitiveOpacity = primitiveViewer.primitiveOpacity
+      self.primitiveIsCapped = primitiveViewer.primitiveIsCapped
+      self.primitiveIsFractional = primitiveViewer.primitiveIsFractional
+      self.primitiveNumberOfSides = primitiveViewer.primitiveNumberOfSides
+      self.primitiveThickness = primitiveViewer.primitiveThickness
+      
+      self.primitiveHue = primitiveViewer.primitiveHue
+      self.primitiveSaturation = primitiveViewer.primitiveSaturation
+      self.primitiveValue = primitiveViewer.primitiveValue
+      
+      self.primitiveSelectionStyle = primitiveViewer.primitiveSelectionStyle
+      self.primitiveSelectionScaling = primitiveViewer.primitiveSelectionScaling
+      self.primitiveSelectionStripesDensity = primitiveViewer.primitiveSelectionStripesDensity
+      self.primitiveSelectionStripesFrequency = primitiveViewer.primitiveSelectionStripesFrequency
+      self.primitiveSelectionWorleyNoise3DFrequency = primitiveViewer.primitiveSelectionWorleyNoise3DFrequency
+      self.primitiveSelectionWorleyNoise3DJitter = primitiveViewer.primitiveSelectionWorleyNoise3DJitter
+      self.primitiveSelectionIntensity = primitiveViewer.primitiveSelectionIntensity
+      
+      self.primitiveFrontSideHDR = primitiveViewer.primitiveFrontSideHDR
+      self.primitiveFrontSideHDRExposure = primitiveViewer.primitiveFrontSideHDRExposure
+      self.primitiveFrontSideAmbientColor = primitiveViewer.primitiveFrontSideAmbientColor
+      self.primitiveFrontSideDiffuseColor = primitiveViewer.primitiveFrontSideDiffuseColor
+      self.primitiveFrontSideSpecularColor = primitiveViewer.primitiveFrontSideSpecularColor
+      self.primitiveFrontSideAmbientIntensity = primitiveViewer.primitiveFrontSideAmbientIntensity
+      self.primitiveFrontSideDiffuseIntensity = primitiveViewer.primitiveFrontSideDiffuseIntensity
+      self.primitiveFrontSideSpecularIntensity = primitiveViewer.primitiveFrontSideSpecularIntensity
+      self.primitiveFrontSideShininess = primitiveViewer.primitiveFrontSideShininess
+      
+      self.primitiveBackSideHDR = primitiveViewer.primitiveBackSideHDR
+      self.primitiveBackSideHDRExposure = primitiveViewer.primitiveBackSideHDRExposure
+      self.primitiveBackSideAmbientColor = primitiveViewer.primitiveBackSideAmbientColor
+      self.primitiveBackSideDiffuseColor = primitiveViewer.primitiveBackSideDiffuseColor
+      self.primitiveBackSideSpecularColor = primitiveViewer.primitiveBackSideSpecularColor
+      self.primitiveBackSideAmbientIntensity = primitiveViewer.primitiveBackSideAmbientIntensity
+      self.primitiveBackSideDiffuseIntensity = primitiveViewer.primitiveBackSideDiffuseIntensity
+      self.primitiveBackSideSpecularIntensity = primitiveViewer.primitiveBackSideSpecularIntensity
+      self.primitiveBackSideShininess = primitiveViewer.primitiveBackSideShininess
+    }
   }
   
   public init(clone: Primitive)
   {
-    super.init()
+    super.init(clone: clone)
+    
+    self.drawAtoms = clone.drawAtoms
+    clone.atomTreeController.tag()
+    let binaryAtomEncoder: BinaryEncoder = BinaryEncoder()
+    binaryAtomEncoder.encode(clone.atomTreeController)
+    let atomData: Data = Data(binaryAtomEncoder.data)
+    do
+    {
+      self.atomTreeController = try BinaryDecoder(data: [UInt8](atomData)).decode(SKAtomTreeController.self)
+      self.atomTreeController.tag()
+      let tags: Set<Int> = Set(clone.atomTreeController.selectedTreeNodes.map{$0.representedObject.tag})
+      let atomTreeNodes: [SKAtomTreeNode] = self.atomTreeController.flattenedLeafNodes()
+      self.atomTreeController.selectedTreeNodes = Set(atomTreeNodes.filter{tags.contains($0.representedObject.tag)})
+    }
+    catch
+    {
+      debugPrint("Error")
+    }
+    
+    self.primitiveTransformationMatrix = clone.primitiveTransformationMatrix
+    self.primitiveOrientation = clone.primitiveOrientation
+    self.primitiveRotationDelta = clone.primitiveRotationDelta
+    
+    self.primitiveOpacity = clone.primitiveOpacity
+    self.primitiveIsCapped = clone.primitiveIsCapped
+    self.primitiveIsFractional = clone.primitiveIsFractional
+    self.primitiveNumberOfSides = clone.primitiveNumberOfSides
+    self.primitiveThickness = clone.primitiveThickness
+    
+    self.primitiveHue = clone.primitiveHue
+    self.primitiveSaturation = clone.primitiveSaturation
+    self.primitiveValue = clone.primitiveValue
+    
+    self.primitiveSelectionStyle = clone.primitiveSelectionStyle
+    self.primitiveSelectionScaling = clone.primitiveSelectionScaling
+    self.primitiveSelectionStripesDensity = clone.primitiveSelectionStripesDensity
+    self.primitiveSelectionStripesFrequency = clone.primitiveSelectionStripesFrequency
+    self.primitiveSelectionWorleyNoise3DFrequency = clone.primitiveSelectionWorleyNoise3DFrequency
+    self.primitiveSelectionWorleyNoise3DJitter = clone.primitiveSelectionWorleyNoise3DJitter
+    self.primitiveSelectionIntensity = clone.primitiveSelectionIntensity
+    
+    self.primitiveFrontSideHDR = clone.primitiveFrontSideHDR
+    self.primitiveFrontSideHDRExposure = clone.primitiveFrontSideHDRExposure
+    self.primitiveFrontSideAmbientColor = clone.primitiveFrontSideAmbientColor
+    self.primitiveFrontSideDiffuseColor = clone.primitiveFrontSideDiffuseColor
+    self.primitiveFrontSideSpecularColor = clone.primitiveFrontSideSpecularColor
+    self.primitiveFrontSideAmbientIntensity = clone.primitiveFrontSideAmbientIntensity
+    self.primitiveFrontSideDiffuseIntensity = clone.primitiveFrontSideDiffuseIntensity
+    self.primitiveFrontSideSpecularIntensity = clone.primitiveFrontSideSpecularIntensity
+    self.primitiveFrontSideShininess = clone.primitiveFrontSideShininess
+    
+    self.primitiveBackSideHDR = clone.primitiveBackSideHDR
+    self.primitiveBackSideHDRExposure = clone.primitiveBackSideHDRExposure
+    self.primitiveBackSideAmbientColor = clone.primitiveBackSideAmbientColor
+    self.primitiveBackSideDiffuseColor = clone.primitiveBackSideDiffuseColor
+    self.primitiveBackSideSpecularColor = clone.primitiveBackSideSpecularColor
+    self.primitiveBackSideAmbientIntensity = clone.primitiveBackSideAmbientIntensity
+    self.primitiveBackSideDiffuseIntensity = clone.primitiveBackSideDiffuseIntensity
+    self.primitiveBackSideSpecularIntensity = clone.primitiveBackSideSpecularIntensity
+    self.primitiveBackSideShininess = clone.primitiveBackSideShininess
   }
   
   public init(copy: Primitive)
   {
-    super.init()
+    super.init(copy: copy)
+    
+    self.drawAtoms = copy.drawAtoms
+    copy.atomTreeController.tag()
+    let binaryAtomEncoder: BinaryEncoder = BinaryEncoder()
+    binaryAtomEncoder.encode(copy.atomTreeController)
+    let atomData: Data = Data(binaryAtomEncoder.data)
+    do
+    {
+      self.atomTreeController = try BinaryDecoder(data: [UInt8](atomData)).decode(SKAtomTreeController.self)
+      self.atomTreeController.tag()
+    }
+    catch
+    {
+      debugPrint("Error")
+    }
+    
+    self.primitiveTransformationMatrix = copy.primitiveTransformationMatrix
+    self.primitiveOrientation = copy.primitiveOrientation
+    self.primitiveRotationDelta = copy.primitiveRotationDelta
+    
+    self.primitiveOpacity = copy.primitiveOpacity
+    self.primitiveIsCapped = copy.primitiveIsCapped
+    self.primitiveIsFractional = copy.primitiveIsFractional
+    self.primitiveNumberOfSides = copy.primitiveNumberOfSides
+    self.primitiveThickness = copy.primitiveThickness
+    
+    self.primitiveHue = copy.primitiveHue
+    self.primitiveSaturation = copy.primitiveSaturation
+    self.primitiveValue = copy.primitiveValue
+    
+    self.primitiveSelectionStyle = copy.primitiveSelectionStyle
+    self.primitiveSelectionScaling = copy.primitiveSelectionScaling
+    self.primitiveSelectionStripesDensity = copy.primitiveSelectionStripesDensity
+    self.primitiveSelectionStripesFrequency = copy.primitiveSelectionStripesFrequency
+    self.primitiveSelectionWorleyNoise3DFrequency = copy.primitiveSelectionWorleyNoise3DFrequency
+    self.primitiveSelectionWorleyNoise3DJitter = copy.primitiveSelectionWorleyNoise3DJitter
+    self.primitiveSelectionIntensity = copy.primitiveSelectionIntensity
+    
+    self.primitiveFrontSideHDR = copy.primitiveFrontSideHDR
+    self.primitiveFrontSideHDRExposure = copy.primitiveFrontSideHDRExposure
+    self.primitiveFrontSideAmbientColor = copy.primitiveFrontSideAmbientColor
+    self.primitiveFrontSideDiffuseColor = copy.primitiveFrontSideDiffuseColor
+    self.primitiveFrontSideSpecularColor = copy.primitiveFrontSideSpecularColor
+    self.primitiveFrontSideAmbientIntensity = copy.primitiveFrontSideAmbientIntensity
+    self.primitiveFrontSideDiffuseIntensity = copy.primitiveFrontSideDiffuseIntensity
+    self.primitiveFrontSideSpecularIntensity = copy.primitiveFrontSideSpecularIntensity
+    self.primitiveFrontSideShininess = copy.primitiveFrontSideShininess
+    
+    self.primitiveBackSideHDR = copy.primitiveBackSideHDR
+    self.primitiveBackSideHDRExposure = copy.primitiveBackSideHDRExposure
+    self.primitiveBackSideAmbientColor = copy.primitiveBackSideAmbientColor
+    self.primitiveBackSideDiffuseColor = copy.primitiveBackSideDiffuseColor
+    self.primitiveBackSideSpecularColor = copy.primitiveBackSideSpecularColor
+    self.primitiveBackSideAmbientIntensity = copy.primitiveBackSideAmbientIntensity
+    self.primitiveBackSideDiffuseIntensity = copy.primitiveBackSideDiffuseIntensity
+    self.primitiveBackSideSpecularIntensity = copy.primitiveBackSideSpecularIntensity
+    self.primitiveBackSideShininess = copy.primitiveBackSideShininess
   }
   
   public var selectionCOMTranslation: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)

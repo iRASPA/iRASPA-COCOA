@@ -647,7 +647,7 @@ public final class CrystalPolygonalPrismPrimitive: Primitive, UnitCellEditor, RK
       
       self.primitiveTransformationMatrix = structure.primitiveTransformationMatrix
       self.primitiveOrientation = structure.primitiveOrientation
-      self.rotationDelta = structure.primitiveRotationDelta
+      self.primitiveRotationDelta = structure.primitiveRotationDelta
 
       self.primitiveOpacity = structure.primitiveOpacity
       self.primitiveIsCapped = structure.primitiveIsCapped

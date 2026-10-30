@@ -38,7 +38,20 @@ extension SIMD3 where Scalar==Double
 {
   public var hashValue: Int
   {
-    return Int(self.x * 256 * 256 * 256) + Int(self.y * 256 * 256) + Int(self.z * 256)
+    func scaledInt(_ value: Double, scale: Double) -> Int
+    {
+      let scaled = (value * scale).rounded(.towardZero)
+      guard scaled.isFinite,
+            scaled >= Double(Int.min),
+            scaled < Double(Int.max) else
+      {
+        return value.hashValue
+      }
+      return Int(scaled)
+    }
+    return scaledInt(self.x, scale: 256.0 * 256.0 * 256.0)
+      &+ scaledInt(self.y, scale: 256.0 * 256.0)
+      &+ scaledInt(self.z, scale: 256.0)
   }
   
   public static func ==(left: SIMD3<Double>, right: SIMD3<Double>) -> Bool

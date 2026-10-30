@@ -93,14 +93,14 @@ extension Matrix {
   /* Creates a matrix containing the numbers in the specified range. */
   public init(_ range: CountableRange<Int>, isColumnVector: Bool = false) {
     if isColumnVector {
-      self.init(rows: 1, columns: range.upperBound - range.lowerBound, repeatedValue: 0)
-      for c in range {
-        self[0, c - range.lowerBound] = Double(c)
-      }
-    } else {
       self.init(rows: range.upperBound - range.lowerBound, columns: 1, repeatedValue: 0)
       for r in range {
         self[r - range.lowerBound, 0] = Double(r)
+      }
+    } else {
+      self.init(rows: 1, columns: range.upperBound - range.lowerBound, repeatedValue: 0)
+      for c in range {
+        self[0, c - range.lowerBound] = Double(c)
       }
     }
   }
@@ -1244,7 +1244,7 @@ extension Matrix {
     grid.withUnsafeBufferPointer { ptr in
       vDSP_minviD(ptr.baseAddress!, 1, &result, &index, vDSP_Length(rows * columns))
     }
-    let r = Int(index) / rows
+    let r = Int(index) / columns
     let c = Int(index) - r * columns
     return (result, r, c)
   }
@@ -1255,7 +1255,7 @@ extension Matrix {
     grid.withUnsafeBufferPointer { ptr in
       vDSP_maxviD(ptr.baseAddress!, 1, &result, &index, vDSP_Length(rows * columns))
     }
-    let r = Int(index) / rows
+    let r = Int(index) / columns
     let c = Int(index) - r * columns
     return (result, r, c)
   }

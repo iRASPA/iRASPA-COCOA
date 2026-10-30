@@ -112,11 +112,17 @@ public final class SKVASPCHGCARParser: SKParser, ProgressReporting
     }
   
     // skip commentline
-    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-    if(scannedLine == nil)
+    guard !scanner.isAtEnd else
     {
       throw SKParserError.containsNoData
     }
+    scanner.charactersToBeSkipped = nil
+    scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    if !scanner.isAtEnd && scanner.string[scanner.currentIndex].isNewline
+    {
+      scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+    }
+    scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
   
     // scan scaleFactor
     var scaleFactor: Double = 1.0
@@ -199,7 +205,7 @@ public final class SKVASPCHGCARParser: SKParser, ProgressReporting
            words.count >= 1
         {
           if let firstCharacter = words[0].lowercased().first,
-             firstCharacter == "c"  // "Cartesian"
+             firstCharacter == "c" || firstCharacter == "k"  // "Cartesian"
           {
             fractional = false
           }
@@ -207,9 +213,9 @@ public final class SKVASPCHGCARParser: SKParser, ProgressReporting
         
         for element in 0..<count
         {
-          if let atomicNumber: Int = SKElement.atomicNumber(forSymbol: elements[element]),
-             let numberOfAtomsForElement: Int =  Int(numberOfAtoms[element])
+          if let numberOfAtomsForElement: Int = Int(numberOfAtoms[element])
           {
+            let atomicNumber: Int = SKElement.atomicNumber(forSymbol: elements[element]) ?? 0
             for _ in 0..<numberOfAtomsForElement
             {
               scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
@@ -225,7 +231,8 @@ public final class SKVASPCHGCARParser: SKParser, ProgressReporting
                 atom.elementIdentifier = atomicNumber
                 atom.displayName = chemicalElement
                 atom.uniqueForceFieldName = chemicalElement
-                atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+                let rawPosition: SIMD3<Double> = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+                atom.position = fractional ? rawPosition : scaleFactor * rawPosition
                 atom.fractional = fractional
                 
                 if words.count >= 6,
@@ -257,8 +264,8 @@ public final class SKVASPCHGCARParser: SKParser, ProgressReporting
           }
         }
         
-        var sum: Float = 0.0
-        var sumSquared: Float = 0.0
+        var sum: Double = 0.0
+        var sumSquared: Double = 0.0
         var max: Float = -Float.greatestFiniteMagnitude
         var min: Float = Float.greatestFiniteMagnitude
         let inverseVolume: Float = Float(1.0/cell.volume)
@@ -279,18 +286,9 @@ public final class SKVASPCHGCARParser: SKParser, ProgressReporting
                   let index: Int = Int(x+dimensions.x*y+z*dimensions.x*dimensions.y)
                   let dataPoint: Float = value * inverseVolume
                   
-                  sum += dataPoint
-                  sumSquared += dataPoint * dataPoint
-                  
-                  if(dataPoint > max)
-                  {
-                    max = dataPoint
-                  }
-                  if(dataPoint < min)
-                  {
-                    min = dataPoint
-                  }
-                  
+                  let doublePoint: Double = Double(dataPoint)
+                  sum += doublePoint
+                  sumSquared += doublePoint * doublePoint
                   
                   gridData[index] = dataPoint
                   if(dataPoint > max)
@@ -306,8 +304,9 @@ public final class SKVASPCHGCARParser: SKParser, ProgressReporting
             }
           }
         }
-        self.average = Double(sum) / Double(dimensions.x * dimensions.y * dimensions.z)
-        self.variance = Double(sumSquared) / Double(dimensions.x * dimensions.y * dimensions.z - 1)
+        let totalGridSize: Int = Int(dimensions.x * dimensions.y * dimensions.z)
+        self.average = totalGridSize > 0 ? (sum / Double(totalGridSize)) : 0.0
+        self.variance = totalGridSize > 0 ? ((sumSquared - (sum * sum) / Double(totalGridSize)) / Double(Swift.max(1, totalGridSize - 1))) : 0.0
         self.range = (Double(min), Double(max))
         
         addFrameToStructure(atoms: atoms, periodic: periodic)

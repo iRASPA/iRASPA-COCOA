@@ -79,7 +79,7 @@ public struct SKVASPReader
     
     newLineChararterSet = CharacterSet.newlines
     
-    let stringData: String = try! String(contentsOf: URL)
+    let stringData: String = (try? String(contentsOf: URL)) ?? ""
     var types: [String]? = []
     
     self.scanner = Scanner(string: stringData)
@@ -159,11 +159,15 @@ public struct SKVASPReader
       var previousAmount: Int = 0
       for type in types
       {
-        if let amount: Int = Int(type)
+        if let amount: Int = Int(type), amount > 0
         {
-          for i in previousAmount..<(previousAmount+amount)
+          let endIndex: Int = min(previousAmount + amount, atoms.count)
+          if previousAmount < endIndex
           {
-            atoms[i].type = index
+            for i in previousAmount..<endIndex
+            {
+              atoms[i].type = index
+            }
           }
           previousAmount += amount
           index += 1

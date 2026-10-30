@@ -68,12 +68,12 @@ public class MetalArrowZGeometry
    
     // bottom cap arrow
     let ref_cap_1: Int = vertices.count
-    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: 0.0, y: 0.0, z: offset, w: 0.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 0.0), color: arrowColor, st: SIMD2<Float>(0.5,0.5)))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: 0.0, y: 0.0, z: offset, w: 0.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: -1.0, w: 0.0), color: arrowColor, st: SIMD2<Float>(0.5,0.5)))
     for  i in 0..<sectorCount
     {
       let sectorAngle: Double = Double(i) * sectorStep + 0.25 * Double.pi
-      let position: SIMD4<Float> = SIMD4<Float>(x: cos(sectorAngle) * arrowRadius, y: sin(sectorAngle) * arrowRadius / aspectRatio, z: offset, w: 0.0)
-      let normal: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 0.0)
+      let position: SIMD4<Float> = SIMD4<Float>(x: cos(sectorAngle) * arrowRadius / aspectRatio, y: sin(sectorAngle) * arrowRadius, z: offset, w: 0.0)
+      let normal: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: -1.0, w: 0.0)
       vertices.append(RKPrimitiveVertex(position: position, normal: normal, color: arrowColor, st: SIMD2<Float>()))
     }
   

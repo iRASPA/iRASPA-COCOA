@@ -147,6 +147,8 @@ vertex BoundingBoxVertexShaderOut BoundingBoxCylinderVertexShader(const device I
   
   vert.position = frameUniforms.mvpMatrix * float4((orientationMatrix * (scale * pos) + pos1).xyz,1.0);
   
+  // Calculate view vector
+  vert.V = -P.xyz;
   
   return vert;
 }

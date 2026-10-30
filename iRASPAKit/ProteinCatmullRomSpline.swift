@@ -101,8 +101,16 @@ public final class ProteinCatmullRomSpline: ProteinRibbonCenterlinePath
   
   public func evaluateOrientation(_ t: Double) -> SIMD3<Double>
   {
-    if t <= 0.0 {return normalize(orientationVectors[0])}
-    if t >= 1.0 {return normalize(orientationVectors[orientationVectors.count - 1])}
+    if t <= 0.0
+    {
+      let v = orientationVectors[0]
+      return length_squared(v) > 1.0e-12 ? normalize(v) : .zero
+    }
+    if t >= 1.0
+    {
+      let v = orientationVectors[orientationVectors.count - 1]
+      return length_squared(v) > 1.0e-12 ? normalize(v) : .zero
+    }
     
     let segmentCount: Int = controlPoints.count - 1
     let scaled: Double = t * Double(segmentCount)

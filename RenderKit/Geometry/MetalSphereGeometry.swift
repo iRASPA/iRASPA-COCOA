@@ -76,7 +76,7 @@ public class MetalSphereGeometry
         cosPhi = cos(phi)
         normal = SIMD4<Float>(x: cosPhi * sinTheta, y: sinPhi * sinTheta, z: cosTheta, w: 0.0)
         position = SIMD4<Float>(x: r * cosPhi * sinTheta, y: r * sinPhi * sinTheta, z: r * cosTheta, w: 0.0)
-        let st: SIMD2<Float> = SIMD2<Float>(x: 0.5 + 0.5 * atan2(position.z, position.x)/Float.pi, y: 0.5 - asin(position.y)/Float.pi)
+        let st: SIMD2<Float> = SIMD2<Float>(x: 0.5 + 0.5 * atan2(position.z, position.x)/Float.pi, y: 0.5 - asin(min(max(position.y, -1.0), 1.0))/Float.pi)
         vertices[index] = RKVertex(position: position, normal: normal, st: st)
         index = index + 1
       }

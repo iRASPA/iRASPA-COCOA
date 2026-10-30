@@ -477,6 +477,12 @@ kernel void constructHPLevel(texture3d<uint, access::read> readHistoPyramid [[te
                              texture3d<uint, access::write> writeHistoPyramid [[texture(1)]],
                              uint3 gid [[thread_position_in_grid]])
 {
+  uint3 dstSize = uint3(writeHistoPyramid.get_width(),
+                        writeHistoPyramid.get_height(),
+                        writeHistoPyramid.get_depth());
+  if (any(gid >= dstSize))
+    return;
+
   uint3 readPos = gid * 2;
   uint writeValue = readHistoPyramid.read(readPos).x
                  + readHistoPyramid.read(readPos + hpCubeOffsets[1]).x
@@ -547,6 +553,12 @@ kernel void classifyLewinerCubes(texture3d<float, access::read> rawData [[textur
                                  device const uint3 &dimensions [[buffer(1)]],
                                  uint3 gid [[thread_position_in_grid]])
 {
+  uint3 dstSize = uint3(writeHistoPyramid.get_width(),
+                        writeHistoPyramid.get_height(),
+                        writeHistoPyramid.get_depth());
+  if (any(gid >= dstSize))
+    return;
+
   if (any(gid >= dimensions))
   {
     writeHistoPyramid.write(uint4(0, 0, 0, 0), gid);
@@ -570,7 +582,7 @@ kernel void traverseLewinerHP(texture3d<float, access::read> rawData [[texture(0
 {
   uint target = gid;
   if (target >= sum)
-    target = 0;
+    return;
 
   uint4 cubePosition = uint4(0);
   for (int i = size; i >= 0; i--)

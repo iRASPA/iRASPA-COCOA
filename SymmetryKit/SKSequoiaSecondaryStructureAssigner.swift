@@ -206,11 +206,9 @@ public enum SKSequoiaSecondaryStructureAssigner
                                                      partnerIndex: Int) -> Double?
   {
     let sortedBySource: [(partner: Int, distance: Double)] = nearestNeighbors(for: sourceIndex, positions: positions)
-    guard sortedBySource.count >= 2 else {return nil}
-    
-    let sourcePrimeIndex: Int = sortedBySource[1].partner
+    guard let sourcePrimeIndex: Int = sortedBySource.map({$0.partner}).first(where: {$0 != sourceIndex && $0 != partnerIndex}) else {return nil}
     let sortedByPartner: [(partner: Int, distance: Double)] = nearestNeighbors(for: partnerIndex, positions: positions)
-    guard let partnerPrimeIndex: Int = sortedByPartner.map{$0.partner}.first(where: {$0 != sourceIndex && $0 != sourcePrimeIndex}) else {return nil}
+    guard let partnerPrimeIndex: Int = sortedByPartner.map({$0.partner}).first(where: {$0 != partnerIndex && $0 != sourceIndex && $0 != sourcePrimeIndex}) else {return nil}
     
     return pseudoDihedralCosine(positions: positions,
                                 indices: [sourcePrimeIndex, sourceIndex, partnerIndex, partnerPrimeIndex])

@@ -33,7 +33,7 @@
 using namespace metal;
 
 
-float snoise(float3 v, float3 gradient)
+float snoise(float3 v, thread float3 &gradient)
 {
   const float2  C = float2(1.0/6.0, 1.0/3.0) ;
   const float4  D = float4(0.0, 0.5, 1.0, 2.0);

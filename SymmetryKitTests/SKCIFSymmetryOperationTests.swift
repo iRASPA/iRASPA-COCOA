@@ -17,12 +17,12 @@ class SKCIFSymmetryOperationTests: XCTestCase
   
   func testParseBodyCenteredOperation()
   {
-    let operation = try! SKCIFSymmetryOperationParser.parse("-x+1/2,-y+1/2,z+1/2")
+    let operation = try! SKCIFSymmetryOperationParser.parse("-x+1/2,-y+1/2,-z+1/2")
     XCTAssertEqual(operation.rotation, SKRotationMatrix.inversionIdentity)
     XCTAssertEqual(operation.translation, SIMD3<Int32>(12, 12, 12))
   }
   
-  func testCAU10SymCIFIdentifiesHall426()
+  func testCAU10SymCIFIdentifiesHall426() throws
   {
     let symPath = NSHomeDirectory() + "/CAU-10-H_DDEC6_RASPA_sym.cif"
     guard FileManager.default.fileExists(atPath: symPath) else

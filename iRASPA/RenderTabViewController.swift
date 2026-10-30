@@ -344,7 +344,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     case .aspect_ratio_1_to_1:
       return 1.0
     case .aspect_ratio_1_85_to_1:
-      return 1.05405405405405405405
+      return 1.85 / 1.0
     case .aspect_ratio_2_39_to_1:
       return 2.39
     case .aspect_ratio_21_to_9:
@@ -3849,8 +3849,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                        let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
                        stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell , atoms: atoms, atomsAreFractional: true, origin: SIMD3<Double>(0,0,0))
                      case let proteinCrystal as ProteinCrystal:
-                       let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
-                       stringData = SKVASPWriter.shared.string(displayName: proteinCrystal.displayName, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))
+                       let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract(proteinCrystal.cell.convertToFractional($0.position)), $0.asymmetricParentAtom.isFixed)}
+                       stringData = SKVASPWriter.shared.string(displayName: proteinCrystal.displayName, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: true, origin: SIMD3<Double>(0,0,0))
                      case let crystal as MolecularCrystal:
                        let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
                        stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))

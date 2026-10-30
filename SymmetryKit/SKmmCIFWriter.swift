@@ -87,7 +87,7 @@ public class SKmmCIFWriter
     let spaceGroup = SKSpacegroup(HallNumber: spaceGroupHallNumber ?? 1)
     dataString += "_symmetry.space_group_name_Hall '\(spaceGroup.spaceGroupSetting.Hall)'\n"
     dataString += "_symmetry.pdbx_full_space_group_name_H-M '\(spaceGroup.spaceGroupSetting.HM)'\n"
-    dataString += "_symmetry.Int_Tables_number \(spaceGroup.spaceGroupSetting.number)\n\n"
+    dataString += "_symmetry.Int_Tables_number \(spaceGroup.spaceGroupSetting.spaceGroupNumber)\n\n"
     
     // write structure atom data
     dataString += "loop_\n"

@@ -952,8 +952,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
             sliderEulerAngleZ.doubleValue = renderEulerAngleZ * 180.0/Double.pi
             sliderEulerAngleY.doubleValue = renderEulerAngleY * 180.0/Double.pi
             textFieldEulerAngleX.doubleValue = renderEulerAngleX * 180.0/Double.pi
-            textFieldEulerAngleY.doubleValue = renderEulerAngleZ * 180.0/Double.pi
-            textFieldEulerAngleZ.doubleValue = renderEulerAngleY * 180.0/Double.pi
+            textFieldEulerAngleY.doubleValue = renderEulerAngleY * 180.0/Double.pi
+            textFieldEulerAngleZ.doubleValue = renderEulerAngleZ * 180.0/Double.pi
           }
           else
           {

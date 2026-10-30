@@ -3616,14 +3616,19 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     
     let newValue: String = sender.stringValue
     
-    if let row: Int = self.projectOutlineView?.selectedRow, row >= 0
+    if let outlineView = self.projectOutlineView
     {
-      if let projectTreeNode: ProjectTreeNode = self.projectOutlineView?.item(atRow: row) as? ProjectTreeNode, projectTreeNode.isEditable
+      let senderRow: Int = outlineView.row(for: sender)
+      let row: Int = senderRow >= 0 ? senderRow : outlineView.selectedRow
+      if row >= 0
       {
-        setProjectDisplayName(projectTreeNode, to: newValue)
-      }
+        if let projectTreeNode: ProjectTreeNode = outlineView.item(atRow: row) as? ProjectTreeNode, projectTreeNode.isEditable
+        {
+          setProjectDisplayName(projectTreeNode, to: newValue)
+        }
 
-      self.reloadData()
+        self.reloadData()
+      }
     }
   }
 

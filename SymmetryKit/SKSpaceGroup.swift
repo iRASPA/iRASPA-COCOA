@@ -336,24 +336,25 @@ public struct SKSpacegroup
   
   public static func listOfTranslationVectors(_ setting: SKSpaceGroupSetting) -> [SIMD3<Int32>]
   {
+    guard setting.Hall.count >= 2 else { return [SIMD3<Int32>(0,0,0)] }
     let index = setting.Hall.index(setting.Hall.startIndex, offsetBy: 1)
    
     switch(setting.Hall[index])
     {
     case "A":
-      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,6,6)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,12,12)]
     case "B":
-      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,0,6)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(12,0,12)]
     case "C":
-      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,6,0)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(12,12,0)]
     case "I":
-      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,6,6)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(12,12,12)]
     case "P":
       return [SIMD3<Int32>(0,0,0)]
     case "R":
-      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(8,4,4),SIMD3<Int32>(4,8,8)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(16,8,8),SIMD3<Int32>(8,16,16)]
     case "F":
-      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,6,6),SIMD3<Int32>(6,0,6),SIMD3<Int32>(6,6,0)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,12,12),SIMD3<Int32>(12,0,12),SIMD3<Int32>(12,12,0)]
     default:
       return [SIMD3<Int32>(0,0,0)]
     }
@@ -384,7 +385,7 @@ public struct SKSpacegroup
     
     let structureCell: SKCell = SKCell(unitCell: unitCell)
     let perpendicularWidths: SIMD3<Double> = structureCell.perpendicularWidths
-    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
+    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.y > 0.0001 && perpendicularWidths.z > 0.0001 else {return []}
         
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]

@@ -240,7 +240,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
       throw SKParserError.containsNoData
     }
     // "POINT_DATA 3375000" line
-    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 2, words[0].uppercased() == "SCALARS"
+    if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, words[0].uppercased() == "SCALARS"
     {
       if words[2].lowercased() == "unsigned_char"
       {
@@ -307,160 +307,190 @@ public final class SKVTKParser: SKParser, ProgressReporting
       {
       case .Uint8:
         var data = Array<UInt8>(repeating: 0, count: numberOfValues)
-        for index in 0..<numberOfValues
+        var index: Int = 0
+        while index < numberOfValues && !scanner.isAtEnd
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-          if scannedLine != nil,
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 1
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
           {
-            if let value: UInt8 = UInt8(words[0])
+            for word in words
             {
-              data[index] = value
+              if index < numberOfValues, let value: UInt8 = UInt8(word)
+              {
+                data[index] = value
+                index += 1
+              }
             }
           }
         }
         structure.gridData = data.withUnsafeBufferPointer({Data(buffer: $0)})
       case .Int8:
         var data = Array<Int8>(repeating: 0, count: numberOfValues)
-        for index in 0..<numberOfValues
+        var index: Int = 0
+        while index < numberOfValues && !scanner.isAtEnd
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-          if scannedLine != nil,
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 1
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
           {
-            if let value: Int8 = Int8(words[0])
+            for word in words
             {
-              data[index] = value
+              if index < numberOfValues, let value: Int8 = Int8(word)
+              {
+                data[index] = value
+                index += 1
+              }
             }
           }
         }
         structure.gridData = data.withUnsafeBufferPointer({Data(buffer: $0)})
       case .Uint16:
         var data = Array<UInt16>(repeating: 0, count: numberOfValues)
-        for index in 0..<numberOfValues
+        var index: Int = 0
+        while index < numberOfValues && !scanner.isAtEnd
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-          if scannedLine != nil,
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 1
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
           {
-            if let value: UInt16 = UInt16(words[0])
+            for word in words
             {
-              data[index] = value
+              if index < numberOfValues, let value: UInt16 = UInt16(word)
+              {
+                data[index] = value
+                index += 1
+              }
             }
           }
         }
         structure.gridData = data.withUnsafeBufferPointer({Data(buffer: $0)})
       case .Int16:
         var data = Array<Int16>(repeating: 0, count: numberOfValues)
-        for index in 0..<numberOfValues
+        var index: Int = 0
+        while index < numberOfValues && !scanner.isAtEnd
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-          if scannedLine != nil,
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 1
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
           {
-            if let value: Int16 = Int16(words[0])
+            for word in words
             {
-              data[index] = value
+              if index < numberOfValues, let value: Int16 = Int16(word)
+              {
+                data[index] = value
+                index += 1
+              }
             }
           }
         }
         structure.gridData = data.withUnsafeBufferPointer({Data(buffer: $0)})
       case .Uint32:
         var data = Array<UInt32>(repeating: 0, count: numberOfValues)
-        for index in 0..<numberOfValues
+        var index: Int = 0
+        while index < numberOfValues && !scanner.isAtEnd
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-          if scannedLine != nil,
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 1
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
           {
-            if let value: UInt32 = UInt32(words[0])
+            for word in words
             {
-              data[index] = value
+              if index < numberOfValues, let value: UInt32 = UInt32(word)
+              {
+                data[index] = value
+                index += 1
+              }
             }
           }
         }
         structure.gridData = data.withUnsafeBufferPointer({Data(buffer: $0)})
       case .Int32:
         var data = Array<Int32>(repeating: 0, count: numberOfValues)
-        for index in 0..<numberOfValues
+        var index: Int = 0
+        while index < numberOfValues && !scanner.isAtEnd
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-          if scannedLine != nil,
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 1
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
           {
-            if let value: Int32 = Int32(words[0])
+            for word in words
             {
-              data[index] = value
+              if index < numberOfValues, let value: Int32 = Int32(word)
+              {
+                data[index] = value
+                index += 1
+              }
             }
           }
         }
         structure.gridData = data.withUnsafeBufferPointer({Data(buffer: $0)})
       case .Uint64:
         var data = Array<UInt64>(repeating: 0, count: numberOfValues)
-        for index in 0..<numberOfValues
+        var index: Int = 0
+        while index < numberOfValues && !scanner.isAtEnd
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-          if scannedLine != nil,
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 1
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
           {
-            if let value: UInt64 = UInt64(words[0])
+            for word in words
             {
-              data[index] = value
+              if index < numberOfValues, let value: UInt64 = UInt64(word)
+              {
+                data[index] = value
+                index += 1
+              }
             }
           }
         }
         structure.gridData = data.withUnsafeBufferPointer({Data(buffer: $0)})
       case .Int64:
         var data = Array<Int64>(repeating: 0, count: numberOfValues)
-        for index in 0..<numberOfValues
+        var index: Int = 0
+        while index < numberOfValues && !scanner.isAtEnd
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-          if scannedLine != nil,
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 1
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
           {
-            if let value: Int64 = Int64(words[0])
+            for word in words
             {
-              data[index] = value
+              if index < numberOfValues, let value: Int64 = Int64(word)
+              {
+                data[index] = value
+                index += 1
+              }
             }
           }
         }
         structure.gridData = data.withUnsafeBufferPointer({Data(buffer: $0)})
       case .Float:
         var data = Array<Float>(repeating: 0, count: numberOfValues)
-        for index in 0..<numberOfValues
+        var index: Int = 0
+        while index < numberOfValues && !scanner.isAtEnd
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-          if scannedLine != nil,
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 1
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
           {
-            if let value: Float = Float(words[0])
+            for word in words
             {
-              data[index] = value
+              if index < numberOfValues, let value: Float = Float(word)
+              {
+                data[index] = value
+                index += 1
+              }
             }
           }
         }
         structure.gridData = data.withUnsafeBufferPointer({Data(buffer: $0)})
       case .Double:
         var data = Array<Double>(repeating: 0, count: numberOfValues)
-        for index in 0..<numberOfValues
+        var index: Int = 0
+        while index < numberOfValues && !scanner.isAtEnd
         {
           scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
-          if scannedLine != nil,
-              let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-              words.count >= 1
+          if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
           {
-            if let value: Double = Double(words[0])
+            for word in words
             {
-              data[index] = value
+              if index < numberOfValues, let value: Double = Double(word)
+              {
+                data[index] = value
+                index += 1
+              }
             }
           }
         }

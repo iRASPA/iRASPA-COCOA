@@ -23,7 +23,10 @@ class ThumbnailProvider: QLThumbnailProvider
     // size calculations
     let maximumSize: CGSize = request.maximumSize
     
-    guard let projectTreeNode = ProjectTreeNode(url: request.fileURL, preview: true) else {return}
+    guard let projectTreeNode = ProjectTreeNode(url: request.fileURL, preview: true) else {
+      handler(nil, BinaryCodableError.invalidArchiveData)
+      return
+    }
     projectTreeNode.unwrapLazyLocalPresentedObjectIfNeeded()
           
     if let project: ProjectStructureNode  = projectTreeNode.representedObject.loadedProjectStructureNode,
@@ -50,43 +53,42 @@ class ThumbnailProvider: QLThumbnailProvider
         // Return true if the thumbnail was successfully drawn inside this block.
         return true
         }), nil)
+        return
       }
+    }
+    
+    let imageSize = image?.size ?? NSSize()
+
+    // calculate `newImageSize` and `contextSize` such that the image fits perfectly and respects the constraints
+    var newImageSize = maximumSize
+    var contextSize = maximumSize
+    let aspectRatio = imageSize.height / imageSize.width
+    let proposedHeight = aspectRatio * maximumSize.width
+
+    if proposedHeight <= maximumSize.height
+    {
+      newImageSize.height = proposedHeight
+      contextSize.height = max(proposedHeight.rounded(.down), request.minimumSize.height)
     }
     else
     {
-      let imageSize = image?.size ?? NSSize()
-
-      // calculate `newImageSize` and `contextSize` such that the image fits perfectly and respects the constraints
-      var newImageSize = maximumSize
-      var contextSize = maximumSize
-      let aspectRatio = imageSize.height / imageSize.width
-      let proposedHeight = aspectRatio * maximumSize.width
-
-      if proposedHeight <= maximumSize.height
-      {
-        newImageSize.height = proposedHeight
-        contextSize.height = max(proposedHeight.rounded(.down), request.minimumSize.height)
-      }
-      else
-      {
-        newImageSize.width = maximumSize.height / aspectRatio
-        contextSize.width = max(newImageSize.width.rounded(.down), request.minimumSize.width)
-      }
-
-      handler(QLThumbnailReply(contextSize: contextSize, currentContextDrawing: { () -> Bool in
-          // draw the image centered
-          if let image = image
-          {
-            image.draw(in: CGRect(x: contextSize.width/2 - newImageSize.width/2,
-                                  y: contextSize.height/2 - newImageSize.height/2,
-                                  width: newImageSize.width,
-                                  height: newImageSize.height))
-
-            // Return true if the thumbnail was successfully drawn inside this block.
-            return true
-          }
-          return false
-        }), nil)
+      newImageSize.width = maximumSize.height / aspectRatio
+      contextSize.width = max(newImageSize.width.rounded(.down), request.minimumSize.width)
     }
+
+    handler(QLThumbnailReply(contextSize: contextSize, currentContextDrawing: { () -> Bool in
+        // draw the image centered
+        if let image = image
+        {
+          image.draw(in: CGRect(x: contextSize.width/2 - newImageSize.width/2,
+                                y: contextSize.height/2 - newImageSize.height/2,
+                                width: newImageSize.width,
+                                height: newImageSize.height))
+
+          // Return true if the thumbnail was successfully drawn inside this block.
+          return true
+        }
+        return false
+      }), nil)
   }
 }

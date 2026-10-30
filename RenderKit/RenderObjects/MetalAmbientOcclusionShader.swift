@@ -554,11 +554,13 @@ class MetalAmbientOcclusionShader
               }
               
               let boundingBox: SKBoundingBox = crystalProjectData.renderBoundingBox
-              let largestRadius: Double = boundingBox.boundingSphereRadius
+              let largestRadius: Double = max(boundingBox.boundingSphereRadius, 1.0)
               let centerOfScene = boundingBox.minimum + (boundingBox.maximum - boundingBox.minimum) * 0.5
               let eye = SIMD3<Double>(x: centerOfScene.x, y: centerOfScene.y, z: centerOfScene.z + largestRadius)
               
-              let boundingBoxAspectRatio: Double = fabs(boundingBox.maximum.x - boundingBox.minimum.x) / abs(boundingBox.maximum.y - boundingBox.minimum.y)
+              let boundingBoxWidthX: Double = max(fabs(boundingBox.maximum.x - boundingBox.minimum.x), 1.0)
+              let boundingBoxWidthY: Double = max(abs(boundingBox.maximum.y - boundingBox.minimum.y), 1.0)
+              let boundingBoxAspectRatio: Double = boundingBoxWidthX / boundingBoxWidthY
               
               let left,right,top,bottom: Double
               if (boundingBoxAspectRatio < 1.0)
@@ -1168,7 +1170,7 @@ class MetalAmbientOcclusionShader
     guard sceneIndex < renderStructures.count,
           structureIndex < renderStructures[sceneIndex].count,
           let atomSource: RKRenderAtomSource = renderStructures[sceneIndex][structureIndex] as? RKRenderAtomSource,
-          atomSource.atomAmbientOcclusion,
+          atomSource.atomAmbientOcclusion || (renderStructures[sceneIndex][structureIndex] as? RKRenderBondSource)?.bondAmbientOcclusion == true || (renderStructures[sceneIndex][structureIndex] as? RKRenderRibbonSource)?.ribbonAmbientOcclusion == true,
           atomSource.drawAtoms || includeHiddenAtomsForRibbonOcclusion,
           let instanceBuffer: MTLBuffer = atomShader.instanceBuffer[sceneIndex][structureIndex],
           let vertexBuffer: MTLBuffer = atomOrthographicImposterShader.vertexBuffer,
@@ -1179,6 +1181,8 @@ class MetalAmbientOcclusionShader
     let indexCount: Int = indexBuffer.length / MemoryLayout<UInt16>.stride
     guard instanceCount > 0, indexCount > 0 else {return}
     
+    encoder.setCullMode(MTLCullMode.back)
+    encoder.setFrontFacing(MTLWinding.clockwise)
     encoder.setRenderPipelineState(shadowMapPipeLine)
     encoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
     encoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)

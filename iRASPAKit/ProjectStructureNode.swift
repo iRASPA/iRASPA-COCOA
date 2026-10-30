@@ -487,13 +487,10 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     encoder.encode(self.showBoundingBox)
     encoder.encode(self.renderBackgroundType.rawValue)
     
-    if let renderBackgroundImage = renderBackgroundImage
+    if let renderBackgroundImage = renderBackgroundImage,
+       let pngData: Data = NSBitmapImageRep(cgImage: renderBackgroundImage).representation(using: NSBitmapImageRep.FileType.png, properties: [:])
     {
-      let bitmapImageRep = NSBitmapImageRep(cgImage: renderBackgroundImage)
-      if let pngData: Data = bitmapImageRep.representation(using: NSBitmapImageRep.FileType.png, properties: [:])
-      {
-        encoder.encode(pngData)
-      }
+      encoder.encode(pngData)
     }
     else
     {

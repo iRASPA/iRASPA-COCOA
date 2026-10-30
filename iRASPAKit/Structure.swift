@@ -951,6 +951,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     
     self.atomRepresentationType = copy.atomRepresentationType
     self.atomRepresentationStyle = copy.atomRepresentationStyle
+    self.atomEdgeCueing = copy.atomEdgeCueing
     self.atomForceFieldIdentifier = copy.atomForceFieldIdentifier
     self.atomForceFieldOrder = copy.atomForceFieldOrder
     self.atomColorSchemeIdentifier = copy.atomColorSchemeIdentifier
@@ -1038,12 +1039,17 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.unitCellDiffuseColor = copy.unitCellDiffuseColor
     self.unitCellDiffuseIntensity = copy.unitCellDiffuseIntensity
     
+    self.renderLocalAxis = RKLocalAxes(axes: copy.renderLocalAxis)
+    
     // adsorption surface
     self.frameworkProbeMolecule = copy.frameworkProbeMolecule
     self.frameworkProbeEpsilon = copy.frameworkProbeEpsilon
     self.frameworkProbeSigma = copy.frameworkProbeSigma
 
     self.drawAdsorptionSurface = copy.drawAdsorptionSurface
+    self.adsorptionSurfaceRenderingMethod = copy.adsorptionSurfaceRenderingMethod
+    self.adsorptionVolumeTransferFunction = copy.adsorptionVolumeTransferFunction
+    self.adsorptionVolumeStepLength = copy.adsorptionVolumeStepLength
     self.adsorptionSurfaceOpacity = copy.adsorptionSurfaceOpacity
     self.adsorptionTransparencyThreshold = copy.adsorptionTransparencyThreshold
     self.adsorptionSurfaceIsoValue = copy.adsorptionSurfaceIsoValue
@@ -1054,6 +1060,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.adsorptionSurfaceProbeMolecule = copy.adsorptionSurfaceProbeMolecule
     self.adsorptionSurfaceProbeEpsilon = copy.adsorptionSurfaceProbeEpsilon
     self.adsorptionSurfaceProbeSigma = copy.adsorptionSurfaceProbeSigma
+    
+    self.adsorptionSurfaceHue = copy.adsorptionSurfaceHue
+    self.adsorptionSurfaceSaturation = copy.adsorptionSurfaceSaturation
+    self.adsorptionSurfaceValue = copy.adsorptionSurfaceValue
     
     self.adsorptionSurfaceFrontSideHDR = copy.adsorptionSurfaceFrontSideHDR
     self.adsorptionSurfaceFrontSideHDRExposure = copy.adsorptionSurfaceFrontSideHDRExposure
@@ -1125,8 +1135,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.experimentalMeasurementGoodnessOfFit = copy.experimentalMeasurementGoodnessOfFit
     self.experimentalMeasurementRFactorGt = copy.experimentalMeasurementRFactorGt
     self.experimentalMeasurementRFactorAll = copy.experimentalMeasurementRFactorAll
-    
-    self.setRepresentationStyle(style: self.atomRepresentationStyle)
   }
   
   public required init(from object: Object)
@@ -1152,6 +1160,14 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     
     if let atomAppearanceViewer: AtomStructureEditor = object as? AtomStructureEditor
     {
+      if let representationType = atomAppearanceViewer.getRepresentationType()
+      {
+        self.atomRepresentationType = representationType
+      }
+      if let representationStyle = atomAppearanceViewer.getRepresentationStyle()
+      {
+        self.atomRepresentationStyle = representationStyle
+      }
       self.atomHue = atomAppearanceViewer.atomHue
       self.atomSaturation = atomAppearanceViewer.atomSaturation
       self.atomValue = atomAppearanceViewer.atomValue
@@ -1175,6 +1191,23 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.atomSelectionStyle = atomAppearanceViewer.atomSelectionStyle
       self.atomSelectionIntensity = atomAppearanceViewer.atomSelectionIntensity
       self.atomSelectionScaling = atomAppearanceViewer.atomSelectionScaling
+    }
+    
+    if let structure: Structure = object as? Structure
+    {
+      self.atomEdgeCueing = structure.atomEdgeCueing
+      self.atomForceFieldIdentifier = structure.atomForceFieldIdentifier
+      self.atomForceFieldOrder = structure.atomForceFieldOrder
+      self.atomColorSchemeIdentifier = structure.atomColorSchemeIdentifier
+      self.atomColorSchemeOrder = structure.atomColorSchemeOrder
+      self.atomSelectionStripesDensity = structure.atomSelectionStripesDensity
+      self.atomSelectionStripesFrequency = structure.atomSelectionStripesFrequency
+      self.atomSelectionWorleyNoise3DFrequency = structure.atomSelectionWorleyNoise3DFrequency
+      self.atomSelectionWorleyNoise3DJitter = structure.atomSelectionWorleyNoise3DJitter
+      self.bondSelectionStripesDensity = structure.bondSelectionStripesDensity
+      self.bondSelectionStripesFrequency = structure.bondSelectionStripesFrequency
+      self.bondSelectionWorleyNoise3DFrequency = structure.bondSelectionWorleyNoise3DFrequency
+      self.bondSelectionWorleyNoise3DJitter = structure.bondSelectionWorleyNoise3DJitter
     }
     
     if let bondAppearanceViewer: BondStructureEditor = object as? BondStructureEditor
@@ -1357,10 +1390,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.citationPublicationDate = infoViewer.citationPublicationDate
       self.citationDatebaseCodes = infoViewer.citationDatebaseCodes
     }
-    
-    
-    
-    self.setRepresentationStyle(style: self.atomRepresentationStyle)
   }
   
   public init(clone: Structure)
@@ -1491,6 +1520,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     
     self.atomRepresentationType = clone.atomRepresentationType
     self.atomRepresentationStyle = clone.atomRepresentationStyle
+    self.atomEdgeCueing = clone.atomEdgeCueing
     self.atomForceFieldIdentifier = clone.atomForceFieldIdentifier
     self.atomForceFieldOrder = clone.atomForceFieldOrder
     self.atomColorSchemeIdentifier = clone.atomColorSchemeIdentifier
@@ -1543,6 +1573,12 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
 
     self.bondHDR = clone.bondHDR
     self.bondHDRExposure = clone.bondHDRExposure
+    self.bondSelectionStyle = clone.bondSelectionStyle
+    self.bondSelectionStripesDensity = clone.bondSelectionStripesDensity
+    self.bondSelectionStripesFrequency = clone.bondSelectionStripesFrequency
+    self.bondSelectionWorleyNoise3DFrequency = clone.bondSelectionWorleyNoise3DFrequency
+    self.bondSelectionWorleyNoise3DJitter = clone.bondSelectionWorleyNoise3DJitter
+    self.bondSelectionScaling = clone.bondSelectionScaling
     self.bondSelectionIntensity = clone.bondSelectionIntensity
     
     self.bondHue = clone.bondHue
@@ -1568,12 +1604,17 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.unitCellDiffuseColor = clone.unitCellDiffuseColor
     self.unitCellDiffuseIntensity = clone.unitCellDiffuseIntensity
     
+    self.renderLocalAxis = RKLocalAxes(axes: clone.renderLocalAxis)
+    
     // adsorption surface
     self.frameworkProbeMolecule = clone.frameworkProbeMolecule
     self.frameworkProbeEpsilon = clone.frameworkProbeEpsilon
     self.frameworkProbeSigma = clone.frameworkProbeSigma
 
     self.drawAdsorptionSurface = clone.drawAdsorptionSurface
+    self.adsorptionSurfaceRenderingMethod = clone.adsorptionSurfaceRenderingMethod
+    self.adsorptionVolumeTransferFunction = clone.adsorptionVolumeTransferFunction
+    self.adsorptionVolumeStepLength = clone.adsorptionVolumeStepLength
     self.adsorptionSurfaceOpacity = clone.adsorptionSurfaceOpacity
     self.adsorptionTransparencyThreshold = clone.adsorptionTransparencyThreshold
     self.adsorptionSurfaceIsoValue = clone.adsorptionSurfaceIsoValue
@@ -1584,6 +1625,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.adsorptionSurfaceProbeMolecule = clone.adsorptionSurfaceProbeMolecule
     self.adsorptionSurfaceProbeEpsilon = clone.adsorptionSurfaceProbeEpsilon
     self.adsorptionSurfaceProbeSigma = clone.adsorptionSurfaceProbeSigma
+    
+    self.adsorptionSurfaceHue = clone.adsorptionSurfaceHue
+    self.adsorptionSurfaceSaturation = clone.adsorptionSurfaceSaturation
+    self.adsorptionSurfaceValue = clone.adsorptionSurfaceValue
     
     self.adsorptionSurfaceFrontSideHDR = clone.adsorptionSurfaceFrontSideHDR
     self.adsorptionSurfaceFrontSideHDRExposure = clone.adsorptionSurfaceFrontSideHDRExposure
@@ -1658,6 +1703,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     
     // clone atoms and bonds
     clone.atomTreeController.tag()
+    clone.bondSetController.tag()
     
     let binaryAtomEncoder: BinaryEncoder = BinaryEncoder()
     binaryAtomEncoder.encode(clone.atomTreeController)
@@ -1679,16 +1725,11 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       debugPrint("Error")
     }
     
-    // clone atoms and bonds
-    clone.bondSetController.tag()
-    
     //restore selection
     let tags: Set<Int> = Set(clone.atomTreeController.selectedTreeNodes.map{$0.representedObject.tag})
     let atomTreeNodes: [SKAtomTreeNode] = self.atomTreeController.flattenedLeafNodes()
     self.atomTreeController.selectedTreeNodes = Set(atomTreeNodes.filter{tags.contains($0.representedObject.tag)})
     self.bondSetController.selectedObjects = clone.bondSetController.selectedObjects
-    
-    self.setRepresentationStyle(style: self.atomRepresentationStyle)
   }
   
   // MARK: -
@@ -1793,7 +1834,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     
       return asymmetricAtoms.map{$0.uniqueForceFieldName}.filter{
-      forceFieldSet[$0] != nil}
+      forceFieldSet[$0] == nil}
     }
     return []
   }
@@ -2248,14 +2289,14 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
        (self.atomHue ==~ 1.0) &&
        (self.atomSaturation ==~ 1.0) &&
        (self.atomValue ==~ 1.0) &&
-       ((self.atomAmbientColor.redComponent - 1.0) < 1e-3) &&
-       ((self.atomAmbientColor.greenComponent - 1.0) < 1e-3) &&
-       ((self.atomAmbientColor.blueComponent - 1.0) < 1e-3) &&
-       ((self.atomAmbientColor.alphaComponent - 1.0) < 1e-3) &&
-       ((self.atomSpecularColor.redComponent - 1.0) < 1e-3) &&
-       ((self.atomSpecularColor.greenComponent - 1.0) < 1e-3) &&
-       ((self.atomSpecularColor.blueComponent - 1.0) < 1e-3) &&
-       ((self.atomSpecularColor.alphaComponent - 1.0) < 1e-3) &&
+       (abs(self.atomAmbientColor.redComponent - 1.0) < 1e-3) &&
+       (abs(self.atomAmbientColor.greenComponent - 1.0) < 1e-3) &&
+       (abs(self.atomAmbientColor.blueComponent - 1.0) < 1e-3) &&
+       (abs(self.atomAmbientColor.alphaComponent - 1.0) < 1e-3) &&
+       (abs(self.atomSpecularColor.redComponent - 1.0) < 1e-3) &&
+       (abs(self.atomSpecularColor.greenComponent - 1.0) < 1e-3) &&
+       (abs(self.atomSpecularColor.blueComponent - 1.0) < 1e-3) &&
+       (abs(self.atomSpecularColor.alphaComponent - 1.0) < 1e-3) &&
        self.atomHDR == true &&
        (self.atomHDRExposure ==~ 1.5) &&
        self.atomAmbientOcclusion == false &&
@@ -2273,18 +2314,18 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
        self.bondAmbientOcclusion == false &&
        self.bondHDR == true &&
        (self.bondHDRExposure ==~ 1.5) &&
-      ((self.bondAmbientColor.redComponent - 1.0) < 1e-3) &&
-      ((self.bondAmbientColor.greenComponent - 1.0) < 1e-3) &&
-      ((self.bondAmbientColor.blueComponent - 1.0) < 1e-3) &&
-      ((self.bondAmbientColor.alphaComponent - 1.0) < 1e-3) &&
-      ((self.bondDiffuseColor.redComponent - 0.8) < 1e-3) &&
-      ((self.bondDiffuseColor.greenComponent - 0.8) < 1e-3) &&
-      ((self.bondDiffuseColor.blueComponent - 0.8) < 1e-3) &&
-      ((self.bondDiffuseColor.alphaComponent - 1.0) < 1e-3) &&
-      ((self.bondSpecularColor.redComponent - 1.0) < 1e-3) &&
-      ((self.bondSpecularColor.greenComponent - 1.0) < 1e-3) &&
-      ((self.bondSpecularColor.blueComponent - 1.0) < 1e-3) &&
-      ((self.bondSpecularColor.alphaComponent - 1.0) < 1e-3) &&
+      (abs(self.bondAmbientColor.redComponent - 1.0) < 1e-3) &&
+      (abs(self.bondAmbientColor.greenComponent - 1.0) < 1e-3) &&
+      (abs(self.bondAmbientColor.blueComponent - 1.0) < 1e-3) &&
+      (abs(self.bondAmbientColor.alphaComponent - 1.0) < 1e-3) &&
+      (abs(self.bondDiffuseColor.redComponent - 0.8) < 1e-3) &&
+      (abs(self.bondDiffuseColor.greenComponent - 0.8) < 1e-3) &&
+      (abs(self.bondDiffuseColor.blueComponent - 0.8) < 1e-3) &&
+      (abs(self.bondDiffuseColor.alphaComponent - 1.0) < 1e-3) &&
+      (abs(self.bondSpecularColor.redComponent - 1.0) < 1e-3) &&
+      (abs(self.bondSpecularColor.greenComponent - 1.0) < 1e-3) &&
+      (abs(self.bondSpecularColor.blueComponent - 1.0) < 1e-3) &&
+      (abs(self.bondSpecularColor.alphaComponent - 1.0) < 1e-3) &&
        (self.bondAmbientIntensity ==~  0.35) &&
        (self.bondDiffuseIntensity ==~  1.0) &&
        (self.bondSpecularIntensity ==~  1.0) &&
@@ -2309,14 +2350,14 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     else if (self.atomHue ==~ 1.0) &&
        (self.atomSaturation ==~ 0.5) &&
        (self.atomValue ==~ 1.0) &&
-       ((self.atomAmbientColor.redComponent - 1.0) < 1e-3) &&
-       ((self.atomAmbientColor.greenComponent - 1.0) < 1e-3) &&
-       ((self.atomAmbientColor.blueComponent - 1.0) < 1e-3) &&
-       ((self.atomAmbientColor.alphaComponent - 1.0) < 1e-3) &&
-       ((self.atomSpecularColor.redComponent - 1.0) < 1e-3) &&
-       ((self.atomSpecularColor.greenComponent - 1.0) < 1e-3) &&
-       ((self.atomSpecularColor.blueComponent - 1.0) < 1e-3) &&
-       ((self.atomSpecularColor.alphaComponent - 1.0) < 1e-3) &&
+       (abs(self.atomAmbientColor.redComponent - 1.0) < 1e-3) &&
+       (abs(self.atomAmbientColor.greenComponent - 1.0) < 1e-3) &&
+       (abs(self.atomAmbientColor.blueComponent - 1.0) < 1e-3) &&
+       (abs(self.atomAmbientColor.alphaComponent - 1.0) < 1e-3) &&
+       (abs(self.atomSpecularColor.redComponent - 1.0) < 1e-3) &&
+       (abs(self.atomSpecularColor.greenComponent - 1.0) < 1e-3) &&
+       (abs(self.atomSpecularColor.blueComponent - 1.0) < 1e-3) &&
+       (abs(self.atomSpecularColor.alphaComponent - 1.0) < 1e-3) &&
        atomsDrawn &&
        bondsHidden &&
        self.atomHDR == false &&
@@ -2367,18 +2408,18 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.bondAmbientOcclusion == false &&
       self.bondHDR == true &&
       (self.bondHDRExposure ==~ 1.5) &&
-      ((self.bondAmbientColor.redComponent - 1.0) < 1e-3) &&
-      ((self.bondAmbientColor.greenComponent - 1.0) < 1e-3) &&
-      ((self.bondAmbientColor.blueComponent - 1.0) < 1e-3) &&
-      ((self.bondAmbientColor.alphaComponent - 1.0) < 1e-3) &&
-      ((self.bondDiffuseColor.redComponent - 0.8) < 1e-3) &&
-      ((self.bondDiffuseColor.greenComponent - 0.8) < 1e-3) &&
-      ((self.bondDiffuseColor.blueComponent - 0.8) < 1e-3) &&
-      ((self.bondDiffuseColor.alphaComponent - 1.0) < 1e-3) &&
-      ((self.bondSpecularColor.redComponent - 1.0) < 1e-3) &&
-      ((self.bondSpecularColor.greenComponent - 1.0) < 1e-3) &&
-      ((self.bondSpecularColor.blueComponent - 1.0) < 1e-3) &&
-      ((self.bondSpecularColor.alphaComponent - 1.0) < 1e-3) &&
+      (abs(self.bondAmbientColor.redComponent - 1.0) < 1e-3) &&
+      (abs(self.bondAmbientColor.greenComponent - 1.0) < 1e-3) &&
+      (abs(self.bondAmbientColor.blueComponent - 1.0) < 1e-3) &&
+      (abs(self.bondAmbientColor.alphaComponent - 1.0) < 1e-3) &&
+      (abs(self.bondDiffuseColor.redComponent - 0.8) < 1e-3) &&
+      (abs(self.bondDiffuseColor.greenComponent - 0.8) < 1e-3) &&
+      (abs(self.bondDiffuseColor.blueComponent - 0.8) < 1e-3) &&
+      (abs(self.bondDiffuseColor.alphaComponent - 1.0) < 1e-3) &&
+      (abs(self.bondSpecularColor.redComponent - 1.0) < 1e-3) &&
+      (abs(self.bondSpecularColor.greenComponent - 1.0) < 1e-3) &&
+      (abs(self.bondSpecularColor.blueComponent - 1.0) < 1e-3) &&
+      (abs(self.bondSpecularColor.alphaComponent - 1.0) < 1e-3) &&
       (self.bondAmbientIntensity ==~  0.1) &&
       (self.bondDiffuseIntensity ==~  1.0) &&
       (self.bondSpecularIntensity ==~  1.0) &&
@@ -2394,8 +2435,8 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       self.bondSelectionStyle == .WorleyNoise3D &&
       (self.bondSelectionScaling ==~ 1.0) &&
       (self.bondSelectionIntensity ==~ 0.8) &&
-      (self.atomSelectionStripesDensity ==~ 0.25) &&
-      (self.atomSelectionStripesFrequency ==~ 12.0) &&
+      (self.bondSelectionStripesDensity ==~ 0.25) &&
+      (self.bondSelectionStripesFrequency ==~ 12.0) &&
       self.atomEdgeCueing == .off
     {
       self.atomRepresentationStyle = .licorice
@@ -2600,7 +2641,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   public static func dihedralAngle(_ atomA: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomD: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> (Double, Double?)
   {
     var periodicAngle: Double? = nil
-    if((atomA.structure === atomB.structure) && (atomB.structure === atomC.structure) && atomA.structure.periodic)
+    if((atomA.structure === atomB.structure) && (atomB.structure === atomC.structure) && (atomC.structure === atomD.structure) && atomA.structure.periodic)
     {
       // Don't rotate, because for distances in the same structure we need to apply the periodic boundary conditions.
       // The rotation would be the same anyway, but applyFullCellBoundaryCondition can only be applied in the unrotated frame.
@@ -2613,7 +2654,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       let dr3: SIMD3<Double> = cartesianPositionD - cartesianPositionC
       
       let Dab: SIMD3<Double> = atomA.structure.cell.applyFullCellBoundaryCondition(dr1)
-      let Dbc: SIMD3<Double> = atomA.structure.cell.applyFullCellBoundaryCondition(dr2)
+      let Dbc: SIMD3<Double> = normalize(atomA.structure.cell.applyFullCellBoundaryCondition(dr2))
       let Dcd: SIMD3<Double> = atomA.structure.cell.applyFullCellBoundaryCondition(dr3)
       
       let dotAB = dot(Dab,Dbc)
@@ -2624,7 +2665,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       
       // compute Cos(Phi)
       // Phi is defined in protein convention Phi(trans)=Pi
-      let cosPhi: Double = dot(dr,ds)
+      let cosPhi: Double = max(-1.0, min(1.0, dot(dr,ds)))
       
       let Pb: SIMD3<Double> = cross(Dbc, Dab)
       let Pc: SIMD3<Double> = cross(Dbc, Dcd)
@@ -2637,7 +2678,10 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
       {
         periodicAngle = Phi + 2.0*Double.pi
       }
-      periodicAngle = Phi
+      else
+      {
+        periodicAngle = Phi
+      }
     }
     
     // Don't rotate, because for distances in the same structure we need to apply the periodic boundary conditions.
@@ -2648,7 +2692,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     let cartesianPositionD: SIMD3<Double> = atomD.structure.absoluteCartesianScenePosition(for: atomD.copy.position, replicaPosition: atomD.replicaPosition)
     
     let Dab: SIMD3<Double> = cartesianPositionA - cartesianPositionB
-    let Dbc: SIMD3<Double> = cartesianPositionC - cartesianPositionB
+    let Dbc: SIMD3<Double> = normalize(cartesianPositionC - cartesianPositionB)
     let Dcd: SIMD3<Double> = cartesianPositionD - cartesianPositionC
     
     let dotAB = dot(Dab,Dbc)
@@ -2659,7 +2703,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     
     // compute Cos(Phi)
     // Phi is defined in protein convention Phi(trans)=Pi
-    let cosPhi: Double = dot(dr,ds)
+    let cosPhi: Double = max(-1.0, min(1.0, dot(dr,ds)))
     
     let Pb: SIMD3<Double> = cross(Dbc, Dab)
     let Pc: SIMD3<Double> = cross(Dbc, Dcd)
@@ -3636,14 +3680,14 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         
         // If the atom is sulfur and it connects to phosphorus, Oij is set to 2.
         if Set<Int>([16]).contains(atom.key.asymmetricParentAtom.elementIdentifier),
-           Set<Int>([15]).contains(atom.value[0].atom2.asymmetricParentAtom.elementIdentifier)
+           Set<Int>([15]).contains(atom.value[0].otherAtom(atom.key).asymmetricParentAtom.elementIdentifier)
         {
           atom.value[0].bondOrder = 2
         }
         
         // If the atom is nitrogen and it connects to sulfur, Oij is set to 2.
         if Set<Int>([7]).contains(atom.key.asymmetricParentAtom.elementIdentifier),
-           Set<Int>([16]).contains(atom.value[0].atom2.asymmetricParentAtom.elementIdentifier)
+           Set<Int>([16]).contains(atom.value[0].otherAtom(atom.key).asymmetricParentAtom.elementIdentifier)
         {
           atom.value.first?.bondOrder = 2
         }
@@ -3746,7 +3790,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
           for bond in atom.value
           {
             if bond.otherAtom(atomI).asymmetricParentAtom.elementIdentifier == 8,
-               let atomJconnectivity = groupByAtom[atom.value[0].otherAtom(atomI)]?.count , atomJconnectivity == 1
+               let atomJconnectivity = groupByAtom[bond.otherAtom(atomI)]?.count , atomJconnectivity == 1
             {
               // fix to acid model
             }
@@ -3759,30 +3803,28 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
         }
         
       }
-      
-      // loop over atoms when the connectivity is 4
-      for atom in groupByAtom
+    }
+    
+    // loop over atoms when the connectivity is 4
+    for atom in groupByAtom
+    {
+      let atomI: SKAtomCopy = atom.key
+      if atom.value.count == 4
       {
-        let atomI: SKAtomCopy = atom.key
-        if atom.value.count == 4
+        // if the atom is C or N
+        if Set<Int>([6, 7]).contains(atomI.asymmetricParentAtom.elementIdentifier)
         {
-          // if the atom is C or N
-          if Set<Int>([6, 7]).contains(atomI.asymmetricParentAtom.elementIdentifier)
+          // maximum connections is 4, and when they are connected with 4 atoms, all the bonds should be single
+          for bond in atom.value
           {
-            // maximum connections is 4, and when they are connected with 4 atoms, all the bonds should be single
-            for bond in atom.value
-            {
-              bond.bondOrder = 1
-            }
-          }  // if atom is P, S, Cl, Br, I
-          else if Set<Int>([15,16,17,35,53]).contains(atomI.asymmetricParentAtom.elementIdentifier)
-          {
-            // fix to acid model
+            bond.bondOrder = 1
           }
+        }  // if atom is P, S, Cl, Br, I
+        else if Set<Int>([15,16,17,35,53]).contains(atomI.asymmetricParentAtom.elementIdentifier)
+        {
+          // fix to acid model
         }
       }
-      
-      
     }
   }
     

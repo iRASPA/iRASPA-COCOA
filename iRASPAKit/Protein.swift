@@ -204,6 +204,7 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
   {
     super.init(copy: protein)
     self.drawRibbon = protein.drawRibbon
+    self.ribbonEdgeCueing = protein.ribbonEdgeCueing
     self.ribbonScaleFactor = protein.ribbonScaleFactor
     self.ribbonColorSet = protein.ribbonColorSet
     self.ribbonRepresentationStyle = protein.ribbonRepresentationStyle
@@ -236,6 +237,7 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
   {
     super.init(clone: protein)
     self.drawRibbon = protein.drawRibbon
+    self.ribbonEdgeCueing = protein.ribbonEdgeCueing
     self.ribbonScaleFactor = protein.ribbonScaleFactor
     self.ribbonColorSet = protein.ribbonColorSet
     self.ribbonRepresentationStyle = protein.ribbonRepresentationStyle
@@ -382,13 +384,12 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
   
   public override var renderInternalBonds: [RKInPerInstanceAttributesBonds]
   {
-    var index: Int = 0
-    var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds](repeating: RKInPerInstanceAttributesBonds(), count: bondSetController.arrangedObjects.count * numberOfReplicas())
+    var data: [RKInPerInstanceAttributesBonds] = []
+    data.reserveCapacity(bondSetController.arrangedObjects.count * numberOfReplicas())
       
     let forceFieldSets: SKForceFieldSets? = DocumentContext.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
-    index = 0
     for (asymmetricBondIndex, asymmetricBond) in bondSetController.arrangedObjects.enumerated()
     {
       for bond in asymmetricBond.copies
@@ -418,14 +419,13 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
           let w: Double = (asymmetricBond.isVisible && typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) &&
                             (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
           
-          data[index] = RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: pos1.x, y: pos1.y, z: pos1.z, w: w),
-                                                         position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: w),
-                                                         color1: SIMD4<Float>(color: color1),
-                                                         color2: SIMD4<Float>(color: color2),
-                                                         scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2),
-                                                         tag: UInt32(asymmetricBondIndex),
-                                                         type: UInt32(asymmetricBond.bondType.rawValue))
-          index = index + 1
+          data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: pos1.x, y: pos1.y, z: pos1.z, w: w),
+                                                     position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: w),
+                                                     color1: SIMD4<Float>(color: color1),
+                                                     color2: SIMD4<Float>(color: color2),
+                                                     scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2),
+                                                     tag: UInt32(asymmetricBondIndex),
+                                                     type: UInt32(asymmetricBond.bondType.rawValue)))
         }
       }
     }
@@ -1061,11 +1061,10 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
         let posB: SIMD3<Double> = atoms[j].position
         
         let separationVector: SIMD3<Double> = posA - posB
-        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(posA - posB)
         
         let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
         
-        let bondLength: Double = length(periodicSeparationVector)
+        let bondLength: Double = length(separationVector)
         if (bondLength < bondCriteria)
         {
           // Type atom as 'Double'
@@ -1076,11 +1075,6 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
           else if (bondLength < 0.8)
           {
             // discard as being a bond
-          }
-          else if (length(separationVector) > bondCriteria)
-          {
-            let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .external)
-            computedBonds.append(bond)
           }
           else
           {
@@ -1095,11 +1089,10 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
         let posB: SIMD3<Double> = atomList[j].position
         
         let separationVector: SIMD3<Double> = posA - posB
-        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(posA - posB)
         
         let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atomList[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
         
-        let bondLength: Double = length(periodicSeparationVector)
+        let bondLength: Double = length(separationVector)
         if (bondLength < bondCriteria)
         {
           // Type atom as 'Double'
@@ -1111,11 +1104,6 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
           {
             // discard as being a bond
           }
-          else if (length(separationVector) > bondCriteria)
-          {
-            let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atomList[j], boundaryType: .external)
-            computedBonds.append(bond)
-          }
           else
           {
             let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atomList[j], boundaryType: .internal)
@@ -1124,7 +1112,7 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
         }
       }
     }
-    return computedBonds
+    return computedBonds.filter{$0.atom1.type == .copy && $0.atom2.type == .copy}
   }
   
   // MARK: -
@@ -1159,6 +1147,7 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
     //atoms.forEach{ $0.bonds.removeAll()}
 
     let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
+    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.y > 0.0001 && perpendicularWidths.z > 0.0001 else {return []}
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]
     let cutoffVector: SIMD3<Double> = SIMD3<Double>(x: perpendicularWidths.x/Double(numberOfCells[0]), y: perpendicularWidths.y/Double(numberOfCells[1]), z: perpendicularWidths.z/Double(numberOfCells[2]))
@@ -1174,9 +1163,10 @@ public final class Protein: Structure, AtomEditor, BondEditor, RKRenderAtomSourc
       {
         let position: SIMD3<Double> = atoms[i].position - structureCell.boundingBox.minimum
         
-        let icell: Int = Int((position.x) / cutoffVector.x) +
-          Int((position.y) / cutoffVector.y) * numberOfCells[0] +
-          Int((position.z) / cutoffVector.z) * numberOfCells[1] * numberOfCells[0]
+        let ix: Int = max(0, min(numberOfCells[0] - 1, Int((position.x) / cutoffVector.x)))
+        let iy: Int = max(0, min(numberOfCells[1] - 1, Int((position.y) / cutoffVector.y)))
+        let iz: Int = max(0, min(numberOfCells[2] - 1, Int((position.z) / cutoffVector.z)))
+        let icell: Int = ix + iy * numberOfCells[0] + iz * numberOfCells[1] * numberOfCells[0]
         
         
         list[i] = head[icell]

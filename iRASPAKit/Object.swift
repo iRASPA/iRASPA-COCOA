@@ -97,11 +97,69 @@ public class Object: NSObject, RKRenderObject, BinaryDecodable, BinaryEncodable
   public init(copy object: Object)
   {
     super.init()
+    
+    self.displayName = object.displayName
+    self.isVisible = object.isVisible
+    
+    self.cell = SKCell(cell: object.cell)
+    self.periodic = object.periodic
+    self.origin = object.origin
+    self.scaling = object.scaling
+    self.orientation = object.orientation
+    self.rotationDelta = object.rotationDelta
+    
+    self.drawUnitCell = object.drawUnitCell
+    self.unitCellScaleFactor = object.unitCellScaleFactor
+    self.unitCellDiffuseColor = object.unitCellDiffuseColor
+    self.unitCellDiffuseIntensity = object.unitCellDiffuseIntensity
+    
+    self.renderLocalAxis = RKLocalAxes(axes: object.renderLocalAxis)
+    
+    self.authorFirstName = object.authorFirstName
+    self.authorMiddleName = object.authorMiddleName
+    self.authorLastName = object.authorLastName
+    self.authorOrchidID = object.authorOrchidID
+    self.authorResearcherID = object.authorResearcherID
+    self.authorAffiliationUniversityName = object.authorAffiliationUniversityName
+    self.authorAffiliationFacultyName = object.authorAffiliationFacultyName
+    self.authorAffiliationInstituteName = object.authorAffiliationInstituteName
+    self.authorAffiliationCityName = object.authorAffiliationCityName
+    self.authorAffiliationCountryName = object.authorAffiliationCountryName
+    self.creationDate = object.creationDate
   }
   
   public init(clone object: Object)
   {
     super.init()
+    
+    self.displayName = object.displayName
+    self.isVisible = object.isVisible
+    
+    self.cell = SKCell(cell: object.cell)
+    self.periodic = object.periodic
+    self.origin = object.origin
+    self.scaling = object.scaling
+    self.orientation = object.orientation
+    self.rotationDelta = object.rotationDelta
+    
+    self.drawUnitCell = object.drawUnitCell
+    self.unitCellScaleFactor = object.unitCellScaleFactor
+    self.unitCellDiffuseColor = object.unitCellDiffuseColor
+    self.unitCellDiffuseIntensity = object.unitCellDiffuseIntensity
+    
+    self.renderLocalAxis = RKLocalAxes(axes: object.renderLocalAxis)
+    
+    self.authorFirstName = object.authorFirstName
+    self.authorMiddleName = object.authorMiddleName
+    self.authorLastName = object.authorLastName
+    self.authorOrchidID = object.authorOrchidID
+    self.authorResearcherID = object.authorResearcherID
+    self.authorAffiliationUniversityName = object.authorAffiliationUniversityName
+    self.authorAffiliationFacultyName = object.authorAffiliationFacultyName
+    self.authorAffiliationInstituteName = object.authorAffiliationInstituteName
+    self.authorAffiliationCityName = object.authorAffiliationCityName
+    self.authorAffiliationCountryName = object.authorAffiliationCountryName
+    self.creationDate = object.creationDate
   }
   
   public required init(from object: Object)

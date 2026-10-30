@@ -81,6 +81,11 @@ class MovieCreationService: NSObject, MovieCreationProtocol
     if let assetInput = assetInput
     {
       assetInput.addObserver(self, forKeyPath: "readyForMoreMediaData", options: NSKeyValueObservingOptions.new, context: &myContext)
+      defer
+      {
+        assetInput.removeObserver(self, forKeyPath: "readyForMoreMediaData", context: &myContext)
+        self.assetInput = nil
+      }
       
       let bufferAttributes: [String: AnyObject] = [String(kCVPixelBufferPixelFormatTypeKey): Int(kCVPixelFormatType_32BGRA) as   AnyObject]
       let assetInputAdaptor: AVAssetWriterInputPixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: assetInput,   sourcePixelBufferAttributes: bufferAttributes)
@@ -188,9 +193,9 @@ class MovieCreationService: NSObject, MovieCreationProtocol
         
         assetInput.markAsFinished()
         
-        assetWriter.finishWriting(completionHandler: {})
-        
-        reply(url as URL)
+        assetWriter.finishWriting(completionHandler: {
+          reply(url as URL)
+        })
       }
     }
   }
@@ -217,7 +222,8 @@ class MovieCreationService: NSObject, MovieCreationProtocol
   
   deinit
   {
-    assetInput?.removeObserver(self, forKeyPath: "readyForMoreMediaData")
+    assetInput?.removeObserver(self, forKeyPath: "readyForMoreMediaData", context: &myContext)
+    assetInput = nil
   }
   
   public func makeCVPicture(projectStructureNode: ProjectStructureNode, pixelBuffer: CVPixelBuffer, renderer: MetalRenderer, camera: RKCamera?, size: NSSize)
@@ -236,7 +242,31 @@ class MovieCreationService: NSObject, MovieCreationProtocol
         CVPixelBufferLockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
         if let destPixels: UnsafeMutablePointer<UInt8> = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: UInt8.self)
         {
-          data.copyBytes(to: destPixels, count: data.count)
+          let width: Int = CVPixelBufferGetWidth(pixelBuffer)
+          let height: Int = CVPixelBufferGetHeight(pixelBuffer)
+          let bytesPerRow: Int = CVPixelBufferGetBytesPerRow(pixelBuffer)
+          let srcBytesPerRow: Int = width * 4
+          if bytesPerRow == srcBytesPerRow
+          {
+            data.copyBytes(to: destPixels, count: min(data.count, bytesPerRow * height))
+          }
+          else
+          {
+            data.withUnsafeBytes { (srcBuffer: UnsafeRawBufferPointer) in
+              if let srcBase = srcBuffer.baseAddress?.assumingMemoryBound(to: UInt8.self)
+              {
+                let rowBytes = min(srcBytesPerRow, bytesPerRow)
+                for row in 0..<height
+                {
+                  let srcOffset = row * srcBytesPerRow
+                  if srcOffset + rowBytes <= data.count
+                  {
+                    destPixels.advanced(by: row * bytesPerRow).update(from: srcBase.advanced(by: srcOffset), count: rowBytes)
+                  }
+                }
+              }
+            }
+          }
         }
         CVPixelBufferUnlockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
       }

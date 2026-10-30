@@ -176,6 +176,7 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
   public required init(copy dnaCrystal: DNACrystal)
   {
     super.init(copy: dnaCrystal)
+    spaceGroup = dnaCrystal.spaceGroup
     copyDnaRibbonProperties(from: dnaCrystal)
   }
   
@@ -190,6 +191,7 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
   private func copyDnaRibbonProperties(from dnaCrystal: DNACrystal)
   {
     drawRibbon = dnaCrystal.drawRibbon
+    ribbonEdgeCueing = dnaCrystal.ribbonEdgeCueing
     ribbonScaleFactor = dnaCrystal.ribbonScaleFactor
     ribbonSubdivisionsPerSegment = dnaCrystal.ribbonSubdivisionsPerSegment
     ribbonCrossSectionRingResolution = dnaCrystal.ribbonCrossSectionRingResolution
@@ -804,7 +806,7 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
       let sinTheta: SIMD3<Double> = SIMD3<Double>(sin(pos.x), sin(pos.y), sin(pos.z))
       centerOfMassCosTheta += mass * cosTheta
       centerOfMassSinTheta += mass * sinTheta
-      centerOfMass += atom.position
+      centerOfMass += mass * atom.position
       M += mass
     }
     centerOfMassCosTheta /= M
@@ -816,9 +818,9 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
                       (atan2(-centerOfMassSinTheta.z, -centerOfMassCosTheta.z) + Double.pi)/(2.0 * Double.pi))
     let periodicCOM: SIMD3<Double> = self.cell.convertToCartesian(com)
     
-    if length_squared(cell.applyFullCellBoundaryCondition(periodicCOM-com)) < 1e-6
+    if length_squared(cell.applyFullCellBoundaryCondition(periodicCOM-centerOfMass)) < 1e-6
     {
-      return com
+      return centerOfMass
     }
     
     return periodicCOM
@@ -1707,7 +1709,7 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
     
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
-    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
+    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: newCell, atomList: atomList))
     
     superCellAtoms.tag()
     bonds.tag()
@@ -1769,7 +1771,7 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
     
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
-    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
+    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: newCell, atomList: atomList))
     
     superCellAtoms.tag()
     bonds.tag()
@@ -1950,7 +1952,7 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
     
     let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
   
-    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
+    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.y > 0.0001 && perpendicularWidths.z > 0.0001 else {return []}
     
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]
@@ -1967,9 +1969,10 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
       {
         let position: SIMD3<Double> = atoms[i].position - structureCell.boundingBox.minimum
         
-        let icell: Int = Int((position.x) / cutoffVector.x) +
-          Int((position.y) / cutoffVector.y) * numberOfCells[0] +
-          Int((position.z) / cutoffVector.z) * numberOfCells[1] * numberOfCells[0]
+        let ix: Int = max(0, min(numberOfCells[0] - 1, Int((position.x) / cutoffVector.x)))
+        let iy: Int = max(0, min(numberOfCells[1] - 1, Int((position.y) / cutoffVector.y)))
+        let iz: Int = max(0, min(numberOfCells[2] - 1, Int((position.z) / cutoffVector.z)))
+        let icell: Int = ix + iy * numberOfCells[0] + iz * numberOfCells[1] * numberOfCells[0]
         
         list[i] = head[icell]
         head[icell] = i
@@ -2221,7 +2224,11 @@ public final class DNACrystal: Structure, AtomEditor, BondEditor, UnitCellEditor
       
       let data: [Float] = framework.ComputeEnergyGrid(size, sizeY: size, sizeZ: size, probeParameter: probeParameters)
                   
-      self.minimumGridEnergyValue = data.min()
+      if let minValue = data.min(), let maxValue = data.max()
+      {
+        self.minimumGridEnergyValue = minValue
+        self.range = (Double(minValue), Double(maxValue))
+      }
       
       self.adsorptionVolumeStepLength = 0.25 / Double(size)
    

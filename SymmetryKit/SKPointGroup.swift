@@ -134,7 +134,8 @@ public struct SKPointGroup
       schoenflies = pointGroup.schoenflies
       holohedry = pointGroup.holohedry
       laue = pointGroup.laue
-
+      centrosymmetric = pointGroup.centrosymmetric
+      enantiomorphic = pointGroup.enantiomorphic
     }
   }
   

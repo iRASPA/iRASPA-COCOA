@@ -112,10 +112,14 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     // skip commentlines
     scanner.charactersToBeSkipped = nil
 
+    guard !scanner.isAtEnd else { throw SKParserError.containsNoData }
     scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    guard !scanner.isAtEnd else { throw SKParserError.containsNoData }
     scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: 1)
     
+    guard !scanner.isAtEnd else { throw SKParserError.containsNoData }
     scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+    guard !scanner.isAtEnd else { throw SKParserError.containsNoData }
     scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: 1)
     
     scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
@@ -194,8 +198,9 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
          words.count >= 5, let atomicNumber = Int(words[0]), let charge = Double(words[1]), let x = Double(words[2]), let y = Double(words[3]), let z = Double(words[4])
       {
         let pos: SIMD3<Double> = conversionFactor * (SIMD3<Double>(x,y,z) - origin)
-        let chemicalElement: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
-        let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: chemicalElement, elementId: atomicNumber, uniqueForceFieldName: chemicalElement, position: pos, charge: charge, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
+        let validAtomicNumber: Int = (atomicNumber >= 0 && atomicNumber < PredefinedElements.sharedInstance.elementSet.count) ? atomicNumber : 0
+        let chemicalElement: String = PredefinedElements.sharedInstance.elementSet[validAtomicNumber].chemicalSymbol
+        let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: chemicalElement, elementId: validAtomicNumber, uniqueForceFieldName: chemicalElement, position: pos, charge: charge, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
         atoms.append(atom)
       }
       else
@@ -207,20 +212,29 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
     
     if(numberOfAtoms<0)
     {
-      // read number of orbitals
-      //if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      //   let words: [String] = scannedLine?.components(separatedBy: //CharacterSet.whitespaces).filter({!$0.isEmpty}),
-      //   words.count >= 1, let numberOfMolecularOrbitals = Int(words[0])
-      //{
-      //}
+      // read number of orbitals and skip orbital index tokens
+      scannedLine = scanner.scanUpToCharacters(from: newLineChararterSet)
+      if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+         let numberOfMolecularOrbitals = words.first.flatMap({Int($0)}),
+         numberOfMolecularOrbitals > 0
+      {
+        var remainingOrbitalsToSkip: Int = numberOfMolecularOrbitals - (words.count - 1)
+        while remainingOrbitalsToSkip > 0 && !scanner.isAtEnd
+        {
+          if scanner.scanUpToCharacters(from: whiteSpacesAndNewlines) != nil
+          {
+            remainingOrbitalsToSkip -= 1
+          }
+        }
+      }
     }
     
    
     
     var max: Float = -Float.greatestFiniteMagnitude
     var min: Float = Float.greatestFiniteMagnitude
-    var sum: Float = 0.0
-    var sumSquared: Float = 0.0
+    var sum: Double = 0.0
+    var sumSquared: Double = 0.0
     let numberOfValues: Int = Int(dimensions.x * dimensions.y * dimensions.z)
     gridData = Array<Float>(repeating: 0.0, count: numberOfValues)
     for x: Int32 in 0..<dimensions.x  // X is the outer loop
@@ -238,8 +252,9 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
               let index: Int = Int(x+dimensions.x*y+z*dimensions.x*dimensions.y)
               gridData[index] = dataPoint
               
-              sum += dataPoint
-              sumSquared += dataPoint * dataPoint
+              let doublePoint: Double = Double(dataPoint)
+              sum += doublePoint
+              sumSquared += doublePoint * doublePoint
               
               if(dataPoint > max)
               {
@@ -254,8 +269,9 @@ public final class SKGaussianCubeParser: SKParser, ProgressReporting
         }
       }
     }
-    self.average = Double(sum) / Double(dimensions.x * dimensions.y * dimensions.z)
-    self.variance = Double(sumSquared) / Double(dimensions.x * dimensions.y * dimensions.z - 1)
+    let totalGridSize: Int = Int(dimensions.x * dimensions.y * dimensions.z)
+    self.average = totalGridSize > 0 ? (sum / Double(totalGridSize)) : 0.0
+    self.variance = totalGridSize > 0 ? ((sumSquared - (sum * sum) / Double(totalGridSize)) / Double(Swift.max(1, totalGridSize - 1))) : 0.0
     self.range = (Double(min), Double(max))
     
     addFrameToStructure(atoms: atoms, periodic: true)

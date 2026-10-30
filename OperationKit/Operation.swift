@@ -282,7 +282,8 @@ open class FKOperation: Operation, ProgressReporting, @unchecked Sendable
   {
     assert(state == .ready, "This operation must be performed on an operation queue.")
     
-    if _internalErrors.isEmpty && !isCancelled
+    let hasErrors: Bool = stateLock.withCriticalScope { !_internalErrors.isEmpty }
+    if !hasErrors && !isCancelled
     {
       state = .executing
       
@@ -321,7 +322,9 @@ open class FKOperation: Operation, ProgressReporting, @unchecked Sendable
   {
     if let error = error
     {
-      _internalErrors.append(error)
+      stateLock.withCriticalScope {
+        _internalErrors.append(error)
+      }
     }
     
     cancel()
@@ -364,12 +367,16 @@ open class FKOperation: Operation, ProgressReporting, @unchecked Sendable
   fileprivate var hasFinishedAlready = false
   final func finish(_ errors: [NSError] = [])
   {
-    if !hasFinishedAlready
-    {
+    let combinedErrors: [NSError]? = stateLock.withCriticalScope {
+      guard !hasFinishedAlready else { return nil }
       hasFinishedAlready = true
+      return _internalErrors + errors
+    }
+    
+    if let combinedErrors = combinedErrors
+    {
       state = .finishing
       
-      let combinedErrors = _internalErrors + errors
       finished(combinedErrors)
       
       for observer in observers
